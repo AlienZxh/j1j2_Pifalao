@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.j1j2.common.view.MainViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.ogaclejapan.smarttablayout.SmartTabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hometab_height"
+            app:stl_distributeEvenly="true"
+            app:stl_dividerColor="@color/colorTransparent"
+            app:stl_dividerThickness="0dp"
+            app:stl_indicatorColor="@color/colorTransparent"
+            app:stl_indicatorCornerRadius="0dp"
+            app:stl_indicatorGravity="center"
+            app:stl_indicatorInterpolation="linear"
+            app:stl_indicatorThickness="0dp"
+            app:stl_overlineColor="@color/colorGrayCCCCCC"
+            app:stl_overlineThickness="1px"
+            app:stl_underlineColor="@color/colorTransparent"
+            app:stl_underlineThickness="0dp" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

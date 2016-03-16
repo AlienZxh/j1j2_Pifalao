@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="servicepoint"
+            type="com.j1j2.data.model.ServicePoint" />
+
+        <variable
+            name="onItemClick"
+            type="OnClickListener" />
+
+        <variable
+            name="onInfoClick"
+            type="OnClickListener" />
+    </data>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="400px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20px"
+            app:OnClickListener="@{onItemClick}"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:singleLine="true"
+                android:text="@{servicepoint.Name}"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:singleLine="true"
+                android:text="@{servicepoint.AddressDetail}"
+                android:textColor="@color/colorText999"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20px"
+                android:layout_marginTop="20px"
+                android:singleLine="true"
+                android:textColor="@color/colorText999"
+                android:textSize="@dimen/text_normal" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            app:OnClickListener="@{onInfoClick}"
+            android:layout_marginRight="20px"
+            android:text="@string/icon_info"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/icon_50px" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</layout>

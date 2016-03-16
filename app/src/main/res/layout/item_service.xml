@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="module"
+            type="com.j1j2.data.model.Module" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:OnClickListener="@{onClick}">
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20px"
+            android:background="@drawable/cycle_green_bg"
+            android:gravity="center"
+            android:text="@string/icon_vegetable"
+            android:textColor="@color/colorWhite"
+            android:textSize="90px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:layout_marginTop="20px"
+            android:text="@{module.ModuleName}"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_big" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

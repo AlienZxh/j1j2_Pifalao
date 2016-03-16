@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="position"
+            type="int" />
+
+        <variable
+            name="mainTab"
+            type="com.j1j2.pifalao.app.base.MainTab" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="MissingPrefix">
+
+        <com.zhy.autolayout.AutoFrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/icon"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxLines="1"
+                android:text="@{mainTab.getIcons[position]}"
+                android:textColor="@drawable/maintab_icon_color"
+                android:textSize="40px" />
+
+            <TextView
+                android:id="@+id/selsectIcon"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:maxLines="1"
+                android:text="@{mainTab.getSelectIcons[position]}"
+                android:textColor="@drawable/maintab_re_icon_color"
+                android:textSize="40px" />
+
+        </com.zhy.autolayout.AutoFrameLayout>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:maxLines="1"
+            android:text="@{mainTab.getTexts[position]}"
+            android:textColor="@drawable/maintab_text_color"
+            android:textSize="@dimen/text_big" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

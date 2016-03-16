@@ -1,0 +1,119 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.getkeepsafe.dexcount'
+apply plugin: 'com.neenbedankt.android-apt'
+
+dexcount {
+    format = "list"
+    includeClasses = false
+    includeFieldCount = true
+    includeTotalMethodCount = false
+    orderByMethodCount = false
+    verbose = false
+}
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
+
+    dataBinding {
+        enabled true
+    }
+
+    defaultConfig {
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+        applicationId globalConfiguration.getAt("androidApplicationId")
+        versionCode globalConfiguration.getAt("androidVersionCode")
+        versionName globalConfiguration.getAt("androidVersionName")
+        testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
+
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("../buildsystem/j1j2_zxh.keystore")
+            storePassword "zxh19910528"
+            keyAlias "j1j2_zxh_keystore"
+            keyPassword "zxh19910528"
+        }
+
+        debug {
+            storeFile file("../buildsystem/j1j2_zxh.keystore")
+            storePassword "zxh19910528"
+            keyAlias "j1j2_zxh_keystore"
+            keyPassword "zxh19910528"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            shrinkResources true
+
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9091/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9091\""
+            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:9091/Resources/Soft/UpdateOnline.xml\""
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            shrinkResources true
+
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9091\""
+            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Soft/UpdateOnline.xml\""
+        }
+    }
+}
+
+dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+    def appTestDependencies = rootProject.ext.appTestDependencies
+    def appDebugDependencies = rootProject.ext.appDebugDependencies
+    def appReleaseDependencies = rootProject.ext.appReleaseDependencies
+    def appAndroidTestDependencies = rootProject.ext.appAndroidTestDependencies
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile project(':data')
+    compile project(':common')
+
+    compile appDependencies.appcompat
+    compile appDependencies.supportv4
+    compile appDependencies.design
+    compile appDependencies.recyclerView
+    compile appDependencies.supportAnnotations
+    //适配框架
+    compile appDependencies.androidAutoLayout
+    //Log格式化
+    compile appDependencies.logger
+    //页面数据交换、存储
+    compile appDependencies.bundler
+    apt appDependencies.bundlerCompiler
+    //依赖注入
+    compile appDependencies.dagger
+    apt appDependencies.daggerCompiler
+    provided appDependencies.javaxAnnotation
+    //内存泄露检测
+    debugCompile appDebugDependencies.leakcanary // or 1.4-beta1
+    releaseCompile appReleaseDependencies.leakcanary // or 1.4-beta1
+    //图片加载
+    compile appDependencies.fresco
+    //rxlifecycle
+    compile appDependencies.rxlifecycle
+    compile appDependencies.rxlifecycleComponents
+    //单元测试
+    testCompile appTestDependencies.junit
+    //UI测试
+    androidTestCompile appAndroidTestDependencies.supportAnnotations
+    androidTestCompile appAndroidTestDependencies.espresso
+    androidTestCompile appAndroidTestDependencies.runner
+    androidTestCompile appAndroidTestDependencies.rules
+
+}

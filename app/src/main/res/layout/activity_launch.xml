@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".feature.launch.LaunchActivity">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="480px"
+            android:layout_height="156px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="250px"
+            android:scaleType="fitCenter"
+            android:src="@drawable/launch_logo" />
+
+        <ImageView
+            android:id="@+id/slogan"
+            android:layout_width="480px"
+            android:layout_height="160px"
+            android:layout_below="@id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30px"
+            android:scaleType="fitCenter"
+            android:src="@drawable/launch_slogan" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20px"
+            android:text="@string/launch_legal_statement"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_normal" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</layout>

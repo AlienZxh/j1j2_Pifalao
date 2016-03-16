@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeActivity">
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionbar_height"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_actionbar_btn"
+                    android:text="@string/icon_back"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_btn" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/store_actionbar_title"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_title" />
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_actionbar_btn"
+                    android:text="@string/icon_bar_code"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_btn" />
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/sortList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/colorGrayF0F0F0">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="productDetailViewModel"
+            type="com.j1j2.pifalao.feature.productdetail.ProductDetailViewModel" />
+    </data>
+
+    <com.j1j2.common.view.autowidget.AutoNestedScrolling
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionbar_height"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_actionbar_btn"
+                    android:text="@string/icon_back"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_btn" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/productdetail_actionbar_title"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_title" />
+
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="700px">
+
+                <com.j1j2.common.view.autoscrollviewpager.AutoScrollViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.ogaclejapan.smarttablayout.SmartTabLayout
+                    android:id="@+id/tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20px"
+                    android:layout_above="@+id/name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20px"
+                    app:stl_clickable="false"
+                    app:stl_customTabTextLayoutId="@layout/view_tabcircle"
+                    app:stl_dividerColor="@color/colorTransparent"
+                    app:stl_dividerThickness="0dp"
+                    app:stl_indicatorColor="@color/colorAccent"
+                    app:stl_indicatorCornerRadius="4dp"
+                    app:stl_indicatorGravity="center"
+                    app:stl_indicatorInterpolation="linear"
+                    app:stl_indicatorThickness="8dp"
+                    app:stl_underlineColor="@color/colorTransparent"
+                    app:stl_underlineThickness="0dp" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorTransparentGray"
+                    android:gravity="center"
+                    android:text="@{productDetailViewModel.productDetail.Name}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoRelativeLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+    </com.j1j2.common.view.autowidget.AutoNestedScrolling>
+</layout>

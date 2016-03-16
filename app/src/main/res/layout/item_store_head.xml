@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+        <variable
+            name="productSort"
+            type="com.j1j2.data.model.ProductSort" />
+    </data>
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:background="@drawable/item_store_head_bg"
+        app:OnClickListener="@{onClick}"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20px"
+            android:text="@{productSort.SortName}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_biger" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20px"
+            android:text="@{String.valueOf(productSort.ProductCount)}"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</layout>

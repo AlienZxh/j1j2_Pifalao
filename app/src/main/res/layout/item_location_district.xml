@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+
+        <variable
+            name="district"
+            type="String" />
+
+    </data>
+
+    <android.support.v7.widget.AppCompatTextView
+        fontPath="iconfont/iconfont.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:background="@drawable/item_location_district_selector"
+        android:gravity="center"
+        android:text="@{district}"
+        android:textColor="@drawable/text_click_colors"
+        android:textSize="@dimen/text_normal"
+        app:OnClickListener="@{onClick}" />
+
+</layout>

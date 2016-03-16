@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    def dataDependencies = rootProject.ext.dataDependencies
+    def dataTestDependencies = rootProject.ext.dataTestDependencies
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    testCompile dataTestDependencies.junit
+
+    compile dataDependencies.okhttp
+    compile dataDependencies.rxjava
+    compile dataDependencies.rxandroid
+    compile dataDependencies.retrofit
+    compile dataDependencies.retrofitRxjavaAdapter
+    compile dataDependencies.retrofitGsonConverter
+    compile dataDependencies.gson
+    compile dataDependencies.okhttpLoggingInterceptor
+}

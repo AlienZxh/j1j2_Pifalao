@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">批发佬</string>
+    <string name="launch_legal_statement">©2013-2016 聚一聚二版权所有</string>
+
+    <string name="city_actionbar_title">欢迎进入批发老网购超市购物，请选择城市</string>
+    <string name="city_is_open">已开通</string>
+    <string name="city_is_close">暂未开通</string>
+
+    <string name="location_actionbar_title">选择服务点</string>
+    <string name="servicepoint_actionbar_title">服务点详情</string>
+    <string name="services_actionbar_title">选择服务</string>
+    <string name="store_actionbar_title">超市类批发</string>
+    <string name="productdetail_actionbar_title">商品详情</string>
+
+    <string name="servicepoint_call">&#xe607;联系服务点</string>
+    <string name="servicepoint_in">&#xe609;进入服务点</string>
+
+    <string name="promtiontime_title">距离仓库发货还剩：</string>
+    <string name="hour">小时</string>
+    <string name="minute">分钟</string>
+    <string name="second">秒</string>
+
+    <string name="text_null">（空）</string>
+    <string name="text_empty">""</string>
+</resources>

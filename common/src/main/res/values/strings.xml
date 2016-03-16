@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">common</string>
+    <string name="icon_time">&#xe60e;</string>
+    <string name="icon_back">&#xe620;</string>
+    <string name="icon_unfold">&#xe60f;</string>
+    <string name="icon_location">&#xe606;</string>
+    <string name="icon_info">&#xe639;</string>
+    <string name="icon_phone">&#xe607;</string>
+    <string name="icon_round_checke">&#xe609;</string>
+    <string name="icon_daeva_user2">&#xe67e;</string>
+
+    <string name="icon_vegetable">&#xe672;</string>
+    <string name="icon_shopservice">&#xe66f;</string>
+    <string name="icon_delivery">&#xe677;</string>
+    <string name="icon_housekeeping">&#xe675;</string>
+    <string name="icon_numeral">&#xe681;</string>
+
+    <string name="icon_bar_code">&#xe643;</string>
+
+    <string name="icon_clock">&#xe68e;</string>
+
+    <string name="icon_filter">&#xe628;</string>
+
+    <string name="icon_info_fill">&#xe638;</string>
+
+
+    <string name="icon_home_fill">&#xe693;</string>
+    <string name="icon_home">&#xe694;</string>
+    <string name="icon_shopcart_fill">&#xe68f;</string>
+    <string name="icon_shopcart">&#xe690;</string>
+    <string name="icon_supplier_fill">&#xe695;</string>
+    <string name="icon_supplier">&#xe696;</string>
+    <string name="icon_mine_fill">&#xe697;</string>
+    <string name="icon_mine">&#xe698;</string>
+
+</resources>

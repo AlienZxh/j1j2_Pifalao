@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="productViewModel"
+            type="com.j1j2.pifalao.feature.products.ProductsViewModel" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:background="@drawable/promtiontime_view_bg"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_clock"
+            android:textColor="@color/colorText333"
+            android:textSize="35px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5px"
+            android:text="@string/promtiontime_title"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_conner_tag_bg"
+            android:padding="5px"
+            android:text="@{productViewModel.hour}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px"
+            android:text="@string/hour"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_conner_tag_bg"
+            android:padding="5px"
+            android:text="@{productViewModel.minute}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px"
+            android:text="@string/minute"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/orange_conner_tag_bg"
+            android:padding="5px"
+            android:text="@{productViewModel.second}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px"
+            android:text="@string/second"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>
