@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View.OnClickListener" />
 
         <variable
             name="onClick"
             type="OnClickListener" />
+
         <variable
             name="productSort"
             type="com.j1j2.data.model.ProductSort" />
@@ -15,18 +17,17 @@
 
     <com.j1j2.common.view.autowidget.AutoCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/height_item_store_head"
         android:orientation="horizontal"
-        app:cardBackgroundColor="@color/colorWhite"
         app:OnClickListener="@{onClick}"
-        app:cardCornerRadius="3dp">
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="2px">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20px"
-            android:layout_marginTop="20px"
             android:singleLine="true"
             android:text="@{productSort.SortName}"
             android:textColor="@color/colorText333"

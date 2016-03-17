@@ -43,15 +43,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="@dimen/padding_big"
             android:text="@{city.PCCName}"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_normal" />
+            android:textColor="@{city.OpenState?@color/colorAccent:@color/colorTextaaa}"
+            android:textSize="@dimen/text_biger"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tag"
             android:layout_width="match_parent"
-            android:layout_height="40px"
+            android:layout_height="48px"
             android:layout_alignParentBottom="true"
             android:background="@color/colorCityTag"
             android:gravity="center"

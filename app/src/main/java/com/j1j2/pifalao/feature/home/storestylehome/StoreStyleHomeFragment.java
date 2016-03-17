@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +29,8 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-16.
  */
 @RequireBundler
-public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHomeAdapter.OnSortItemClickListener {
+public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHomeAdapter.OnSortItemClickListener, View.OnClickListener {
+
 
     FragmentStoreStyleHomeBinding binding;
 
@@ -54,6 +56,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_style_home, container, false);
+        binding.setOnClick(this);
         return binding.getRoot();
     }
 
@@ -61,9 +64,8 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     protected void initViews() {
         manager = new GridLayoutManager(getContext(), 3);
         binding.sortList.setLayoutManager(manager);
-        storeStyleHomeViewModel.onCreate();
+        storeStyleHomeViewModel.queryProductSort();
     }
-
 
     public void setListAdapter(final StoreStyleHomeAdapter storeStyleHomeAdapter) {
         binding.sortList.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -93,6 +95,11 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
 
     @Override
     public void onSortItemClickListener(View view, ProductSort productSort, int position) {
-        mainActivity.getNavigate().navigateToProductsActivity(mainActivity, null, false, productSort, module);
+        mainActivity.getNavigate().navigateToProductsActivityFromSort(mainActivity, null, false, productSort, module);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mainActivity.getNavigate().navigateToSearchActivity(mainActivity, null, false, module);
     }
 }

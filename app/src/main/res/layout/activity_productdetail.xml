@@ -29,10 +29,9 @@
                     android:layout_width="@dimen/actionbar_height"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="@dimen/padding_actionbar_btn"
                     android:text="@string/icon_back"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_actionbar_btn" />
+                    android:textSize="@dimen/icon_normal" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -57,33 +56,51 @@
                 <com.ogaclejapan.smarttablayout.SmartTabLayout
                     android:id="@+id/tab"
                     android:layout_width="wrap_content"
-                    android:layout_height="20px"
+                    android:layout_height="wrap_content"
                     android:layout_above="@+id/name"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="20px"
+                    android:layout_marginBottom="@dimen/padding_big"
                     app:stl_clickable="false"
                     app:stl_customTabTextLayoutId="@layout/view_tabcircle"
                     app:stl_dividerColor="@color/colorTransparent"
                     app:stl_dividerThickness="0dp"
-                    app:stl_indicatorColor="@color/colorAccent"
-                    app:stl_indicatorCornerRadius="4dp"
+                    app:stl_indicatorColor="@color/colorWhite"
+                    app:stl_indicatorCornerRadius="@dimen/circle_tab_size"
                     app:stl_indicatorGravity="center"
+                    app:stl_indicatorInFront="true"
                     app:stl_indicatorInterpolation="linear"
-                    app:stl_indicatorThickness="8dp"
+                    app:stl_indicatorThickness="@dimen/circle_tab_size"
                     app:stl_underlineColor="@color/colorTransparent"
                     app:stl_underlineThickness="0dp" />
 
-                <TextView
+                <com.zhy.autolayout.AutoLinearLayout
                     android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/content_height_big"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
                     android:background="@color/colorTransparentGray"
                     android:gravity="center"
-                    android:text="@{productDetailViewModel.productDetail.Name}"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_big" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4px"
+                        android:background="@drawable/orange_conner_white_tag_bg"
+                        android:paddingLeft="6px"
+                        android:paddingRight="6px"
+                        android:text="@string/self_product"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{productDetailViewModel.productDetail.Name}"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_big"
+                        android:textStyle="bold" />
+                </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoRelativeLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 

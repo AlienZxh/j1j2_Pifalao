@@ -20,7 +20,7 @@ public interface CountDownApi {
     //__________________________________________________________________________________________
 
     @POST("CountDown/QueryServiceTimeOfDliveryType")
-    Observable<String> queryServiceTimeOfDliveryType(@Query("deliveryType") int deliveryType);
+    Observable<String> queryServiceTimeOfDliveryType(@Query("deliveryType") int deliveryType, @Query("moduleId") int moduleId);
 
 
 }

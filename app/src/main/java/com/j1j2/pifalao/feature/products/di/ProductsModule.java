@@ -22,11 +22,13 @@ public class ProductsModule {
     private ProductsActivity productsActivity;
     private ProductSort productSort;
     private com.j1j2.data.model.Module module;
+    private String key;
 
-    public ProductsModule(ProductsActivity productsActivity, ProductSort productSort, com.j1j2.data.model.Module module) {
+    public ProductsModule(ProductsActivity productsActivity, ProductSort productSort, com.j1j2.data.model.Module module, String key) {
         this.productsActivity = productsActivity;
         this.productSort = productSort;
         this.module = module;
+        this.key = key;
     }
 
     @Provides
@@ -59,11 +61,16 @@ public class ProductsModule {
         return productSort;
     }
 
+    @Provides
+    @ActivityScope
+    String key() {
+        return key;
+    }
 
     @Provides
     @ActivityScope
-    ProductsViewModel productsViewModel(ProductsActivity productsActivity, ProductSort productSort, com.j1j2.data.model.Module module, ProductApi productApi, CountDownApi countDownApi) {
-        return new ProductsViewModel(productsActivity, productSort, module, productApi, countDownApi);
+    ProductsViewModel productsViewModel(ProductsActivity productsActivity, ProductSort productSort, com.j1j2.data.model.Module module, ProductApi productApi, CountDownApi countDownApi, String key) {
+        return new ProductsViewModel(productsActivity, productSort, module, productApi, countDownApi, key);
     }
 
 

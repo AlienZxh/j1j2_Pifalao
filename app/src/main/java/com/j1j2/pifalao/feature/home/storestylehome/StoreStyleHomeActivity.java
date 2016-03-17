@@ -82,6 +82,6 @@ public class StoreStyleHomeActivity extends BaseActivity implements StoreStyleHo
 
     @Override
     public void onSortItemClickListener(View view, ProductSort productSort, int position) {
-        navigate.navigateToProductsActivity(StoreStyleHomeActivity.this, null, false, productSort, module);
+        navigate.navigateToProductsActivityFromSort(StoreStyleHomeActivity.this, null, false, productSort, module);
     }
 }

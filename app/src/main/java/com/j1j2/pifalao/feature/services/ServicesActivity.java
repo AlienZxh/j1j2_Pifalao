@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.services;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +17,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
+import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.databinding.ActivityServicesBinding;
 import com.j1j2.pifalao.feature.services.di.ServicesModule;
 
@@ -98,4 +100,5 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 //        navigate.navigateToStoreStyleomeActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module);
         navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module);
     }
+
 }

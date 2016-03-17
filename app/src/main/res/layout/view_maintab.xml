@@ -29,22 +29,20 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:maxLines="1"
                 android:text="@{mainTab.getIcons[position]}"
                 android:textColor="@drawable/maintab_icon_color"
-                android:textSize="40px" />
+                android:textSize="@dimen/icon_hometab" />
 
             <TextView
                 android:id="@+id/selsectIcon"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:maxLines="1"
                 android:text="@{mainTab.getSelectIcons[position]}"
                 android:textColor="@drawable/maintab_re_icon_color"
-                android:textSize="40px" />
+                android:textSize="@dimen/icon_hometab" />
 
         </com.zhy.autolayout.AutoFrameLayout>
 
@@ -52,10 +50,9 @@
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10px"
             android:maxLines="1"
             android:text="@{mainTab.getTexts[position]}"
             android:textColor="@drawable/maintab_text_color"
-            android:textSize="@dimen/text_big" />
+            android:textSize="@dimen/text_normal" />
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

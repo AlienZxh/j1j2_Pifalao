@@ -28,17 +28,16 @@
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="@dimen/padding_actionbar_btn"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_btn" />
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@{productViewModel.ProductSort.SortName}"
+                android:text="@{productViewModel.title}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
 
@@ -49,10 +48,9 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
-                android:padding="@dimen/padding_actionbar_btn"
                 android:text="@string/icon_filter"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_btn" />
+                android:textSize="@dimen/icon_normal" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <include
@@ -63,6 +61,7 @@
             android:id="@+id/productList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorHomeTabBg"
             app:layout_empty="@layout/view_empty"
             app:layout_moreProgress="@layout/view_progressbar"
             app:layout_progress="@layout/view_progressbar" />

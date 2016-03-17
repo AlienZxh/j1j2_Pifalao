@@ -38,6 +38,7 @@ public class BackGroundService extends Service {
     @Override
     public void onDestroy() {
         mLocationClient.stop();
+        mLocationClient = null;
         super.onDestroy();
         Logger.d("后台线程结束了");
     }
@@ -64,7 +65,6 @@ public class BackGroundService extends Service {
         //option.setEnableSimulateGps(false);// 可选，默认false，设置是否需要过滤gps仿真结果，默认需要
         mLocationClient.setLocOption(option);
         mLocationClient.start();
-        mLocationClient.requestLocation();
     }
 
     public class MyLocationListener implements BDLocationListener {
@@ -100,7 +100,7 @@ public class BackGroundService extends Service {
                 case BDLocation.TypeNetWorkLocation:
                 case BDLocation.TypeOffLineLocation:
                 case BDLocation.TypeCacheLocation:
-                    RxBus.get().post(RxBusTag.LOCATION_EVENT,location);
+                    RxBus.get().post(RxBusTag.LOCATION_EVENT, location);
 //                    Logger.d("成功发送位置信息");
                     break;
                 case BDLocation.TypeServerError:

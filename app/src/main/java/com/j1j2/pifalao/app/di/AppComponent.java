@@ -17,6 +17,8 @@ import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
 import com.j1j2.pifalao.feature.products.di.ProductsComponent;
 import com.j1j2.pifalao.feature.products.di.ProductsModule;
+import com.j1j2.pifalao.feature.search.di.SearchComponent;
+import com.j1j2.pifalao.feature.search.di.SearchModule;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointComponent;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointModule;
 import com.j1j2.pifalao.feature.services.di.ServicesComponent;
@@ -53,4 +55,6 @@ public interface AppComponent {
     ProductDetailComponent plus(ProductDetailModule productDetailModule);
 
     MainComponent plus(MainModule mainModule);
+
+    SearchComponent plus(SearchModule searchModule);
 }

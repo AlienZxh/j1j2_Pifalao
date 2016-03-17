@@ -7,6 +7,8 @@
 
     <data>
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
         <variable
             name="locationViewModel"
             type="com.j1j2.pifalao.feature.location.LocationViewModel" />
@@ -25,15 +27,25 @@
             android:orientation="horizontal">
 
             <TextView
-                fontPath="iconfont/iconfont.ttf"
+                android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="@dimen/padding_actionbar_btn"
-                android:text="@{locationViewModel.city.PCCName+@string/icon_unfold}"
+                android:paddingLeft="@dimen/padding_actionbar_btn"
+                android:text="@{StringUtils.getLocation(locationViewModel.city.PCCName)}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_btn"
                 app:onClickListener="@{locationViewModel.locationActivity}" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/location"
+                android:gravity="center_vertical"
+                android:text="@string/icon_unfold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_location_icon_arrow" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -59,16 +71,19 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/districtList"
-                android:layout_width="200px"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorGrayE8E8E8">
+                android:layout_weight="27"
+                android:background="@color/colorGrayF0F0F0">
 
             </android.support.v7.widget.RecyclerView>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/servicepointList"
-                android:layout_width="568px"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="73"
+                android:background="@color/colorWhite">
 
             </android.support.v7.widget.RecyclerView>
 

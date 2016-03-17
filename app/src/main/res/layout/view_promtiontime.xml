@@ -10,7 +10,7 @@
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="@dimen/content_height_normal"
         android:background="@drawable/promtiontime_view_bg"
         android:gravity="center"
         android:orientation="horizontal">
@@ -21,12 +21,12 @@
             android:layout_height="wrap_content"
             android:text="@string/icon_clock"
             android:textColor="@color/colorText333"
-            android:textSize="35px" />
+            android:textSize="@dimen/text_biger" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5px"
+            android:layout_marginLeft="@dimen/padding_small"
             android:text="@string/promtiontime_title"
             android:textColor="@color/colorText333"
             android:textSize="@dimen/text_normal" />
@@ -34,8 +34,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_top_time_tag"
+            android:layout_marginRight="@dimen/padding_top_time_tag"
             android:background="@drawable/orange_conner_tag_bg"
-            android:padding="5px"
+            android:paddingBottom="@dimen/padding_top_time_tag"
+            android:paddingLeft="@dimen/padding_left_time_tag"
+            android:paddingRight="@dimen/padding_left_time_tag"
+            android:paddingTop="@dimen/padding_top_time_tag"
             android:text="@{productViewModel.hour}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
@@ -44,8 +49,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5px"
-            android:layout_marginRight="5px"
             android:text="@string/hour"
             android:textColor="@color/colorText333"
             android:textSize="@dimen/text_normal" />
@@ -53,8 +56,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_top_time_tag"
+            android:layout_marginRight="@dimen/padding_top_time_tag"
             android:background="@drawable/orange_conner_tag_bg"
-            android:padding="5px"
+            android:paddingBottom="@dimen/padding_top_time_tag"
+            android:paddingLeft="@dimen/padding_left_time_tag"
+            android:paddingRight="@dimen/padding_left_time_tag"
+            android:paddingTop="@dimen/padding_top_time_tag"
             android:text="@{productViewModel.minute}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
@@ -63,8 +71,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5px"
-            android:layout_marginRight="5px"
             android:text="@string/minute"
             android:textColor="@color/colorText333"
             android:textSize="@dimen/text_normal" />
@@ -72,8 +78,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_top_time_tag"
+            android:layout_marginRight="@dimen/padding_top_time_tag"
             android:background="@drawable/orange_conner_tag_bg"
-            android:padding="5px"
+            android:paddingBottom="@dimen/padding_top_time_tag"
+            android:paddingLeft="@dimen/padding_left_time_tag"
+            android:paddingRight="@dimen/padding_left_time_tag"
+            android:paddingTop="@dimen/padding_top_time_tag"
             android:text="@{productViewModel.second}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
@@ -82,8 +93,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5px"
-            android:layout_marginRight="5px"
             android:text="@string/second"
             android:textColor="@color/colorText333"
             android:textSize="@dimen/text_normal" />

@@ -5,6 +5,15 @@
     tools:context="com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeActivity">
 
 
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+    </data>
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,10 +35,9 @@
                     android:layout_width="@dimen/actionbar_height"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:padding="@dimen/padding_actionbar_btn"
                     android:text="@string/icon_back"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_actionbar_btn" />
+                    android:textSize="@dimen/icon_normal" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,10 +54,10 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="center"
-                    android:padding="@dimen/padding_actionbar_btn"
-                    android:text="@string/icon_bar_code"
+                    android:text="@string/icon_search"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_actionbar_btn" />
+                    android:textSize="@dimen/icon_normal"
+                    app:OnClickListener="@{onClick}" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -57,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorGrayF0F0F0">
+                android:background="@color/colorHomeTabBg">
 
             </android.support.v7.widget.RecyclerView>
 

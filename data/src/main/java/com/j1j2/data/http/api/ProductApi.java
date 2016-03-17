@@ -29,6 +29,9 @@ public interface ProductApi {
 
     @POST("Product/QueryProductDetails")
     Observable<WebReturn<ProductDetail>> queryProductDetails(@Query("mainId") int mainId);
+
+    @POST("Product/PuzzyQueryProduct")
+    Observable<WebReturn<PagerManager<ProductSimple>>> puzzyQueryProduct(@Query("moduleId") int moduleId, @Query("index") String index, @Query("size") String size, @Query("key") String key);
     //__________________________________________________________________________________________
 
     @POST("Product/QueryHotSort")
@@ -36,9 +39,6 @@ public interface ProductApi {
 
     @POST("Product/QueryActivityProducts")
     Observable<String> queryActivityProducts(@Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize, @Query("pageSize") int moduleId, @Query("productSearchType") int productSearchType, @Query("key") String key, @Query("activityId") int activityId);
-
-    @POST("Product/PuzzyQueryProduct")
-    Observable<String> puzzyQueryProduct(@Query("moduleId") int moduleId, @Query("index") String index, @Query("size") String size, @Query("key") String key);
 
     @POST("Product/QueryProductAllUnit")
     Observable<String> queryProductAllUnit(@Query("mainId") int mainId);
@@ -58,4 +58,6 @@ public interface ProductApi {
     @POST("Product/CreateSuggestProduct")
     Observable<String> createSuggestProduct();
 
+    @POST("Product/QueryHotKeys")
+    Observable<String> queryHotKeys(@Query("moduleId") int moduleId);
 }

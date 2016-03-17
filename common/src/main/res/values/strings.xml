@@ -33,4 +33,19 @@
     <string name="icon_mine_fill">&#xe697;</string>
     <string name="icon_mine">&#xe698;</string>
 
+    <string name="icon_search">&#xe60c;</string>
+
+    <string name="icon_round_add">&#xe636;</string>
+
+    <string name="icon_sort_head1">&#xe684;</string>
+    <string name="icon_sort_head2">&#xe686;</string>
+    <string name="icon_sort_head3">&#xe68b;</string>
+    <string name="icon_sort_head4">&#xe688;</string>
+    <string name="icon_sort_head5">&#xe68a;</string>
+    <string name="icon_sort_head6">&#xe687;</string>
+    <string name="icon_sort_head7">&#xe689;</string>
+    <string name="icon_sort_head8">&#xe685;</string>
+    <string name="icon_sort_head9">&#xe683;</string>
+
+
 </resources>

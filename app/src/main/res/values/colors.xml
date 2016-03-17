@@ -7,25 +7,37 @@
 
     <color name="colorWhite">#FFFFFFFF</color>
 
-    <color name="colorTransparentWhite">#99FFFFFF</color>
-
     <color name="colorTransparent">#00FFFFFF</color>
 
-    <color name="colorCityTag">#44444444</color>
+    <color name="colorCityTag">#66666666</color>
 
-    <color name="colorGrayE8E8E8">#FFE8E8E8</color>
-
-    <color name="colorGrayF0F0F0">#FFF0F0F0</color>
-
-    <color name="colorGrayCCCCCC">#FFCCCCCC</color>
-
-    <color name="colorTransparentGray">#88888888</color>
-
+    <color name="colorText2a2a2a">#FF2A2A2A</color>
     <color name="colorText333">#FF333333</color>
-
     <color name="colorText999">#FF999999</color>
+    <color name="colorTextaaa">#FFAAAAAA</color>
+
+    <color name="colorDividerE9E9E9">#FFE9E9E9</color>
+    <color name="colorGrayE2E2E2">#FFE2E2E2</color>
+    <color name="colorGrayE8E8E8">#FFE8E8E8</color>
+    <color name="colorGrayF0F0F0">#FFF0F0F0</color>
+    <color name="colorGrayCCCCCC">#FFCCCCCC</color>
+    <color name="colorGrayDEDEDE">#FFDEDEDE</color>
+    <color name="colorGrayEDEDED">#FFEDEDED</color>
+
+    <color name="colorTransparentWhite">#E5FFFFFF</color>
+
+    <color name="colorModuleGreen">#FF22AC38</color>
+
+    <color name="colorHomeTabnormal">#ff7A7E83</color>
+    <color name="colorHomeTabBg">#fff5f6f7</color>
+
+    <color name="colorProductSells">#fff0f7ff</color>
+
+    <color name="colorProductBuy">#ff90cf42</color>
+    <!-- -->
+
+    <color name="colorTransparentGray">#4d000000</color>
 
     <color name="colorDivider">#FFCCCCCC</color>
-
     <color name="colorPromtionTimebg">#FFFFFDD3</color>
 </resources>

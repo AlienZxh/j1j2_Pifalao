@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20px"
+                android:layout_marginLeft="@dimen/padding_noraml"
                 android:text="@string/city_actionbar_title"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />

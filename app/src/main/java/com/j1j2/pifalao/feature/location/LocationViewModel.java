@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.location;
 
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -91,9 +92,24 @@ public class LocationViewModel {
                 .flatMap(new Func1<WebReturn<List<City>>, Observable<WebReturn<List<ServicePoint>>>>() {
                     @Override
                     public Observable<WebReturn<List<ServicePoint>>> call(WebReturn<List<City>> listWebReturn) {
+
+
                         return servicePointApi.queryServicePointInCity(city.getPCCId());
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
+                    @Override
+                    public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
+                        super.onNext(listWebReturn);
+                        servicePoints.clear();
+                        servicePoints.addAll(listWebReturn.getDetail());
+                        locationServicePointAdapter.notifyDataSetChanged();
+                    }
+                });
+        servicePointApi.queryServicePointInCity(city.getPCCId())
+                .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
                     @Override
@@ -172,4 +188,5 @@ public class LocationViewModel {
     public LocationActivity getLocationActivity() {
         return locationActivity;
     }
+
 }

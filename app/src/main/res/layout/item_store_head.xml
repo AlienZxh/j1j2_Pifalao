@@ -3,42 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View.OnClickListener" />
+
+        <import type="com.j1j2.common.util.StringUtils" />
 
         <variable
             name="onClick"
             type="OnClickListener" />
+
         <variable
             name="productSort"
             type="com.j1j2.data.model.ProductSort" />
+
+        <variable
+            name="icon"
+            type="String" />
+
+        <variable
+            name="floor"
+            type="String" />
     </data>
 
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="@dimen/height_item_store_head"
         android:background="@drawable/item_store_head_bg"
-        app:OnClickListener="@{onClick}"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:OnClickListener="@{onClick}">
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:text="@{icon}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/icon_small" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginLeft="@dimen/padding_small"
             android:text="@{productSort.SortName}"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_biger" />
+            android:textSize="@dimen/text_big"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20px"
-            android:text="@{String.valueOf(productSort.ProductCount)}"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:text="@{StringUtils.getStrWithBracket(String.valueOf(productSort.ProductCount))}"
             android:textColor="@color/colorText999"
             android:textSize="@dimen/text_normal" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+        <TextView
+            android:layout_width="@dimen/height_item_store_head"
+            android:layout_height="@dimen/height_item_store_head"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@{floor}"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal" />
     </com.zhy.autolayout.AutoLinearLayout>
 
 </layout>

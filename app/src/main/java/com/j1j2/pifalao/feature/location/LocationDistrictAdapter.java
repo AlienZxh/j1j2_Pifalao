@@ -1,11 +1,14 @@
 package com.j1j2.pifalao.feature.location;
 
 import android.content.Context;
+import android.databinding.ObservableInt;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j1j2.common.view.recyclerviewchoicemode.MultiSelector;
@@ -86,11 +89,12 @@ public class LocationDistrictAdapter extends RecyclerView.Adapter<LocationDistri
         public void bind(@NonNull String data, final int position) {
             singleSelector.bindHolder(this, position, getItemId());
             if (position == 0) {
-                binding.setDistrict(context.getString(R.string.icon_location) + data);
+                binding.setDistrict(data);
                 singleSelector.setSelected(0, getItemId(), true);
             } else {
                 binding.setDistrict(data);
             }
+            binding.setPosition(position);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

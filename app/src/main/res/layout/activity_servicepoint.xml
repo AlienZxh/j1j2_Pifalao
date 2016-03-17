@@ -33,10 +33,9 @@
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:padding="@dimen/padding_actionbar_btn"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_btn" />
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,154 +47,221 @@
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <com.zhy.autolayout.AutoLinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:orientation="vertical">
+            android:layout_below="@id/toolbar">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_width="700px"
-                android:layout_height="300px"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20px"
-                app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
-                fresco:roundedCornerRadius="5dp"
-                fresco:roundingBorderColor="@color/colorGrayCCCCCC"
-                fresco:roundingBorderWidth="1px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20px"
-                android:text="@{sercivepoint.getName()}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_biger"
-                android:textStyle="bold" />
-
-            <View
+            <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="20px"
-                android:background="@color/colorDivider" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginTop="20px"
-                android:text="营业时间："
-                android:textColor="@color/colorText999"
-                android:textSize="@dimen/text_big" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:layout_marginTop="20px"
-                android:text="@{sercivepoint.getServiceTime()}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="@dimen/width_servicepoint_img"
+                    android:layout_height="@dimen/height_servicepoint_img"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
+                    fresco:roundedCornerRadius="5dp"
+                    fresco:roundingBorderColor="@color/colorGrayDEDEDE"
+                    fresco:roundingBorderWidth="1px" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/content_height_biger"
+                    android:gravity="center"
+                    android:text="@{sercivepoint.getName()}"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_biger"
+                    android:textStyle="bold" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:layout_marginTop="20px"
-                android:background="@drawable/dash_divider"
-                android:layerType="software" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/colorGrayDEDEDE" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginTop="20px"
-                android:text="可提供的服务："
-                android:textColor="@color/colorText999"
-                android:textSize="@dimen/text_big" />
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:layout_marginTop="20px"
-                android:text="@{sercivepoint.getName()}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/content_height_normal"
+                        android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/padding_biger"
+                        android:text="营业时间："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:layout_marginTop="20px"
-                android:background="@drawable/dash_divider"
-                android:layerType="software" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{sercivepoint.getServiceTime()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40px"
-                android:layout_marginTop="20px"
-                android:text="服务点地址："
-                android:textColor="@color/colorText999"
-                android:textSize="@dimen/text_big" />
+                </com.zhy.autolayout.AutoLinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20px"
-                android:layout_marginTop="20px"
-                android:text="@{sercivepoint.getAddressDetail()}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginLeft="40px"
-                android:layout_marginRight="40px"
-                android:layout_marginTop="20px"
-                android:background="@drawable/dash_divider"
-                android:layerType="software" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
 
 
-        </com.zhy.autolayout.AutoLinearLayout>
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/content_height_normal"
+                        android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/padding_biger"
+                        android:text="可提供的服务："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{sercivepoint.getServicePhone()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
 
 
-        <com.zhy.autolayout.AutoLinearLayout
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/content_height_normal"
+                        android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/padding_biger"
+                        android:text="服务点地址："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{sercivepoint.getAddressDetail()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bottombar_height" />
+            </com.zhy.autolayout.AutoLinearLayout>
+        </ScrollView>
+
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="120px"
+            android:layout_height="@dimen/bottombar_height"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bottom_bar_bg"
-            android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="280px"
-                android:layout_height="80px"
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="@dimen/width_servicepoint_bottom_btn"
+                android:layout_height="@dimen/content_height_big"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/padding_biger"
+                android:layout_marginStart="@dimen/padding_biger"
                 android:background="@drawable/green_conner_hollow_btn"
-                android:gravity="center"
-                android:text="@string/servicepoint_call"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/text_big" />
+                android:gravity="center">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="280px"
-                android:layout_height="80px"
-                android:layout_marginLeft="100px"
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_phone"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/icon_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_smaller"
+                    android:gravity="center"
+                    android:text="@string/servicepoint_call"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="@dimen/width_servicepoint_bottom_btn"
+                android:layout_height="@dimen/content_height_big"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/padding_biger"
+                android:layout_marginRight="@dimen/padding_biger"
                 android:background="@drawable/orange_conner_hollow_btn"
-                android:gravity="center"
-                android:text="@string/servicepoint_in"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_big" />
+                android:gravity="center">
 
-        </com.zhy.autolayout.AutoLinearLayout>
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_round_checke"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/icon_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_smaller"
+                    android:gravity="center"
+                    android:text="@string/servicepoint_in"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+        </com.zhy.autolayout.AutoRelativeLayout>
 
     </com.zhy.autolayout.AutoRelativeLayout>
 

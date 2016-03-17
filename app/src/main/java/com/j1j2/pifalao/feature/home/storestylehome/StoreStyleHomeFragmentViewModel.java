@@ -35,7 +35,7 @@ public class StoreStyleHomeFragmentViewModel {
     }
 
 
-    public void onCreate() {
+    public void queryProductSort() {
         productApi.queryProductSort("", module.getWareHouseModuleId())
                 .compose(storeStyleHomeFragment.<WebReturn<List<SecondarySort>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -44,6 +44,7 @@ public class StoreStyleHomeFragmentViewModel {
                     @Override
                     public void onNext(WebReturn<List<SecondarySort>> listWebReturn) {
                         super.onNext(listWebReturn);
+                        secondarySorts.clear();
                         secondarySorts.addAll(listWebReturn.getDetail());
                         storeStyleHomeAdapter = new StoreStyleHomeAdapter(secondarySorts);
                         storeStyleHomeFragment.setListAdapter(storeStyleHomeAdapter);

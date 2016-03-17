@@ -6,6 +6,11 @@
 
         <import type="android.view.View.OnClickListener" />
 
+        <import type="android.view.View" />
+
+        <import type="android.graphics.Typeface" />
+
+
         <variable
             name="onClick"
             type="OnClickListener" />
@@ -14,17 +19,34 @@
             name="district"
             type="String" />
 
+        <variable
+            name="position"
+            type="int" />
+
     </data>
 
-    <android.support.v7.widget.AppCompatTextView
-        fontPath="iconfont/iconfont.ttf"
+    <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100px"
+        android:layout_height="@dimen/item_locatin_district_height"
         android:background="@drawable/item_location_district_selector"
         android:gravity="center"
-        android:text="@{district}"
-        android:textColor="@drawable/text_click_colors"
-        android:textSize="@dimen/text_normal"
-        app:OnClickListener="@{onClick}" />
+        app:OnClickListener="@{onClick}">
 
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_location"
+            android:textColor="@drawable/text_click_colors"
+            android:textSize="@dimen/item_locatin_icon"
+            android:visibility="@{position==0?View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{district}"
+            android:textColor="@drawable/text_click_colors"
+            android:textSize="@{position==0?@dimen/text_biger : @dimen/text_big}"
+            app:typeface="@{position==0?Typeface.DEFAULT_BOLD : Typeface.DEFAULT}" />
+    </com.zhy.autolayout.AutoLinearLayout>
 </layout>

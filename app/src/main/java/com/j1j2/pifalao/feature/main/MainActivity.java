@@ -42,6 +42,8 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Inject
     StoreStyleHomeFragment storeStyleHomeFragment;
 
+    MainAdapter mainAdapter;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -58,8 +60,8 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         String[] titles = new String[]{"首页", "供应商", "购物车", "我的"};
         String[] icons = new String[]{getResources().getString(R.string.icon_home), getResources().getString(R.string.icon_supplier), getResources().getString(R.string.icon_shopcart), getResources().getString(R.string.icon_mine)};
         String[] selectedIcons = new String[]{getResources().getString(R.string.icon_home_fill), getResources().getString(R.string.icon_supplier_fill), getResources().getString(R.string.icon_shopcart_fill), getResources().getString(R.string.icon_mine_fill)};
-
-        binding.viewpager.setAdapter(new MainAdapter(getSupportFragmentManager(), fragments));
+        mainAdapter = new MainAdapter(getSupportFragmentManager(), fragments);
+        binding.viewpager.setAdapter(mainAdapter);
         binding.tab.setCustomTabView(new MainTab(this, icons, selectedIcons, titles));
         binding.tab.setViewPager(binding.viewpager);
         binding.tab.setOnTabClickListener(this);

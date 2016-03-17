@@ -1,11 +1,13 @@
 package com.j1j2.pifalao.feature.products;
 
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.pifalao.R;
@@ -79,6 +81,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         @Override
         public void bind(@NonNull final ProductSimple data, final int position) {
             binding.setProductSimple(data);
+            if(!EmptyUtils.isEmpty(data.getProductUnits())){
+                binding.normalPrice.setText("市场价：" + data.getProductUnits().get(0).getRetialPrice() + "元/" + data.getProductUnits().get(0).getUnit());
+                binding.normalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

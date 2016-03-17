@@ -11,6 +11,7 @@ import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.ServicePoint;
+import com.j1j2.pifalao.feature.products.ProductsActivity;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -104,12 +105,25 @@ public class Navigate {
         }
     }
 
-    public void navigateToProductsActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ProductSort productSort, Module module) {
+    public void navigateToProductsActivityFromSort(Activity context, ActivityOptionsCompat options, boolean isFinish, ProductSort productSort, Module module) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.productsActivity(productSort, module).start(context);
+            Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SORT).productSort(productSort).start(context);
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
-            ActivityCompat.startActivity(context, Bundler.productsActivity(productSort, module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SORT).productSort(productSort).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToProductsActivityFromSearch(Activity context, ActivityOptionsCompat options, boolean isFinish, String key, Module module) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SEARCH).key(key).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SEARCH).key(key).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -136,6 +150,19 @@ public class Navigate {
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
             ActivityCompat.startActivity(context, Bundler.mainActivity(module).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToSearchActivity(Activity context, ActivityOptionsCompat options, boolean isFinish,Module module) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.searchActivity(module).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.searchActivity(module).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

@@ -36,7 +36,7 @@ dependencies {
     compile commonDependencies.superrecyclerview
     compile commonDependencies.circular
     compile commonDependencies.smarttablayout
-
+    compile commonDependencies.tagview
 
     testCompile commonTestDependencies.junit
 }

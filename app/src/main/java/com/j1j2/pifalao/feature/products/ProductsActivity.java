@@ -25,22 +25,34 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+import in.workarounds.bundler.annotations.Required;
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 /**
  * Created by alienzxh on 16-3-12.
  */
-@RequireBundler
+@RequireBundler(requireAll = false)
 public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, ProductsAdapter.OnProductsClickListener {
 
+    public static final int PRODUCTS_TYPE_SORT = 1;
+    public static final int PRODUCTS_TYPE_SEARCH = 2;
 
     ActivityProductsBinding binding;
 
     @Arg
+    @Required(true)
+    Module module;
+    @Arg
+    @Required(true)
+    int activityType;
+    @Arg
+    @Required(false)
     ProductSort productSort;
     @Arg
-    Module module;
+    @Required(false)
+    String key;
+
 
     @Inject
     ProductsViewModel productsViewModel;
@@ -48,13 +60,14 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_products);
+        productsViewModel.title.set(activityType == PRODUCTS_TYPE_SORT ? productSort.getSortName() : key);
         binding.setProductViewModel(productsViewModel);
         binding.productList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.productList.getRecyclerView().setItemAnimator(new SlideInUpAnimator());
         binding.productList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)
                 .drawable(R.drawable.item_products_divider)
-                .size(AutoUtils.getPercentHeightSize(10))
+                .size(AutoUtils.getPercentHeightSize(8))
                 .build());
         binding.productList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.productList.setRefreshListener(this);
@@ -63,7 +76,14 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     protected void initViews() {
-        productsViewModel.queryProductyBySortId(true);
+        queryProducts(true);
+    }
+
+    public void queryProducts(boolean isRefresh) {
+        if (activityType == PRODUCTS_TYPE_SORT)
+            productsViewModel.queryProductyBySortId(isRefresh);
+        else if (activityType == PRODUCTS_TYPE_SEARCH)
+            productsViewModel.queryProductyByKey(isRefresh);
     }
 
     public void setProdutsAdapter(ProductsAdapter productsAdapter) {
@@ -83,7 +103,9 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getAppComponent().plus(new ProductsModule(this, productSort, module)).inject(this);
+        MainAplication.get(this).getAppComponent().plus(new ProductsModule(this
+                , null == productSort ? new ProductSort() : productSort
+                , module, null == key ? "" : key)).inject(this);
     }
 
     @Override
@@ -94,12 +116,12 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
-        productsViewModel.queryProductyBySortId(true);
+        queryProducts(true);
     }
 
     @Override
     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
-        productsViewModel.queryProductyBySortId(false);
+        queryProducts(false);
     }
 
     @Override

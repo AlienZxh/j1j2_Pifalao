@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.products;
 
 import android.databinding.ObservableField;
+import android.widget.Toast;
 
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
@@ -43,27 +44,75 @@ public class ProductsViewModel {
     private CountDownApi countDownApi;
     private PagerManager<ProductSimple> productSimples;
 
+
+    private String key;
+
+    private int orderBy = 0;
+
     private int pageIndex = 1;
     private final int pageSize = 20;
     private int pageCount = 0;
-    private int orderBy = 0;
 
+    public ObservableField<String> title = new ObservableField<>();
     public ObservableField<String> hour = new ObservableField<>();
     public ObservableField<String> minute = new ObservableField<>();
     public ObservableField<String> second = new ObservableField<>();
 
     long remian = 0;
 
-    public ProductsViewModel(ProductsActivity productsActivity, ProductSort productSort, Module module, ProductApi productApi, CountDownApi countDownApi) {
+    public ProductsViewModel(ProductsActivity productsActivity, ProductSort productSort, Module module, ProductApi productApi, CountDownApi countDownApi, String key) {
         this.productsActivity = productsActivity;
         this.productSort = productSort;
         this.module = module;
         this.productApi = productApi;
         this.countDownApi = countDownApi;
+        this.key = key;
         hour.set("00");
         minute.set("00");
         second.set("00");
     }
+
+
+    public void queryProductyByKey(boolean isRefresh) {
+        if (isRefresh) {
+            pageIndex = 1;
+            productsActivity.setLoadMoreEnable(true);
+        }
+        productApi.puzzyQueryProduct(module.getWareHouseModuleId(), "" + pageIndex, "" + pageSize, key)
+                .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultSubscriber<WebReturn<PagerManager<ProductSimple>>>() {
+                    @Override
+                    public void onNext(WebReturn<PagerManager<ProductSimple>> pagerManagerWebReturn) {
+                        if (pagerManagerWebReturn.isValue()) {
+                            pageCount = pagerManagerWebReturn.getDetail().getPageCount();
+                            if (pageIndex == 1) {
+                                productAdapter = new ProductsAdapter(pagerManagerWebReturn.getDetail().getList());
+                                productsActivity.setProdutsAdapter(productAdapter);
+                                productAdapter.notifyItemRangeChanged(0, pagerManagerWebReturn.getDetail().getList().size());
+                                if (pageIndex == pageCount) {
+                                    productsActivity.setLoadMoreFinish();
+                                    productsActivity.setLoadMoreEnable(false);
+                                }
+                            } else {
+                                if (pageIndex < pageCount) {
+                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
+                                    productsActivity.setLoadMoreFinish();
+                                } else if (pageIndex == pageCount) {
+                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
+                                    productsActivity.setLoadMoreFinish();
+                                    productsActivity.setLoadMoreEnable(false);
+                                } else {
+                                    productsActivity.setLoadMoreEnable(false);
+                                }
+                            }
+                            pageIndex++;
+                        }
+                    }
+                });
+    }
+
 
     public void queryProductyBySortId(boolean isRefresh) {
         if (isRefresh) {
@@ -78,18 +127,24 @@ public class ProductsViewModel {
                     @Override
                     public void onNext(WebReturn<PagerManager<ProductSimple>> pagerManagerWebReturn) {
                         if (pagerManagerWebReturn.isValue()) {
+                            pageCount = pagerManagerWebReturn.getDetail().getPageCount();
                             if (pageIndex == 1) {
-                                pageCount = pagerManagerWebReturn.getDetail().getPageCount();
                                 productAdapter = new ProductsAdapter(pagerManagerWebReturn.getDetail().getList());
                                 productsActivity.setProdutsAdapter(productAdapter);
                                 productAdapter.notifyItemRangeChanged(0, pagerManagerWebReturn.getDetail().getList().size());
+                                if (pageIndex == pageCount)
+                                    productsActivity.setLoadMoreEnable(false);
                             } else {
-                                if (pageIndex <= pageCount)
+                                if (pageIndex < pageCount) {
                                     productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
-                                else {
+                                    productsActivity.setLoadMoreFinish();
+                                } else if (pageIndex == pageCount) {
+                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
+                                    productsActivity.setLoadMoreFinish();
+                                    productsActivity.setLoadMoreEnable(false);
+                                } else {
                                     productsActivity.setLoadMoreEnable(false);
                                 }
-                                productsActivity.setLoadMoreFinish();
                             }
                             pageIndex++;
                         }

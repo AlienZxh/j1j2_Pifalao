@@ -19,13 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="@dimen/padding_great"
         android:orientation="vertical"
         app:OnClickListener="@{onClick}">
 
         <TextView
             fontPath="iconfont/iconfont.ttf"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/height_services_img"
+            android:layout_height="@dimen/height_services_img"
             android:layout_marginTop="20px"
             android:background="@drawable/cycle_green_bg"
             android:gravity="center"
@@ -36,10 +37,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20px"
-            android:layout_marginTop="20px"
+            android:layout_marginTop="@dimen/padding_noraml"
             android:text="@{module.ModuleName}"
             android:textColor="@color/colorText333"
+            android:textStyle="bold"
             android:textSize="@dimen/text_big" />
 
     </com.zhy.autolayout.AutoLinearLayout>
