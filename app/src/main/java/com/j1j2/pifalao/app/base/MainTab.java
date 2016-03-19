@@ -6,9 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.common.view.smarttablayout.SmartTabLayout;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.databinding.ViewMaintabBinding;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
+
 
 /**
  * Created by alienzxh on 16-3-15.

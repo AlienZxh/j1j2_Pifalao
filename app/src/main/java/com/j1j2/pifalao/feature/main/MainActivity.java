@@ -2,7 +2,9 @@ package com.j1j2.pifalao.feature.main;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
+import com.j1j2.common.view.smarttablayout.SmartTabLayout;
 import com.j1j2.data.model.Module;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
@@ -15,7 +17,6 @@ import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,9 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     @Override
     public void onTabClicked(int position) {
-
+        if (position == 0 || position == 1) {
+            binding.viewpager.setCurrentItem(position);
+        }
     }
 
     @Override

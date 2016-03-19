@@ -35,7 +35,7 @@ dependencies {
     compile commonDependencies.animators
     compile commonDependencies.superrecyclerview
     compile commonDependencies.circular
-    compile commonDependencies.smarttablayout
+//    compile commonDependencies.smarttablayout
     compile commonDependencies.tagview
 
     testCompile commonTestDependencies.junit

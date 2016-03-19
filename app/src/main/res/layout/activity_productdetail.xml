@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <com.ogaclejapan.smarttablayout.SmartTabLayout
+                <com.j1j2.common.view.smarttablayout.SmartTabLayout
                     android:id="@+id/tab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                 android:layout_height="@dimen/padding_productdetail"
                 android:background="@drawable/item_products_divider" />
 
-            <com.ogaclejapan.smarttablayout.SmartTabLayout
+            <com.j1j2.common.view.smarttablayout.SmartTabLayout
                 android:id="@+id/detail_tab"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/content_height_big"
