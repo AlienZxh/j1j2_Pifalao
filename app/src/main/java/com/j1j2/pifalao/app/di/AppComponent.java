@@ -9,6 +9,8 @@ import com.j1j2.pifalao.feature.city.di.CityComponent;
 import com.j1j2.pifalao.feature.city.di.CityModule;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeComponent;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
+import com.j1j2.pifalao.feature.launch.di.LaunchComponent;
+import com.j1j2.pifalao.feature.launch.di.LaunchModule;
 import com.j1j2.pifalao.feature.location.di.LocationComponent;
 import com.j1j2.pifalao.feature.location.di.LocationModule;
 import com.j1j2.pifalao.feature.login.di.LoginComponent;
@@ -37,6 +39,8 @@ import okhttp3.OkHttpClient;
 @Singleton
 @Component(modules = AppModule.class)
 public interface AppComponent {
+
+    LaunchComponent plus(LaunchModule launchModule);
 
     UserComponent plus(UserModule userModule);
 
