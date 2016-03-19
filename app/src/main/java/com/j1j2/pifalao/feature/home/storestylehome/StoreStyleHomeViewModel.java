@@ -7,6 +7,7 @@ import com.j1j2.data.model.SecondarySort;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
+import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +44,22 @@ public class StoreStyleHomeViewModel {
                 .compose(storeStyleHomeActivity.<WebReturn<List<SecondarySort>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<List<SecondarySort>>>() {
+                .subscribe(new WebReturnSubscriber<List<SecondarySort>>() {
                     @Override
-                    public void onNext(WebReturn<List<SecondarySort>> listWebReturn) {
-                        super.onNext(listWebReturn);
-                        secondarySorts.addAll(listWebReturn.getDetail());
+                    public void onWebReturnSucess(List<SecondarySort> secondarySorts) {
+                        secondarySorts.addAll(secondarySorts);
                         storeStyleHomeAdapter = new StoreStyleHomeAdapter(secondarySorts);
                         storeStyleHomeActivity.setListAdapter(storeStyleHomeAdapter);
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
                     }
                 });
     }

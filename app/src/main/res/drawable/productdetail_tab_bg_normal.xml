@@ -2,18 +2,17 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorTransparent" />
-            <stroke
-                android:width="@dimen/height_1px"
-                android:color="@color/colorGrayE8E8E8" />
+            <solid android:color="@color/colorGrayEDEDED" />
+
         </shape>
     </item>
     <item
         android:bottom="1px"
+        android:right="1px"
         android:top="1px">
         <shape android:shape="rectangle">
 
-            <solid android:color="@color/colorTransparent" />
+            <solid android:color="@color/colorGrayfcfcfc" />
         </shape>
     </item>
 </layer-list>

@@ -19,6 +19,7 @@ public abstract class BaseMapActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBaiduMap = getMapView().getMap();
+
         if (null != getMapView())
             initMap();
     }
@@ -26,6 +27,7 @@ public abstract class BaseMapActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         if (null != mBaiduMap)
             mBaiduMap.setMyLocationEnabled(false);

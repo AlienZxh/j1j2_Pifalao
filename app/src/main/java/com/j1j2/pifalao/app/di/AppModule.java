@@ -2,10 +2,14 @@ package com.j1j2.pifalao.app.di;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
+import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.orhanobut.logger.Logger;
+
+import net.orange_box.storebox.StoreBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +60,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    UserLoginPreference userLoginPreference(MainAplication application) {
+        return StoreBox.create(application.getApplicationContext(), UserLoginPreference.class);
+    }
+
+    @Provides
+    @Singleton
     HttpLoggingInterceptor httpLoggingInterceptor() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
@@ -69,17 +79,15 @@ public class AppModule {
 
     @Provides
     @Singleton
-    OkHttpClient okHttpClient(HttpLoggingInterceptor loggingInterceptor) {
+    OkHttpClient okHttpClient(HttpLoggingInterceptor loggingInterceptor, final UserLoginPreference userLoginPreference, final Gson gson) {
         return new OkHttpClient
                 .Builder()
                 .addInterceptor(loggingInterceptor)
                 .cookieJar(new CookieJar() {
-                    private List<Cookie> cookies;
-
                     @Override
                     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
                         if (url.toString().equals(BuildConfig.API_URL + "UserLogin/Login")) {
-                            this.cookies = cookies;
+                            userLoginPreference.setLoginCookie(gson.toJson(cookies));
                         }
                     }
 
@@ -88,7 +96,11 @@ public class AppModule {
                         if (url.toString().equals(BuildConfig.API_URL + "UserLogin/Login")) {
                             return new ArrayList<Cookie>();
                         } else {
-                            return this.cookies == null ? new ArrayList<Cookie>() : this.cookies;
+                            return userLoginPreference.getLoginCookie(null) == null ?
+                                    new ArrayList<Cookie>() :
+                                    gson.<List<Cookie>>fromJson(userLoginPreference
+                                            .getLoginCookie(null), new TypeToken<List<Cookie>>() {
+                                    }.getType());
                         }
                     }
                 })

@@ -63,7 +63,6 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         productsViewModel.title.set(activityType == PRODUCTS_TYPE_SORT ? productSort.getSortName() : key);
         binding.setProductViewModel(productsViewModel);
         binding.productList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.productList.getRecyclerView().setItemAnimator(new SlideInUpAnimator());
         binding.productList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)
                 .drawable(R.drawable.item_products_divider)

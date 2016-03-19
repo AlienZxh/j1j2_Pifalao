@@ -108,6 +108,7 @@ dependencies {
     //rxlifecycle
     compile appDependencies.rxlifecycle
     compile appDependencies.rxlifecycleComponents
+    compile appDependencies.storebox
     //单元测试
     testCompile appTestDependencies.junit
     //UI测试

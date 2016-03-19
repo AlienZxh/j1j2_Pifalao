@@ -14,6 +14,7 @@ import com.j1j2.data.model.PromtionTime;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
+import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.orhanobut.logger.Logger;
 
 import java.text.ParseException;
@@ -82,33 +83,44 @@ public class ProductsViewModel {
                 .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<PagerManager<ProductSimple>>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
-                    public void onNext(WebReturn<PagerManager<ProductSimple>> pagerManagerWebReturn) {
-                        if (pagerManagerWebReturn.isValue()) {
-                            pageCount = pagerManagerWebReturn.getDetail().getPageCount();
-                            if (pageIndex == 1) {
-                                productAdapter = new ProductsAdapter(pagerManagerWebReturn.getDetail().getList());
-                                productsActivity.setProdutsAdapter(productAdapter);
-                                productAdapter.notifyItemRangeChanged(0, pagerManagerWebReturn.getDetail().getList().size());
-                                if (pageIndex == pageCount) {
-                                    productsActivity.setLoadMoreFinish();
-                                    productsActivity.setLoadMoreEnable(false);
-                                }
-                            } else {
-                                if (pageIndex < pageCount) {
-                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
-                                    productsActivity.setLoadMoreFinish();
-                                } else if (pageIndex == pageCount) {
-                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
-                                    productsActivity.setLoadMoreFinish();
-                                    productsActivity.setLoadMoreEnable(false);
-                                } else {
-                                    productsActivity.setLoadMoreEnable(false);
-                                }
+                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+
+                        pageCount = productSimplePagerManager.getPageCount();
+                        if (pageIndex == 1) {
+                            productAdapter = new ProductsAdapter(productSimplePagerManager.getList());
+                            productsActivity.setProdutsAdapter(productAdapter);
+                            productAdapter.notifyItemRangeChanged(0, productSimplePagerManager.getList().size());
+                            if (pageIndex == pageCount) {
+                                productsActivity.setLoadMoreFinish();
+                                productsActivity.setLoadMoreEnable(false);
                             }
-                            pageIndex++;
+                        } else {
+                            if (pageIndex < pageCount) {
+                                productAdapter.addAll(productSimplePagerManager.getList());
+                                productsActivity.setLoadMoreFinish();
+                            } else if (pageIndex == pageCount) {
+                                productAdapter.addAll(productSimplePagerManager.getList());
+                                productsActivity.setLoadMoreFinish();
+                                productsActivity.setLoadMoreEnable(false);
+                            } else {
+                                productsActivity.setLoadMoreFinish();
+                                productsActivity.setLoadMoreEnable(false);
+                            }
                         }
+                        pageIndex++;
+
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
                     }
                 });
     }
@@ -123,37 +135,46 @@ public class ProductsViewModel {
                 .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<PagerManager<ProductSimple>>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
-                    public void onNext(WebReturn<PagerManager<ProductSimple>> pagerManagerWebReturn) {
-                        if (pagerManagerWebReturn.isValue()) {
-                            pageCount = pagerManagerWebReturn.getDetail().getPageCount();
-                            if (pageIndex == 1) {
-                                productAdapter = new ProductsAdapter(pagerManagerWebReturn.getDetail().getList());
-                                productsActivity.setProdutsAdapter(productAdapter);
-                                productAdapter.notifyItemRangeChanged(0, pagerManagerWebReturn.getDetail().getList().size());
-                                if (pageIndex == pageCount)
-                                    productsActivity.setLoadMoreEnable(false);
+                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+                        pageCount = productSimplePagerManager.getPageCount();
+                        if (pageIndex == 1) {
+                            productAdapter = new ProductsAdapter(productSimplePagerManager.getList());
+                            productsActivity.setProdutsAdapter(productAdapter);
+                            productAdapter.notifyItemRangeChanged(0, productSimplePagerManager.getList().size());
+                            if (pageIndex == pageCount)
+                                productsActivity.setLoadMoreFinish();
+                            productsActivity.setLoadMoreEnable(false);
+                        } else {
+                            if (pageIndex < pageCount) {
+                                productAdapter.addAll(productSimplePagerManager.getList());
+                                productsActivity.setLoadMoreFinish();
+                            } else if (pageIndex == pageCount) {
+                                productAdapter.addAll(productSimplePagerManager.getList());
+                                productsActivity.setLoadMoreFinish();
+                                productsActivity.setLoadMoreEnable(false);
                             } else {
-                                if (pageIndex < pageCount) {
-                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
-                                    productsActivity.setLoadMoreFinish();
-                                } else if (pageIndex == pageCount) {
-                                    productAdapter.addAll(pagerManagerWebReturn.getDetail().getList());
-                                    productsActivity.setLoadMoreFinish();
-                                    productsActivity.setLoadMoreEnable(false);
-                                } else {
-                                    productsActivity.setLoadMoreEnable(false);
-                                }
+                                productsActivity.setLoadMoreFinish();
+                                productsActivity.setLoadMoreEnable(false);
                             }
-                            pageIndex++;
                         }
+                        pageIndex++;
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
                     }
                 });
     }
 
     public void CountDown() {
-
         countDownApi.queryUserDeliveryTime()
                 .compose(productsActivity.<WebReturn<UserDeliveryTime>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())

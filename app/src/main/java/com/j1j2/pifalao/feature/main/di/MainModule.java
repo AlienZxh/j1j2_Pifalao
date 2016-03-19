@@ -6,10 +6,12 @@ import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeActivity;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragmentViewModel;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeViewModel;
+import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.MainActivity;
 
 import dagger.Module;
 import dagger.Provides;
+import in.workarounds.bundler.Bundler;
 import retrofit2.Retrofit;
 
 /**
@@ -56,5 +58,11 @@ public class MainModule {
     @ActivityScope
     StoreStyleHomeFragmentViewModel storeStyleHomeFragmentViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, com.j1j2.data.model.Module module) {
         return new StoreStyleHomeFragmentViewModel(storeStyleHomeFragment, productApi, module);
+    }
+
+    @Provides
+    @ActivityScope
+    IndividualCenterFragment individualCenterFragment() {
+        return Bundler.individualCenterFragment().create();
     }
 }

@@ -12,6 +12,7 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.MainTab;
 import com.j1j2.pifalao.databinding.ActivityMainBinding;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
+import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -42,6 +43,9 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Inject
     StoreStyleHomeFragment storeStyleHomeFragment;
 
+    @Inject
+    IndividualCenterFragment individualCenterFragment;
+
     MainAdapter mainAdapter;
 
     @Override
@@ -55,7 +59,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         fragments.add(storeStyleHomeFragment);
         fragments.add(new Fragment());
         fragments.add(new Fragment());
-        fragments.add(new Fragment());
+        fragments.add(individualCenterFragment);
 
         String[] titles = new String[]{"首页", "供应商", "购物车", "我的"};
         String[] icons = new String[]{getResources().getString(R.string.icon_home), getResources().getString(R.string.icon_supplier), getResources().getString(R.string.icon_shopcart), getResources().getString(R.string.icon_mine)};

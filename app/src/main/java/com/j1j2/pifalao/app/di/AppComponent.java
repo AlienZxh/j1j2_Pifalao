@@ -11,6 +11,8 @@ import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeComponent;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
 import com.j1j2.pifalao.feature.location.di.LocationComponent;
 import com.j1j2.pifalao.feature.location.di.LocationModule;
+import com.j1j2.pifalao.feature.login.di.LoginComponent;
+import com.j1j2.pifalao.feature.login.di.LoginModule;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
@@ -57,4 +59,6 @@ public interface AppComponent {
     MainComponent plus(MainModule mainModule);
 
     SearchComponent plus(SearchModule searchModule);
+
+    LoginComponent plus(LoginModule loginModule);
 }

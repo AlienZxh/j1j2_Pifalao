@@ -6,13 +6,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.service.BackGroundService;
+import com.j1j2.pifalao.app.service.LocationService;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
 
 public class LaunchActivity extends BaseActivity implements Animator.AnimatorListener {
@@ -36,7 +35,7 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, BackGroundService.class));
+        startService(new Intent(this, LocationService.class));
     }
 
     @SuppressLint("InlinedApi")

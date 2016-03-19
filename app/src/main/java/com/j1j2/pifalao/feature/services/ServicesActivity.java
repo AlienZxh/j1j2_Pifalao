@@ -1,6 +1,5 @@
 package com.j1j2.pifalao.feature.services;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,9 +14,7 @@ import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
-import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
-import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.databinding.ActivityServicesBinding;
 import com.j1j2.pifalao.feature.services.di.ServicesModule;
 
@@ -26,15 +23,13 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
-import jp.wasabeef.recyclerview.animators.LandingAnimator;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
-import rx.Observable;
 
 /**
  * Created by alienzxh on 16-3-12.
  */
 @RequireBundler
-public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener {
+public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener, View.OnClickListener {
 
     ActivityServicesBinding binding;
 
@@ -60,7 +55,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         binding.moduleList.setAdapter(servicesViewModule.getServicesAdapter());
         servicesViewModule.getServicesAdapter().setOnItemClickListener(this);
         servicesViewModule.queryServicePointServiceModules();
-
+        binding.setOnClick(this);
     }
 
     public void startSearchAnimate() {
@@ -101,4 +96,9 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module);
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v == binding.loginBtn)
+            navigate.navigateToLogin(this, null, false);
+    }
 }

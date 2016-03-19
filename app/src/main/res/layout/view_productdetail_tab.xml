@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/productdetail_tab_bg_selector">
+
+    <TextView
+        android:id="@+id/tab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="@dimen/padding_biger"
+        android:paddingRight="@dimen/padding_biger"
+        android:textColor="@drawable/productdetail_tab_text_color"
+        android:textSize="@dimen/text_normal" />
+
+</com.zhy.autolayout.AutoFrameLayout>

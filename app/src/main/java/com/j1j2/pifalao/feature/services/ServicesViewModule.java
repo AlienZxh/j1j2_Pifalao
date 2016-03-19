@@ -62,10 +62,6 @@ public class ServicesViewModule {
                     }
                 })
                 .subscribe(new DefaultSubscriber<Module>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                    }
 
                     @Override
                     public void onNext(Module module) {

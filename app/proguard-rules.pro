@@ -147,3 +147,8 @@
 ##---------------Begin: proguard configuration for SuperRecyclerView  ----------
 -dontwarn com.malinskiy.superrecyclerview.SwipeDismissRecyclerViewTouchListener*
 ##---------------End: proguard configuration for SuperRecyclerView  ----------
+
+##---------------Begin: proguard configuration for StoreBox  ----------
+-keep class net.orange_box.storebox.** { *; }
+-dontwarn  net.orange_box.storebox.**
+##---------------End: proguard configuration for StoreBox  ----------

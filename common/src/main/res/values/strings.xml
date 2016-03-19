@@ -47,5 +47,15 @@
     <string name="icon_sort_head8">&#xe685;</string>
     <string name="icon_sort_head9">&#xe683;</string>
 
+    <string name="icon_safe">&#xe663;</string>
+    <string name="icon_album"> &#xe65a;</string>
+
+    <string name="icon_like">&#xe617;</string>
+
+    <string name="icon_setting">&#xe624;</string>
+    <string name="icon_gift">&#xe67d;</string>
+
+    <string name="icon_arrow_right">&#xe62a;</string>
+    <string name="icon_qr_code">&#xe62c;</string>
 
 </resources>

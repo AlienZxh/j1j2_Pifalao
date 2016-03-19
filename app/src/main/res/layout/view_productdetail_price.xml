@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="price"
+            type="com.j1j2.data.model.ProductUnit" />
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="com.zhy.autolayout.utils.AutoUtils" />
+
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorWhite"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_noraml">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="106px"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="市场价"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:text="@{StringUtils.getPriceWithStrikethrough(price.RetialPrice)}"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:layout_width="@dimen/height_1px"
+                android:layout_height="match_parent"
+                android:background="@color/colorGrayE8E8E8" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="批发价"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:text="@{StringUtils.getPriceWiteSymbol(price.MemberPrice)}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:layout_width="@dimen/height_1px"
+                android:layout_height="match_parent"
+                android:background="@color/colorGrayE8E8E8" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="节省"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_normal" />
+
+                <com.veinhorn.tagview.TagView
+                    android:id="@+id/tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_small"
+                    android:text="@{StringUtils.getPriceWiteSymbol(price.RetialPrice-price.MemberPrice)}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_big"
+                    app:tagBottomPadding="@{AutoUtils.getPercentHeightSize(2)}"
+                    app:tagCircleColor="@color/colorPrimary"
+                    app:tagColor="@color/colorPrimary"
+                    app:tagLeftPadding="@{AutoUtils.getPercentWidthSize(5)}"
+                    app:tagRightPadding="@{AutoUtils.getPercentWidthSize(5)}"
+                    app:tagTopPadding="@{AutoUtils.getPercentHeightSize(2)}"
+                    app:tagType="modern_trapezium_reversed" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="@dimen/padding_left_time_tag"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="@drawable/dash_divider"
+            android:layerType="software" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:text="销量："
+                android:textColor="@color/colorGrayCCCCCC"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{String.valueOf(price.Sells)}"
+                android:textColor="@color/colorGrayCCCCCC"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:text="关注度："
+                android:textColor="@color/colorGrayCCCCCC"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{String.valueOf(price.Views)}"
+                android:textColor="@color/colorGrayCCCCCC"
+                android:textSize="@dimen/text_normal" />
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

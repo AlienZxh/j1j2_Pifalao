@@ -77,13 +77,16 @@
         <activity
             android:name=".feature.main.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.login.LoginActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
 
-        <service android:name=".app.service.BackGroundService" />
+        <service android:name=".app.service.LocationService" />
 
         <meta-data
             android:name="design_width"

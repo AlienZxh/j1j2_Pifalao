@@ -11,9 +11,15 @@
 
         <import type="android.net.Uri" />
 
+        <import type="android.view.View.OnClickListener" />
+
         <variable
             name="sercivepoint"
             type="com.j1j2.data.model.ServicePoint" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
     </data>
 
     <com.zhy.autolayout.AutoLinearLayout
@@ -48,6 +54,7 @@
 
 
             <TextView
+                android:id="@+id/loginBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
@@ -55,7 +62,8 @@
                 android:gravity="center"
                 android:text="@string/icon_daeva_user2"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{onClick}"/>
 
         </com.zhy.autolayout.AutoRelativeLayout>
 

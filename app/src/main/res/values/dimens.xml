@@ -13,6 +13,8 @@
     <dimen name="text_big">28px</dimen>
     <dimen name="text_biger">32px</dimen>
 
+    <dimen name="padding_productdetail">12px</dimen>
+
     <dimen name="padding_smaller">8px</dimen>
     <dimen name="padding_small">10px</dimen>
     <dimen name="padding_noraml">20px</dimen>
@@ -63,4 +65,7 @@
     <dimen name="icon_hometab">44px</dimen>
 
     <dimen name="circle_tab_size">8dp</dimen>
+
+
+
 </resources>

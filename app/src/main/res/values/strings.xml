@@ -12,6 +12,8 @@
     <string name="store_actionbar_title">超市类批发</string>
     <string name="productdetail_actionbar_title">商品详情</string>
     <string name="search_actionbar_title">搜索</string>
+    <string name="login_actionbar_title">登录</string>
+    <string name="individualcenter_actionbar_title">个人中心</string>
 
     <string name="servicepoint_call">联系服务点</string>
     <string name="servicepoint_in">进入服务点</string>

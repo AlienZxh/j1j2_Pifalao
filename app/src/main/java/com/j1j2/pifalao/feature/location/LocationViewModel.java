@@ -60,7 +60,7 @@ public class LocationViewModel {
         this.districts = new ArrayList<>();
         this.locationDistrictAdapter = new LocationDistrictAdapter(districts);
         this.locationServicePointAdapter = new LocationServicePointAdapter(servicePoints);
-        this.locationOb = RxBus.get().register(RxBusTag.LOCATION_EVENT, BDLocation.class);
+        this.locationOb = RxBus.get().register(RxBusTag.LOCATION_EVENT, BDLocation.class, true);
 
 
     }

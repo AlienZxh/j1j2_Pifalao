@@ -16,7 +16,7 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorHomeTabBg"
+        android:background="@color/colorLayoutBg"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoRelativeLayout

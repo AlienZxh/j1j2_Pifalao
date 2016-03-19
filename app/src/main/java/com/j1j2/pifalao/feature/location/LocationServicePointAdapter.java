@@ -10,6 +10,7 @@ import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemLocationServicepointBinding;
+import com.veinhorn.tagview.TagView;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
@@ -70,7 +71,7 @@ public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationSe
             binding.setServicepoint(data);
             binding.setPosition(position);
             if (position == 0) {
-                binding.tag.setTagTopPadding( AutoUtils.getPercentHeightSize(5));
+                binding.tag.setTagTopPadding(AutoUtils.getPercentHeightSize(5));
                 binding.tag.setTagBottomPadding( AutoUtils.getPercentHeightSize(5));
                 binding.tag.setTagLeftPadding(AutoUtils.getPercentWidthSize(8));
                 binding.tag.setTagRightPadding(AutoUtils.getPercentWidthSize(8));

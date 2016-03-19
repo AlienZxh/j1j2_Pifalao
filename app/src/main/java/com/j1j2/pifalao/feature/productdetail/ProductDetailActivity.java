@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.productdetail;
 
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 
@@ -10,8 +11,10 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityProductdetailBinding;
+import com.j1j2.pifalao.feature.main.MainAdapter;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,6 +45,14 @@ public class ProductDetailActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
+
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(new Fragment());
+        fragments.add(new Fragment());
+        fragments.add(new Fragment());
+        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), fragments);
+        binding.detailViewpager.setAdapter(productDetailAdapter);
+        binding.detailTab.setViewPager(binding.detailViewpager);
         productDetailViewModel.queryProductDetail();
     }
 

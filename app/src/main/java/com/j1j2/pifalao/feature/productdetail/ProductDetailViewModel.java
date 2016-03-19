@@ -9,6 +9,7 @@ import com.j1j2.data.model.ProductImg;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
+import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,10 @@ public class ProductDetailViewModel {
                 .compose(productDetailActivity.<WebReturn<ProductDetail>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<ProductDetail>>() {
+                .subscribe(new WebReturnSubscriber<ProductDetail>() {
                     @Override
-                    public void onNext(WebReturn<ProductDetail> productDetailWebReturn) {
-                        super.onNext(productDetailWebReturn);
-                        productDetail.set(productDetailWebReturn.getDetail());
+                    public void onWebReturnSucess(ProductDetail mProductDetail) {
+                        productDetail.set(mProductDetail);
                         List<ProductImg> sizeProductImgs = new ArrayList<ProductImg>();
                         for (ProductImg productImg : productDetail.get().getImgs()) {
                             if (productImg.getSize() == 3) {
@@ -53,6 +53,16 @@ public class ProductDetailViewModel {
                                 break;
                         }
                         productDetailActivity.initBanner(sizeProductImgs);
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
                     }
                 });
     }

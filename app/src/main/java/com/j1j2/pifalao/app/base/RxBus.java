@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 import rx.Observable;
+import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
@@ -36,16 +37,21 @@ public class RxBus {
     private ConcurrentHashMap<Object, List<Subject>> subjectMapper = new ConcurrentHashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> clazz) {
+    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> clazz, boolean isSticky) {
         List<Subject> subjectList = subjectMapper.get(tag);
         if (null == subjectList) {
             subjectList = new ArrayList<>();
             subjectMapper.put(tag, subjectList);
         }
-
         Subject<T, T> subject;
-        subjectList.add(subject = PublishSubject.create());
-        if (DEBUG) Logger.d(TAG + "[register]subjectMapper: " + subjectMapper);
+        if (isSticky)
+            subjectList.add(subject = BehaviorSubject.create());
+        else
+            subjectList.add(subject = PublishSubject.create());
+
+
+        if (DEBUG)
+            Logger.d(TAG + "[register]subjectMapper: " + subjectMapper + "  isSticky: " + isSticky);
         return subject;
     }
 

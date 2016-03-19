@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -18,7 +17,7 @@ import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
-import com.j1j2.pifalao.app.service.BackGroundService;
+import com.j1j2.pifalao.app.service.LocationService;
 import com.j1j2.pifalao.databinding.ActivityLocationBinding;
 import com.j1j2.pifalao.feature.location.di.LocationModule;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -84,7 +83,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     protected void onDestroy() {
         super.onDestroy();
         locationViewModel.onDestory();
-        stopService(new Intent(this, BackGroundService.class));
+        stopService(new Intent(this, LocationService.class));
     }
 
     @Override

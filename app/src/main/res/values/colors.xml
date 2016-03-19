@@ -23,12 +23,16 @@
     <color name="colorGrayCCCCCC">#FFCCCCCC</color>
     <color name="colorGrayDEDEDE">#FFDEDEDE</color>
     <color name="colorGrayEDEDED">#FFEDEDED</color>
+    <color name="colorGrayfcfcfc">#FFfcfcfc</color>
+
 
     <color name="colorTransparentWhite">#E5FFFFFF</color>
 
     <color name="colorModuleGreen">#FF22AC38</color>
 
     <color name="colorHomeTabnormal">#ff7A7E83</color>
+    <color name="colorLayoutBg">#fff5f6f7</color>
+
     <color name="colorHomeTabBg">#fff5f6f7</color>
 
     <color name="colorProductSells">#fff0f7ff</color>

@@ -169,4 +169,17 @@ public class Navigate {
             ActivityCompat.finishAfterTransition(context);
         }
     }
+
+    public void navigateToLogin(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.loginActivity().start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.loginActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
 }

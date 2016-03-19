@@ -10,5 +10,5 @@ import rx.Observable;
 public interface UserCouponApi {
 
     @POST("UserCoupon/QueryUserCoupon")
-    Observable<String> queryUserCoupon(@Query("couponType") int couponType);
+    Observable<String> queryUserCoupon(@Query("couponType") int couponType, @Query("moduleId") int moduleId);
 }
