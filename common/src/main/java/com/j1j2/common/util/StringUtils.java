@@ -53,4 +53,28 @@ public class StringUtils {
         msp.setSpan(new StrikethroughSpan(), 0, msp.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return msp;
     }
+
+    public static CharSequence getOrdersQuantity(int quantity) {
+
+        return "共" + quantity + "件";
+    }
+
+    public static CharSequence getOrdersState(int orderType) {
+        switch (orderType) {
+            case 1:
+                return "已下单";
+            case 4:
+                return "处理中";
+            case 16:
+                return "待收货";
+            case 32:
+                return "待评价";
+            case 64:
+                return "已完成";
+            case 256:
+                return "已退订";
+            default:
+                return "已退订";
+        }
+    }
 }

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="productUnit"
+            type="com.j1j2.data.model.ProductUnit" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_noraml"
+        android:background="@drawable/productdetail_unit_bg_selector"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:OnClickListener="@{onClick}">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{productUnit.Unit}"
+            android:textColor="@drawable/text_click_orange_colors"
+            android:textSize="@dimen/text_normal" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.google.gson.Gson;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.base.RxBus;
@@ -13,10 +14,13 @@ import com.j1j2.pifalao.app.di.AppModule;
 import com.j1j2.pifalao.app.di.DaggerAppComponent;
 import com.j1j2.pifalao.app.di.UserComponent;
 import com.j1j2.pifalao.app.di.UserModule;
+import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import javax.inject.Inject;
 
 
 /**
@@ -28,6 +32,12 @@ public class MainAplication extends Application {
     private AppComponent appComponent;
     private UserComponent userComponent;
     private String TAG = " MainAplication ";
+
+    @Inject
+    UserLoginPreference userLoginPreference;
+
+    @Inject
+    Gson gson;
 
     public static RefWatcher getRefWatcher(Context context) {
         return get(context).refWatcher;
@@ -69,6 +79,7 @@ public class MainAplication extends Application {
 
     private void initComponent() {
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        this.appComponent.inject(this);
         Logger.d("AppComponent初始化完成");
     }
 
@@ -107,6 +118,24 @@ public class MainAplication extends Application {
 
     public UserComponent getUserComponent() {
         return userComponent;
+    }
+
+
+    public boolean isLogin() {
+        return null != userLoginPreference.getLoginCookie(null) && null != userComponent;
+    }
+
+    public void login(User user) {
+        createUserComponent(user);
+        userLoginPreference.setUserInfo(gson.toJson(user));
+    }
+
+    public void loginOut() {
+        releaseUserComponent();
+        userLoginPreference.setIsAutoLogin(false)
+                .removeLoginCookie()
+                .removeUserInfo()
+                .removePassWord();
     }
 
 }

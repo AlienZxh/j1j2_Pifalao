@@ -32,7 +32,8 @@
             android:gravity="center"
             android:text="@string/icon_vegetable"
             android:textColor="@color/colorWhite"
-            android:textSize="90px" />
+            android:textSize="90px"
+            app:layout_auto_basewidth="height"/>
 
         <TextView
             android:layout_width="wrap_content"

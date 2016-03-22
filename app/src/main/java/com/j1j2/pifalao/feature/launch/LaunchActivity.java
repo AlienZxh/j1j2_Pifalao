@@ -10,14 +10,27 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.service.LocationService;
+import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
+import com.j1j2.pifalao.feature.launch.di.LaunchModule;
+
+import javax.inject.Inject;
 
 public class LaunchActivity extends BaseActivity implements Animator.AnimatorListener {
 
 
     ActivityLaunchBinding binding;
+
+    @Inject
+    UserLoginPreference userLoginPreference;
+
+    @Inject
+    LaunchViewModel launchViewModel;
+
+    private boolean isAnimFinish = false;
 
     @Override
     protected void initBinding() {
@@ -36,6 +49,7 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startService(new Intent(this, LocationService.class));
+        launchViewModel.initLoginState();
     }
 
     @SuppressLint("InlinedApi")
@@ -51,14 +65,21 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
     }
 
     @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        MainAplication.get(this).getAppComponent().plus(new LaunchModule(this)).inject(this);
+    }
+
+    @Override
     public void onAnimationStart(Animator animation) {
 
     }
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        binding.slogan.setDrawingCacheEnabled(true);
-        navigate.navigateToGuide(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true);
+        isAnimFinish = true;
+
+
     }
 
     @Override
@@ -69,6 +90,15 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
     @Override
     public void onAnimationRepeat(Animator animation) {
 
+    }
+
+    public boolean isAnimFinish() {
+        return isAnimFinish;
+    }
+
+    public void navigateToGuide() {
+        binding.slogan.setDrawingCacheEnabled(true);
+        navigate.navigateToGuide(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true);
     }
 
 }

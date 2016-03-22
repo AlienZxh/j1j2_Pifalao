@@ -1,33 +1,24 @@
 package com.j1j2.pifalao.feature.products;
 
 import android.databinding.ObservableField;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
-import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.PromtionTime;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.orhanobut.logger.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.inject.Inject;
-
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -143,9 +134,10 @@ public class ProductsViewModel {
                             productAdapter = new ProductsAdapter(productSimplePagerManager.getList());
                             productsActivity.setProdutsAdapter(productAdapter);
                             productAdapter.notifyItemRangeChanged(0, productSimplePagerManager.getList().size());
-                            if (pageIndex == pageCount)
+                            if (pageIndex == pageCount) {
                                 productsActivity.setLoadMoreFinish();
-                            productsActivity.setLoadMoreEnable(false);
+                                productsActivity.setLoadMoreEnable(false);
+                            }
                         } else {
                             if (pageIndex < pageCount) {
                                 productAdapter.addAll(productSimplePagerManager.getList());

@@ -1,4 +1,4 @@
-package com.j1j2.common.view.autoscrollviewpager;
+package com.j1j2.common.view.viewpager.autoscrollviewpager;
 
 import android.content.Context;
 import android.view.animation.Interpolator;

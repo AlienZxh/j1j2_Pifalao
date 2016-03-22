@@ -37,6 +37,9 @@ dependencies {
     compile commonDependencies.circular
 //    compile commonDependencies.smarttablayout
     compile commonDependencies.tagview
+//    compile commonDependencies.snappingstepper
+    compile commonDependencies.dialogplus
+    compile commonDependencies.zxing
 
     testCompile commonTestDependencies.junit
 }

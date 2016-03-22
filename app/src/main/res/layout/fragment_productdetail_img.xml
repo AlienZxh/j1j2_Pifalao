@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.j1j2.data.model.ProductImg" />
+
+        <import type="java.util.List" />
+
+        <import type="android.net.Uri" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="productImgs"
+            type="List&lt;ProductImg&gt;" />
+    </data>
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>0)?View.VISIBLE : View.GONE}"
+            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>0)?productImgs.get(0).ImgUrl:@string/text_empty)}"
+            fresco:viewAspectRatio="1.0" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>1)?View.VISIBLE : View.GONE}"
+            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>1)?productImgs.get(1).ImgUrl:@string/text_empty)}"
+            fresco:viewAspectRatio="1.0" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>2)?View.VISIBLE : View.GONE}"
+            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>2)?productImgs.get(2).ImgUrl:@string/text_empty)}"
+            fresco:viewAspectRatio="1.0" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>3)?View.VISIBLE : View.GONE}"
+            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>3)?productImgs.get(3).ImgUrl:@string/text_empty)}"
+            fresco:viewAspectRatio="1.0" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

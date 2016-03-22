@@ -2,9 +2,7 @@ package com.j1j2.pifalao.feature.main.di;
 
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.pifalao.app.ActivityScope;
-import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeActivity;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
-import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragmentViewModel;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeViewModel;
 import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.MainActivity;
@@ -20,14 +18,12 @@ import retrofit2.Retrofit;
 @Module
 public class MainModule {
 
-    private StoreStyleHomeFragment storeStyleHomeFragment;
     private MainActivity mainActivity;
     private com.j1j2.data.model.Module module;
 
-    public MainModule(MainActivity mainActivity, StoreStyleHomeFragment storeStyleHomeFragment, com.j1j2.data.model.Module module) {
+    public MainModule(MainActivity mainActivity,  com.j1j2.data.model.Module module) {
         this.mainActivity = mainActivity;
         this.module = module;
-        this.storeStyleHomeFragment = storeStyleHomeFragment;
     }
 
     @Provides
@@ -48,21 +44,21 @@ public class MainModule {
         return module;
     }
 
-    @Provides
-    @ActivityScope
-    StoreStyleHomeFragment storeStyleHomeFragment() {
-        return storeStyleHomeFragment;
-    }
-
-    @Provides
-    @ActivityScope
-    StoreStyleHomeFragmentViewModel storeStyleHomeFragmentViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, com.j1j2.data.model.Module module) {
-        return new StoreStyleHomeFragmentViewModel(storeStyleHomeFragment, productApi, module);
-    }
-
-    @Provides
-    @ActivityScope
-    IndividualCenterFragment individualCenterFragment() {
-        return Bundler.individualCenterFragment().create();
-    }
+//    @Provides
+//    @ActivityScope
+//    StoreStyleHomeFragment storeStyleHomeFragment() {
+//        return storeStyleHomeFragment;
+//    }
+//
+//    @Provides
+//    @ActivityScope
+//    StoreStyleHomeViewModel storeStyleHomeFragmentViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, com.j1j2.data.model.Module module) {
+//        return new StoreStyleHomeViewModel(storeStyleHomeFragment, productApi, module);
+//    }
+//
+//    @Provides
+//    @ActivityScope
+//    IndividualCenterFragment individualCenterFragment() {
+//        return Bundler.individualCenterFragment().create();
+//    }
 }

@@ -1,6 +1,10 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.OrderSubmitBody;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -12,14 +16,17 @@ import rx.Observable;
  */
 public interface ShopCartApi {
 
+
+    @POST("ShopCart/QueryShopCart")
+    Observable<WebReturn<List<ShopCartItem>>> queryShopCart(@Query("moduleId") int moduleId);
+
+    //______________________________________________________________________________________________
+
     @POST("ShopCart/QueryUserServicePoint")
     Observable<String> queryUserServicePoint();
 
     @POST("ShopCart/QueryValidFreight")
     Observable<String> queryValidFreight();
-
-    @POST("ShopCart/QueryShopCart")
-    Observable<String> queryShopCart(@Query("moduleId") int moduleId);
 
 
     @POST("ShopCart/AddItemToShopCart")
@@ -39,7 +46,7 @@ public interface ShopCartApi {
 
 
     @POST("ShopCart/ValidateSubmitOrder")
-    Observable<String> validateSubmitOrder(@Query("userId") int userId);
+    Observable<String> validateSubmitOrder();
 
 
     @POST("ShopCart/QueryCouponEffective")

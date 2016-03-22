@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="orderManagerViewModel"
+            type="com.j1j2.pifalao.feature.ordermanager.OrderManagerViewModel" />
+    </data>
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="订单管理"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_productdetail"
+            android:background="@drawable/item_products_divider" />
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/SubmitOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="已下单"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/ExcutingOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="处理中"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/ClientWaitForRecevieOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="到达服务点"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/WaitForRateOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="待评价"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/InvalidOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="已退订"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/allOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="全部订单"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

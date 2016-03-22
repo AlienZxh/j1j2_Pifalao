@@ -2,10 +2,12 @@ package com.j1j2.pifalao.feature.main;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.Toast;
 
 import com.j1j2.common.view.smarttablayout.SmartTabLayout;
 import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ProductSort;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
@@ -31,7 +33,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-16.
  */
 @RequireBundler
-public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabClickListener, HasComponent<MainComponent> {
+public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabClickListener, HasComponent<MainComponent>, StoreStyleHomeFragment.StoreStyleHomeFragmentListener, IndividualCenterFragment.IndividualCenterFragmentListener {
     ActivityMainBinding binding;
 
     @Arg
@@ -40,12 +42,6 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     private MainComponent mainComponent;
 
     List<Fragment> fragments;
-
-    @Inject
-    StoreStyleHomeFragment storeStyleHomeFragment;
-
-    @Inject
-    IndividualCenterFragment individualCenterFragment;
 
     MainAdapter mainAdapter;
 
@@ -57,10 +53,10 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     protected void initViews() {
         fragments = new ArrayList<>();
-        fragments.add(storeStyleHomeFragment);
+        fragments.add(Bundler.storeStyleHomeFragment(module).create());
         fragments.add(new Fragment());
         fragments.add(new Fragment());
-        fragments.add(individualCenterFragment);
+        fragments.add(Bundler.individualCenterFragment().create());
 
         String[] titles = new String[]{"首页", "供应商", "购物车", "我的"};
         String[] icons = new String[]{getResources().getString(R.string.icon_home), getResources().getString(R.string.icon_supplier), getResources().getString(R.string.icon_shopcart), getResources().getString(R.string.icon_mine)};
@@ -77,7 +73,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, Bundler.storeStyleHomeFragment(module).create(), module));
+        mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, module));
         mainComponent.inject(this);
     }
 
@@ -85,6 +81,18 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     public void onTabClicked(int position) {
         if (position == 0 || position == 1) {
             binding.viewpager.setCurrentItem(position);
+        } else if (position == 2) {
+            if (MainAplication.get(this).isLogin()) {
+                navigate.navigateToShopCart(this, null, false, module);
+            } else {
+                navigate.navigateToLogin(this, null, false);
+            }
+        } else if (position == 3) {
+            if (MainAplication.get(this).isLogin()) {
+                binding.viewpager.setCurrentItem(4);
+            } else {
+                navigate.navigateToLogin(this, null, false);
+            }
         }
     }
 
@@ -93,7 +101,23 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         return mainComponent;
     }
 
-    public Navigate getNavigate() {
-        return navigate;
+    @Override
+    public void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position) {
+        navigate.navigateToProductsActivityFromSort(this, null, false, productSort, module);
+    }
+
+    @Override
+    public void navigateToSearchActivity(View v) {
+        navigate.navigateToSearchActivity(this, null, false, module);
+    }
+
+    @Override
+    public void navigateToOrderManager() {
+        navigate.navigateToOrderManager(this, null, false);
+    }
+
+    @Override
+    public void navigateToQRCode() {
+        navigate.navigateToQRCode(this, null, false);
     }
 }

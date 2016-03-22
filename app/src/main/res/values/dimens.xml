@@ -48,13 +48,15 @@
 
     <dimen name="height_service_map">400px</dimen>
     <dimen name="height_services_point_img">100px</dimen>
-    <dimen name="height_services_img">70dp</dimen>
+    <dimen name="height_services_img">120px</dimen>
 
     <dimen name="height_item_store_head">76px</dimen>
 
     <dimen name="height_search_edit">62px</dimen>
 
     <dimen name="height_products_img_size">168px</dimen>
+
+    <dimen name="height_bottombar">90px</dimen>
 
     <dimen name="width_servicepoint_img">691px</dimen>
     <dimen name="width_servicepoint_bottom_btn">307px</dimen>

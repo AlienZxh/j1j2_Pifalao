@@ -1,7 +1,7 @@
 package com.j1j2.pifalao.feature.home.storestylehome.di;
 
 import com.j1j2.pifalao.app.ActivityScope;
-import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeActivity;
+import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 
 import dagger.Subcomponent;
 
@@ -12,5 +12,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {StoreStyleHomeModule.class})
 public interface StoreStyleHomeComponent {
 
-    void inject(StoreStyleHomeActivity storeStyleHomeActivity);
+    void inject(StoreStyleHomeFragment storeStyleHomeFragment);
 }

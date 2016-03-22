@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.login;
 
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.j1j2.data.http.api.UserLoginApi;
@@ -47,8 +48,7 @@ public class LoginViewModel {
                 .subscribe(new WebReturnSubscriber<User>() {
                     @Override
                     public void onWebReturnSucess(User user) {
-                        MainAplication.get(loginActivity).createUserComponent(user);
-                        userLoginPreference.setUserInfo(gson.toJson(user));
+                        MainAplication.get(loginActivity).login(user);
                         if (isAutoLogin) {
                             userLoginPreference.setIsAutoLogin(true);
                             userLoginPreference.setUserName(username);
@@ -57,6 +57,8 @@ public class LoginViewModel {
                             userLoginPreference.setUserName(username);
                             userLoginPreference.removeIsAutoLogin().removePassWord();
                         }
+                        Toast.makeText(loginActivity.getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                        loginActivity.finish();
                     }
 
                     @Override

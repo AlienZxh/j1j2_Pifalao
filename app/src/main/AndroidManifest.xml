@@ -51,9 +51,6 @@
             android:name=".feature.location.LocationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".feature.home.storestylehome.StoreStyleHomeActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".feature.city.CityActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -79,6 +76,24 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.shopcart.ShopCartActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.confirmorder.ConfirmOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.ordermanager.OrderManagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.orders.OrdersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.orderdetail.OrderDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.qrcode.QrCodeActivity"
             android:screenOrientation="portrait" />
 
         <service

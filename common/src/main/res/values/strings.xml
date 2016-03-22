@@ -57,5 +57,11 @@
 
     <string name="icon_arrow_right">&#xe62a;</string>
     <string name="icon_qr_code">&#xe62c;</string>
+    <string name="icon_delete">&#xe62d;</string>
+    <string name="icon_close">&#xe60b;</string>
+    <string name="icon_close_fill">&#xe60a;</string>
+
+    <string name="icon_refresh">&#xe62b;</string>
+
 
 </resources>

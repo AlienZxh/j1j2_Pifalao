@@ -39,6 +39,7 @@ import okhttp3.OkHttpClient;
 @Singleton
 @Component(modules = AppModule.class)
 public interface AppComponent {
+    void inject(MainAplication aplication);
 
     LaunchComponent plus(LaunchModule launchModule);
 

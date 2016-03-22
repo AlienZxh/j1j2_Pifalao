@@ -1,5 +1,10 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.OrderDetail;
+import com.j1j2.data.model.OrderSimple;
+import com.j1j2.data.model.OrderStatistics;
+import com.j1j2.data.model.PagerManager;
+import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ProductSaleOrderRateBody;
 import com.j1j2.data.model.requestbody.SetOrderReadStateBody;
 
@@ -13,18 +18,18 @@ import rx.Observable;
  */
 public interface UserOrderApi {
     @POST("UserOrder/QueryOrders")
-    Observable<String> queryOrders(@Query("pageIndex") String pageIndex, @Query("size") String size, @Query("stateStr") String stateStr);
-
+    Observable<WebReturn<PagerManager<OrderSimple>>> queryOrders(@Query("pageIndex") String pageIndex, @Query("size") String size, @Query("stateStr") String stateStr);
 
     @POST("UserOrder/QueryProductOrderStatistics")
-    Observable<String> queryProductOrderStatistics();
+    Observable<WebReturn<OrderStatistics>> queryProductOrderStatistics();
+
+    @POST("UserOrder/QueryOrderByOrderId")
+    Observable<WebReturn<OrderDetail>> queryOrderByOrderId(@Query("orderIdStr") String orderIdStr);
+    //_____________________________________________________________________________
 
 
     @POST("UserOrder/SetOrderReadState")
     Observable<String> setOrderReadState(@Body SetOrderReadStateBody setOrderReadStateBody);
-
-    @POST("UserOrder/QueryOrderByOrderId")
-    Observable<String> queryOrderByOrderId(@Query("orderIdStr") String orderIdStr);
 
     @POST("UserOrder/QueryOrderProudctDetails")
     Observable<String> queryOrderProudctDetails(@Query("orderIdStr") String orderIdStr);

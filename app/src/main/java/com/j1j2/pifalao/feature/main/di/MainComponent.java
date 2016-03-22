@@ -16,6 +16,4 @@ public interface MainComponent {
 
     void inject(MainActivity mainActivity);
 
-    void inject(StoreStyleHomeFragment storeStyleHomeFragment);
-
 }

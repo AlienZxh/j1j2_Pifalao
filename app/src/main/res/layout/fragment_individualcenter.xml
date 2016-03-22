@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="individualCenterViewModel"
+            type="com.j1j2.pifalao.feature.individualcenter.IndividualCenterViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -61,7 +68,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="24px"
-                            android:text="123456"
+                            android:text="@{individualCenterViewModel.user.LoginAccount}"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_biger" />
 
@@ -74,18 +81,21 @@
                             android:textSize="@dimen/text_normal" />
 
                         <TextView
+                            android:id="@+id/updateVIP"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/orange_conner_tag_bg"
                             android:padding="@dimen/padding_small"
                             android:text="激活VIP会员"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_normal" />
+                            android:textSize="@dimen/text_normal"
+                            app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}" />
                     </com.zhy.autolayout.AutoLinearLayout>
                 </com.zhy.autolayout.AutoLinearLayout>
 
 
                 <TextView
+                    android:id="@+id/setting"
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +103,8 @@
                     android:padding="@dimen/padding_noraml"
                     android:text="@string/icon_setting"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/icon_normal" />
+                    android:textSize="@dimen/icon_normal"
+                    app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
@@ -114,7 +125,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/padding_small"
                         android:layout_marginTop="@dimen/padding_noraml"
-                        android:text="654165"
+                        android:text="@{String.valueOf(individualCenterViewModel.user.Cost)}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_big" />
 
@@ -145,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/padding_small"
                         android:layout_marginTop="@dimen/padding_noraml"
-                        android:text="654165"
+                        android:text="@{String.valueOf(individualCenterViewModel.user.UserSaveAmount)}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_big"
                         android:textStyle="bold" />
@@ -177,7 +188,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/padding_small"
                         android:layout_marginTop="@dimen/padding_noraml"
-                        android:text="654165"
+                        android:text="@{String.valueOf(individualCenterViewModel.user.Point)}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_big" />
 
@@ -197,9 +208,11 @@
                 android:background="@drawable/item_products_divider" />
 
             <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/qrCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite">
+                android:background="@color/colorWhite"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
@@ -226,7 +239,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="654654"
+                            android:text="@{String.valueOf(individualCenterViewModel.user.Balance)}"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_big"
                             android:textStyle="bold" />
@@ -288,6 +301,7 @@
                 android:background="@drawable/item_products_divider" />
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/orderManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -295,7 +309,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding_noraml"
                 android:paddingLeft="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_noraml">
+                android:paddingTop="@dimen/padding_noraml"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
                     android:layout_width="0dp"
@@ -329,6 +344,7 @@
 
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/adderssManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -336,7 +352,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding_noraml"
                 android:paddingLeft="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_noraml">
+                android:paddingTop="@dimen/padding_noraml"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
                     android:layout_width="0dp"
@@ -368,6 +385,7 @@
                 android:background="@color/colorGrayF0F0F0" />
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/walletManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -375,7 +393,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding_noraml"
                 android:paddingLeft="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_noraml">
+                android:paddingTop="@dimen/padding_noraml"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
                     android:layout_width="0dp"
@@ -408,6 +427,7 @@
 
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/massageManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -415,7 +435,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding_noraml"
                 android:paddingLeft="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_noraml">
+                android:paddingTop="@dimen/padding_noraml"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
                     android:layout_width="0dp"
@@ -448,6 +469,7 @@
 
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/collectManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -455,7 +477,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding_noraml"
                 android:paddingLeft="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_noraml">
+                android:paddingTop="@dimen/padding_noraml"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
                     android:layout_width="0dp"
@@ -488,6 +511,7 @@
 
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/accountManager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
@@ -495,7 +519,8 @@
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/padding_noraml"
                 android:paddingLeft="@dimen/padding_small"
-                android:paddingTop="@dimen/padding_noraml">
+                android:paddingTop="@dimen/padding_noraml"
+                app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
                     android:layout_width="0dp"

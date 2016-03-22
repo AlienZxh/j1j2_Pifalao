@@ -25,6 +25,8 @@
     <color name="colorGrayEDEDED">#FFEDEDED</color>
     <color name="colorGrayfcfcfc">#FFfcfcfc</color>
 
+    <color name="colorBlueBtn">#FF34aadc</color>
+    <color name="colorBlueBtnDark">#FF2E8AB1</color>
 
     <color name="colorTransparentWhite">#E5FFFFFF</color>
 
@@ -44,4 +46,6 @@
 
     <color name="colorDivider">#FFCCCCCC</color>
     <color name="colorPromtionTimebg">#FFFFFDD3</color>
+
+    <color name="colorConfirmOrderAddress">#fffff4d9</color>
 </resources>

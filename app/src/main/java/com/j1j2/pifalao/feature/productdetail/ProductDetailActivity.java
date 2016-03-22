@@ -37,6 +37,7 @@ public class ProductDetailActivity extends BaseActivity {
     @Inject
     ProductDetailViewModel productDetailViewModel;
 
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_productdetail);
@@ -45,14 +46,7 @@ public class ProductDetailActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new Fragment());
-        fragments.add(new Fragment());
-        fragments.add(new Fragment());
-        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), fragments);
-        binding.detailViewpager.setAdapter(productDetailAdapter);
-        binding.detailTab.setViewPager(binding.detailViewpager);
+        changeFragment(R.id.unitFragment, Bundler.productDetailUnitFragment(productSimple.getProductUnits()).create());
         productDetailViewModel.queryProductDetail();
     }
 
@@ -61,6 +55,16 @@ public class ProductDetailActivity extends BaseActivity {
         binding.viewPager.startAutoScroll(2000);
         binding.viewPager.setInterval(2000);
         binding.tab.setViewPager(binding.viewPager);
+    }
+
+    public void initBottomViewPager(List<ProductImg> productImgs) {
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(Bundler.productDetailImgFragment(productImgs).create());
+        fragments.add(new Fragment());
+        fragments.add(new Fragment());
+        ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(getSupportFragmentManager(), fragments);
+        binding.detailViewpager.setAdapter(productDetailAdapter);
+        binding.detailTab.setViewPager(binding.detailViewpager);
     }
 
     @Override

@@ -1,20 +1,17 @@
 package com.j1j2.pifalao.app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Module;
+import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.feature.products.ProductsActivity;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import in.workarounds.bundler.Bundler;
 
@@ -40,18 +37,6 @@ public class Navigate {
         }
     }
 
-    public void navigateToStoreStyleomeActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
-        if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.storeStyleHomeActivity(module).start(context);
-            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        } else {
-            ActivityCompat.startActivity(context, Bundler.storeStyleHomeActivity(module).intent(context),
-                    options.toBundle());
-        }
-        if (isFinish) {
-            ActivityCompat.finishAfterTransition(context);
-        }
-    }
 
     public void navigateToLocationActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, City city) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
@@ -157,7 +142,7 @@ public class Navigate {
         }
     }
 
-    public void navigateToSearchActivity(Activity context, ActivityOptionsCompat options, boolean isFinish,Module module) {
+    public void navigateToSearchActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
             Bundler.searchActivity(module).start(context);
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -176,6 +161,84 @@ public class Navigate {
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
             ActivityCompat.startActivity(context, Bundler.loginActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToShopCart(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.shopCartActivity(module).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.shopCartActivity(module).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToConfirmOrder(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.confirmOrderActivity(module).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.confirmOrderActivity(module).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOrderManager(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.orderManagerActivity().start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.orderManagerActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOrders(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderType) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.ordersActivity(orderType).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.ordersActivity(orderType).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOrderDetail(Activity context, ActivityOptionsCompat options, boolean isFinish, OrderSimple orderSimple) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.orderDetailActivity(orderSimple).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.orderDetailActivity(orderSimple).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToQRCode(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.qrCodeActivity().start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.qrCodeActivity().intent(context),
                     options.toBundle());
         }
         if (isFinish) {

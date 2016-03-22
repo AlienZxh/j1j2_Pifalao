@@ -53,6 +53,7 @@ public class ProductDetailViewModel {
                                 break;
                         }
                         productDetailActivity.initBanner(sizeProductImgs);
+                        productDetailActivity.initBottomViewPager(sizeProductImgs);
                     }
 
                     @Override

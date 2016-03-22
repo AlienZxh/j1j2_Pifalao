@@ -2,11 +2,8 @@ package com.j1j2.pifalao.feature.home.storestylehome;
 
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.SecondarySort;
-import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
-import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
 import java.util.ArrayList;
@@ -28,20 +25,20 @@ public class StoreStyleHomeViewModel {
 
     private List<SecondarySort> secondarySorts;
 
-    private StoreStyleHomeActivity storeStyleHomeActivity;
+    private StoreStyleHomeFragment storeStyleHomeFragment;
 
-    public StoreStyleHomeViewModel(StoreStyleHomeActivity storeStyleHomeActivity, ProductApi productApi, Module module) {
+    public StoreStyleHomeViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, Module module) {
         this.productApi = productApi;
         this.module = module;
-        this.storeStyleHomeActivity = storeStyleHomeActivity;
+        this.storeStyleHomeFragment = storeStyleHomeFragment;
         this.secondarySorts = new ArrayList<>();
 
     }
 
 
-    public void onCreate() {
+    public void queryProductSort() {
         productApi.queryProductSort("", module.getWareHouseModuleId())
-                .compose(storeStyleHomeActivity.<WebReturn<List<SecondarySort>>>bindToLifecycle())
+                .compose(storeStyleHomeFragment.<WebReturn<List<SecondarySort>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<List<SecondarySort>>() {
@@ -49,7 +46,7 @@ public class StoreStyleHomeViewModel {
                     public void onWebReturnSucess(List<SecondarySort> secondarySorts) {
                         secondarySorts.addAll(secondarySorts);
                         storeStyleHomeAdapter = new StoreStyleHomeAdapter(secondarySorts);
-                        storeStyleHomeActivity.setListAdapter(storeStyleHomeAdapter);
+                        storeStyleHomeFragment.setListAdapter(storeStyleHomeAdapter);
                     }
 
                     @Override

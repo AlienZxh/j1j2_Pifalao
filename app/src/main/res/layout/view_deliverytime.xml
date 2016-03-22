@@ -3,9 +3,19 @@
 
     <data>
 
+        <import type="android.databinding.ObservableField" />
+
         <variable
-            name="productViewModel"
-            type="com.j1j2.pifalao.feature.products.ProductsViewModel" />
+            name="hour"
+            type="String" />
+
+        <variable
+            name="minute"
+            type="String" />
+
+        <variable
+            name="second"
+            type="String" />
     </data>
 
     <com.zhy.autolayout.AutoLinearLayout
@@ -41,7 +51,7 @@
             android:paddingLeft="@dimen/padding_left_time_tag"
             android:paddingRight="@dimen/padding_left_time_tag"
             android:paddingTop="@dimen/padding_top_time_tag"
-            android:text="@{productViewModel.hour}"
+            android:text="@{hour}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
             android:textStyle="bold" />
@@ -63,7 +73,7 @@
             android:paddingLeft="@dimen/padding_left_time_tag"
             android:paddingRight="@dimen/padding_left_time_tag"
             android:paddingTop="@dimen/padding_top_time_tag"
-            android:text="@{productViewModel.minute}"
+            android:text="@{minute}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
             android:textStyle="bold" />
@@ -85,7 +95,7 @@
             android:paddingLeft="@dimen/padding_left_time_tag"
             android:paddingRight="@dimen/padding_left_time_tag"
             android:paddingTop="@dimen/padding_top_time_tag"
-            android:text="@{productViewModel.second}"
+            android:text="@{second}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_normal"
             android:textStyle="bold" />

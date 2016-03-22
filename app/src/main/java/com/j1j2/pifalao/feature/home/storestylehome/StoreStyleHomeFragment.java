@@ -15,9 +15,13 @@ import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ProductSort;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.HasComponent;
+import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentStoreStyleHomeBinding;
+import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
 import com.j1j2.pifalao.feature.main.MainActivity;
+import com.j1j2.pifalao.feature.main.di.MainComponent;
 
 import javax.inject.Inject;
 
@@ -32,6 +36,14 @@ import in.workarounds.bundler.annotations.RequireBundler;
 public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHomeAdapter.OnSortItemClickListener, View.OnClickListener {
 
 
+    public interface StoreStyleHomeFragmentListener extends HasComponent<MainComponent> {
+        void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
+
+        void navigateToSearchActivity(View v);
+    }
+
+    private StoreStyleHomeFragmentListener listener;
+
     FragmentStoreStyleHomeBinding binding;
 
     @Inject
@@ -41,16 +53,15 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     Module module;
 
     @Inject
-    StoreStyleHomeFragmentViewModel storeStyleHomeViewModel;
+    StoreStyleHomeViewModel storeStyleHomeViewModel;
 
     GridLayoutManager manager;
 
-    MainActivity mainActivity;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mainActivity = (MainActivity) activity;
+        this.listener = (MainActivity) activity;
     }
 
     @Override
@@ -90,16 +101,16 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        mainActivity.getComponent().inject(this);
+        MainAplication.get(getActivity()).getAppComponent().plus(new StoreStyleHomeModule(this, module)).inject(this);
     }
 
     @Override
     public void onSortItemClickListener(View view, ProductSort productSort, int position) {
-        mainActivity.getNavigate().navigateToProductsActivityFromSort(mainActivity, null, false, productSort, module);
+        listener.navigateToProductsActivityFromSort(view, productSort, position);
     }
 
     @Override
     public void onClick(View v) {
-        mainActivity.getNavigate().navigateToSearchActivity(mainActivity, null, false, module);
+        listener.navigateToSearchActivity(v);
     }
 }

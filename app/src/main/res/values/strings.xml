@@ -14,6 +14,7 @@
     <string name="search_actionbar_title">搜索</string>
     <string name="login_actionbar_title">登录</string>
     <string name="individualcenter_actionbar_title">个人中心</string>
+    <string name="shopcart_actionbar_title">购物车</string>
 
     <string name="servicepoint_call">联系服务点</string>
     <string name="servicepoint_in">进入服务点</string>

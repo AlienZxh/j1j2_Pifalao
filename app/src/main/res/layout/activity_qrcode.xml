@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="VIP特权码"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="690px"
+            android:layout_height="690px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100px"
+            android:background="@color/colorWhite">
+
+
+            <ImageView
+                android:id="@+id/qrcode_img"
+                android:layout_width="500px"
+                android:layout_height="500px"
+                android:layout_centerInParent="true"
+                app:layout_auto_basewidth="height" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="72px"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:text="请在批发佬服务点结账时出示给收银员扫描"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70px"
+            android:layout_marginBottom="@dimen/padding_big"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_refresh"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_biger" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="每分钟刷新"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

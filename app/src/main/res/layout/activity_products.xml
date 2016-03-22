@@ -54,8 +54,10 @@
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <include
-            layout="@layout/view_promtiontime"
-            bind:productViewModel="@{productViewModel}" />
+            layout="@layout/view_deliverytime"
+            bind:hour="@{productViewModel.hour}"
+            bind:minute="@{productViewModel.minute}"
+            bind:second="@{productViewModel.second}"/>
 
         <com.malinskiy.superrecyclerview.SuperRecyclerView
             android:id="@+id/productList"

@@ -81,7 +81,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         @Override
         public void bind(@NonNull final ProductSimple data, final int position) {
             binding.setProductSimple(data);
-            if(!EmptyUtils.isEmpty(data.getProductUnits())){
+            if (!EmptyUtils.isEmpty(data.getProductUnits())) {
                 binding.normalPrice.setText("市场价：" + data.getProductUnits().get(0).getRetialPrice() + "元/" + data.getProductUnits().get(0).getUnit());
                 binding.normalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
@@ -91,6 +91,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                 public void onClick(View v) {
                     if (onItemClickListener != null)
                         onItemClickListener.onItemClickListener(v, data, position);
+                }
+            });
+            binding.setOnAddClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null)
+                        onItemClickListener.onAddIconClickListener(v, data, position);
                 }
             });
         }
