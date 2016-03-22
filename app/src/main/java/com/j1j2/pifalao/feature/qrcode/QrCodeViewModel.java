@@ -22,14 +22,22 @@ public class QrCodeViewModel {
 
     private Subscription subscription;
 
+    public QrCodeActivity getQrCodeActivity() {
+        return qrCodeActivity;
+    }
+
     public QrCodeViewModel(QrCodeActivity qrCodeActivity, UserVipApi userVipApi) {
         this.qrCodeActivity = qrCodeActivity;
         this.userVipApi = userVipApi;
     }
 
     public void queryQRCode() {
+        if (null != subscription && subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
 
-        Observable
+        subscription = Observable
                 .interval(0, 1, TimeUnit.MINUTES)
                 .compose(qrCodeActivity.<Long>bindToLifecycle())
                 .flatMap(new Func1<Long, Observable<WebReturn<String>>>() {

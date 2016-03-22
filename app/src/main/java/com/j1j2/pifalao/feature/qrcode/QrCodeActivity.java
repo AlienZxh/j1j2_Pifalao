@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.qrcode;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-22.
  */
 @RequireBundler
-public class QrCodeActivity extends BaseActivity {
+public class QrCodeActivity extends BaseActivity implements View.OnClickListener {
 
     ActivityQrcodeBinding binding;
 
@@ -33,6 +34,7 @@ public class QrCodeActivity extends BaseActivity {
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_qrcode);
+        binding.setQrCodeViewModel(qrCodeViewModel);
     }
 
     @Override
@@ -67,4 +69,8 @@ public class QrCodeActivity extends BaseActivity {
         MainAplication.get(this).getUserComponent().plus(new QRCodeModule(this)).inject(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        qrCodeViewModel.queryQRCode();
+    }
 }
