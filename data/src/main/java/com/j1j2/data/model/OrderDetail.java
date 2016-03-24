@@ -11,6 +11,8 @@ import java.util.List;
 public class OrderDetail implements Parcelable {
 
     /**
+     * "ModuleId": 23,
+     * "ModuleName": "进货佬批发网",
      * OrderId : 14281
      * OrderSubmitTimeStr : 2015-09-11 02:22:56
      * OrderSum : 39
@@ -35,7 +37,8 @@ public class OrderDetail implements Parcelable {
      * ReceiveAddressLng : 113.117742
      * CalculateDistance : 0.1
      */
-
+    private int ModuleId;
+    private String ModuleName;
     private int OrderId;
     private String OrderSubmitTimeStr;
     private double OrderSum;
@@ -74,6 +77,22 @@ public class OrderDetail implements Parcelable {
     private List<OrderProductDetail> ProductDetails;
     private List<Coupon> Coupons;
 
+
+    public int getModuleId() {
+        return ModuleId;
+    }
+
+    public void setModuleId(int moduleId) {
+        ModuleId = moduleId;
+    }
+
+    public String getModuleName() {
+        return ModuleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        ModuleName = moduleName;
+    }
 
     public int getOrderId() {
         return OrderId;
@@ -262,7 +281,9 @@ public class OrderDetail implements Parcelable {
     @Override
     public String toString() {
         return "OrderDetail{" +
-                "OrderId=" + OrderId +
+                "ModuleId=" + ModuleId +
+                ", ModuleName='" + ModuleName + '\'' +
+                ", OrderId=" + OrderId +
                 ", OrderSubmitTimeStr='" + OrderSubmitTimeStr + '\'' +
                 ", OrderSum=" + OrderSum +
                 ", Freight=" + Freight +
@@ -296,6 +317,8 @@ public class OrderDetail implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.ModuleId);
+        dest.writeString(this.ModuleName);
         dest.writeInt(this.OrderId);
         dest.writeString(this.OrderSubmitTimeStr);
         dest.writeDouble(this.OrderSum);
@@ -325,6 +348,8 @@ public class OrderDetail implements Parcelable {
     }
 
     protected OrderDetail(Parcel in) {
+        this.ModuleId = in.readInt();
+        this.ModuleName = in.readString();
         this.OrderId = in.readInt();
         this.OrderSubmitTimeStr = in.readString();
         this.OrderSum = in.readDouble();

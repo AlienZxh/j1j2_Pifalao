@@ -30,6 +30,9 @@ public interface ServicePointApi {
 
     @POST("ServicePoint/QueryServicePointServiceModules")
     Observable<WebReturn<List<Module>>> queryServicePointServiceModules(@Query("servicePointId") int servicePointId);
+
+    @POST("ServicePoint/QueryServicePointById")
+    Observable<WebReturn<ServicePoint>> queryServicePointById(@Query("servicePointId") int servicePointId);
     //__________________________________________________________________________________
 
     @POST("ServicePoint/QueryServicePointInArea")
@@ -40,9 +43,6 @@ public interface ServicePointApi {
 
     @POST("ServicePoint/QueryServicePointWithDistanceInAreaV3")
     Observable<String> queryServicePointWithDistanceInAreaV3(@Query("city") int city, @Query("beginLat") double beginLat, @Query("beginLng") double beginLng);
-
-    @POST("ServicePoint/QueryServicePointById")
-    Observable<String> queryServicePointById(@Query("servicePointId") int servicePointId);
 
     @POST("ServicePoint/QueryServiceArea")
     Observable<String> queryServiceArea(@Query("cityId") int cityId);

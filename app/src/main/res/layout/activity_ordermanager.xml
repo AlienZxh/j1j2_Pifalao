@@ -12,6 +12,7 @@
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
         android:layout_height="match_parent"
         android:background="@color/colorLayoutBg"
         android:orientation="vertical">
@@ -60,6 +61,16 @@
             app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
 
             <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_submit"
+                android:textColor="#ffff9500"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -99,6 +110,16 @@
             android:paddingLeft="@dimen/padding_small"
             android:paddingTop="@dimen/padding_noraml"
             app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_excuting"
+                android:textColor="#ff007aff"
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="0dp"
@@ -143,6 +164,16 @@
             app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
 
             <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_clientwaitforrecevie"
+                android:textColor="#ff4cd964"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -182,6 +213,16 @@
             android:paddingLeft="@dimen/padding_small"
             android:paddingTop="@dimen/padding_noraml"
             app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_waitforrate"
+                android:textColor="#ff5856d6"
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="0dp"
@@ -225,6 +266,16 @@
             app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
 
             <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_invalid"
+                android:textColor="#ff34aadc"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -264,6 +315,16 @@
             android:paddingLeft="@dimen/padding_small"
             android:paddingTop="@dimen/padding_noraml"
             app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_all"
+                android:textColor="#ff007aff"
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="0dp"

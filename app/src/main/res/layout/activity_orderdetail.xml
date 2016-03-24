@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="android.view.View" />
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+
+        <variable
+            name="orderDetailViewModel"
+            type="com.j1j2.pifalao.feature.orderdetail.OrderDetailViewModel" />
+    </data>
 
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:background="@color/colorLayoutBg"
         android:orientation="vertical">
 
@@ -76,7 +95,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
+                            android:text="@{StringUtils.getOrdersState(orderDetailViewModel.orderSimple.OrderState)}"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -93,15 +112,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
+                            android:text="配送方式："
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
-                            android:textColor="@color/colorPrimary"
+                            android:text="@{orderDetailViewModel.orderSimple.FreightTypeStr}"
+                            android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
@@ -117,15 +136,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
+                            android:text="自提时间："
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
-                            android:textColor="@color/colorPrimary"
+                            android:text="@{orderDetailViewModel.orderSimple.PredictSendTime}"
+                            android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
@@ -141,15 +160,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
+                            android:text="支付方式："
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
-                            android:textColor="@color/colorPrimary"
+                            android:text="货到付款"
+                            android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
@@ -165,15 +184,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
+                            android:text="订单编号："
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
-                            android:textColor="@color/colorPrimary"
+                            android:text="@{String.valueOf(orderDetailViewModel.orderSimple.OrderId)}"
+                            android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
@@ -189,15 +208,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
+                            android:text="下单时间："
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="订单状态："
-                            android:textColor="@color/colorPrimary"
+                            android:text="@{orderDetailViewModel.orderSimple.OrderSubmitTimeStr}"
+                            android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -229,14 +248,16 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10px"
                             android:background="@drawable/orange_conner_tag_bg"
-                            android:text="自提点"
+                            android:paddingLeft="4px"
+                            android:paddingRight="4px"
+                            android:text="@{orderDetailViewModel.orderSimple.FreightType==1?&quot;送货点&quot;:&quot;自提点&quot;}"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_normal" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="asdasdasd"
+                            android:text="@{orderDetailViewModel.servicePointObservableField.Name}"
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big"
                             android:textStyle="bold" />
@@ -253,14 +274,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="asdasd"
+                            android:text="营业时间："
                             android:textColor="@color/colorText999"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="asdasdasd"
+                            android:text="@{orderDetailViewModel.servicePointObservableField.ServiceTime}"
                             android:textColor="@color/colorText999"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -276,14 +297,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="asdasd"
+                            android:text="自提地址："
                             android:textColor="@color/colorText999"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="asdasdasd"
+                            android:text="@{orderDetailViewModel.servicePointObservableField.AddressDetail}"
                             android:textColor="@color/colorText999"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -346,7 +367,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="共8件商品"
+                            android:text="@{StringUtils.getOrdersQuantity(orderDetailViewModel.orderDetailObservableField.ProductDetails)}"
                             android:textColor="@color/colorTextaaa"
                             android:textSize="@dimen/text_normal" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -358,8 +379,9 @@
                         android:layerType="software" />
 
                     <android.support.v7.widget.RecyclerView
+                        android:id="@+id/orderProductList"
                         android:layout_width="match_parent"
-                        android:layout_height="500px" />
+                        android:layout_height="wrap_content" />
                 </com.zhy.autolayout.AutoLinearLayout>
 
                 <View
@@ -397,7 +419,9 @@
                             android:layout_marginRight="40px"
                             android:background="@drawable/orange_conner_tag_bg"
                             android:gravity="right"
-                            android:text="已节省："
+                            android:paddingLeft="4px"
+                            android:paddingRight="4px"
+                            android:text="@{&quot;已节省：&quot;+orderDetailViewModel.orderDetailObservableField.SaveAmount+&quot;元&quot;}"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_normal" />
 
@@ -405,7 +429,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text="0.0"
+                            android:text="@{&quot;￥&quot;+orderDetailViewModel.orderDetailObservableField.ProductAmout}"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -440,7 +464,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text="0.0"
+                            android:text="@{&quot;￥&quot;+orderDetailViewModel.orderDetailObservableField.Freight}"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -475,7 +499,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text="0.0"
+                            android:text="@{&quot;￥&quot;+(orderDetailViewModel.orderDetailObservableField.Freight+orderDetailViewModel.orderDetailObservableField.ProductAmout-orderDetailViewModel.orderDetailObservableField.OrderSum)}"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -509,7 +533,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text="0.0"
+                            android:text="@{&quot;￥&quot;+orderDetailViewModel.orderDetailObservableField.OrderSum}"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_biger"
                             android:textStyle="bold" />
@@ -536,6 +560,44 @@
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
 
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="130px"
+                android:layout_height="62px"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:background="@drawable/gray_conner_btn_selector"
+                android:gravity="center"
+                android:text="取消订单"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal"
+                android:visibility="@{orderDetailViewModel.orderSimple.OrderState==1?View.VISIBLE : View.GONE}" />
+
+            <TextView
+                android:id="@+id/servicepoint"
+                android:layout_width="130px"
+                android:layout_height="62px"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:background="@drawable/orange_conner_btn_selector"
+                android:gravity="center"
+                android:text="查看服务点"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="130px"
+                android:layout_height="62px"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:background="@drawable/blue_conner_btn_selector"
+                android:gravity="center"
+                android:text="评价"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal"
+                android:visibility="@{orderDetailViewModel.orderSimple.OrderState&lt;=32?View.VISIBLE : View.GONE}" />
 
         </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoRelativeLayout>

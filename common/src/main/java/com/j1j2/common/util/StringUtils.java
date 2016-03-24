@@ -2,10 +2,11 @@ package com.j1j2.common.util;
 
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
 
-import com.j1j2.common.R;
+import com.j1j2.data.model.OrderProductDetail;
+
+import java.util.List;
 
 /**
  * Created by alienzxh on 16-3-17.
@@ -54,9 +55,33 @@ public class StringUtils {
         return msp;
     }
 
+    public static CharSequence getRetialPrice(double price, String unit) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
+        SpannableString msp = new SpannableString("市场价：" + df.format(price) + "元/" + unit);
+        msp.setSpan(new StrikethroughSpan(), 0, msp.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return msp;
+    }
+
+    public static CharSequence getPriceSave(double retialPrice, double memberPrice) {
+        double save = retialPrice - memberPrice;
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
+        return "省：￥" + df.format(save);
+    }
+
     public static CharSequence getOrdersQuantity(int quantity) {
 
-        return "共" + quantity + "件";
+        return "共" + quantity + "件商品";
+    }
+
+    public static CharSequence getOrdersQuantity(List<OrderProductDetail> orderProductDetails) {
+        int quantity = 0;
+        if (null == orderProductDetails || orderProductDetails.size() <= 0)
+            return "共" + quantity + "件商品";
+
+        for (OrderProductDetail orderProductDetail : orderProductDetails) {
+            quantity += orderProductDetail.getQuantity();
+        }
+        return "共" + quantity + "件商品";
     }
 
     public static CharSequence getOrdersState(int orderType) {

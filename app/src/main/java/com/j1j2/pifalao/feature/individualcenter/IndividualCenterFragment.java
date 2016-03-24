@@ -14,7 +14,6 @@ import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.pifalao.feature.main.MainActivity;
-import com.j1j2.pifalao.feature.main.di.MainComponent;
 
 import javax.inject.Inject;
 
@@ -30,6 +29,16 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         void navigateToOrderManager();
 
         void navigateToQRCode();
+
+        void navigateToAddressManager();
+
+        void navigateToWalletManager();
+
+        void navigateToMessages();
+
+        void navigateToCollects();
+
+        void navigateToAccount();
     }
 
     private IndividualCenterFragmentListener listener;
@@ -74,6 +83,21 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         }
         if (v == binding.qrCode) {
             listener.navigateToQRCode();
+        }
+        if (v == binding.adderssManager) {
+            listener.navigateToAddressManager();
+        }
+        if (v == binding.walletManager) {
+            listener.navigateToWalletManager();
+        }
+        if (v == binding.massageManager) {
+            listener.navigateToMessages();
+        }
+        if (v == binding.collectManager) {
+            listener.navigateToCollects();
+        }
+        if (v == binding.accountManager) {
+            listener.navigateToAccount();
         }
     }
 }

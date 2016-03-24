@@ -31,13 +31,9 @@ ext {
     superrecyclerviewVersion = "1.1.3"
 
     circularVersion = "1.2.0"
-    smarttablayoutVersion = "1.6.0@aar"
-
     tagviewVersion = "1.0.4"
 
     storeboxVersion = "1.3.0"
-
-    snappingstepperVersion = "1.0.2"
     dialogplusVersion = "1.11@aar"
 
     zxingVersion = "3.2.1"
@@ -107,22 +103,20 @@ ext {
     ]
 
     commonDependencies = [
-            calligraphy      : "uk.co.chrisjenx:calligraphy:${calligraphyVersion}",
-            androidAutoLayout: "com.zhy:autolayout:${androidAutoLayoutVersion}",
-            appcompat        : "com.android.support:appcompat-v7:${supportVersion}",
-            supportv4        : "com.android.support:support-v4:${supportVersion}",
-            design           : "com.android.support:design:${supportVersion}",
-            cardview         : "com.android.support:cardview-v7:${supportVersion}",
-            ripplebackground : "com.skyfishjy.ripplebackground:library:${ripplebackgroundVersion}",
-            flexibledivider  : "com.yqritc:recyclerview-flexibledivider:${flexibledividerVersion}",
-            animators        : "jp.wasabeef:recyclerview-animators:${animatorsVersion}",
-            superrecyclerview: "com.malinskiy:superrecyclerview:${superrecyclerviewVersion}",
-            circular         : "com.github.castorflex.smoothprogressbar:library-circular:${circularVersion}",
-            smarttablayout   : "com.ogaclejapan.smarttablayout:library:${smarttablayoutVersion}",
-            tagview          : "com.veinhorn.tagview:library:${tagviewVersion}",
-            snappingstepper  : "com.bigkoo:snappingstepper:${snappingstepperVersion}",
-            dialogplus       : "com.orhanobut:dialogplus:${dialogplusVersion}",
-            zxing            : "com.google.zxing:core:${zxingVersion}",
+            calligraphy       : "uk.co.chrisjenx:calligraphy:${calligraphyVersion}",
+            androidAutoLayout : "com.zhy:autolayout:${androidAutoLayoutVersion}",
+            appcompat         : "com.android.support:appcompat-v7:${supportVersion}",
+            supportv4         : "com.android.support:support-v4:${supportVersion}",
+            design            : "com.android.support:design:${supportVersion}",
+            cardview          : "com.android.support:cardview-v7:${supportVersion}",
+            ripplebackground  : "com.skyfishjy.ripplebackground:library:${ripplebackgroundVersion}",
+            flexibledivider   : "com.yqritc:recyclerview-flexibledivider:${flexibledividerVersion}",
+            animators         : "jp.wasabeef:recyclerview-animators:${animatorsVersion}",
+            superrecyclerview : "com.malinskiy:superrecyclerview:${superrecyclerviewVersion}",
+            circular          : "com.github.castorflex.smoothprogressbar:library-circular:${circularVersion}",
+            tagview           : "com.veinhorn.tagview:library:${tagviewVersion}",
+            dialogplus        : "com.orhanobut:dialogplus:${dialogplusVersion}",
+            zxing             : "com.google.zxing:core:${zxingVersion}",
     ]
 
     commonTestDependencies = [

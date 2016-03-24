@@ -14,6 +14,7 @@ import rx.Observable;
  */
 public interface UserCouponApi {
 
+    //1:配送券   2：商品优惠券
     @POST("UserCoupon/QueryUserCoupon")
     Observable<WebReturn<List<Coupon>>> queryUserCoupon(@Query("couponType") int couponType, @Query("moduleId") int moduleId);
 }

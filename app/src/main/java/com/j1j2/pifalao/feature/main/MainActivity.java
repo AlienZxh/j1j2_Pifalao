@@ -3,7 +3,6 @@ package com.j1j2.pifalao.feature.main;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.common.view.smarttablayout.SmartTabLayout;
 import com.j1j2.data.model.Module;
@@ -11,7 +10,6 @@ import com.j1j2.data.model.ProductSort;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
-import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.MainTab;
 import com.j1j2.pifalao.databinding.ActivityMainBinding;
@@ -22,8 +20,6 @@ import com.j1j2.pifalao.feature.main.di.MainModule;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
@@ -54,7 +50,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     protected void initViews() {
         fragments = new ArrayList<>();
         fragments.add(Bundler.storeStyleHomeFragment(module).create());
-        fragments.add(new Fragment());
+        fragments.add(Bundler.supplierFragment().create());
         fragments.add(new Fragment());
         fragments.add(Bundler.individualCenterFragment().create());
 
@@ -119,5 +115,30 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     public void navigateToQRCode() {
         navigate.navigateToQRCode(this, null, false);
+    }
+
+    @Override
+    public void navigateToAddressManager() {
+        navigate.navigateToAddressManager(this, null, false);
+    }
+
+    @Override
+    public void navigateToWalletManager() {
+        navigate.navigateToWalletManager(this, null, false, module);
+    }
+
+    @Override
+    public void navigateToMessages() {
+        navigate.navigateToMessages(this, null, false);
+    }
+
+    @Override
+    public void navigateToCollects() {
+        navigate.navigateToCollects(this, null, false);
+    }
+
+    @Override
+    public void navigateToAccount() {
+        navigate.navigateToAccount(this, null, false);
     }
 }

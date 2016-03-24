@@ -11,6 +11,8 @@ import java.util.List;
 public class OrderSimple implements Parcelable {
 
     /**
+     * "ModuleId": 23,
+     * "ModuleName": "进货佬批发网",
      * OrderId : 14281
      * OrderSubmitTimeStr : 2015-09-11 02:22:56
      * OrderSum : 39
@@ -26,7 +28,7 @@ public class OrderSimple implements Parcelable {
      * ContacterAddress : 湖南省长沙市雨花区民主路
      * ProductAmout : 41
      * Coupons : []
-     * FreightType : 2
+     * FreightType : 2 //1:送货上门
      * FreightTypeStr : 服务点自提
      * PredictSendTime : 2015-09-12 有空就来拿
      * ConnectedServicePoint : 星沙星城国际服务点
@@ -35,7 +37,8 @@ public class OrderSimple implements Parcelable {
      * ReceiveAddressLng : 113.117742
      * CalculateDistance : 0.1
      */
-
+    private int ModuleId;
+    private String ModuleName;
     private int OrderId;
     private String OrderSubmitTimeStr;
     private double OrderSum;
@@ -74,6 +77,22 @@ public class OrderSimple implements Parcelable {
     private double ReceiveAddressLng;
     private double CalculateDistance;
     private List<Coupon> Coupons;
+
+    public int getModuleId() {
+        return ModuleId;
+    }
+
+    public void setModuleId(int moduleId) {
+        ModuleId = moduleId;
+    }
+
+    public String getModuleName() {
+        return ModuleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        ModuleName = moduleName;
+    }
 
     public int getOrderId() {
         return OrderId;
@@ -259,35 +278,6 @@ public class OrderSimple implements Parcelable {
         Coupons = coupons;
     }
 
-    @Override
-    public String toString() {
-        return "OrderSimple{" +
-                "OrderId=" + OrderId +
-                ", OrderSubmitTimeStr='" + OrderSubmitTimeStr + '\'' +
-                ", OrderSum=" + OrderSum +
-                ", Freight=" + Freight +
-                ", OrderState=" + OrderState +
-                ", OrderEvaluate='" + OrderEvaluate + '\'' +
-                ", AdminReply='" + AdminReply + '\'' +
-                ", TopOneProductDetail=" + TopOneProductDetail +
-                ", DealSubmitTime='" + DealSubmitTime + '\'' +
-                ", DealSubmitTimeStr='" + DealSubmitTimeStr + '\'' +
-                ", Contacter='" + Contacter + '\'' +
-                ", ContacterPhone='" + ContacterPhone + '\'' +
-                ", ContacterAddress='" + ContacterAddress + '\'' +
-                ", ProductAmout=" + ProductAmout +
-                ", FreightType=" + FreightType +
-                ", FreightTypeStr='" + FreightTypeStr + '\'' +
-                ", PredictSendTime='" + PredictSendTime + '\'' +
-                ", ConnectedServicePoint='" + ConnectedServicePoint + '\'' +
-                ", ServicePoint=" + ServicePoint +
-                ", ReceiveAddressLat=" + ReceiveAddressLat +
-                ", ReceiveAddressLng=" + ReceiveAddressLng +
-                ", CalculateDistance=" + CalculateDistance +
-                ", Coupons=" + Coupons +
-                '}';
-    }
-
 
     @Override
     public int describeContents() {
@@ -296,6 +286,8 @@ public class OrderSimple implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.ModuleId);
+        dest.writeString(this.ModuleName);
         dest.writeInt(this.OrderId);
         dest.writeString(this.OrderSubmitTimeStr);
         dest.writeDouble(this.OrderSum);
@@ -325,6 +317,8 @@ public class OrderSimple implements Parcelable {
     }
 
     protected OrderSimple(Parcel in) {
+        this.ModuleId = in.readInt();
+        this.ModuleName = in.readString();
         this.OrderId = in.readInt();
         this.OrderSubmitTimeStr = in.readString();
         this.OrderSum = in.readDouble();

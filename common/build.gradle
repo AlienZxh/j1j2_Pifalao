@@ -24,6 +24,8 @@ dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    compile project(':data')
+
     compile commonDependencies.calligraphy
     compile commonDependencies.androidAutoLayout
     compile commonDependencies.appcompat

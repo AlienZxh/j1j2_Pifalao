@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGrayF0F0F0"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="我的消息"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.j1j2.common.view.smarttablayout.SmartTabLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="76px"
+            app:stl_customTabTextLayoutId="@layout/view_normaltab"
+            app:stl_customTabTextViewId="@+id/tab_text"
+            app:stl_distributeEvenly="true"
+            app:stl_dividerColor="@color/colorTransparent"
+            app:stl_dividerThickness="0dp"
+            app:stl_indicatorColor="@color/colorAccent"
+            app:stl_indicatorGravity="bottom"
+            app:stl_indicatorInterpolation="smart"
+            app:stl_indicatorThickness="2px"
+            app:stl_overlineColor="@color/colorTransparent"
+            app:stl_overlineThickness="0dp"
+            app:stl_underlineColor="@color/colorTransparent"
+            app:stl_underlineThickness="0dp" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

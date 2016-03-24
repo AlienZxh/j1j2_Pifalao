@@ -24,6 +24,7 @@ public class OrderProductDetail implements Parcelable {
      */
 
     private int ProductId;
+    private int ProductMainId;
     private String OwnCode;
     private String BarCode;
     private String ProductName;
@@ -42,6 +43,14 @@ public class OrderProductDetail implements Parcelable {
 
     public void setProductId(int productId) {
         ProductId = productId;
+    }
+
+    public int getProductMainId() {
+        return ProductMainId;
+    }
+
+    public void setProductMainId(int productMainId) {
+        ProductMainId = productMainId;
     }
 
     public String getOwnCode() {
@@ -136,6 +145,7 @@ public class OrderProductDetail implements Parcelable {
     public String toString() {
         return "OrderProductDetail{" +
                 "ProductId=" + ProductId +
+                ", ProductMainId=" + ProductMainId +
                 ", OwnCode='" + OwnCode + '\'' +
                 ", BarCode='" + BarCode + '\'' +
                 ", ProductName='" + ProductName + '\'' +
@@ -159,6 +169,7 @@ public class OrderProductDetail implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.ProductId);
+        dest.writeInt(this.ProductMainId);
         dest.writeString(this.OwnCode);
         dest.writeString(this.BarCode);
         dest.writeString(this.ProductName);
@@ -177,6 +188,7 @@ public class OrderProductDetail implements Parcelable {
 
     protected OrderProductDetail(Parcel in) {
         this.ProductId = in.readInt();
+        this.ProductMainId = in.readInt();
         this.OwnCode = in.readString();
         this.BarCode = in.readString();
         this.ProductName = in.readString();

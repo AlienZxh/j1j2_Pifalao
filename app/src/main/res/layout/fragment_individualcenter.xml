@@ -293,6 +293,14 @@
                     android:text="@string/icon_qr_code"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="60px" />
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_privilege"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="64px"
+                    app:layout_auto_baseheight="width" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
             <View
@@ -311,6 +319,16 @@
                 android:paddingLeft="@dimen/padding_small"
                 android:paddingTop="@dimen/padding_noraml"
                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text="@string/icon_ordermanager"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/icon_normal" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -356,6 +374,16 @@
                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text="@string/icon_addressmanager"
+                    android:textColor="#ff007aff"
+                    android:textSize="@dimen/icon_normal" />
+
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -395,6 +423,16 @@
                 android:paddingLeft="@dimen/padding_small"
                 android:paddingTop="@dimen/padding_noraml"
                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text="@string/icon_walletmanager"
+                    android:textColor="#ffff3045"
+                    android:textSize="@dimen/icon_normal" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -439,6 +477,16 @@
                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text="@string/icon_messagemanager"
+                    android:textColor="#ff34aadc"
+                    android:textSize="@dimen/icon_normal" />
+
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -479,6 +527,16 @@
                 android:paddingLeft="@dimen/padding_small"
                 android:paddingTop="@dimen/padding_noraml"
                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text="@string/icon_collectmanager"
+                    android:textColor="#ff5856d6"
+                    android:textSize="@dimen/icon_normal" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -523,6 +581,16 @@
                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
 
                 <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:text="@string/icon_accountmanager"
+                    android:textColor="#ff4cd964"
+                    android:textSize="@dimen/icon_normal" />
+
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -551,7 +619,9 @@
                 android:layout_height="@dimen/height_1px"
                 android:background="@color/colorGrayE8E8E8" />
 
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_noraml" />
         </com.zhy.autolayout.AutoLinearLayout>
     </ScrollView>
 </layout>

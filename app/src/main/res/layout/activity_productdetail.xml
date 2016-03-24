@@ -12,6 +12,7 @@
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
         android:layout_height="match_parent">
 
         <com.j1j2.common.view.autowidget.AutoNestedScrolling
@@ -188,6 +189,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="120px" />
             </com.zhy.autolayout.AutoLinearLayout>
 
         </com.j1j2.common.view.autowidget.AutoNestedScrolling>

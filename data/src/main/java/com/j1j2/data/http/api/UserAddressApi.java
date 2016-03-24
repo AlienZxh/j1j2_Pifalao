@@ -1,6 +1,10 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.Address;
+import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.EditorUserRecivingAddressBody;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -13,17 +17,17 @@ import rx.Observable;
 public interface UserAddressApi {
 
     @POST("UserAddress/QueryUserReceiveAddress")
-    Observable<String> queryUserReceiveAddress();
+    Observable<WebReturn<List<Address>>> queryUserReceiveAddress();
 
     @POST("UserAddress/QueryUserDefaultAddress")
-    Observable<String> queryUserDefaultAddress();
+    Observable<WebReturn<Address>> queryUserDefaultAddress();
 
     @POST("UserAddress/InsertOrUpdateUserAddress")
-    Observable<String> insertOrUpdateUserAddress(@Body EditorUserRecivingAddressBody editorUserRecivingAddressBody);
+    Observable<WebReturn<String>> insertOrUpdateUserAddress(@Body EditorUserRecivingAddressBody editorUserRecivingAddressBody);
 
     @POST("UserAddress/SetUserDefaultAddress")
-    Observable<String> setUserDefaultAddress(@Query("addressId") int addressId);
+    Observable<WebReturn<String>> setUserDefaultAddress(@Query("addressId") int addressId);
 
     @POST("UserAddress/DeleteUserAddress")
-    Observable<String> deleteUserAddress(@Query("addressId") int addressId);
+    Observable<WebReturn<String>> deleteUserAddress(@Query("addressId") int addressId);
 }

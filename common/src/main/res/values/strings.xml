@@ -28,8 +28,8 @@
     <string name="icon_home">&#xe694;</string>
     <string name="icon_shopcart_fill">&#xe68f;</string>
     <string name="icon_shopcart">&#xe690;</string>
-    <string name="icon_supplier_fill">&#xe695;</string>
-    <string name="icon_supplier">&#xe696;</string>
+    <string name="icon_supplier_fill">&#xe6b0;</string>
+    <string name="icon_supplier">&#xe6af;</string>
     <string name="icon_mine_fill">&#xe697;</string>
     <string name="icon_mine">&#xe698;</string>
 
@@ -47,6 +47,7 @@
     <string name="icon_sort_head8">&#xe685;</string>
     <string name="icon_sort_head9">&#xe683;</string>
 
+    <string name="icon_shoppingbag">&#xe69a;</string>
     <string name="icon_safe">&#xe663;</string>
     <string name="icon_album"> &#xe65a;</string>
 
@@ -63,5 +64,37 @@
 
     <string name="icon_refresh">&#xe62b;</string>
 
+    <string name="icon_privilege">&#xe69c;</string>
+
+    <string name="icon_ordermanager">&#xe6c1;</string>
+    <string name="icon_addressmanager">&#xe6c3;</string>
+    <string name="icon_walletmanager">&#xe6b9;</string>
+    <string name="icon_messagemanager">&#xe6c0;</string>
+    <string name="icon_collectmanager">&#xe6b5;</string>
+    <string name="icon_accountmanager">&#xe6ba;</string>
+
+    <string name="icon_order_submit">&#xe6b4;</string>
+    <string name="icon_order_excuting">&#xe6bb;</string>
+    <string name="icon_order_clientwaitforrecevie">&#xe6b4;</string>
+    <string name="icon_order_waitforrate">&#xe6b8;</string>
+    <string name="icon_order_invalid">&#xe6bc;</string>
+    <string name="icon_order_all">&#xe6b7;</string>
+
+    <string name="icon_edit">&#xe604;</string>
+
+    <string name="icon_address_default">&#xe6a9;</string>
+
+    <string name="icon_balance">&#xe6bf;</string>
+    <string name="icon_point">&#xe6c4;</string>
+    <string name="icon_coupon">&#xe6be;</string>
+    <string name="icon_deliverycoupon">&#xe6c2;</string>
+    <string name="icon_goodscoupon">&#xe6b6;</string>
+
+    <string name="icon_psw">&#xe6c5;</string>
+
+    <string name="icon_mobile">&#xe67a;</string>
+    <string name="icon_shortinfo">&#xe67b;</string>
+    <string name="icon_unlock">&#xe630;</string>
+    <string name="icon_addressbook">&#xe62e;</string>
 
 </resources>

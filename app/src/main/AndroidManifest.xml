@@ -95,6 +95,33 @@
         <activity
             android:name=".feature.qrcode.QrCodeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.addressmanager.AddressManagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.walletmanager.WalletManagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.coupons.CouponsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.messages.MessagesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.collects.CollectsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.account.AccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.changepassword.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.register.stepone.RegisterStepOneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.register.steptwo.RegisterStepTwoActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.baidu.location.f"

@@ -6,7 +6,6 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.j1j2.common.util.EmptyUtils;
-import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -69,8 +68,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             }
             loginViewModel.login(username, password, binding.autoLoginCeck.isChecked());
         }
-        if (v == binding.registerBtn)
-            Toast.makeText(this, "注册", Toast.LENGTH_SHORT).show();
+        if (v == binding.registerBtn) {
+            navigate.navigateToRegisterStepOne(this, null, false);
+            navigate.navigateToRegisterStepTwo(this, null, false);
+        }
         if (v == binding.forgetPSW)
             Toast.makeText(this, "找回密码", Toast.LENGTH_SHORT).show();
     }

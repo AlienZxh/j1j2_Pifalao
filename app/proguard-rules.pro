@@ -15,6 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-ignorewarnings
 -optimizationpasses 7  #指定代码的压缩级别 0 - 7
 -dontusemixedcaseclassnames  #是否使用大小写混合
 -dontskipnonpubliclibraryclasses  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
@@ -30,6 +31,7 @@
 -keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class com.android.vending.licensing.ILicensingService #指定具体类不要去混淆
+-keep public class com.google.vending.licensing.ILicensingService
 
 -keepclasseswithmembernames class * {
     native <methods>;  #保持 native 的方法不去混淆
@@ -152,3 +154,18 @@
 -keep class net.orange_box.storebox.** { *; }
 -dontwarn  net.orange_box.storebox.**
 ##---------------End: proguard configuration for StoreBox  ----------
+
+##---------------Begin: proguard configuration for dialogplus  ----------
+-keep class com.orhanobut.dialogplus.** { *; }
+-dontwarn  com.orhanobut.dialogplus.**
+##---------------End: proguard configuration for dialogplus  ----------
+
+##---------------Begin: proguard configuration for zxing  ----------
+-keep class com.google.zxing.** { *; }
+-dontwarn  com.google.zxing.**
+##---------------End: proguard configuration for zxing  ----------
+
+
+
+
+

@@ -60,7 +60,7 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
