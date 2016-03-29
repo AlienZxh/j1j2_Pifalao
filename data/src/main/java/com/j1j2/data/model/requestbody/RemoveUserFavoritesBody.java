@@ -7,20 +7,13 @@ import java.util.List;
  */
 public class RemoveUserFavoritesBody {
 
-    private List<Integer> ProductIdList;
+    private List<Integer> MainIdList;
 
-    public List<Integer> getProductIdList() {
-        return ProductIdList;
+    public List<Integer> getMainIdList() {
+        return MainIdList;
     }
 
-    public void setProductIdList(List<Integer> productIdList) {
-        ProductIdList = productIdList;
-    }
-
-    @Override
-    public String toString() {
-        return "RemoveUserFavoritesBody{" +
-                "ProductIdList=" + ProductIdList +
-                '}';
+    public void setMainIdList(List<Integer> mainIdList) {
+        MainIdList = mainIdList;
     }
 }

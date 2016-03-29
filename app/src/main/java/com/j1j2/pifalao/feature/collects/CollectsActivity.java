@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.collects;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -19,7 +20,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-24.
  */
 @RequireBundler
-public class CollectsActivity extends BaseActivity {
+public class CollectsActivity extends BaseActivity implements View.OnClickListener {
 
     ActivityCollectsBinding binding;
 
@@ -29,6 +30,7 @@ public class CollectsActivity extends BaseActivity {
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_collects);
+        binding.backBtn.setOnClickListener(this);
     }
 
     @Override
@@ -50,5 +52,11 @@ public class CollectsActivity extends BaseActivity {
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         MainAplication.get(this).getUserComponent().plus(new CollectsModule(this)).inject(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
     }
 }

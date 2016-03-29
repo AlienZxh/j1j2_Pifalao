@@ -27,6 +27,6 @@ public interface UserFavoriteApi {
     Observable<WebReturn<String>> removeItemFromUserFavorites(@Body RemoveUserFavoritesBody removeUserFavoritesBody);
 
     @POST("UserFavorite/QueryProductHasBeenCollected")
-    Observable<String> queryProductHasBeenCollected(@Query("mainId") int mainId);
+    Observable<WebReturn<String>> queryProductHasBeenCollected(@Query("mainId") int mainId);
 
 }

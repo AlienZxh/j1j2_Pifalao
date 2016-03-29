@@ -13,6 +13,7 @@ import com.j1j2.data.http.api.UserMessageApi;
 import com.j1j2.data.model.Message;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.data.model.requestbody.SetSystemNoteiceReadBody;
 import com.j1j2.data.model.requestbody.UserPushSearcherBody;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
@@ -22,6 +23,9 @@ import com.j1j2.pifalao.databinding.FragmentMessagesBinding;
 import com.j1j2.pifalao.feature.messages.di.MessagesComponent;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -53,6 +57,7 @@ public class MessagesFragment extends BaseFragment {
     UserMessageApi userMessageApi;
 
     MessagesAdapter adapter;
+
 
     @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,8 +103,10 @@ public class MessagesFragment extends BaseFragment {
                 .subscribe(new WebReturnSubscriber<PagerManager<Message>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<Message> messagePagerManager) {
+
                         adapter = new MessagesAdapter(messagePagerManager.getList());
                         binding.messageList.setAdapter(adapter);
+                        serMessagesRead(messagePagerManager.getList());
                     }
 
                     @Override
@@ -110,6 +117,37 @@ public class MessagesFragment extends BaseFragment {
                     @Override
                     public void onWebReturnCompleted() {
 
+                    }
+                });
+    }
+
+    public void serMessagesRead(List<Message> messageList) {
+        if (messageList == null || messageList.size() <= 0)
+            return;
+        SetSystemNoteiceReadBody setSystemNoteiceReadBody = new SetSystemNoteiceReadBody();
+        List<Integer> ids = new ArrayList<>();
+        for (Message message : messageList) {
+            if (!message.isHasRead())
+                ids.add(message.getMessageId());
+        }
+        if (ids.size() <= 0)
+            return;
+        setSystemNoteiceReadBody.setRecordIdList(ids);
+        userMessageApi.markPushMessageList(setSystemNoteiceReadBody)
+                .compose(this.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
                     }
                 });
     }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="successResultActivity"
+            type="com.j1j2.pifalao.feature.successresult.SuccessResultActivity" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{successResultActivity}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@{successResultActivity.toolbarTitle}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <TextView
+            android:id="@+id/successIcon"
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200px"
+            android:text="@string/icon_round_check_fill"
+            android:textColor="@color/colorPrimary"
+            android:textSize="160px" />
+
+        <TextView
+            android:id="@+id/messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{successResultActivity.message}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_biger" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/cancelBtn"
+                android:layout_width="0dp"
+                android:layout_height="80px"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/green_conner_btn_selector"
+                android:gravity="center"
+                android:text="@{successResultActivity.cancelBtnStr}"
+                android:textColor="@color/colorWhite"
+                android:textSize="30px"
+                app:OnClickListener="@{successResultActivity}" />
+
+            <TextView
+                android:id="@+id/confirmBtn"
+                android:layout_width="0dp"
+                android:layout_height="80px"
+                android:layout_marginLeft="@dimen/padding_big"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_weight="1"
+                android:background="@drawable/orange_conner_btn_selector"
+                android:gravity="center"
+                android:text="@{successResultActivity.confirmBtnStr}"
+                android:textColor="@color/colorWhite"
+                android:textSize="30px"
+                app:OnClickListener="@{successResultActivity}" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

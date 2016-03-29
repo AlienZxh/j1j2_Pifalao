@@ -1,9 +1,12 @@
 package com.j1j2.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alienzxh on 16-3-11.
  */
-public class User {
+public class User implements Parcelable {
 
     /**
      * UserId : 760
@@ -17,7 +20,7 @@ public class User {
      * UserName : zxh
      * RegisterTimeStr : 2015-04-18 00:00:00
      * ExpireTimeStr : 2017-07-17 00:00:00
-     * CurrentServiceTime : 2016-03-15 15:53:25
+     * CurrentServiceTime : 2016-03-15 15:53:25　　
      * VIPRegisterCode : 6523068014
      * Cost : 155.66
      * UserSaveAmount : 22.18
@@ -201,4 +204,66 @@ public class User {
                 ", Balance=" + Balance +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.UserId);
+        dest.writeString(this.LoginAccount);
+        dest.writeString(this.StoreName);
+        dest.writeInt(this.RoleId);
+        dest.writeInt(this.Point);
+        dest.writeInt(this.DeliveryTemplateId);
+        dest.writeInt(this.ServicePointId);
+        dest.writeByte(AdminVerfiy ? (byte) 1 : (byte) 0);
+        dest.writeString(this.UserName);
+        dest.writeString(this.RegisterTimeStr);
+        dest.writeString(this.ExpireTimeStr);
+        dest.writeString(this.CurrentServiceTime);
+        dest.writeString(this.VIPRegisterCode);
+        dest.writeDouble(this.Cost);
+        dest.writeDouble(this.UserSaveAmount);
+        dest.writeInt(this.UserLevelId);
+        dest.writeDouble(this.Balance);
+    }
+
+    public User() {
+    }
+
+    protected User(Parcel in) {
+        this.UserId = in.readInt();
+        this.LoginAccount = in.readString();
+        this.StoreName = in.readString();
+        this.RoleId = in.readInt();
+        this.Point = in.readInt();
+        this.DeliveryTemplateId = in.readInt();
+        this.ServicePointId = in.readInt();
+        this.AdminVerfiy = in.readByte() != 0;
+        this.UserName = in.readString();
+        this.RegisterTimeStr = in.readString();
+        this.ExpireTimeStr = in.readString();
+        this.CurrentServiceTime = in.readString();
+        this.VIPRegisterCode = in.readString();
+        this.Cost = in.readDouble();
+        this.UserSaveAmount = in.readDouble();
+        this.UserLevelId = in.readInt();
+        this.Balance = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

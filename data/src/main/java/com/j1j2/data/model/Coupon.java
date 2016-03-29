@@ -37,6 +37,7 @@ public class Coupon implements Parcelable {
     private String UsedTimeStr;
     private String ExpiryDateStr;
     private int ModuleIdStr;
+    private boolean IsExpired;//ture:过期
 
     public int getCouponId() {
         return CouponId;
@@ -142,6 +143,14 @@ public class Coupon implements Parcelable {
         ModuleIdStr = moduleIdStr;
     }
 
+    public boolean isExpired() {
+        return IsExpired;
+    }
+
+    public void setIsExpired(boolean isExpired) {
+        IsExpired = isExpired;
+    }
+
     @Override
     public String toString() {
         return "Coupon{" +
@@ -158,6 +167,7 @@ public class Coupon implements Parcelable {
                 ", UsedTimeStr='" + UsedTimeStr + '\'' +
                 ", ExpiryDateStr='" + ExpiryDateStr + '\'' +
                 ", ModuleIdStr=" + ModuleIdStr +
+                ", IsExpired=" + IsExpired +
                 '}';
     }
 
@@ -182,6 +192,7 @@ public class Coupon implements Parcelable {
         dest.writeString(this.UsedTimeStr);
         dest.writeString(this.ExpiryDateStr);
         dest.writeInt(this.ModuleIdStr);
+        dest.writeByte(IsExpired ? (byte) 1 : (byte) 0);
     }
 
     public Coupon() {
@@ -201,6 +212,7 @@ public class Coupon implements Parcelable {
         this.UsedTimeStr = in.readString();
         this.ExpiryDateStr = in.readString();
         this.ModuleIdStr = in.readInt();
+        this.IsExpired = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<Coupon> CREATOR = new Parcelable.Creator<Coupon>() {

@@ -6,9 +6,12 @@ import android.view.View;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.OrderCancelEvent;
 import com.j1j2.pifalao.databinding.ActivityOrdermanagerBinding;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerModule;
 import com.j1j2.pifalao.feature.orders.OrdersActivity;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -33,11 +36,13 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
-
+        orderManagerViewModel.queryOrderStatistics();
     }
 
     @Override
     public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
         if (v == binding.SubmitOrder) {
             navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_SUBMIT);
         } else if (v == binding.ExcutingOrder) {
@@ -57,5 +62,10 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         MainAplication.get(this).getUserComponent().plus(new OrderManagerModule(this)).inject(this);
+    }
+
+    @Subscribe
+    public void onOrderCancelEvent(OrderCancelEvent event) {
+        orderManagerViewModel.queryOrderStatistics();
     }
 }

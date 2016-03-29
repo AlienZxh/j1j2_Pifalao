@@ -2,6 +2,7 @@ package com.j1j2.data.http.api;
 
 import com.j1j2.data.model.Message;
 import com.j1j2.data.model.PagerManager;
+import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.SetSystemNoteiceReadBody;
 import com.j1j2.data.model.requestbody.UserPushSearcherBody;
@@ -19,10 +20,14 @@ public interface UserMessageApi {
     @POST("UserMessage/QueryPushMessageByUserId")
     Observable<WebReturn<PagerManager<Message>>> queryPushMessageByUserId(@Body UserPushSearcherBody userPushSearcherBody);
 
-    //______________________________________________________________________________________________
 
     @POST("UserMessage/QueryUserUnReadInfo")
-    Observable<String> queryUserUnReadInfo();
+    Observable<WebReturn<UnReadInfo>> queryUserUnReadInfo();
+
+    @POST("UserMessage/MarkPushMessageList")
+    Observable<WebReturn<String>> markPushMessageList(@Body SetSystemNoteiceReadBody setSystemNoteiceReadBody);
+    //______________________________________________________________________________________________
+
 
     @POST("UserMessage/QueryUnreadPushMessageCount")
     Observable<String> queryUnreadPushMessageCount();
@@ -31,6 +36,5 @@ public interface UserMessageApi {
     @POST("UserMessage/MarkPushMessage")
     Observable<String> markPushMessage(@Query("recordId") int recordId);
 
-    @POST("UserMessage/MarkPushMessageList")
-    Observable<String> markPushMessageList(@Body SetSystemNoteiceReadBody setSystemNoteiceReadBody);
+
 }

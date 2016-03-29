@@ -47,4 +47,7 @@ public class AddressManagerViewModel {
                 });
     }
 
+    public AddressManagerActivity getAddressManagerActivity() {
+        return addressManagerActivity;
+    }
 }

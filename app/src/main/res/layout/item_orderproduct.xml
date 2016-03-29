@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="android.net.Uri" />
+
+        <variable
+            name="orderProductDetail"
+            type="com.j1j2.data.model.OrderProductDetail" />
+    </data>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_width="@dimen/content_height_biger"
+        android:layout_height="@dimen/content_height_biger"
+        android:layout_centerVertical="true"
+        app:imageURI="@{Uri.parse(orderProductDetail.ThumbImgPath??@string/text_empty)}"
+        fresco:roundedCornerRadius="5dp"
+        fresco:roundingBorderColor="@color/colorGrayF0F0F0"
+        fresco:roundingBorderWidth="1px" />
+</layout>

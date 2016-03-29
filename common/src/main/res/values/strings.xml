@@ -97,4 +97,25 @@
     <string name="icon_unlock">&#xe630;</string>
     <string name="icon_addressbook">&#xe62e;</string>
 
+    <string name="icon_member_card">&#xe6a2;</string>
+
+    <string name="icon_add">&#xe637;</string>
+    <string name="icon_minus">&#xe662;</string>
+    <string name="icon_creative">&#xe652;</string>
+    <string name="icon_round_check_fill">&#xe608;</string>
+
+    <string name="icon_vip">&#xe6a3;</string>
+
+    <string name="icon_service_vegetable">&#xe6d2;</string>
+    <string name="icon_service_shopservice">&#xe6d1;</string>
+    <string name="icon_service_delivery">&#xe6d0;</string>
+    <string name="icon_service_housekeeping">&#xe6d3;</string>
+    <string name="icon_service_vip">&#xe6d4;</string>
+    <string name="icon_service_disable">&#xe6d5;</string>
+    <string name="icon_service_more">&#xe6cf;</string>
+
+    <string name="icon_prompt">&#xe6a8;</string>
+
+    <string name="icon_location_fill">&#xe605;</string>
+
 </resources>

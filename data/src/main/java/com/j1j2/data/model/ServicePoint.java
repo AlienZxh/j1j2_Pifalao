@@ -3,6 +3,8 @@ package com.j1j2.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Comparator;
+
 /**
  * Created by alienzxh on 16-3-12.
  */
@@ -49,7 +51,17 @@ public class ServicePoint implements Parcelable {
     private String Instroduce;
     private boolean PickUpSelfSupport;
     private boolean HomeDeliverySupport;
+    //________________________________________
+    private transient double distance;
 
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+    //______________________________________
     public void setServicePointId(int ServicePointId) {
         this.ServicePointId = ServicePointId;
     }
@@ -200,6 +212,33 @@ public class ServicePoint implements Parcelable {
 
     public boolean isHomeDeliverySupport() {
         return HomeDeliverySupport;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ServicePoint{" +
+                "ServicePointId=" + ServicePointId +
+                ", Name='" + Name + '\'' +
+                ", Mobile='" + Mobile + '\'' +
+                ", AddressDetail='" + AddressDetail + '\'' +
+                ", Note='" + Note + '\'' +
+                ", State=" + State +
+                ", ReferCode='" + ReferCode + '\'' +
+                ", PCCId=" + PCCId +
+                ", ApllyTime='" + ApllyTime + '\'' +
+                ", AuditTime='" + AuditTime + '\'' +
+                ", Lat=" + Lat +
+                ", Lng=" + Lng +
+                ", ServiceTime='" + ServiceTime + '\'' +
+                ", ServicePhone='" + ServicePhone + '\'' +
+                ", OpenOrClosed=" + OpenOrClosed +
+                ", ServicePointImg='" + ServicePointImg + '\'' +
+                ", Instroduce='" + Instroduce + '\'' +
+                ", PickUpSelfSupport=" + PickUpSelfSupport +
+                ", HomeDeliverySupport=" + HomeDeliverySupport +
+                ", distance=" + distance +
+                '}';
     }
 
     @Override

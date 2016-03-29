@@ -1,35 +1,55 @@
 package com.j1j2.pifalao.feature.main;
 
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
+import android.widget.Toast;
 
+import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout;
+import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout;
 import com.j1j2.common.view.smarttablayout.SmartTabLayout;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.ShopCart;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.MainTab;
+import com.j1j2.pifalao.app.event.LocationEvent;
+import com.j1j2.pifalao.app.event.LogStateEvent;
+import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityMainBinding;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
+import com.zhy.autolayout.utils.AutoUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+import rx.Observable;
 
 /**
  * Created by alienzxh on 16-3-16.
  */
 @RequireBundler
-public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabClickListener, HasComponent<MainComponent>, StoreStyleHomeFragment.StoreStyleHomeFragmentListener, IndividualCenterFragment.IndividualCenterFragmentListener {
+public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabClickListener, HasComponent<MainComponent>, StoreStyleHomeFragment.StoreStyleHomeFragmentListener, IndividualCenterFragment.IndividualCenterFragmentListener, View.OnClickListener {
     ActivityMainBinding binding;
 
     @Arg
@@ -41,6 +61,17 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     MainAdapter mainAdapter;
 
+    @Inject
+    UserRelativePreference userRelativePreference;
+    @Inject
+    MainActivityViewModel mainActivityViewModel;
+
+    ShopCart shopCart = null;
+    UnReadInfoManager unReadInfoManager = null;
+    AutoBGABadgeLinearLayout shopCartBadgeView;
+    AutoBGABadgeFrameLayout individualcenterBadgeView;
+
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -50,9 +81,9 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     protected void initViews() {
         fragments = new ArrayList<>();
         fragments.add(Bundler.storeStyleHomeFragment(module).create());
-        fragments.add(Bundler.supplierFragment().create());
+        fragments.add(Bundler.supplierFragment(userRelativePreference.getSelectedCity(null)).create());
         fragments.add(new Fragment());
-        fragments.add(Bundler.individualCenterFragment().create());
+        fragments.add(Bundler.individualCenterFragment(IndividualCenterFragment.FROM_MAINACTIVITY).create());
 
         String[] titles = new String[]{"首页", "供应商", "购物车", "我的"};
         String[] icons = new String[]{getResources().getString(R.string.icon_home), getResources().getString(R.string.icon_supplier), getResources().getString(R.string.icon_shopcart), getResources().getString(R.string.icon_mine)};
@@ -63,12 +94,16 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         binding.tab.setViewPager(binding.viewpager);
         binding.tab.setOnTabClickListener(this);
 
+        shopCartBadgeView = (AutoBGABadgeLinearLayout) binding.tab.getTabAt(2);
+        individualcenterBadgeView = (AutoBGABadgeFrameLayout) binding.tab.getTabAt(3).findViewById(R.id.badgeFrame);
+
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
+
         mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, module));
         mainComponent.inject(this);
     }
@@ -90,6 +125,84 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
                 navigate.navigateToLogin(this, null, false);
             }
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (MainAplication.get(this).isLogin()) {
+            mainActivityViewModel.queryShopcart(module.getWareHouseModuleId());
+            mainActivityViewModel.queryUserUnReadInfo();
+        }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onLogStateChangeEvent(LogStateEvent event) {
+
+        if (event.isLogin()) {
+            shopCart = MainAplication.get(this).getUserComponent().shopCart();
+            mainActivityViewModel.queryShopcart(module.getWareHouseModuleId());
+            unReadInfoManager = MainAplication.get(this).getUserComponent().unReadInfoManager();
+            mainActivityViewModel.queryUserUnReadInfo();
+        } else {
+            if (binding.viewpager.getCurrentItem() != 0)
+                binding.viewpager.setCurrentItem(0);
+            shopCartBadgeView.hiddenBadge();
+            individualcenterBadgeView.hiddenBadge();
+        }
+    }
+
+    @Subscribe
+    public void onNavigateToHomeEvent(NavigateToHomeEvent event) {
+        if (binding.viewpager.getCurrentItem() != 0)
+            binding.viewpager.setCurrentItem(0);
+    }
+
+    public void setUnReadInfo(UnReadInfo unReadInfo) {
+        if (null == unReadInfo)
+            return;
+        unReadInfoManager.setUnReadInfo(unReadInfo);
+        showUnReadCircle();
+    }
+
+    public void showUnReadCircle() {
+        if (unReadInfoManager.isHasUnRead())
+            individualcenterBadgeView.showCirclePointBadge();
+        else
+            individualcenterBadgeView.hiddenBadge();
+    }
+
+    public void setShopCart(List<ShopCartItem> shopCartItems) {
+        if (null == shopCart)
+            return;
+        shopCart.setShopCartItemList(shopCartItems);
+        showNum();
+    }
+
+    public void showNum() {
+        if (shopCart == null)
+            return;
+        if (shopCart.getAllUnitNum() > 0)
+            shopCartBadgeView.showTextBadge("" + shopCart.getAllUnitNum());
+        else
+            shopCartBadgeView.hiddenBadge();
     }
 
     @Override
@@ -140,5 +253,16 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     public void navigateToAccount() {
         navigate.navigateToAccount(this, null, false);
+    }
+
+    @Override
+    public void navigateToVipUpdate() {
+        navigate.navigateToVipUpdateStepOne(this, null, false);
+
+    }
+
+    @Override
+    public void navigateToSetting() {
+        navigate.navigateToSetting(this, null, false);
     }
 }

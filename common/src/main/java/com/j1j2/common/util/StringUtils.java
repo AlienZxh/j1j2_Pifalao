@@ -5,6 +5,7 @@ import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 
 import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.ShopCartItem;
 
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class StringUtils {
     }
 
     public static CharSequence getServicePointDistance(double d) {
-        return ("距离：≈" + d);
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
+        return ("距离：≈" + df.format(d)) + "米";
     }
 
     public static CharSequence getStrWithBracket(String str) {
@@ -40,6 +42,11 @@ public class StringUtils {
     public static CharSequence getPriceWiteSymbol(double price) {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
         return "￥" + df.format(price);
+    }
+
+    public static CharSequence getPriceStr(double price) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
+        return "" + df.format(price);
     }
 
     public static CharSequence getStrWithStrikethrough(String str) {
@@ -83,6 +90,8 @@ public class StringUtils {
         }
         return "共" + quantity + "件商品";
     }
+
+    
 
     public static CharSequence getOrdersState(int orderType) {
         switch (orderType) {

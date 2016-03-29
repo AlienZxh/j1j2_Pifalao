@@ -1,8 +1,17 @@
 package com.j1j2.pifalao.app.di;
 
+import com.j1j2.data.model.User;
+import com.j1j2.pifalao.app.ShopCart;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.UserScope;
+import com.j1j2.pifalao.feature.account.di.AccountComponent;
+import com.j1j2.pifalao.feature.account.di.AccountModule;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerComponent;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerModule;
+import com.j1j2.pifalao.feature.catservicepoint.di.CatServicePointComponent;
+import com.j1j2.pifalao.feature.catservicepoint.di.CatServicePointModule;
+import com.j1j2.pifalao.feature.changepassword.di.ChangePasswordComponent;
+import com.j1j2.pifalao.feature.changepassword.di.ChangePasswordModule;
 import com.j1j2.pifalao.feature.collects.di.CollectsComponent;
 import com.j1j2.pifalao.feature.collects.di.CollectsModule;
 import com.j1j2.pifalao.feature.confirmorder.di.ConfirmOrderComponent;
@@ -21,8 +30,12 @@ import com.j1j2.pifalao.feature.orders.di.OrdersComponent;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeComponent;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeModule;
+import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneComponent;
+import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneModule;
 import com.j1j2.pifalao.feature.shopcart.di.ShopCartComponent;
 import com.j1j2.pifalao.feature.shopcart.di.ShopCartModule;
+import com.j1j2.pifalao.feature.vipupdate.steptwo.di.VipUpdateStepTwoComponent;
+import com.j1j2.pifalao.feature.vipupdate.steptwo.di.VipUpdateStepTwoModule;
 import com.j1j2.pifalao.feature.walletmanager.di.WalletManagerComponent;
 import com.j1j2.pifalao.feature.walletmanager.di.WalletManagerModule;
 
@@ -34,6 +47,12 @@ import dagger.Subcomponent;
 @UserScope
 @Subcomponent(modules = {UserModule.class})
 public interface UserComponent {
+
+    User user();
+
+    ShopCart shopCart();
+
+    UnReadInfoManager unReadInfoManager();
 
     IndividualCenterComponent plus(IndividualCenterModule individualCenterModule);
 
@@ -58,4 +77,13 @@ public interface UserComponent {
     MessagesComponent plus(MessagesModule messagesModule);
 
     CollectsComponent plus(CollectsModule collectsModule);
+
+    AccountComponent plus(AccountModule accountModule);
+
+    ChangePasswordComponent plus(ChangePasswordModule changePasswordModule);
+
+    VipUpdateStepTwoComponent plus(VipUpdateStepTwoModule vipUpdateStepTwoModule);
+
+    CatServicePointComponent plus(CatServicePointModule catServicePointModule);
+
 }

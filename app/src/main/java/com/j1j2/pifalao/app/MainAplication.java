@@ -2,13 +2,13 @@ package com.j1j2.pifalao.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
-import com.j1j2.pifalao.app.base.RxBus;
 import com.j1j2.pifalao.app.di.AppComponent;
 import com.j1j2.pifalao.app.di.AppModule;
 import com.j1j2.pifalao.app.di.DaggerAppComponent;
@@ -19,6 +19,10 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 import javax.inject.Inject;
 
@@ -31,7 +35,7 @@ public class MainAplication extends Application {
     private RefWatcher refWatcher;
     private AppComponent appComponent;
     private UserComponent userComponent;
-    private String TAG = " MainAplication ";
+
 
     @Inject
     UserLoginPreference userLoginPreference;
@@ -47,24 +51,32 @@ public class MainAplication extends Application {
         return (MainAplication) context.getApplicationContext();
     }
 
+    public static String getProcessName() {
+        try {
+            File file = new File("/proc/" + android.os.Process.myPid() + "/" + "cmdline");
+            BufferedReader mBufferedReader = new BufferedReader(new FileReader(file));
+            String processName = mBufferedReader.readLine().trim();
+            mBufferedReader.close();
+            return processName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        initLogger();
-        initRxBus();
-        initComponent();
-        initLeakCanary();
-        initFresco();
-        initBaiduMap();
+        String processName = getProcessName();
+        if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
+            initLogger();
+            initComponent();
+            initLeakCanary();
+            initFresco();
+            initBaiduMap();
+        }
     }
 
-    private void initRxBus() {
-        if (BuildConfig.DEBUG)
-            RxBus.DEBUG = BuildConfig.DEBUG;
-
-        Logger.d("RxBus初始化完成");
-
-    }
 
     private void initLogger() {
         if (BuildConfig.DEBUG)
@@ -127,7 +139,7 @@ public class MainAplication extends Application {
 
     public void login(User user) {
         createUserComponent(user);
-        userLoginPreference.setUserInfo(gson.toJson(user));
+        userLoginPreference.setUserInfo(user);
     }
 
     public void loginOut() {

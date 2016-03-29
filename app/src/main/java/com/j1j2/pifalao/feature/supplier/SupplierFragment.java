@@ -5,19 +5,26 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 
+import com.j1j2.data.model.City;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentSupplierBinding;
 
+import in.workarounds.bundler.Bundler;
+import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
 
 /**
  * Created by alienzxh on 16-3-23.
  */
 @RequireBundler
-public class SupplierFragment extends BaseFragment{
+public class SupplierFragment extends BaseFragment {
     FragmentSupplierBinding binding;
+
+    @Arg
+    City city;
 
     @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +34,19 @@ public class SupplierFragment extends BaseFragment{
 
     @Override
     protected void initViews() {
+        WebSettings webSettings = binding.webview.getSettings();
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setUseWideViewPort(false);
+        if (null != city)
+            binding.webview.loadDataWithBaseURL("http://218.244.128.140:9091",
+                    city.getPlatformDescription()
+                            .replaceAll("img", "img width=100%"), "text/html",
+                    "utf-8", null);
+    }
 
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        Bundler.inject(this);
     }
 }

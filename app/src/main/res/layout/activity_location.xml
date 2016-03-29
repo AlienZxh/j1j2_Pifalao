@@ -75,18 +75,17 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="27"
-                android:background="@color/colorGrayF0F0F0">
+                android:background="@color/colorGrayF0F0F0" />
 
-            </android.support.v7.widget.RecyclerView>
-
-            <android.support.v7.widget.RecyclerView
+            <com.malinskiy.superrecyclerview.SuperRecyclerView
                 android:id="@+id/servicepointList"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="73"
-                android:background="@color/colorWhite">
-
-            </android.support.v7.widget.RecyclerView>
+                android:background="@color/colorWhite"
+                app:layout_empty="@layout/view_empty"
+                app:layout_moreProgress="@layout/view_progressbar"
+                app:layout_progress="@layout/view_progressbar" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 

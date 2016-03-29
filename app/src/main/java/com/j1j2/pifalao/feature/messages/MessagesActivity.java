@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.messages;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -20,7 +21,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-24.
  */
 @RequireBundler
-public class MessagesActivity extends BaseActivity implements MessagesFragment.MessagesFragmentListener {
+public class MessagesActivity extends BaseActivity implements MessagesFragment.MessagesFragmentListener, View.OnClickListener {
 
     ActivityMessagesBinding binding;
 
@@ -29,7 +30,7 @@ public class MessagesActivity extends BaseActivity implements MessagesFragment.M
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_messages);
-
+        binding.backBtn.setOnClickListener(this);
     }
 
     @Override
@@ -52,5 +53,11 @@ public class MessagesActivity extends BaseActivity implements MessagesFragment.M
     @Override
     public MessagesComponent getComponent() {
         return messagesComponent;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
     }
 }

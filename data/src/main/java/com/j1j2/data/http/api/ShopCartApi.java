@@ -20,6 +20,17 @@ public interface ShopCartApi {
     @POST("ShopCart/QueryShopCart")
     Observable<WebReturn<List<ShopCartItem>>> queryShopCart(@Query("moduleId") int moduleId);
 
+    @POST("ShopCart/AddItemToShopCart")
+    Observable<WebReturn<String>> addItemToShopCart(@Query("productId") int productId, @Query("quantity") int quantity, @Query("moduleId") int moduleId);
+
+    @POST("ShopCart/RemoveShopCartItem")
+    Observable<WebReturn<String>> removeShopCartItem(@Query("productId") int productId);
+
+    @POST("ShopCart/UpdateShopCart")
+    Observable<WebReturn<String>> updateShopCart(@Body List<ShopCartItem> shopCartItems);//参数待完善
+
+    @POST("ShopCart/SubmitOrder")
+    Observable<WebReturn<Integer>> submitOrder(@Body OrderSubmitBody orderSubmitBody);
     //______________________________________________________________________________________________
 
     @POST("ShopCart/QueryUserServicePoint")
@@ -29,20 +40,10 @@ public interface ShopCartApi {
     Observable<String> queryValidFreight();
 
 
-    @POST("ShopCart/AddItemToShopCart")
-    Observable<String> addItemToShopCart(@Query("productId") int productId, @Query("quantity") int quantity, @Query("moduleId") int moduleId);
-
-    @POST("ShopCart/UpdateShopCart")
-    Observable<String> updateShopCart();//参数待完善
-
-    @POST("ShopCart/RemoveShopCartItem")
-    Observable<String> removeShopCartItem(@Query("productId") int productId);
-
     @POST("ShopCart/ClearShopCart")
     Observable<String> clearShopCart(@Query("moduleId") int moduleId);
 
-    @POST("ShopCart/SubmitOrder")
-    Observable<String> submitOrder(@Body OrderSubmitBody orderSubmitBody);
+
 
 
     @POST("ShopCart/ValidateSubmitOrder")

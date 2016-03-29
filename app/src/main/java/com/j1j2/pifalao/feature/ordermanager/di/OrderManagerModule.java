@@ -36,8 +36,8 @@ public class OrderManagerModule {
 
     @Provides
     @ActivityScope
-    OrderManagerViewModel orderManagerViewModel(OrderManagerActivity orderManagerActivity) {
-        return new OrderManagerViewModel(orderManagerActivity);
+    OrderManagerViewModel orderManagerViewModel(OrderManagerActivity orderManagerActivity,UserOrderApi userOrderApi) {
+        return new OrderManagerViewModel(orderManagerActivity,userOrderApi);
     }
 
 }

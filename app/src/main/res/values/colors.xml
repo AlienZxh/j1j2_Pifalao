@@ -5,6 +5,8 @@
     <color name="colorAccent">#FFFF9900</color>
     <color name="colorAccentDark">#FFFF6F00</color>
 
+    <color name="colorTransparentAccent">#99FF6F00</color>
+    <color name="colorRed">#FFFF0000</color>
     <color name="colorWhite">#FFFFFFFF</color>
 
     <color name="colorTransparent">#00FFFFFF</color>
@@ -25,6 +27,9 @@
     <color name="colorGrayDEDEDE">#FFDEDEDE</color>
     <color name="colorGrayEDEDED">#FFEDEDED</color>
     <color name="colorGrayfcfcfc">#FFfcfcfc</color>
+
+    <color name="colorBlack">#FF000000</color>
+
 
     <color name="colorBlueBtn">#FF34aadc</color>
     <color name="colorBlueBtnDark">#FF2E8AB1</color>

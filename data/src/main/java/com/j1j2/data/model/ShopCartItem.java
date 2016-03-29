@@ -1,9 +1,12 @@
 package com.j1j2.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alienzxh on 16-3-21.
  */
-public class ShopCartItem {
+public class ShopCartItem implements Parcelable {
 
     /**
      * ProductId : 31054
@@ -30,7 +33,7 @@ public class ShopCartItem {
     private int ModuleId;
     private String BarCode;
     private String ProductName;
-    private int RetailPrice;
+    private double RetailPrice;
     private String ThumbImgPath;
     private double MemberPrice;
     private int Quantity;
@@ -47,136 +50,136 @@ public class ShopCartItem {
         return ProductId;
     }
 
-    public void setProductId(int ProductId) {
-        this.ProductId = ProductId;
+    public void setProductId(int productId) {
+        ProductId = productId;
     }
 
     public int getProductMainId() {
         return ProductMainId;
     }
 
-    public void setProductMainId(int ProductMainId) {
-        this.ProductMainId = ProductMainId;
+    public void setProductMainId(int productMainId) {
+        ProductMainId = productMainId;
     }
 
     public int getModuleId() {
         return ModuleId;
     }
 
-    public void setModuleId(int ModuleId) {
-        this.ModuleId = ModuleId;
+    public void setModuleId(int moduleId) {
+        ModuleId = moduleId;
     }
 
     public String getBarCode() {
         return BarCode;
     }
 
-    public void setBarCode(String BarCode) {
-        this.BarCode = BarCode;
+    public void setBarCode(String barCode) {
+        BarCode = barCode;
     }
 
     public String getProductName() {
         return ProductName;
     }
 
-    public void setProductName(String ProductName) {
-        this.ProductName = ProductName;
+    public void setProductName(String productName) {
+        ProductName = productName;
     }
 
-    public int getRetailPrice() {
+    public double getRetailPrice() {
         return RetailPrice;
     }
 
-    public void setRetailPrice(int RetailPrice) {
-        this.RetailPrice = RetailPrice;
+    public void setRetailPrice(double retailPrice) {
+        RetailPrice = retailPrice;
     }
 
     public String getThumbImgPath() {
         return ThumbImgPath;
     }
 
-    public void setThumbImgPath(String ThumbImgPath) {
-        this.ThumbImgPath = ThumbImgPath;
+    public void setThumbImgPath(String thumbImgPath) {
+        ThumbImgPath = thumbImgPath;
     }
 
     public double getMemberPrice() {
         return MemberPrice;
     }
 
-    public void setMemberPrice(double MemberPrice) {
-        this.MemberPrice = MemberPrice;
+    public void setMemberPrice(double memberPrice) {
+        MemberPrice = memberPrice;
     }
 
     public int getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(int Quantity) {
-        this.Quantity = Quantity;
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
     }
 
     public String getUnit() {
         return Unit;
     }
 
-    public void setUnit(String Unit) {
-        this.Unit = Unit;
+    public void setUnit(String unit) {
+        Unit = unit;
     }
 
     public int getLimitSalesNumber() {
         return LimitSalesNumber;
     }
 
-    public void setLimitSalesNumber(int LimitSalesNumber) {
-        this.LimitSalesNumber = LimitSalesNumber;
+    public void setLimitSalesNumber(int limitSalesNumber) {
+        LimitSalesNumber = limitSalesNumber;
     }
 
     public int getViews() {
         return Views;
     }
 
-    public void setViews(int Views) {
-        this.Views = Views;
+    public void setViews(int views) {
+        Views = views;
     }
 
     public int getSells() {
         return Sells;
     }
 
-    public void setSells(int Sells) {
-        this.Sells = Sells;
+    public void setSells(int sells) {
+        Sells = sells;
     }
 
     public int getScalingFactor() {
         return ScalingFactor;
     }
 
-    public void setScalingFactor(int ScalingFactor) {
-        this.ScalingFactor = ScalingFactor;
+    public void setScalingFactor(int scalingFactor) {
+        ScalingFactor = scalingFactor;
     }
 
     public int getActivityId() {
         return ActivityId;
     }
 
-    public void setActivityId(int ActivityId) {
-        this.ActivityId = ActivityId;
+    public void setActivityId(int activityId) {
+        ActivityId = activityId;
     }
 
     public boolean isInvalid() {
         return Invalid;
     }
 
-    public void setInvalid(boolean Invalid) {
-        this.Invalid = Invalid;
+    public void setInvalid(boolean invalid) {
+        Invalid = invalid;
     }
 
     public int getProductState() {
         return ProductState;
     }
 
-    public void setProductState(int ProductState) {
-        this.ProductState = ProductState;
+    public void setProductState(int productState) {
+        ProductState = productState;
     }
 
     @Override
@@ -201,4 +204,65 @@ public class ShopCartItem {
                 ", ProductState=" + ProductState +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.ProductId);
+        dest.writeInt(this.ProductMainId);
+        dest.writeInt(this.ModuleId);
+        dest.writeString(this.BarCode);
+        dest.writeString(this.ProductName);
+        dest.writeDouble(this.RetailPrice);
+        dest.writeString(this.ThumbImgPath);
+        dest.writeDouble(this.MemberPrice);
+        dest.writeInt(this.Quantity);
+        dest.writeString(this.Unit);
+        dest.writeInt(this.LimitSalesNumber);
+        dest.writeInt(this.Views);
+        dest.writeInt(this.Sells);
+        dest.writeInt(this.ScalingFactor);
+        dest.writeInt(this.ActivityId);
+        dest.writeByte(Invalid ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.ProductState);
+    }
+
+    public ShopCartItem() {
+    }
+
+    protected ShopCartItem(Parcel in) {
+        this.ProductId = in.readInt();
+        this.ProductMainId = in.readInt();
+        this.ModuleId = in.readInt();
+        this.BarCode = in.readString();
+        this.ProductName = in.readString();
+        this.RetailPrice = in.readDouble();
+        this.ThumbImgPath = in.readString();
+        this.MemberPrice = in.readDouble();
+        this.Quantity = in.readInt();
+        this.Unit = in.readString();
+        this.LimitSalesNumber = in.readInt();
+        this.Views = in.readInt();
+        this.Sells = in.readInt();
+        this.ScalingFactor = in.readInt();
+        this.ActivityId = in.readInt();
+        this.Invalid = in.readByte() != 0;
+        this.ProductState = in.readInt();
+    }
+
+    public static final Parcelable.Creator<ShopCartItem> CREATOR = new Parcelable.Creator<ShopCartItem>() {
+        @Override
+        public ShopCartItem createFromParcel(Parcel source) {
+            return new ShopCartItem(source);
+        }
+
+        @Override
+        public ShopCartItem[] newArray(int size) {
+            return new ShopCartItem[size];
+        }
+    };
 }

@@ -18,10 +18,10 @@ import com.zhy.autolayout.utils.AutoUtils;
 /**
  * Created by alienzxh on 16-3-21.
  */
-public class QuantityView extends AutoLinearLayout implements  TextWatcher, View.OnTouchListener {
+public class QuantityView extends AutoLinearLayout implements TextWatcher, View.OnTouchListener {
 
     public interface OnQuantityChangeListener {
-        void onQuantityChange(EditText view, int value);
+        void onQuantityChange(QuantityView view, int value);
     }
 
     private OnQuantityChangeListener onQuantityChangeListener;
@@ -87,9 +87,9 @@ public class QuantityView extends AutoLinearLayout implements  TextWatcher, View
         int height = getHeight();
         int width = getWidth();
 
-        minusBtn.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.4f)));
-        addBtn.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.4f)));
-        quantityEdit.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.25f)));
+//        minusBtn.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.4f)));
+//        addBtn.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.4f)));
+//        quantityEdit.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.25f)));
     }
 
     @Override
@@ -138,7 +138,7 @@ public class QuantityView extends AutoLinearLayout implements  TextWatcher, View
             quantity = Integer.valueOf(s.toString());
         }
         if (onQuantityChangeListener != null) {
-            onQuantityChangeListener.onQuantityChange(quantityEdit, quantity);
+            onQuantityChangeListener.onQuantityChange(this, quantity);
         }
     }
 
@@ -152,6 +152,8 @@ public class QuantityView extends AutoLinearLayout implements  TextWatcher, View
     }
 
     public void setQuantity(int quantity) {
+        if (this.quantity == quantity)
+            return;
         if (quantity <= 0) {
             quantity = 1;
         } else if (quantity > 9999) {

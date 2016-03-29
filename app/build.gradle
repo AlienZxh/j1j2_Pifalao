@@ -60,7 +60,7 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
@@ -109,6 +109,8 @@ dependencies {
     compile appDependencies.rxlifecycle
     compile appDependencies.rxlifecycleComponents
     compile appDependencies.storebox
+
+    compile appDependencies.eventbus
     //单元测试
     testCompile appTestDependencies.junit
     //UI测试

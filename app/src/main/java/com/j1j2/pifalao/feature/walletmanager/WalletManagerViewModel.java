@@ -16,16 +16,14 @@ import rx.schedulers.Schedulers;
 public class WalletManagerViewModel {
     private WalletManagerActivity walletManagerActivity;
     private UserCouponApi userCouponApi;
-    private Module module;
 
-    public WalletManagerViewModel(WalletManagerActivity walletManagerActivity, UserCouponApi userCouponApi, Module module) {
+    public WalletManagerViewModel(WalletManagerActivity walletManagerActivity, UserCouponApi userCouponApi) {
         this.walletManagerActivity = walletManagerActivity;
         this.userCouponApi = userCouponApi;
-        this.module = module;
     }
 
-    public void queryAllCoupons() {
-        userCouponApi.queryUserCoupon(0, module.getWareHouseModuleId())
+    public void queryAllCoupons(Module module) {
+        userCouponApi.queryUserCoupon(0, "" + (null == module ? "" : module.getWareHouseModuleId()))
                 .compose(walletManagerActivity.<WebReturn<List<Coupon>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

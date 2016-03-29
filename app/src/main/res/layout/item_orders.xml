@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
                 android:layout_marginRight="@dimen/padding_noraml"
-                android:text="超市类批发"
+                android:text="@{orderSimple.ModuleName}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_big" />
 
@@ -122,14 +122,10 @@
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingTop="@dimen/padding_noraml">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_width="@dimen/content_height_biger"
-                android:layout_height="@dimen/content_height_biger"
-                android:layout_centerVertical="true"
-                app:imageURI="@{Uri.parse(orderSimple.TopOneProductDetail.ThumbImgPath??@string/text_empty)}"
-                fresco:roundedCornerRadius="5dp"
-                fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-                fresco:roundingBorderWidth="1px" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/orderProductList"
+                android:layout_width="440px"
+                android:layout_height="100px" />
 
             <View
                 android:layout_width="0dp"
@@ -141,10 +137,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
                 android:layout_marginRight="@dimen/padding_noraml"
-                android:text="@{StringUtils.getOrdersQuantity(3)}"
+                android:text="@{StringUtils.getOrdersQuantity(orderSimple.ProductDetails)}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal"
-                android:visibility="gone" />
+                 />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -179,7 +175,7 @@
                 android:text="评价"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_normal"
-                android:visibility="@{orderSimple.OrderState&lt;=32?View.VISIBLE : View.GONE}"
+                android:visibility="@{orderSimple.OrderState==32?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
             <TextView

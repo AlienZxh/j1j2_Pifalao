@@ -1,6 +1,8 @@
 package com.j1j2.pifalao.app.di;
 
 import com.j1j2.data.model.User;
+import com.j1j2.pifalao.app.ShopCart;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.UserScope;
 
 import dagger.Module;
@@ -21,5 +23,17 @@ public class UserModule {
     @UserScope
     User provideUser() {
         return user;
+    }
+
+    @Provides
+    @UserScope
+    ShopCart provideShopCart() {
+        return new ShopCart();
+    }
+
+    @Provides
+    @UserScope
+    UnReadInfoManager unReadInfoManager() {
+        return new UnReadInfoManager();
     }
 }

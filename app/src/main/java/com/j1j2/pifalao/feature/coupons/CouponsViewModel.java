@@ -9,12 +9,11 @@ import com.j1j2.data.model.Module;
 public class CouponsViewModel {
     private CouponsActivity couponsActivity;
     private UserCouponApi userCouponApi;
-    private Module module;
 
-    public CouponsViewModel(CouponsActivity couponsActivity, UserCouponApi userCouponApi, Module module) {
+
+    public CouponsViewModel(CouponsActivity couponsActivity, UserCouponApi userCouponApi) {
         this.couponsActivity = couponsActivity;
         this.userCouponApi = userCouponApi;
-        this.module = module;
     }
 
 

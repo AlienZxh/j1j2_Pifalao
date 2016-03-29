@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class ProductSimple implements Parcelable {
     /**
+     * BaseUnit:基本单位
      * MainId : 5377
      * CategoryId : 1555
      * Name : 卡夫125g草莓味鬼脸嘟嘟饼干1*24
@@ -25,6 +26,7 @@ public class ProductSimple implements Parcelable {
      * ProductUnits : [{"LimitSalesNumber":0,"TotalSalesLimit":0,"Remains":0,"Views":578,"Sells":329,"ProductId":28425,"Unit":"包","ProductMainId":5377,"RetialPrice":4.5,"MemberPrice":3.92,"ProductState":1,"ProductStateStr":"正常","AvgPrimeCost":null,"LastPrimeCost":3.55,"Menmonics":null,"Factor":1,"IsBaseItem":true,"IsBaseItemStr":"是","ProductRank":28425,"MainImg":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","BarCode":"6901668166203","Note":null},{"LimitSalesNumber":0,"TotalSalesLimit":0,"Remains":0,"Views":208,"Sells":98,"ProductId":28426,"Unit":"件","ProductMainId":5377,"RetialPrice":108,"MemberPrice":94.15,"ProductState":1,"ProductStateStr":"正常","AvgPrimeCost":null,"LastPrimeCost":85.08,"Menmonics":null,"Factor":24,"IsBaseItem":false,"IsBaseItemStr":"否","ProductRank":28426,"MainImg":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","BarCode":"6901668866202","Note":null}]
      */
 
+    private String BaseUnit;
     private int MainId;
     private int CategoryId;
     private String Name;
@@ -60,8 +62,16 @@ public class ProductSimple implements Parcelable {
      * BarCode : 6901668166203
      * Note : null
      */
-
     private List<ProductUnit> ProductUnits;
+
+
+    public String getBaseUnit() {
+        return BaseUnit;
+    }
+
+    public void setBaseUnit(String baseUnit) {
+        BaseUnit = baseUnit;
+    }
 
     public int getMainId() {
         return MainId;
@@ -160,12 +170,33 @@ public class ProductSimple implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "ProductSimple{" +
+                "BaseUnit='" + BaseUnit + '\'' +
+                ", MainId=" + MainId +
+                ", CategoryId=" + CategoryId +
+                ", Name='" + Name + '\'' +
+                ", Spec='" + Spec + '\'' +
+                ", Brand='" + Brand + '\'' +
+                ", Rank=" + Rank +
+                ", MainImg='" + MainImg + '\'' +
+                ", IsPromotion=" + IsPromotion +
+                ", IsNew=" + IsNew +
+                ", IsRecommend=" + IsRecommend +
+                ", IsBaseItem=" + IsBaseItem +
+                ", ProductUnits=" + ProductUnits +
+                '}';
+    }
+
+
+    @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.BaseUnit);
         dest.writeInt(this.MainId);
         dest.writeInt(this.CategoryId);
         dest.writeString(this.Name);
@@ -184,6 +215,7 @@ public class ProductSimple implements Parcelable {
     }
 
     protected ProductSimple(Parcel in) {
+        this.BaseUnit = in.readString();
         this.MainId = in.readInt();
         this.CategoryId = in.readInt();
         this.Name = in.readString();
@@ -199,10 +231,12 @@ public class ProductSimple implements Parcelable {
     }
 
     public static final Parcelable.Creator<ProductSimple> CREATOR = new Parcelable.Creator<ProductSimple>() {
+        @Override
         public ProductSimple createFromParcel(Parcel source) {
             return new ProductSimple(source);
         }
 
+        @Override
         public ProductSimple[] newArray(int size) {
             return new ProductSimple[size];
         }

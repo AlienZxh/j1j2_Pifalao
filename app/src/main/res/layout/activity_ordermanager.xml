@@ -12,9 +12,9 @@
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
         android:layout_height="match_parent"
         android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoRelativeLayout
@@ -24,13 +24,15 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,7 +83,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.SubmitOrderCount}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -132,7 +138,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.ExcutingOrderCount}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -184,7 +194,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.ClientWaitForRecevie}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -235,7 +249,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.WaitForRate}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -286,7 +304,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.Invalid}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -337,7 +359,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.AllStateCount}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"

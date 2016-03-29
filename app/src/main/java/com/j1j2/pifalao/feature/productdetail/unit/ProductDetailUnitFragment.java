@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.productdetail.unit;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentProductdetailUnitBinding;
+import com.j1j2.pifalao.feature.productdetail.ProductDetailActivity;
 
 import java.util.List;
 
@@ -24,13 +26,31 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-21.
  */
 @RequireBundler
-public class ProductDetailUnitFragment extends BaseFragment {
+public class ProductDetailUnitFragment extends BaseFragment implements ProductDetailUnitAdapter.OnUnitItemClickListener {
+
+    public interface ProductDetailUnitFragmentListener {
+        void setSelectUnit(ProductUnit unit);
+    }
+
+    private ProductDetailUnitFragmentListener productDetailUnitFragmentListener;
+
     FragmentProductdetailUnitBinding binding;
 
     @Arg(serializer = ParcelListSerializer.class)
     List<ProductUnit> productUnits;
 
+    @Arg
+    String baseUnit;
+
     SingleSelector singleSelector;
+
+    ProductUnit selectUnit;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        productDetailUnitFragmentListener = (ProductDetailActivity) activity;
+    }
 
     @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +62,30 @@ public class ProductDetailUnitFragment extends BaseFragment {
     protected void initViews() {
         singleSelector = new SingleSelector();
         binding.unitList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        binding.unitList.setAdapter(new ProductDetailUnitAdapter(productUnits, singleSelector));
+        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productUnits, singleSelector,baseUnit);
+        binding.unitList.setAdapter(productDetailUnitAdapter);
+        productDetailUnitAdapter.setOnUnitItemClickListener(this);
+        selectUnit = productUnits.get(0);
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
+    }
+
+    @Override
+    public void OnUnitItemClickListener(View view, ProductUnit unit, int position) {
+        selectUnit = unit;
+        if (productDetailUnitFragmentListener != null)
+            productDetailUnitFragmentListener.setSelectUnit(unit);
+    }
+
+    public ProductUnit getSelectUnit() {
+        return selectUnit;
+    }
+
+    public int getQuantity() {
+        return binding.quantityview.getQuantity();
     }
 }

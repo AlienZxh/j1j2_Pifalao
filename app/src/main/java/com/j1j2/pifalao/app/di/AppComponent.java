@@ -1,12 +1,10 @@
 package com.j1j2.pifalao.app.di;
 
-import android.app.Activity;
-import android.app.Application;
-
 import com.j1j2.pifalao.app.MainAplication;
-import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.feature.city.di.CityComponent;
 import com.j1j2.pifalao.feature.city.di.CityModule;
+import com.j1j2.pifalao.feature.guide.di.GuideComponent;
+import com.j1j2.pifalao.feature.guide.di.GuideModule;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeComponent;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
 import com.j1j2.pifalao.feature.launch.di.LaunchComponent;
@@ -21,6 +19,10 @@ import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
 import com.j1j2.pifalao.feature.products.di.ProductsComponent;
 import com.j1j2.pifalao.feature.products.di.ProductsModule;
+import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneComponent;
+import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneModule;
+import com.j1j2.pifalao.feature.register.steptwo.di.RegisterStepTwoComponent;
+import com.j1j2.pifalao.feature.register.steptwo.di.RegisterStepTwoModule;
 import com.j1j2.pifalao.feature.search.di.SearchComponent;
 import com.j1j2.pifalao.feature.search.di.SearchModule;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointComponent;
@@ -31,7 +33,6 @@ import com.j1j2.pifalao.feature.services.di.ServicesModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import okhttp3.OkHttpClient;
 
 /**
  * Created by alienzxh on 16-3-5.
@@ -42,6 +43,8 @@ public interface AppComponent {
     void inject(MainAplication aplication);
 
     LaunchComponent plus(LaunchModule launchModule);
+
+    GuideComponent plus(GuideModule guideModule);
 
     UserComponent plus(UserModule userModule);
 
@@ -66,4 +69,8 @@ public interface AppComponent {
     SearchComponent plus(SearchModule searchModule);
 
     LoginComponent plus(LoginModule loginModule);
+
+    RegisterStepOneComponent plus(RegisterStepOneModule registerStepOneModule);
+
+    RegisterStepTwoComponent plus(RegisterStepTwoModule registerStepTwoModule);
 }

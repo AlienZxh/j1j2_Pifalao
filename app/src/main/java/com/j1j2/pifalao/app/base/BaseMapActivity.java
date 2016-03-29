@@ -8,7 +8,7 @@ import com.baidu.mapapi.map.MapView;
 /**
  * Created by alienzxh on 16-3-12.
  */
-public abstract class BaseMapActivity extends BaseActivity {
+public abstract class BaseMapActivity extends BaseLocationActivity {
     protected abstract void initMap();
 
     protected abstract MapView getMapView();

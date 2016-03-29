@@ -14,6 +14,7 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.service.LocationService;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
 import com.j1j2.pifalao.feature.launch.di.LaunchModule;
 
@@ -29,6 +30,9 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
 
     @Inject
     LaunchViewModel launchViewModel;
+
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     private boolean isAnimFinish = false;
 
@@ -48,7 +52,6 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, LocationService.class));
         launchViewModel.initLoginState();
     }
 
@@ -96,9 +99,18 @@ public class LaunchActivity extends BaseActivity implements Animator.AnimatorLis
         return isAnimFinish;
     }
 
-    public void navigateToGuide() {
+    public void navigateTo() {
         binding.slogan.setDrawingCacheEnabled(true);
-        navigate.navigateToGuide(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true);
+        if (userRelativePreference.getIsFirst(true)) {
+            navigate.navigateToGuide(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true);
+        } else {
+            if (null != userRelativePreference.getSelectedCity(null) && null != userRelativePreference.getSelectedServicePoint(null))
+                navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true, userRelativePreference.getSelectedServicePoint(null));
+            else if (null != userRelativePreference.getSelectedCity(null) && null == userRelativePreference.getSelectedServicePoint(null))
+                navigate.navigateToLocationActivity(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true, userRelativePreference.getSelectedCity(null));
+            else
+                navigate.navigateToCityActivity(this, ActivityOptionsCompat.makeThumbnailScaleUpAnimation(binding.slogan, binding.slogan.getDrawingCache(), 0, 0), true);
+        }
     }
 
 }

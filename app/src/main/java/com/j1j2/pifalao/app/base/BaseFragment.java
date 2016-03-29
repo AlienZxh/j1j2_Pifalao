@@ -7,8 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.event.BaseEvent;
 import com.squareup.leakcanary.RefWatcher;
 import com.trello.rxlifecycle.components.support.RxFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by alienzxh on 16-3-16.
@@ -26,6 +30,7 @@ public abstract class BaseFragment extends RxFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActivityComponent();
+        EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -43,7 +48,13 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         RefWatcher refWatcher = MainAplication.getRefWatcher(getActivity());
         refWatcher.watch(this);
+    }
+
+    @Subscribe
+    public void onBaseEvent(BaseEvent baseEvent){
+
     }
 }

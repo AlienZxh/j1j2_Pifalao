@@ -1,10 +1,11 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.DeliveryServiceTime;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
-import com.j1j2.data.model.requestbody.ClientRegisterStepOneBody;
 
-import retrofit2.http.Body;
+import java.util.List;
+
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -14,13 +15,15 @@ import rx.Observable;
  */
 public interface CountDownApi {
 
+    @POST("CountDown/QueryDeliveryCountDownOfModule")
+    Observable<WebReturn<UserDeliveryTime>> QueryDeliveryCountDownOfModule(@Query("moduleId") int moduleId);
+
     @POST("CountDown/QueryUserDeliveryTime")
     Observable<WebReturn<UserDeliveryTime>> queryUserDeliveryTime();
 
-    //__________________________________________________________________________________________
-
     @POST("CountDown/QueryServiceTimeOfDliveryType")
-    Observable<String> queryServiceTimeOfDliveryType(@Query("deliveryType") int deliveryType, @Query("moduleId") int moduleId);
+    Observable<WebReturn<List<DeliveryServiceTime>>> queryServiceTimeOfDliveryType(@Query("deliveryType") int deliveryType, @Query("moduleId") int moduleId);
+    //__________________________________________________________________________________________
 
 
 }

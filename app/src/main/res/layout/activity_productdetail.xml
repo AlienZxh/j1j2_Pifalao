@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <variable
+            name="shopCart"
+            type="com.j1j2.pifalao.app.ShopCart" />
+
         <variable
             name="productDetailViewModel"
             type="com.j1j2.pifalao.feature.productdetail.ProductDetailViewModel" />
@@ -12,8 +18,8 @@
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <com.j1j2.common.view.autowidget.AutoNestedScrolling
             android:id="@+id/scrollView"
@@ -33,13 +39,15 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/backBtn"
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="@dimen/actionbar_height"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="@string/icon_back"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/icon_normal" />
+                        android:textSize="@dimen/icon_normal"
+                        app:OnClickListener="@{productDetailViewModel.productDetailActivity}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -117,9 +125,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/padding_noraml"
                         android:layout_marginTop="@dimen/padding_noraml"
-                        android:background="@drawable/collect_btn_bg"
+                        android:background="@{productDetailViewModel.isCollect?@drawable/collect_btn_select_bg:@drawable/collect_btn_bg}"
                         android:gravity="center"
                         android:orientation="vertical"
+                        app:OnClickListener="@{productDetailViewModel.productDetailActivity}"
                         app:layout_auto_basewidth="height">
 
                         <TextView
@@ -127,21 +136,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/icon_like"
-                            android:textColor="@color/colorText2a2a2a"
+                            android:textColor="@{productDetailViewModel.isCollect?@color/colorWhite:@color/colorText2a2a2a}"
                             android:textSize="@dimen/icon_small" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="收藏"
-                            android:textColor="@color/colorText2a2a2a"
+                            android:textColor="@{productDetailViewModel.isCollect?@color/colorWhite:@color/colorText2a2a2a}"
                             android:textSize="@dimen/text_normal" />
                     </com.zhy.autolayout.AutoLinearLayout>
                 </com.zhy.autolayout.AutoRelativeLayout>
 
                 <include
                     layout="@layout/view_productdetail_price"
-                    bind:price="@{productDetailViewModel.productDetail.ProductUnits.get(0)}" />
+                    bind:price="@{productDetailViewModel.selectUnit}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -165,7 +174,9 @@
                     android:layout_height="@dimen/padding_productdetail"
                     android:background="@drawable/item_products_divider" />
 
-                <include layout="@layout/view_productdetail_show" />
+                <include
+                    layout="@layout/view_productdetail_show"
+                    bind:array="@{productDetailViewModel.array}" />
 
                 <View
                     android:layout_width="match_parent"
@@ -228,7 +239,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="商品合计："
+                            android:text=""
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_normal"
                             android:textStyle="bold" />
@@ -236,7 +247,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥0.0"
+                            android:text="@{StringUtils.getPriceWiteSymbol(shopCart.AllMemberPrice)}"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_biger"
                             android:textStyle="bold" />
@@ -245,22 +256,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="（节省：0.0）"
+                        android:text="@{&quot;（节省：&quot;+StringUtils.getPriceWiteSymbol(shopCart.AllSave)+&quot;）&quot;}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
                 </com.zhy.autolayout.AutoLinearLayout>
 
                 <TextView
+                    android:id="@+id/addBtn"
                     android:layout_width="220px"
                     android:layout_height="match_parent"
                     android:background="@drawable/orange_btn_selector"
                     android:gravity="center"
                     android:text="加入购物车"
                     android:textColor="@color/colorWhite"
-                    android:textSize="30px" />
+                    android:textSize="30px"
+                    app:OnClickListener="@{productDetailViewModel.productDetailActivity}" />
             </com.zhy.autolayout.AutoLinearLayout>
 
-            <TextView
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/shopCartBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="92px"
                 android:layout_height=" 92px"
@@ -271,7 +285,12 @@
                 android:text="@string/icon_shopcart"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="44px"
-                app:layout_auto_basewidth="height" />
+                app:OnClickListener="@{productDetailViewModel.productDetailActivity}"
+                app:badge_bgColor="@color/colorAccent"
+                app:badge_gravity="rightTop"
+                app:badge_textSize="12sp"
+                app:layout_auto_basewidth="height"
+                app:showNum="@{shopCart.AllUnitNum}" />
 
         </com.zhy.autolayout.AutoRelativeLayout>
     </com.zhy.autolayout.AutoRelativeLayout>

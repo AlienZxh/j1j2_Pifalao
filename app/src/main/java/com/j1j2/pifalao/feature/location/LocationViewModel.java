@@ -1,29 +1,21 @@
 package com.j1j2.pifalao.feature.location;
 
-import android.text.TextUtils;
-import android.widget.Toast;
-
 import com.baidu.location.BDLocation;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
-import com.j1j2.pifalao.app.base.RxBus;
-import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.app.constants.RxBusTag;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import rx.Observable;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -33,7 +25,6 @@ import rx.schedulers.Schedulers;
  */
 public class LocationViewModel {
 
-    Observable locationOb;
 
     ServicePointApi servicePointApi;
 
@@ -49,8 +40,6 @@ public class LocationViewModel {
 
     private LocationServicePointAdapter locationServicePointAdapter;
 
-    private BDLocation location;
-
 
     public LocationViewModel(ServicePointApi servicePointApi, LocationActivity locationActivity, City city) {
         this.servicePointApi = servicePointApi;
@@ -60,25 +49,12 @@ public class LocationViewModel {
         this.districts = new ArrayList<>();
         this.locationDistrictAdapter = new LocationDistrictAdapter(districts);
         this.locationServicePointAdapter = new LocationServicePointAdapter(servicePoints);
-        this.locationOb = RxBus.get().register(RxBusTag.LOCATION_EVENT, BDLocation.class, true);
-
-
     }
 
 
-    public void onCreate() {
-        locationOb
-                .compose(locationActivity.bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .first()
-                .flatMap(new Func1<BDLocation, Observable<WebReturn<List<City>>>>() {
-                    @Override
-                    public Observable<WebReturn<List<City>>> call(BDLocation mlocation) {
-                        location = mlocation;
-                        return servicePointApi.queryCityDistric(city.getPCCId());
-                    }
-                })
+    public void onCreate(final BDLocation location) {
+        servicePointApi.queryCityDistric(city.getPCCId())
+                .compose(locationActivity.<WebReturn<List<City>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<WebReturn<List<City>>>() {
@@ -92,41 +68,26 @@ public class LocationViewModel {
                 .flatMap(new Func1<WebReturn<List<City>>, Observable<WebReturn<List<ServicePoint>>>>() {
                     @Override
                     public Observable<WebReturn<List<ServicePoint>>> call(WebReturn<List<City>> listWebReturn) {
+                        LatLng northeast = locationActivity.getNortheast(location);
+                        LatLng southwest = locationActivity.getSouthwest(location);
 
-
-                        return servicePointApi.queryServicePointInCity(city.getPCCId());
+                        return servicePointApi.queryServicePointWithOutDistanceInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude);
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
-                    @Override
-                    public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
-                        super.onNext(listWebReturn);
-                        servicePoints.clear();
-                        servicePoints.addAll(listWebReturn.getDetail());
-                        locationServicePointAdapter.notifyDataSetChanged();
-                    }
-                });
-        servicePointApi.queryServicePointInCity(city.getPCCId())
                 .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
                     @Override
                     public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
                         super.onNext(listWebReturn);
-                        servicePoints.clear();
-                        servicePoints.addAll(listWebReturn.getDetail());
-                        locationServicePointAdapter.notifyDataSetChanged();
+                        refreshServicePointData(location, listWebReturn.getDetail());
                     }
                 });
+
     }
 
-    public void onDestory() {
-        RxBus.get().unregister(RxBusTag.LOCATION_EVENT, locationOb);
-    }
 
-    public void queryInDistrict(City mCity) {
+    public void queryInDistrict(final BDLocation location, City mCity) {
         servicePointApi.queryServicePointInCity(mCity.getPCCId())
                 .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -135,38 +96,51 @@ public class LocationViewModel {
                     @Override
                     public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
                         super.onNext(listWebReturn);
-                        servicePoints.clear();
-                        servicePoints.addAll(listWebReturn.getDetail());
-                        locationServicePointAdapter.notifyDataSetChanged();
+                        refreshServicePointData(location, listWebReturn.getDetail());
                     }
                 });
     }
 
-    public void queryNearByServicePoint() {
+    public void queryNearByServicePoint(final BDLocation location) {
+        LatLng northeast = locationActivity.getNortheast(location);
+        LatLng southwest = locationActivity.getSouthwest(location);
 
-        locationOb
-                .compose(locationActivity.bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .first()
-                .flatMap(new Func1<BDLocation, Observable<WebReturn<List<ServicePoint>>>>() {
-                    @Override
-                    public Observable<WebReturn<List<ServicePoint>>> call(BDLocation location) {
-                        Logger.d(location.getLocationDescribe());
-                        return servicePointApi.queryServicePointInCity(city.getPCCId());
-                    }
-                })
+        servicePointApi.queryServicePointWithOutDistanceInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude)
+                .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
                     @Override
                     public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
                         super.onNext(listWebReturn);
-                        servicePoints.clear();
-                        servicePoints.addAll(listWebReturn.getDetail());
-                        locationServicePointAdapter.notifyDataSetChanged();
+                        refreshServicePointData(location, listWebReturn.getDetail());
                     }
                 });
+    }
+
+    private void refreshServicePointData(BDLocation location, List<ServicePoint> mServicePoints) {
+
+        LatLng mPoint = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng mServicePoint = null;
+        for (ServicePoint servicePoint : mServicePoints) {
+            mServicePoint = new LatLng(servicePoint.getLat(), servicePoint.getLng());
+            servicePoint.setDistance(DistanceUtil.getDistance(mPoint, mServicePoint));
+        }
+        Collections.sort(mServicePoints, new Comparator<ServicePoint>() {
+            @Override
+            public int compare(ServicePoint lhs, ServicePoint rhs) {
+                if (lhs.getDistance() - rhs.getDistance() > 0)
+                    return 1;
+                else if (lhs.getDistance() - rhs.getDistance() == 0)
+                    return 0;
+                else
+                    return -1;
+            }
+        });
+        servicePoints.clear();
+        servicePoints.addAll(mServicePoints);
+        locationActivity.addServicePointOverlay(mServicePoints);
+        locationServicePointAdapter.notifyDataSetChanged();
     }
 
     public List<ServicePoint> getServicePoints() {

@@ -23,7 +23,6 @@ public class StoreStyleHomeViewModel {
 
     private Module module;
 
-    private List<SecondarySort> secondarySorts;
 
     private StoreStyleHomeFragment storeStyleHomeFragment;
 
@@ -31,7 +30,6 @@ public class StoreStyleHomeViewModel {
         this.productApi = productApi;
         this.module = module;
         this.storeStyleHomeFragment = storeStyleHomeFragment;
-        this.secondarySorts = new ArrayList<>();
 
     }
 
@@ -43,9 +41,9 @@ public class StoreStyleHomeViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<List<SecondarySort>>() {
                     @Override
-                    public void onWebReturnSucess(List<SecondarySort> secondarySorts) {
-                        secondarySorts.addAll(secondarySorts);
-                        storeStyleHomeAdapter = new StoreStyleHomeAdapter(secondarySorts);
+                    public void onWebReturnSucess(List<SecondarySort> mSecondarySorts) {
+
+                        storeStyleHomeAdapter = new StoreStyleHomeAdapter(mSecondarySorts);
                         storeStyleHomeFragment.setListAdapter(storeStyleHomeAdapter);
                     }
 

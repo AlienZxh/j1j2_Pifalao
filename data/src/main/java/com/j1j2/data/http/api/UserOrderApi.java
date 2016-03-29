@@ -1,6 +1,5 @@
 package com.j1j2.data.http.api;
 
-import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.OrderStatistics;
 import com.j1j2.data.model.PagerManager;
@@ -24,18 +23,19 @@ public interface UserOrderApi {
     Observable<WebReturn<OrderStatistics>> queryProductOrderStatistics();
 
     @POST("UserOrder/QueryOrderByOrderId")
-    Observable<WebReturn<OrderDetail>> queryOrderByOrderId(@Query("orderIdStr") String orderIdStr);
-    //_____________________________________________________________________________
-
+    Observable<WebReturn<OrderSimple>> queryOrderByOrderId(@Query("orderIdStr") String orderIdStr);
 
     @POST("UserOrder/SetOrderReadState")
-    Observable<String> setOrderReadState(@Body SetOrderReadStateBody setOrderReadStateBody);
+    Observable<WebReturn<String>> setOrderReadState(@Body SetOrderReadStateBody setOrderReadStateBody);
+
+    @POST("UserOrder/CancleOrder")
+    Observable<WebReturn<String>> cancleOrder(@Query("orderId") int orderId);
+    //_____________________________________________________________________________
+
 
     @POST("UserOrder/QueryOrderProudctDetails")
     Observable<String> queryOrderProudctDetails(@Query("orderIdStr") String orderIdStr);
 
-    @POST("UserOrder/CancleOrder")
-    Observable<String> cancleOrder(@Query("orderId") int orderId);
 
     @POST("UserOrder/ConfrimReceive")
     Observable<String> confrimReceive(@Query("orderId") int orderId);

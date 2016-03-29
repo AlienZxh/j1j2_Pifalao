@@ -22,10 +22,12 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
     private List<ProductUnit> productUnits;
 
     private SingleSelector singleSelector;
+    private String baseUnit;
 
-    public ProductDetailUnitAdapter(List<ProductUnit> productUnits, SingleSelector singleSelector) {
+    public ProductDetailUnitAdapter(List<ProductUnit> productUnits, SingleSelector singleSelector, String baseUnit) {
         this.productUnits = productUnits;
         this.singleSelector = singleSelector;
+        this.baseUnit = baseUnit;
     }
 
     public interface OnUnitItemClickListener {
@@ -43,7 +45,7 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
     public ProductDetailUnitViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_productdetail_unit, parent, false);
-        return new ProductDetailUnitViewHolder(itemView, singleSelector);
+        return new ProductDetailUnitViewHolder(itemView, singleSelector, baseUnit);
     }
 
     @Override
@@ -59,10 +61,12 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
     public class ProductDetailUnitViewHolder extends AutoBindingViewHolder<ItemProductdetailUnitBinding, ProductUnit> implements SelectableHolder {
         private SingleSelector singleSelector;
         private boolean mIsSelectable = false;
+        private String baseUnit;
 
-        public ProductDetailUnitViewHolder(View itemView, SingleSelector singleSelector) {
+        public ProductDetailUnitViewHolder(View itemView, SingleSelector singleSelector, String baseUnit) {
             super(itemView);
             this.singleSelector = singleSelector;
+            this.baseUnit = baseUnit;
         }
 
         @Override
@@ -77,6 +81,7 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
                 singleSelector.setSelected(0, getItemId(), true);
             }
             binding.setProductUnit(data);
+            binding.setBaseUnit(baseUnit);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

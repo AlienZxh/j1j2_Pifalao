@@ -1,9 +1,12 @@
 package com.j1j2.data.model.requestbody;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alienzxh on 16-3-10.
  */
-public class ClientRegisterStepOneBody {
+public class ClientRegisterStepOneBody implements Parcelable {
 
     private String Phone;//用户手机号码
     private String SMSCode;//短信验证码
@@ -81,4 +84,46 @@ public class ClientRegisterStepOneBody {
                 ", RegisterType=" + RegisterType +
                 '}';
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.Phone);
+        dest.writeString(this.SMSCode);
+        dest.writeByte(IsAgree ? (byte) 1 : (byte) 0);
+        dest.writeString(this.PassWord);
+        dest.writeString(this.ConfrimPwd);
+        dest.writeString(this.MarketerCode);
+        dest.writeInt(this.RegisterType);
+    }
+
+    public ClientRegisterStepOneBody() {
+    }
+
+    protected ClientRegisterStepOneBody(Parcel in) {
+        this.Phone = in.readString();
+        this.SMSCode = in.readString();
+        this.IsAgree = in.readByte() != 0;
+        this.PassWord = in.readString();
+        this.ConfrimPwd = in.readString();
+        this.MarketerCode = in.readString();
+        this.RegisterType = in.readInt();
+    }
+
+    public static final Parcelable.Creator<ClientRegisterStepOneBody> CREATOR = new Parcelable.Creator<ClientRegisterStepOneBody>() {
+        @Override
+        public ClientRegisterStepOneBody createFromParcel(Parcel source) {
+            return new ClientRegisterStepOneBody(source);
+        }
+
+        @Override
+        public ClientRegisterStepOneBody[] newArray(int size) {
+            return new ClientRegisterStepOneBody[size];
+        }
+    };
 }

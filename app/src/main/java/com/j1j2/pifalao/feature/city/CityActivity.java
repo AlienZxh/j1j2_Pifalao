@@ -13,6 +13,7 @@ import com.j1j2.data.model.City;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityCityBinding;
 import com.j1j2.pifalao.feature.city.di.CityModule;
 
@@ -34,6 +35,9 @@ public class CityActivity extends BaseActivity implements CityAdapter.OnItemClic
 
     @Inject
     CityViewModel cityViewModel;
+
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     @Override
     protected void initBinding() {
@@ -65,7 +69,9 @@ public class CityActivity extends BaseActivity implements CityAdapter.OnItemClic
 
     @Override
     public void onItemClickListener(View view, City city) {
-        if (city.isOpenState())
+        if (city.isOpenState()) {
+            userRelativePreference.setSelectedCity(city);
             navigate.navigateToLocationActivity(CityActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, city);
+        }
     }
 }

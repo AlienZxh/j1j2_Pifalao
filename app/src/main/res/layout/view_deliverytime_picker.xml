@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/timeickerCancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/padding_big"
+                android:text="取消"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:id="@+id/timeickerConFirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/padding_big"
+                android:text="确定"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayEDEDED" />
+
+        <com.j1j2.common.view.autowidget.AutoWheelView
+            android:id="@+id/time_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.j1j2.common.view.autowidget.AutoWheelView>
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

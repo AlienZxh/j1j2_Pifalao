@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.orderdetail;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
@@ -17,16 +18,21 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+import in.workarounds.bundler.annotations.Required;
 
 /**
  * Created by alienzxh on 16-3-22.
  */
 @RequireBundler
-public class OrderDetailActivity extends BaseActivity {
+public class OrderDetailActivity extends BaseActivity implements View.OnClickListener {
     ActivityOrderdetailBinding binding;
 
     @Arg
+    @Required(false)
     OrderSimple orderSimple;
+
+    @Arg
+    int orderId;
 
     @Inject
     OrderDetailViewModel orderDetailViewModel;
@@ -42,17 +48,42 @@ public class OrderDetailActivity extends BaseActivity {
 
     public void setOrderProductListAdapter(OrderProductsAdapter orderProductListAdapter) {
         binding.orderProductList.setAdapter(orderProductListAdapter);
+
     }
 
     @Override
     protected void initViews() {
-        orderDetailViewModel.queryOrderDetail();
+        if (orderSimple != null) {
+            orderDetailViewModel.setOrderDetailObservableField(orderSimple);
+            OrderProductsAdapter orderProductsAdapter = new OrderProductsAdapter(orderSimple.getProductDetails());
+            setOrderProductListAdapter(orderProductsAdapter);
+            orderDetailViewModel.queryServiceoint(orderSimple.getServicePointId());
+        } else {
+            orderDetailViewModel.queryOrderDetail(orderId);
+        }
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new OrderDetailModule(this, orderSimple)).inject(this);
+        MainAplication.get(this).getUserComponent().plus(new OrderDetailModule(this)).inject(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
+        if (v == binding.catservicepoint)
+            if (orderSimple != null)
+                navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
+            else
+                navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getServicePointId());
+        if (v == binding.servicepoint) {
+            if (orderDetailViewModel.servicePointObservableField.get() != null)
+                navigate.navigateToServicePointActivity(this, null, false, orderDetailViewModel.servicePointObservableField.get());
+        }
+        if (v == binding.cancel)
+            orderDetailViewModel.cancleOrder(orderId);
     }
 }

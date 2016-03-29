@@ -22,4 +22,8 @@ public class IndividualCenterViewModel {
     public IndividualCenterFragment getIndividualCenterFragment() {
         return individualCenterFragment;
     }
+
+    public void refreshUser(User mUser) {
+        user.set(mUser);
+    }
 }

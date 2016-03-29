@@ -1,16 +1,18 @@
 package com.j1j2.pifalao.feature.orderdetail;
 
 import android.databinding.ObservableField;
+import android.widget.Toast;
 
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.UserOrderApi;
-import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.event.OrderCancelEvent;
 
-import rx.Observable;
+import org.greenrobot.eventbus.EventBus;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -21,30 +23,31 @@ public class OrderDetailViewModel {
     private OrderDetailActivity orderDetailActivity;
     private UserOrderApi userOrderApi;
     private ServicePointApi servicePointApi;
-    private OrderSimple orderSimple;
+
     private OrderProductsAdapter orderProductsAdapter;
 
     public ObservableField<ServicePoint> servicePointObservableField = new ObservableField<>();
-    public ObservableField<OrderDetail> orderDetailObservableField = new ObservableField<>();
+    public ObservableField<OrderSimple> orderDetailObservableField = new ObservableField<>();
 
-    public OrderDetailViewModel(OrderDetailActivity orderDetailActivity, UserOrderApi userOrderApi, ServicePointApi servicePointApi, OrderSimple orderSimple) {
+    public OrderDetailViewModel(OrderDetailActivity orderDetailActivity, UserOrderApi userOrderApi, ServicePointApi servicePointApi) {
         this.orderDetailActivity = orderDetailActivity;
         this.userOrderApi = userOrderApi;
         this.servicePointApi = servicePointApi;
-        this.orderSimple = orderSimple;
+
     }
 
-    public void queryOrderDetail() {
-        userOrderApi.queryOrderByOrderId("" + orderSimple.getOrderId())
-                .compose(orderDetailActivity.<WebReturn<OrderDetail>>bindToLifecycle())
+    public void queryOrderDetail(int orderId) {
+        userOrderApi.queryOrderByOrderId("" + orderId)
+                .compose(orderDetailActivity.<WebReturn<OrderSimple>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<OrderDetail>() {
+                .subscribe(new WebReturnSubscriber<OrderSimple>() {
                     @Override
-                    public void onWebReturnSucess(OrderDetail orderDetail) {
-                        orderDetailObservableField.set(orderDetail);
-                        orderProductsAdapter = new OrderProductsAdapter(orderDetail.getProductDetails());
+                    public void onWebReturnSucess(OrderSimple orderSimple) {
+                        orderDetailObservableField.set(orderSimple);
+                        orderProductsAdapter = new OrderProductsAdapter(orderSimple.getProductDetails());
                         orderDetailActivity.setOrderProductListAdapter(orderProductsAdapter);
+                        queryServiceoint(orderSimple.getServicePointId());
                     }
 
                     @Override
@@ -57,7 +60,11 @@ public class OrderDetailViewModel {
 
                     }
                 });
-        servicePointApi.queryServicePointById(orderSimple.getServicePoint())
+
+    }
+
+    public void queryServiceoint(int servicepointId) {
+        servicePointApi.queryServicePointById(servicepointId)
                 .compose(orderDetailActivity.<WebReturn<ServicePoint>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -79,7 +86,37 @@ public class OrderDetailViewModel {
                 });
     }
 
-    public OrderSimple getOrderSimple() {
-        return orderSimple;
+
+    public void cancleOrder(int orderId) {
+        userOrderApi.cancleOrder(orderId)
+                .compose(orderDetailActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        Toast.makeText(orderDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new OrderCancelEvent());
+                        orderDetailActivity.finish();
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        Toast.makeText(orderDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+    public void setOrderDetailObservableField(OrderSimple orderSimple) {
+        this.orderDetailObservableField.set(orderSimple);
+    }
+
+    public OrderDetailActivity getOrderDetailActivity() {
+        return orderDetailActivity;
     }
 }

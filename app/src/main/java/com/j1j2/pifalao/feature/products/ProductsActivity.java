@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.products;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -18,7 +19,9 @@ import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivityProductsBinding;
 import com.j1j2.pifalao.databinding.ViewProductsAddBinding;
 import com.j1j2.pifalao.feature.productdetail.unit.ProductDetailUnitAdapter;
@@ -26,8 +29,12 @@ import com.j1j2.pifalao.feature.products.di.ProductsModule;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -35,6 +42,9 @@ import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
 import in.workarounds.bundler.annotations.Required;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-3-12.
@@ -65,6 +75,14 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     SingleSelector singleSelector;
     ViewProductsAddBinding dialogBinding;
     DialogPlus addDialog;
+
+    ProductUnit selectedUnit;
+
+    ShopCart shopCart;
+
+    public ObservableBoolean isLogin = new ObservableBoolean();
+
+
 
     @Override
     protected void initBinding() {
@@ -134,6 +152,9 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     }
 
+    public void addShopCart(ProductUnit unit, int Quantity) {
+        shopCart.addUnitWitQuantity(unit, Quantity);
+    }
 
     @Override
     public void onClick(View v) {
@@ -141,14 +162,54 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
             if (addDialog.isShowing())
                 addDialog.dismiss();
         }
-
-        if (v == dialogBinding.dialogShopcart) {
+        if (v == dialogBinding.dialogShopcart || v == binding.shopCartView) {
             if (addDialog.isShowing())
                 addDialog.dismiss();
+            if (MainAplication.get(this).isLogin())
+                navigate.navigateToShopCart(this, null, false, module);
+            else
+                navigate.navigateToLogin(this, null, false);
         }
 
-        if (v == dialogBinding.dialogAdd) {
+        if (v == binding.backBtn) {
+            if (addDialog.isShowing())
+                addDialog.dismiss();
+            onBackPressed();
+        }
+        if (v == binding.sortBtn) {
 
+        }
+        if (v == dialogBinding.dialogAdd) {
+            productsViewModel.addItemToShopCart(selectedUnit, dialogBinding.dialogQuantityview.getQuantity());
+        }
+
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onLogStateChangeEvent(LogStateEvent event) {
+        if (event.isLogin()) {
+            shopCart = MainAplication.get(this).getUserComponent().shopCart();
+            dialogBinding.setShopCart(shopCart);
+            if (productsViewModel.getProductAdapter() == null)
+                Observable.just(shopCart).compose(this.<ShopCart>bindToLifecycle())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe(new Action1<ShopCart>() {
+                            @Override
+                            public void call(ShopCart shopCart) {
+                                while (productsViewModel.getProductAdapter() == null) {
+
+                                }
+                                productsViewModel.getProductAdapter().setShopCart(shopCart);
+                            }
+                        });
+            else
+                productsViewModel.getProductAdapter().setShopCart(shopCart);
+            isLogin.set(true);
+            productsViewModel.CountDown();
+        } else {
+            isLogin.set(false);
         }
     }
 
@@ -164,13 +225,18 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     public void onItemClickListener(View view, ProductSimple productSimple, int position) {
-        navigate.navigateToProductDetailActivity(ProductsActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, productSimple);
+        navigate.navigateToProductDetailActivity(ProductsActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, productSimple, module);
     }
 
     @Override
     public void onAddIconClickListener(View view, ProductSimple productSimple, int position) {
         initDialogView(productSimple);
-        addDialog.show();
+        if (MainAplication.get(this).isLogin()) {
+            addDialog.show();
+        } else {
+            navigate.navigateToLogin(this, null, false);
+        }
+
     }
 
     private void initDialogView(ProductSimple productSimple) {
@@ -179,16 +245,22 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         dialogBinding.dialogRealPrice.setText("零售价：￥" + productSimple.getProductUnits().get(0).getRetialPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
         dialogBinding.dialogRealPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         dialogBinding.dialogMemberPrice.setText("批发价：￥" + productSimple.getProductUnits().get(0).getMemberPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
-        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productSimple.getProductUnits(), singleSelector);
+        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productSimple.getProductUnits(), singleSelector, productSimple.getBaseUnit());
         dialogBinding.dialogUnitList.setLayoutManager(new GridLayoutManager(this, 3));
         dialogBinding.dialogUnitList.setAdapter(productDetailUnitAdapter);
+        selectedUnit = productSimple.getProductUnits().get(0);
         productDetailUnitAdapter.setOnUnitItemClickListener(new ProductDetailUnitAdapter.OnUnitItemClickListener() {
             @Override
             public void OnUnitItemClickListener(View view, ProductUnit unit, int position) {
+                selectedUnit = unit;
                 dialogBinding.dialogRealPrice.setText("零售价：￥" + unit.getRetialPrice() + "/" + unit.getUnit());
                 dialogBinding.dialogMemberPrice.setText("批发价：￥" + unit.getMemberPrice() + "/" + unit.getUnit());
             }
         });
 
+    }
+
+    public ShopCart getShopCart() {
+        return shopCart;
     }
 }

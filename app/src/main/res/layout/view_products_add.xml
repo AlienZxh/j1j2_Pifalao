@@ -4,6 +4,15 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <variable
+            name="shopCart"
+            type="com.j1j2.pifalao.app.ShopCart" />
+    </data>
+
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -136,7 +145,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="商品合计："
+                                android:text=""
                                 android:textColor="@color/colorAccent"
                                 android:textSize="@dimen/text_normal"
                                 android:textStyle="bold" />
@@ -144,7 +153,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="￥0.0"
+                                android:text="@{StringUtils.getPriceWiteSymbol(shopCart.AllMemberPrice)}"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="@dimen/text_biger"
                                 android:textStyle="bold" />
@@ -153,7 +162,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="（节省：0.0）"
+                            android:text="@{&quot;（节省：&quot;+StringUtils.getPriceWiteSymbol(shopCart.AllSave)+&quot;）&quot;}"
                             android:textColor="@color/colorTextaaa"
                             android:textSize="@dimen/text_normal" />
                     </com.zhy.autolayout.AutoLinearLayout>
@@ -169,7 +178,7 @@
                         android:textSize="30px" />
                 </com.zhy.autolayout.AutoLinearLayout>
 
-                <TextView
+                <cn.bingoogolapple.badgeview.BGABadgeTextView
                     android:id="@+id/dialog_shopcart"
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="92px"
@@ -181,6 +190,10 @@
                     android:text="@string/icon_shopcart"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="44px"
+                    app:badge_bgColor="@color/colorAccent"
+                    app:badge_gravity="rightTop"
+                    app:badge_textSize="12sp"
+                    app:showNum="@{shopCart.AllUnitNum}"
                     app:layout_auto_basewidth="height" />
 
             </com.zhy.autolayout.AutoRelativeLayout>

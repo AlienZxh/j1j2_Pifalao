@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="addressManagerViewModel"
+            type="com.j1j2.pifalao.feature.addressmanager.AddressManagerViewModel" />
+    </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoRelativeLayout
@@ -16,13 +24,15 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:onClickListener="@{addressManagerViewModel.addressManagerActivity}" />
 
             <TextView
                 android:layout_width="wrap_content"

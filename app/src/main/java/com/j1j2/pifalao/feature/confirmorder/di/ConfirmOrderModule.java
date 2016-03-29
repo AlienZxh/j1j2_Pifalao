@@ -1,8 +1,14 @@
 package com.j1j2.pifalao.feature.confirmorder.di;
 
+import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserAddressApi;
+import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.app.ActivityScope;
+import com.j1j2.pifalao.feature.confirmorder.ConfirmOrderActivity;
+import com.j1j2.pifalao.feature.confirmorder.ConfirmOrderViewModel;
+
+import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
@@ -13,6 +19,27 @@ import retrofit2.Retrofit;
  */
 @Module
 public class ConfirmOrderModule {
+
+    private ConfirmOrderActivity confirmOrderActivity;
+    private List<ShopCartItem> shopCartItems;
+
+    public ConfirmOrderModule(ConfirmOrderActivity confirmOrderActivity, List<ShopCartItem> shopCartItems) {
+        this.confirmOrderActivity = confirmOrderActivity;
+        this.shopCartItems = shopCartItems;
+    }
+
+    @Provides
+    @ActivityScope
+    ConfirmOrderActivity confirmOrderActivity(Retrofit retrofit) {
+        return confirmOrderActivity;
+    }
+
+    @Provides
+    @ActivityScope
+    List<ShopCartItem> shopCartItems(Retrofit retrofit) {
+        return shopCartItems;
+    }
+
     @Provides
     @ActivityScope
     ShopCartApi shopCartApi(Retrofit retrofit) {
@@ -23,5 +50,17 @@ public class ConfirmOrderModule {
     @ActivityScope
     UserAddressApi userAddressApi(Retrofit retrofit) {
         return retrofit.create(UserAddressApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    CountDownApi countDownApi(Retrofit retrofit) {
+        return retrofit.create(CountDownApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ConfirmOrderViewModel confirmOrderViewModel(ConfirmOrderActivity confirmOrderActivity, ShopCartApi shopCartApi, List<ShopCartItem> shopCartItems, CountDownApi countDownApi) {
+        return new ConfirmOrderViewModel(confirmOrderActivity, shopCartApi, shopCartItems, countDownApi);
     }
 }

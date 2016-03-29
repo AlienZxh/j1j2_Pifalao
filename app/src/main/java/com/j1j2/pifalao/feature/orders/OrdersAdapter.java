@@ -1,6 +1,8 @@
 package com.j1j2.pifalao.feature.orders;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemOrdersBinding;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -66,8 +69,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     }
 
     public class OrdersViewHolder extends AutoBindingViewHolder<ItemOrdersBinding, OrderSimple> {
+        Context context;
+
         public OrdersViewHolder(View itemView) {
             super(itemView);
+            context = itemView.getContext();
         }
 
         @Override
@@ -78,6 +84,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         @Override
         public void bind(@NonNull final OrderSimple data, final int position) {
             binding.setOrderSimple(data);
+            binding.orderProductList.setLayoutManager(new GridLayoutManager(context, 4));
+            OrderProductAdapter orderProductAdapter = new OrderProductAdapter(data.getProductDetails());
+            binding.orderProductList.setAdapter(orderProductAdapter);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

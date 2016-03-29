@@ -165,6 +165,21 @@
 -dontwarn  com.google.zxing.**
 ##---------------End: proguard configuration for zxing  ----------
 
+##---------------Begin: proguard configuration for nineold  ----------
+-keep class com.nineoldandroids.** { *; }
+-dontwarn  com.nineoldandroids.**
+##---------------End: proguard configuration for nineold  ----------
+
+##---------------Begin: proguard configuration for eventbus  ----------
+-keepclassmembers class ** {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# Only required if you use AsyncExecutor
+#-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+#    <init>(java.lang.Throwable);
+#}
+##---------------End: proguard configuration for eventbus  ----------
 
 
 

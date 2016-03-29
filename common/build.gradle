@@ -42,6 +42,8 @@ dependencies {
 //    compile commonDependencies.snappingstepper
     compile commonDependencies.dialogplus
     compile commonDependencies.zxing
+    compile commonDependencies.nineold
+    compile commonDependencies.badgeview
 
     testCompile commonTestDependencies.junit
 }

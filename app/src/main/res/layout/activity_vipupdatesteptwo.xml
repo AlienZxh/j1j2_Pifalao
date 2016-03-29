@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vipUpdateStepTwoViewModel"
+            type="com.j1j2.pifalao.feature.vipupdate.steptwo.VipUpdateStepTwoViewModel" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{vipUpdateStepTwoViewModel.vipUpdateStepTwoActivity}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="激活VIP会员"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <ImageView
+            android:layout_width="330px"
+            android:layout_height="197px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_biger"
+            android:scaleType="fitCenter"
+            android:src="@drawable/vipupdate_step_two_img" />
+
+
+        <EditText
+            android:id="@+id/codeEdit"
+            android:layout_width="691px"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/padding_biger"
+            android:background="@drawable/edit_conner_bg_selector"
+            android:hint="请输入VIP会员激活码"
+            android:inputType="textVisiblePassword"
+            android:maxLength="15"
+            android:padding="5px"
+            android:singleLine="true"
+            android:textColor="@color/colorText333"
+            android:textColorHint="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="691px"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/padding_biger"
+            android:background="@drawable/orange_conner_btn_selector"
+            android:gravity="center"
+            android:text="确认激活"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger"
+            app:OnClickListener="@{vipUpdateStepTwoViewModel.vipUpdateStepTwoActivity}" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="691px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/content_normal_bg"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingTop="@dimen/padding_noraml">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44px"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:text="温馨提示："
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44px"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:text="1、VIP会员可在批发佬服务点进行激活；"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44px"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:text="2、批发佬工作人员为您送货上门时也可办理激活VIP会员；"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="44px"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:text="3、更多信息请咨询：400-808-7172。"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

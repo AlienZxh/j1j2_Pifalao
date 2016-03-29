@@ -28,6 +28,8 @@
     <!-- 网络定位权限：百度定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!--向外拨打电话的权限  -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:name=".app.MainAplication"
         android:allowBackup="true"
@@ -58,6 +60,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.services.ServicesActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.join.JoinActivity"
@@ -73,6 +76,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.main.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.login.LoginActivity"
@@ -121,6 +125,24 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.register.steptwo.RegisterStepTwoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.vipupdate.stepone.VipUpdateStepOneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.vipupdate.steptwo.VipUpdateStepTwoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.setting.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.individualcenter.IndividualCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.successresult.SuccessResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.catservicepoint.CatServicePointActivity"
             android:screenOrientation="portrait" />
 
         <service

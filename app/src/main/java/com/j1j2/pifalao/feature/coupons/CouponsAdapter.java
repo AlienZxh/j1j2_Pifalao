@@ -53,7 +53,7 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.CouponsV
 
         @Override
         public void bind(@NonNull Coupon data, int position) {
-
+            binding.setCoupon(data);
         }
     }
 }

@@ -11,8 +11,10 @@ import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemProductsBinding;
+import com.orhanobut.logger.Logger;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
 
     private List<ProductSimple> productSimples;
+    private ShopCart shopCart;
 
     public ProductsAdapter(List<ProductSimple> productSimples) {
         this.productSimples = productSimples;
@@ -34,6 +37,16 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         int startIndex = productSimples.size();
         productSimples.addAll(startIndex, newProductSimples);
         notifyItemRangeInserted(startIndex, newProductSimples.size());
+    }
+
+    public void clearAll() {
+        productSimples.clear();
+        notifyDataSetChanged();
+    }
+
+    public void setShopCart(ShopCart shopCart) {
+        this.shopCart = shopCart;
+        notifyDataSetChanged();
     }
 
     public interface OnProductsClickListener {
@@ -85,6 +98,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                 binding.normalPrice.setText("市场价：" + data.getProductUnits().get(0).getRetialPrice() + "元/" + data.getProductUnits().get(0).getUnit());
                 binding.normalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
+            Logger.d("zzz" + shopCart);
+
+            binding.setShopCart(shopCart);
+
 
             binding.setOnClick(new View.OnClickListener() {
                 @Override

@@ -71,6 +71,9 @@ public class QrCodeActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        qrCodeViewModel.queryQRCode();
+        if (v == binding.backBtn)
+            onBackPressed();
+        if (v == binding.refresh)
+            qrCodeViewModel.queryQRCode();
     }
 }

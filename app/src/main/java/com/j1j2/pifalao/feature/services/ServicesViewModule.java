@@ -1,19 +1,19 @@
 package com.j1j2.pifalao.feature.services;
 
-import android.widget.Toast;
-
 import com.j1j2.data.http.api.ServicePointApi;
+import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
-import com.j1j2.pifalao.feature.servicepoint.ServicePointActivity;
+import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Func1;
@@ -30,14 +30,17 @@ public class ServicesViewModule {
 
     ServicePointApi servicePointApi;
 
-    ServicesActivity servicesActivity;
+    UserVipApi userVipApi;
 
+    ServicesActivity servicesActivity;
+    private Subscription subscription;
     private ServicesAdapter servicesAdapter;
 
-    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint) {
+    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi) {
         this.servicePointApi = servicePointApi;
         this.servicesActivity = servicesActivity;
         this.servicePoint = servicePoint;
+        this.userVipApi = userVipApi;
         this.modules = new ArrayList<>();
         this.servicesAdapter = new ServicesAdapter(modules);
     }
@@ -58,6 +61,7 @@ public class ServicesViewModule {
                 .doOnCompleted(new Action0() {
                     @Override
                     public void call() {
+
                         servicesActivity.stopSearchAnimate();
                     }
                 })
@@ -67,10 +71,51 @@ public class ServicesViewModule {
                     public void onNext(Module module) {
                         super.onNext(module);
                         servicesAdapter.add(module);
+
                     }
                 });
     }
 
+
+    public void queryQRCode() {
+        if (null != subscription && subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
+        subscription = Observable
+                .interval(0, 1, TimeUnit.MINUTES)
+                .compose(servicesActivity.<Long>bindToLifecycle())
+                .flatMap(new Func1<Long, Observable<WebReturn<String>>>() {
+                    @Override
+                    public Observable<WebReturn<String>> call(Long aLong) {
+                        return userVipApi.queryLoginDimensionalCode();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        servicesActivity.setQRCode(s);
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+
+    }
+
+    public void stopQueryQRCode() {
+        if (subscription != null)
+            subscription.unsubscribe();
+    }
 
     public ServicesAdapter getServicesAdapter() {
         return servicesAdapter;

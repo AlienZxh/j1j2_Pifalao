@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.coupons;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.Module;
@@ -25,7 +26,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-23.
  */
 @RequireBundler
-public class CouponsActivity extends BaseActivity {
+public class CouponsActivity extends BaseActivity implements View.OnClickListener {
     public static final int COUPON_ALL = 0;
     public static final int COUPON_DELIVERY = 1;
     public static final int COUPON_NORMAL = 2;
@@ -46,6 +47,7 @@ public class CouponsActivity extends BaseActivity {
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_coupons);
+        binding.backBtn.setOnClickListener(this);
     }
 
     @Override
@@ -59,6 +61,12 @@ public class CouponsActivity extends BaseActivity {
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new CouponsModule(this, module)).inject(this);
+        MainAplication.get(this).getUserComponent().plus(new CouponsModule(this)).inject(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
     }
 }

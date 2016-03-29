@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -13,16 +14,28 @@
             type="com.j1j2.pifalao.app.base.MainTab" />
     </data>
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout
+        android:id="@+id/BadgeView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
+        app:badge_bgColor="@color/colorAccent"
+        app:badge_gravity="rightTop"
+        app:badge_horizontalMargin="10dp"
+        app:badge_textSize="12sp"
         tools:ignore="MissingPrefix">
 
-        <com.zhy.autolayout.AutoFrameLayout
+        <com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout
+            android:id="@+id/badgeFrame"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_noraml"
+            android:paddingRight="@dimen/padding_noraml"
+            app:badge_bgColor="@color/colorRed"
+            app:badge_gravity="rightTop"
+            app:badge_horizontalMargin="0dp"
+            app:badge_textSize="12sp">
 
             <TextView
                 android:id="@+id/icon"
@@ -44,7 +57,7 @@
                 android:textColor="@drawable/maintab_re_icon_color"
                 android:textSize="@dimen/icon_hometab" />
 
-        </com.zhy.autolayout.AutoFrameLayout>
+        </com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout>
 
         <TextView
             android:id="@+id/text"
@@ -54,5 +67,5 @@
             android:text="@{mainTab.getTexts[position]}"
             android:textColor="@drawable/maintab_text_color"
             android:textSize="@dimen/text_normal" />
-    </com.zhy.autolayout.AutoLinearLayout>
+    </com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout>
 </layout>

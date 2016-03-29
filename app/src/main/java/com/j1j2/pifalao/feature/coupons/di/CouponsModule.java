@@ -17,11 +17,9 @@ public class CouponsModule {
 
     private CouponsActivity couponsActivity;
 
-    private com.j1j2.data.model.Module module;
 
-    public CouponsModule(CouponsActivity couponsActivity, com.j1j2.data.model.Module module) {
+    public CouponsModule(CouponsActivity couponsActivity) {
         this.couponsActivity = couponsActivity;
-        this.module = module;
     }
 
     @Provides
@@ -36,16 +34,11 @@ public class CouponsModule {
         return couponsActivity;
     }
 
-    @Provides
-    @ActivityScope
-    com.j1j2.data.model.Module module() {
-        return module;
-    }
 
     @Provides
     @ActivityScope
-    CouponsViewModel couponsViewModel(CouponsActivity couponsActivity, UserCouponApi userCouponApi, com.j1j2.data.model.Module module) {
-        return new CouponsViewModel(couponsActivity, userCouponApi, module);
+    CouponsViewModel couponsViewModel(CouponsActivity couponsActivity, UserCouponApi userCouponApi) {
+        return new CouponsViewModel(couponsActivity, userCouponApi);
     }
 
 }

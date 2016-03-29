@@ -18,11 +18,11 @@ import retrofit2.Retrofit;
 public class OrderDetailModule {
 
     private OrderDetailActivity orderDetailActivity;
-    private OrderSimple orderSimple;
 
-    public OrderDetailModule(OrderDetailActivity orderDetailActivity, OrderSimple orderSimple) {
+
+    public OrderDetailModule(OrderDetailActivity orderDetailActivity) {
         this.orderDetailActivity = orderDetailActivity;
-        this.orderSimple = orderSimple;
+
     }
 
     @Provides
@@ -37,11 +37,6 @@ public class OrderDetailModule {
         return retrofit.create(ServicePointApi.class);
     }
 
-    @Provides
-    @ActivityScope
-    OrderSimple orderSimple() {
-        return orderSimple;
-    }
 
     @Provides
     @ActivityScope
@@ -51,8 +46,8 @@ public class OrderDetailModule {
 
     @Provides
     @ActivityScope
-    OrderDetailViewModel orderDetailViewModel(OrderDetailActivity orderDetailActivity, UserOrderApi userOrderApi, ServicePointApi servicePointApi, OrderSimple orderSimple) {
-        return new OrderDetailViewModel(orderDetailActivity, userOrderApi, servicePointApi, orderSimple);
+    OrderDetailViewModel orderDetailViewModel(OrderDetailActivity orderDetailActivity, UserOrderApi userOrderApi, ServicePointApi servicePointApi) {
+        return new OrderDetailViewModel(orderDetailActivity, userOrderApi, servicePointApi);
     }
 
 }

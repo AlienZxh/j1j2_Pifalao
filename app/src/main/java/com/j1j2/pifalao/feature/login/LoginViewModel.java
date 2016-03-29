@@ -9,9 +9,11 @@ import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
 import com.j1j2.pifalao.app.MainAplication;
-import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
+
+import org.greenrobot.eventbus.EventBus;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -57,6 +59,7 @@ public class LoginViewModel {
                             userLoginPreference.setUserName(username);
                             userLoginPreference.removeIsAutoLogin().removePassWord();
                         }
+                        EventBus.getDefault().postSticky(new LogStateEvent(true));
                         Toast.makeText(loginActivity.getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                         loginActivity.finish();
                     }

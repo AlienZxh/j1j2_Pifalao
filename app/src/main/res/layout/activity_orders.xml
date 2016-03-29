@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="ordersViewModel"
+            type="com.j1j2.pifalao.feature.orders.OrdersViewModel" />
+    </data>
+
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,13 +23,15 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{ordersViewModel.ordersActivity}"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -9,9 +9,12 @@ import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.RegisterSuccessEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.databinding.ActivityLoginBinding;
 import com.j1j2.pifalao.feature.login.di.LoginModule;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -55,6 +58,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
         if (v == binding.loginBtn) {
             String username = binding.username.getText().toString();
             String password = binding.password.getText().toString();
@@ -70,7 +75,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
         if (v == binding.registerBtn) {
             navigate.navigateToRegisterStepOne(this, null, false);
-            navigate.navigateToRegisterStepTwo(this, null, false);
         }
         if (v == binding.forgetPSW)
             Toast.makeText(this, "找回密码", Toast.LENGTH_SHORT).show();
@@ -78,6 +82,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        userLoginPreference.setIsAutoLogin(isChecked);
+    }
 
+    @Subscribe
+    public void onRegisterSuccessEvent(RegisterSuccessEvent event) {
+        if (event.isLogin())
+            finish();
+        else {
+            binding.username.setText(event.getLoginAccount());
+            binding.password.setText(event.getPassWord());
+        }
     }
 }

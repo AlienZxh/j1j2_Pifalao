@@ -20,15 +20,15 @@ public class OrderSimple implements Parcelable {
      * OrderState : 256
      * OrderEvaluate :
      * AdminReply :
-     * OrderProductDetail : {"ProductId":30879,"OwnCode":"","BarCode":"6935284455588","ProductName":"卫龙2连包亲嘴豆筋绿色1*12*50","RetailPrice":0.5,"ProductUnit":"包","ThumbImgPath":"http://data.j1j2.com/ResourceFiles/OptimizeImgs/2015-06-18/70/93_1_2.jpg","MemberPrice":0.41,"Quantity":100,"AppendQuantity":0,"ScalingFactor":1,"BaseUnit":"包"}
-     * DealSubmitTime : /Date(1441909901693)/
+     * ProductDetails : [{"ProductId":30879,"OwnCode":"","BarCode":"6935284455588","ProductName":"卫龙2连包亲嘴豆筋绿色1*12*50","RetailPrice":0.5,"ProductUnit":"包","ThumbImgPath":"http://data.j1j2.com/ResourceFiles/OptimizeImgs/2015-06-18/70/93_1_2.jpg","MemberPrice":0.41,"Quantity":100,"AppendQuantity":0,"ScalingFactor":0,"BaseUnit":""}]
      * DealSubmitTimeStr : 2015-09-11 02:31:41
      * Contacter : zxh
      * ContacterPhone : 15200348636
      * ContacterAddress : 湖南省长沙市雨花区民主路
      * ProductAmout : 41
+     * SaveAmount : 9
      * Coupons : []
-     * FreightType : 2 //1:送货上门
+     * FreightType : 2
      * FreightTypeStr : 服务点自提
      * PredictSendTime : 2015-09-12 有空就来拿
      * ConnectedServicePoint : 星沙星城国际服务点
@@ -46,6 +46,20 @@ public class OrderSimple implements Parcelable {
     private int OrderState;
     private String OrderEvaluate;
     private String AdminReply;
+    private String DealSubmitTimeStr;
+    private String Contacter;
+    private String ContacterPhone;
+    private String ContacterAddress;
+    private double ProductAmout;
+    private double SaveAmount;
+    private int FreightType;
+    private String FreightTypeStr;
+    private String PredictSendTime;
+    private String ConnectedServicePoint;
+    private int ServicePointId;
+    private double ReceiveAddressLat;
+    private double ReceiveAddressLng;
+    private double CalculateDistance;
     /**
      * ProductId : 30879
      * OwnCode :
@@ -57,26 +71,12 @@ public class OrderSimple implements Parcelable {
      * MemberPrice : 0.41
      * Quantity : 100
      * AppendQuantity : 0
-     * ScalingFactor : 1
-     * BaseUnit : 包
+     * ScalingFactor : 0
+     * BaseUnit :
      */
-
-    private OrderProductDetail TopOneProductDetail;
-    private String DealSubmitTime;
-    private String DealSubmitTimeStr;
-    private String Contacter;
-    private String ContacterPhone;
-    private String ContacterAddress;
-    private double ProductAmout;
-    private int FreightType;
-    private String FreightTypeStr;
-    private String PredictSendTime;
-    private String ConnectedServicePoint;
-    private int ServicePoint;
-    private double ReceiveAddressLat;
-    private double ReceiveAddressLng;
-    private double CalculateDistance;
+    private List<OrderProductDetail> ProductDetails;
     private List<Coupon> Coupons;
+
 
     public int getModuleId() {
         return ModuleId;
@@ -150,22 +150,6 @@ public class OrderSimple implements Parcelable {
         AdminReply = adminReply;
     }
 
-    public OrderProductDetail getTopOneProductDetail() {
-        return TopOneProductDetail;
-    }
-
-    public void setTopOneProductDetail(OrderProductDetail topOneProductDetail) {
-        TopOneProductDetail = topOneProductDetail;
-    }
-
-    public String getDealSubmitTime() {
-        return DealSubmitTime;
-    }
-
-    public void setDealSubmitTime(String dealSubmitTime) {
-        DealSubmitTime = dealSubmitTime;
-    }
-
     public String getDealSubmitTimeStr() {
         return DealSubmitTimeStr;
     }
@@ -206,6 +190,14 @@ public class OrderSimple implements Parcelable {
         ProductAmout = productAmout;
     }
 
+    public double getSaveAmount() {
+        return SaveAmount;
+    }
+
+    public void setSaveAmount(double saveAmount) {
+        SaveAmount = saveAmount;
+    }
+
     public int getFreightType() {
         return FreightType;
     }
@@ -238,12 +230,12 @@ public class OrderSimple implements Parcelable {
         ConnectedServicePoint = connectedServicePoint;
     }
 
-    public int getServicePoint() {
-        return ServicePoint;
+    public int getServicePointId() {
+        return ServicePointId;
     }
 
-    public void setServicePoint(int servicePoint) {
-        ServicePoint = servicePoint;
+    public void setServicePointId(int servicePointId) {
+        ServicePointId = servicePointId;
     }
 
     public double getReceiveAddressLat() {
@@ -268,6 +260,14 @@ public class OrderSimple implements Parcelable {
 
     public void setCalculateDistance(double calculateDistance) {
         CalculateDistance = calculateDistance;
+    }
+
+    public List<OrderProductDetail> getProductDetails() {
+        return ProductDetails;
+    }
+
+    public void setProductDetails(List<OrderProductDetail> productDetails) {
+        ProductDetails = productDetails;
     }
 
     public List<Coupon> getCoupons() {
@@ -295,21 +295,21 @@ public class OrderSimple implements Parcelable {
         dest.writeInt(this.OrderState);
         dest.writeString(this.OrderEvaluate);
         dest.writeString(this.AdminReply);
-        dest.writeParcelable(this.TopOneProductDetail, flags);
-        dest.writeString(this.DealSubmitTime);
         dest.writeString(this.DealSubmitTimeStr);
         dest.writeString(this.Contacter);
         dest.writeString(this.ContacterPhone);
         dest.writeString(this.ContacterAddress);
         dest.writeDouble(this.ProductAmout);
+        dest.writeDouble(this.SaveAmount);
         dest.writeInt(this.FreightType);
         dest.writeString(this.FreightTypeStr);
         dest.writeString(this.PredictSendTime);
         dest.writeString(this.ConnectedServicePoint);
-        dest.writeInt(this.ServicePoint);
+        dest.writeInt(this.ServicePointId);
         dest.writeDouble(this.ReceiveAddressLat);
         dest.writeDouble(this.ReceiveAddressLng);
         dest.writeDouble(this.CalculateDistance);
+        dest.writeTypedList(ProductDetails);
         dest.writeTypedList(Coupons);
     }
 
@@ -326,21 +326,21 @@ public class OrderSimple implements Parcelable {
         this.OrderState = in.readInt();
         this.OrderEvaluate = in.readString();
         this.AdminReply = in.readString();
-        this.TopOneProductDetail = in.readParcelable(OrderProductDetail.class.getClassLoader());
-        this.DealSubmitTime = in.readString();
         this.DealSubmitTimeStr = in.readString();
         this.Contacter = in.readString();
         this.ContacterPhone = in.readString();
         this.ContacterAddress = in.readString();
         this.ProductAmout = in.readDouble();
+        this.SaveAmount = in.readDouble();
         this.FreightType = in.readInt();
         this.FreightTypeStr = in.readString();
         this.PredictSendTime = in.readString();
         this.ConnectedServicePoint = in.readString();
-        this.ServicePoint = in.readInt();
+        this.ServicePointId = in.readInt();
         this.ReceiveAddressLat = in.readDouble();
         this.ReceiveAddressLng = in.readDouble();
         this.CalculateDistance = in.readDouble();
+        this.ProductDetails = in.createTypedArrayList(OrderProductDetail.CREATOR);
         this.Coupons = in.createTypedArrayList(Coupon.CREATOR);
     }
 

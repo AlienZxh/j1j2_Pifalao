@@ -111,6 +111,9 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
 
     @Override
     public void onClick(View v) {
-        listener.navigateToSearchActivity(v);
+        if (v == binding.backBtn)
+            getActivity().onBackPressed();
+        if (v == binding.searchBtn)
+            listener.navigateToSearchActivity(v);
     }
 }

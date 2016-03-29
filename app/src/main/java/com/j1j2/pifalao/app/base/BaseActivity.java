@@ -12,7 +12,11 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.di.ActivityComponent;
 import com.j1j2.pifalao.app.di.ActivityModule;
+import com.j1j2.pifalao.app.event.BaseEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -48,12 +52,17 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setupActivityComponent();
         initBinding();
         initActionBar();
         initViews();
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     protected void changeFragment(int resView, Fragment targetFragment) {
@@ -85,4 +94,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         return new ActivityModule(this);
     }
 
+    @Subscribe
+    public void onBaseEvent(BaseEvent baseEvent){
+
+    }
 }

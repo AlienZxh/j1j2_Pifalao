@@ -22,128 +22,185 @@
             type="OnClickListener" />
     </data>
 
-    <com.zhy.autolayout.AutoLinearLayout
-        android:fitsSystemWindows="true"
+    <com.zhy.autolayout.AutoFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
-        <com.zhy.autolayout.AutoRelativeLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/actionbar_height"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
-
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="@dimen/actionbar_height"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/icon_back"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/services_actionbar_title"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_title" />
-
-
-            <TextView
-                android:id="@+id/loginBtn"
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="@dimen/actionbar_height"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:text="@string/icon_daeva_user2"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal"
-                app:OnClickListener="@{onClick}"/>
-
-        </com.zhy.autolayout.AutoRelativeLayout>
-
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_service_map" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/colorGrayEDEDED" />
 
         <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/padding_big"
-            android:layout_marginTop="@dimen/padding_big"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:layout_width="@dimen/height_services_point_img"
-                android:layout_height="@dimen/height_services_point_img"
-                android:layout_gravity="center_vertical"
-                app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
-                fresco:roundAsCircle="true"
-                fresco:roundingBorderColor="@color/colorGrayCCCCCC"
-                fresco:roundingBorderWidth="1px" />
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionbar_height"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/servicepoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/padding_actionbar_btn"
+                    android:text="切换"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_btn"
+                    app:OnClickListener="@{onClick}" />
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/servicepoint"
+                    android:gravity="center_vertical"
+                    android:text="@string/icon_unfold"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/services_actionbar_title"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_title" />
+
+
+                <TextView
+                    android:id="@+id/loginBtn"
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:text="@string/icon_daeva_user2"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_normal"
+                    app:OnClickListener="@{onClick}" />
+
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_service_map" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/colorGrayEDEDED" />
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="20px"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/padding_big"
+                android:layout_marginTop="@dimen/padding_big"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="56px"
-                    android:gravity="center_vertical"
-                    android:text="@{sercivepoint.getName()}"
-                    android:textColor="@color/colorText2a2a2a"
-                    android:textSize="@dimen/text_biger"
-                    android:textStyle="bold" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="@dimen/height_services_point_img"
+                    android:layout_height="@dimen/height_services_point_img"
+                    android:layout_gravity="center_vertical"
+                    app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
+                    fresco:roundAsCircle="true"
+                    fresco:roundingBorderColor="@color/colorGrayCCCCCC"
+                    fresco:roundingBorderWidth="1px" />
 
-                <TextView
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="44px"
-                    android:gravity="center_vertical"
-                    android:text="@{@string/service_time_title+sercivepoint.getServiceTime()}"
-                    android:textColor="@color/colorText999"
-                    android:textSize="@dimen/text_big" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20px"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="56px"
+                        android:gravity="center_vertical"
+                        android:text="@{sercivepoint.getName()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="44px"
+                        android:gravity="center_vertical"
+                        android:text="@{@string/service_time_title+sercivepoint.getServiceTime()}"
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
             </com.zhy.autolayout.AutoLinearLayout>
 
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/colorGrayEDEDED" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.skyfishjy.library.RippleBackground
-                android:id="@+id/rippleView"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:rb_color="@color/colorPrimary" />
+                android:layout_height="1px"
+                android:background="@color/colorGrayEDEDED" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/moduleList"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
+                <com.skyfishjy.library.RippleBackground
+                    android:id="@+id/rippleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    app:rb_color="@color/colorPrimary" />
 
-    </com.zhy.autolayout.AutoLinearLayout>
+                <ImageView
+                    android:id="@+id/radar_bg_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/services_radar_bg_img" />
+
+                <ImageView
+                    android:id="@+id/radar_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/services_radar_img" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/moduleList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.j1j2.common.view.autowidget.AutoDragRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="570px"
+            android:layout_marginTop="100px">
+
+            <TextView
+                android:id="@id/dragView"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/padding_noraml"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:background="@drawable/services_dragview_bg"
+                android:gravity="center"
+                android:text="@string/icon_qr_code"
+                android:textColor="@color/colorWhite"
+                android:textSize="60px"
+                app:OnClickListener="@{onClick}"
+                app:layout_auto_basewidth="height" />
+        </com.j1j2.common.view.autowidget.AutoDragRelativeLayout>
+    </com.zhy.autolayout.AutoFrameLayout>
 </layout>

@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="registerStepTwoViewModel"
+            type="com.j1j2.pifalao.feature.register.steptwo.RegisterStepTwoViewModel" />
+    </data>
+
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,13 +24,15 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{registerStepTwoViewModel.registerStepTwoActivity}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -154,6 +163,7 @@
                     android:textSize="40px" />
 
                 <EditText
+                    android:id="@+id/pswEdit"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="5px"
@@ -198,6 +208,7 @@
                     android:textSize="40px" />
 
                 <EditText
+                    android:id="@+id/confirmPswEdit"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="5px"
@@ -241,6 +252,7 @@
                 android:textSize="40px" />
 
             <EditText
+                android:id="@+id/recommendEdit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5px"
@@ -276,7 +288,7 @@
             android:textSize="@dimen/text_normal" />
 
         <TextView
-            android:id="@+id/logout"
+            android:id="@+id/completeBtn"
             android:layout_width="691px"
             android:layout_height="@dimen/content_height_big"
             android:layout_gravity="center_horizontal"
@@ -285,6 +297,7 @@
             android:gravity="center"
             android:text="完成注册"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_biger" />
+            android:textSize="@dimen/text_biger"
+            app:OnClickListener="@{registerStepTwoViewModel.registerStepTwoActivity}" />
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

@@ -10,12 +10,16 @@ import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
+import com.j1j2.pifalao.app.event.OrderCancelEvent;
 import com.j1j2.pifalao.databinding.ActivityOrdersBinding;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
 import com.j1j2.pifalao.feature.products.ProductsAdapter;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -27,7 +31,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-22.
  */
 @RequireBundler
-public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, OrdersAdapter.OnOrdersClickListener {
+public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, OrdersAdapter.OnOrdersClickListener, View.OnClickListener {
 
     public static final int ORDERTYPE_ALL = 0;//全部
     public static final int ORDERTYPE_SUBMIT = 1;//已下单
@@ -48,6 +52,7 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orders);
+        binding.setOrdersViewModel(ordersViewModel);
         binding.orderList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.orderList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)
@@ -61,24 +66,24 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     @Override
     protected void initViews() {
-        ordersViewModel.queryOrders(true);
+        ordersViewModel.queryOrders(true, orderType);
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new OrdersModule(this, orderType)).inject(this);
+        MainAplication.get(this).getUserComponent().plus(new OrdersModule(this)).inject(this);
     }
 
     @Override
     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
-        ordersViewModel.queryOrders(false);
+        ordersViewModel.queryOrders(false, orderType);
     }
 
     @Override
     public void onRefresh() {
-        ordersViewModel.queryOrders(true);
+        ordersViewModel.queryOrders(true, orderType);
     }
 
     public void setOrdersAdapter(OrdersAdapter ordersAdapter) {
@@ -95,22 +100,35 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
+    }
+
+    @Override
     public void onDetailClickListener(View view, OrderSimple orderSimple, int position) {
-        navigate.navigateToOrderDetail(this, null, false, orderSimple);
+        navigate.navigateToOrderDetail(this, null, false, orderSimple, orderSimple.getOrderId());
     }
 
     @Override
     public void onServicePointIconClickListener(View view, OrderSimple orderSimple, int position) {
-
+        navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
     }
 
     @Override
     public void onCancelPointIconClickListener(View view, OrderSimple orderSimple, int position) {
-
+        ordersViewModel.cancleOrder(orderSimple.getOrderId());
     }
 
     @Override
     public void onCommentPointIconClickListener(View view, OrderSimple orderSimple, int position) {
 
+    }
+
+
+    @Subscribe
+    public void onOrderCancelEvent(OrderCancelEvent event) {
+        orderType = ORDERTYPE_INVALID;
+        ordersViewModel.queryOrders(true, orderType);
     }
 }

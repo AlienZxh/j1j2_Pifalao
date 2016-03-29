@@ -5,6 +5,14 @@
 
     <data>
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+
         <variable
             name="individualCenterViewModel"
             type="com.j1j2.pifalao.feature.individualcenter.IndividualCenterViewModel" />
@@ -26,6 +34,17 @@
                 android:layout_height="@dimen/actionbar_height"
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/backBtn"
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/icon_back"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_normal"
+                    app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -55,6 +74,7 @@
                         android:layout_height="154px"
                         android:layout_marginLeft="@dimen/padding_noraml"
                         android:layout_marginRight="@dimen/padding_noraml"
+                        fresco:overlayImage="@drawable/user_head_img"
                         fresco:roundedCornerRadius="5dp"
                         fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                         fresco:roundingBorderWidth="1px" />
@@ -70,13 +90,14 @@
                             android:layout_marginBottom="24px"
                             android:text="@{individualCenterViewModel.user.LoginAccount}"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_biger" />
+                            android:textSize="@dimen/text_biger"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/padding_noraml"
-                            android:text="普通会员"
+                            android:text="@{individualCenterViewModel.user.VIPRegisterCode.length()>=10?&quot;VIP会员&quot;:&quot;普通会员&quot;}"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_normal" />
 
@@ -89,6 +110,7 @@
                             android:text="激活VIP会员"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_normal"
+                            android:visibility="@{individualCenterViewModel.user.VIPRegisterCode.length()>=10?View.INVISIBLE:View.VISIBLE}"
                             app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}" />
                     </com.zhy.autolayout.AutoLinearLayout>
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -125,9 +147,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/padding_small"
                         android:layout_marginTop="@dimen/padding_noraml"
-                        android:text="@{String.valueOf(individualCenterViewModel.user.Cost)}"
+                        android:text="@{&quot;￥&quot;+String.valueOf(individualCenterViewModel.user.Cost)}"
                         android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
+                        android:textSize="30px" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -138,7 +160,7 @@
                 </com.zhy.autolayout.AutoLinearLayout>
 
                 <View
-                    android:layout_width="@dimen/height_1px"
+                    android:layout_width="2px"
                     android:layout_height="@dimen/padding_big"
                     android:layout_gravity="center_vertical"
                     android:background="@color/colorGrayEDEDED"
@@ -156,9 +178,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/padding_small"
                         android:layout_marginTop="@dimen/padding_noraml"
-                        android:text="@{String.valueOf(individualCenterViewModel.user.UserSaveAmount)}"
+                        android:text="@{&quot;￥&quot;+String.valueOf(individualCenterViewModel.user.UserSaveAmount)}"
                         android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_big"
+                        android:textSize="30px"
                         android:textStyle="bold" />
 
                     <TextView
@@ -170,7 +192,7 @@
                 </com.zhy.autolayout.AutoLinearLayout>
 
                 <View
-                    android:layout_width="@dimen/height_1px"
+                    android:layout_width="2px"
                     android:layout_height="@dimen/padding_big"
                     android:layout_gravity="center_vertical"
                     android:background="@color/colorGrayEDEDED"
@@ -190,7 +212,7 @@
                         android:layout_marginTop="@dimen/padding_noraml"
                         android:text="@{String.valueOf(individualCenterViewModel.user.Point)}"
                         android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
+                        android:textSize="30px" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -239,9 +261,17 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{String.valueOf(individualCenterViewModel.user.Balance)}"
+                            android:text="￥"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_big"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{&quot;&quot;+individualCenterViewModel.user.Balance}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="40px"
                             android:textStyle="bold" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
@@ -293,6 +323,7 @@
                     android:text="@string/icon_qr_code"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="60px" />
+
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="wrap_content"
@@ -339,10 +370,14 @@
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/ordernum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <cn.bingoogolapple.badgeview.BGABadgeTextView
+                    android:layout_width="100px"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_noraml"
+                    app:badge_bgColor="@color/colorRed"
+                    app:badge_gravity="rightCenter"
+                    app:badge_textSize="12sp"
+                    app:showNum="@{unReadInfoManager.unReadInfo.UnReadOrderCount}" />
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
@@ -394,7 +429,8 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_noraml" />
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
@@ -445,7 +481,11 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_noraml"
+                    android:text="券、余额、积分等"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
@@ -495,9 +535,14 @@
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <cn.bingoogolapple.badgeview.BGABadgeTextView
+                    android:layout_width="100px"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_noraml"
+                    app:badge_bgColor="@color/colorRed"
+                    app:badge_gravity="rightCenter"
+                    app:badge_textSize="12sp"
+                    app:showNum="@{unReadInfoManager.unReadInfo.UnReadPushMessageCount}" />
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
@@ -549,7 +594,11 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_noraml"
+                    android:text="@{&quot;&quot;+unReadInfoManager.unReadInfo.UserFavoritesCount}"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
@@ -601,7 +650,8 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/padding_noraml" />
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"

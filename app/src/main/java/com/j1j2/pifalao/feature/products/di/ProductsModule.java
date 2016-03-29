@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.products.di;
 
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
+import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.model.ProductSort;
 import com.j1j2.pifalao.app.ActivityScope;
@@ -39,6 +40,12 @@ public class ProductsModule {
 
     @Provides
     @ActivityScope
+    ShopCartApi shopCartApi(Retrofit retrofit) {
+        return retrofit.create(ShopCartApi.class);
+    }
+
+    @Provides
+    @ActivityScope
     CountDownApi countDownApi(Retrofit retrofit) {
         return retrofit.create(CountDownApi.class);
     }
@@ -69,8 +76,8 @@ public class ProductsModule {
 
     @Provides
     @ActivityScope
-    ProductsViewModel productsViewModel(ProductsActivity productsActivity, ProductSort productSort, com.j1j2.data.model.Module module, ProductApi productApi, CountDownApi countDownApi, String key) {
-        return new ProductsViewModel(productsActivity, productSort, module, productApi, countDownApi, key);
+    ProductsViewModel productsViewModel(ProductsActivity productsActivity, ProductSort productSort, com.j1j2.data.model.Module module, ProductApi productApi, CountDownApi countDownApi, String key, ShopCartApi shopCartApi) {
+        return new ProductsViewModel(productsActivity, productSort, module, productApi, countDownApi, key, shopCartApi);
     }
 
 

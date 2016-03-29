@@ -1,6 +1,8 @@
 package com.j1j2.pifalao.feature.productdetail.di;
 
 import com.j1j2.data.http.api.ProductApi;
+import com.j1j2.data.http.api.ShopCartApi;
+import com.j1j2.data.http.api.UserFavoriteApi;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.productdetail.ProductDetailActivity;
@@ -32,6 +34,18 @@ public class ProductDetailModule {
 
     @Provides
     @ActivityScope
+    ShopCartApi shopCartApi(Retrofit retrofit) {
+        return retrofit.create(ShopCartApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    UserFavoriteApi userFavoriteApi(Retrofit retrofit) {
+        return retrofit.create(UserFavoriteApi.class);
+    }
+
+    @Provides
+    @ActivityScope
     ProductDetailActivity productDetailActivity() {
         return productDetailActivity;
     }
@@ -44,8 +58,8 @@ public class ProductDetailModule {
 
     @Provides
     @ActivityScope
-    ProductDetailViewModel productDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ProductSimple productSimple) {
-        return new ProductDetailViewModel(productDetailActivity, productApi, productSimple);
+    ProductDetailViewModel productDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ProductSimple productSimple, ShopCartApi shopCartApi, UserFavoriteApi userFavoriteApi) {
+        return new ProductDetailViewModel(productDetailActivity, productApi, productSimple, shopCartApi,userFavoriteApi);
     }
 
 }

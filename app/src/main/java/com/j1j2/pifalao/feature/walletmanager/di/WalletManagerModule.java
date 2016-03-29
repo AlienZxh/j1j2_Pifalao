@@ -15,11 +15,11 @@ import retrofit2.Retrofit;
 @Module
 public class WalletManagerModule {
     private WalletManagerActivity walletManagerActivity;
-    private com.j1j2.data.model.Module module;
 
-    public WalletManagerModule(WalletManagerActivity walletManagerActivity, com.j1j2.data.model.Module module) {
+
+    public WalletManagerModule(WalletManagerActivity walletManagerActivity) {
         this.walletManagerActivity = walletManagerActivity;
-        this.module = module;
+
     }
 
     @Provides
@@ -28,16 +28,11 @@ public class WalletManagerModule {
         return walletManagerActivity;
     }
 
-    @Provides
-    @ActivityScope
-    com.j1j2.data.model.Module module() {
-        return module;
-    }
 
     @Provides
     @ActivityScope
-    WalletManagerViewModel walletManagerViewModel(WalletManagerActivity walletManagerActivity, UserCouponApi userCouponApi, com.j1j2.data.model.Module module) {
-        return new WalletManagerViewModel(walletManagerActivity, userCouponApi, module);
+    WalletManagerViewModel walletManagerViewModel(WalletManagerActivity walletManagerActivity, UserCouponApi userCouponApi) {
+        return new WalletManagerViewModel(walletManagerActivity, userCouponApi);
     }
 
     @Provides

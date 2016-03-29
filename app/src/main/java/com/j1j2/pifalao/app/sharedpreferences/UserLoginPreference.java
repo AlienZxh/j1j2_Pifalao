@@ -1,7 +1,11 @@
 package com.j1j2.pifalao.app.sharedpreferences;
 
+import com.j1j2.data.model.User;
+import com.j1j2.pifalao.app.sharedpreferences.TypeAdapter.UserInfoAdapter;
+
 import net.orange_box.storebox.annotations.method.KeyByString;
 import net.orange_box.storebox.annotations.method.RemoveMethod;
+import net.orange_box.storebox.annotations.method.TypeAdapter;
 import net.orange_box.storebox.annotations.option.SaveOption;
 import net.orange_box.storebox.enums.SaveMode;
 
@@ -63,10 +67,12 @@ public interface UserLoginPreference {
 
 
     @KeyByString(KEY_USERINFO)
-    String getUserInfo(String mDefault);
+    @TypeAdapter(UserInfoAdapter.class)
+    User getUserInfo(User user);
 
     @KeyByString(KEY_USERINFO)
-    UserLoginPreference setUserInfo(String userInfo);
+    @TypeAdapter(UserInfoAdapter.class)
+    UserLoginPreference setUserInfo(User userInfo);
 
     @KeyByString(KEY_USERINFO)
     @RemoveMethod

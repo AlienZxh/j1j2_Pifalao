@@ -8,6 +8,7 @@ import java.util.List;
 public class SetOrderReadStateBody {
 
     private List<Integer> orderIdList;
+    private int state;
 
     public List<Integer> getOrderIdList() {
         return orderIdList;
@@ -17,10 +18,19 @@ public class SetOrderReadStateBody {
         this.orderIdList = orderIdList;
     }
 
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
     @Override
     public String toString() {
         return "SetOrderReadStateBody{" +
                 "orderIdList=" + orderIdList +
+                ", state=" + state +
                 '}';
     }
 }

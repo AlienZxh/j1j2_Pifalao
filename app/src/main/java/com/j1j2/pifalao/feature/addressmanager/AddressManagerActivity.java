@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.addressmanager;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -19,7 +20,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-23.
  */
 @RequireBundler
-public class AddressManagerActivity extends BaseActivity {
+public class AddressManagerActivity extends BaseActivity implements View.OnClickListener {
 
     ActivityAdressmanagerBinding binding;
 
@@ -29,6 +30,7 @@ public class AddressManagerActivity extends BaseActivity {
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_adressmanager);
+        binding.setAddressManagerViewModel(addressManagerViewModel);
         binding.addressList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.addressList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)
@@ -50,5 +52,11 @@ public class AddressManagerActivity extends BaseActivity {
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         MainAplication.get(this).getUserComponent().plus(new AddressManagerModule(this)).inject(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
     }
 }

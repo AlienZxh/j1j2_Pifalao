@@ -16,11 +16,11 @@ import retrofit2.Retrofit;
 public class OrdersModule {
 
     private OrdersActivity ordersActivity;
-    private int orderType;
 
-    public OrdersModule(OrdersActivity ordersActivity, int orderType) {
+
+    public OrdersModule(OrdersActivity ordersActivity) {
         this.ordersActivity = ordersActivity;
-        this.orderType = orderType;
+
     }
 
     @Provides
@@ -35,16 +35,11 @@ public class OrdersModule {
         return ordersActivity;
     }
 
-    @Provides
-    @ActivityScope
-    int orderType() {
-        return orderType;
-    }
 
     @Provides
     @ActivityScope
-    OrdersViewModel ordersViewModel(OrdersActivity ordersActivity, UserOrderApi userOrderApi, int orderType) {
-        return new OrdersViewModel(ordersActivity, userOrderApi, orderType);
+    OrdersViewModel ordersViewModel(OrdersActivity ordersActivity, UserOrderApi userOrderApi) {
+        return new OrdersViewModel(ordersActivity, userOrderApi);
     }
 
 

@@ -20,9 +20,15 @@
         <variable
             name="productSimple"
             type="com.j1j2.data.model.ProductSimple" />
+
+        <variable
+            name="shopCart"
+            type="com.j1j2.pifalao.app.ShopCart" />
+
     </data>
 
-    <com.zhy.autolayout.AutoRelativeLayout
+    <com.j1j2.common.view.bgabadgewidget.AutoBGABadgeRelativeLayout
+        android:id="@+id/BGABadgeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
@@ -30,7 +36,12 @@
         android:paddingLeft="@dimen/padding_products_item_left"
         android:paddingRight="@dimen/padding_products_item_left"
         android:paddingTop="@dimen/padding_products_item_top"
-        app:OnClickListener="@{onClick}">
+        app:OnClickListener="@{onClick}"
+        app:badge_bgColor="@color/colorAccent"
+        app:badge_gravity="rightCenter"
+        app:badge_horizontalMargin="15dp"
+        app:badge_textSize="12sp"
+        app:showNum="@{shopCart.shopCartItemBaseUnitNum.get(productSimple.MainId)??0}">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -164,13 +175,13 @@
             fresco:roundingBorderWidth="1px" />
 
         <com.zhy.autolayout.AutoLinearLayout
-            app:OnClickListener="@{onAddClick}"
             android:layout_width="152px"
             android:layout_height="56px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:background="@color/colorProductBuy"
-            android:gravity="center">
+            android:gravity="center"
+            app:OnClickListener="@{onAddClick}">
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -189,5 +200,5 @@
 
         </com.zhy.autolayout.AutoLinearLayout>
 
-    </com.zhy.autolayout.AutoRelativeLayout>
+    </com.j1j2.common.view.bgabadgewidget.AutoBGABadgeRelativeLayout>
 </layout>

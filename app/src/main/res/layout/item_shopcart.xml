@@ -75,7 +75,8 @@
                 <com.j1j2.common.view.quantityview.QuantityView
                     android:id="@+id/quantityview"
                     android:layout_width="200px"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    app:quantity="@{shopCartItem.Quantity}"/>
 
                 <View
                     android:layout_width="0dp"
@@ -83,6 +84,7 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/deleteBtn"
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

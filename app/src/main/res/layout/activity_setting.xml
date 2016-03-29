@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+
+        <variable
+            name="settingActivity"
+            type="com.j1j2.pifalao.feature.setting.SettingActivity" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{settingActivity}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="设置"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_biger"
+            android:scaleType="center"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:gravity="center"
+            android:text="批发佬网购批发超市"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_big"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:layout_marginTop="@dimen/padding_biger"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/versionCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_biger"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{settingActivity}">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="当前版本"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/versionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/aboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_biger"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{settingActivity}">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="关于我们"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/feedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_biger"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{settingActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="意见反馈"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/serviceCall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_biger"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{settingActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="联系客服"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="400-808-7172"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -1,5 +1,7 @@
 package com.j1j2.pifalao.app.di;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -7,6 +9,7 @@ import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.orhanobut.logger.Logger;
 
 import net.orange_box.storebox.StoreBox;
@@ -52,7 +55,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    Gson gson() {
+    Gson  gson() {
         return new GsonBuilder()
                 .serializeNulls()
                 .create();
@@ -62,6 +65,12 @@ public class AppModule {
     @Singleton
     UserLoginPreference userLoginPreference(MainAplication application) {
         return StoreBox.create(application.getApplicationContext(), UserLoginPreference.class);
+    }
+
+    @Provides
+    @Singleton
+    UserRelativePreference userRelativePreference(MainAplication application) {
+        return StoreBox.create(application.getApplicationContext(), UserRelativePreference.class);
     }
 
     @Provides

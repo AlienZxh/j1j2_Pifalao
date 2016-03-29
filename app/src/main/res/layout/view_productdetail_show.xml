@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <variable
+            name="array"
+            type="String[]" />
+
+    </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
@@ -67,10 +76,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
+                    app:imageURI="@{Uri.parse(array[0]??&quot;&quot;)}"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1.4" />
+                    fresco:viewAspectRatio="0.8"  />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -97,10 +107,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
+                    app:imageURI="@{Uri.parse(array[1]??&quot;&quot;)}"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1.4" />
+                    fresco:viewAspectRatio="0.8"  />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -141,10 +152,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
+                    app:imageURI="@{Uri.parse(array[2]??&quot;&quot;)}"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1.4" />
+                    fresco:viewAspectRatio="0.8"  />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -171,10 +183,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
+                    app:imageURI="@{Uri.parse(array[3]??&quot;&quot;)}"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1.4" />
+                    fresco:viewAspectRatio="0.8" />
 
                 <TextView
                     android:layout_width="match_parent"

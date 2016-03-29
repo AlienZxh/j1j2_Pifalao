@@ -17,13 +17,12 @@ public interface UserVipApi {
     @POST("UserVip/QueryLoginDimensionalCode")
     Observable<WebReturn<String>> queryLoginDimensionalCode();
 
-    //_____________________________________________________________________
+    @POST("UserVip/ChangeUserPwd")
+    Observable<WebReturn<String>> changeUserPwd(@Body ChangeUserPwdBody changeUserPwdBody);
 
     @POST("UserVip/RenewVip")
-    Observable<String> renewVip(@Query("code") String code);
+    Observable<WebReturn<String>> renewVip(@Query("code") String code);
+    //_____________________________________________________________________
 
-
-    @POST("UserVip/ChangeUserPwd")
-    Observable<String> changeUserPwd(@Body ChangeUserPwdBody changeUserPwdBody);
 
 }

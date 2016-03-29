@@ -1,9 +1,12 @@
 package com.j1j2.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alienzxh on 16-3-16.
  */
-public class ProductImg {
+public class ProductImg implements Parcelable {
 
     /**
      * ImgId : 201
@@ -48,4 +51,40 @@ public class ProductImg {
     public int getSize() {
         return Size;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.ImgId);
+        dest.writeInt(this.MainId);
+        dest.writeString(this.ImgUrl);
+        dest.writeInt(this.Size);
+    }
+
+    public ProductImg() {
+    }
+
+    protected ProductImg(Parcel in) {
+        this.ImgId = in.readInt();
+        this.MainId = in.readInt();
+        this.ImgUrl = in.readString();
+        this.Size = in.readInt();
+    }
+
+    public static final Parcelable.Creator<ProductImg> CREATOR = new Parcelable.Creator<ProductImg>() {
+        @Override
+        public ProductImg createFromParcel(Parcel source) {
+            return new ProductImg(source);
+        }
+
+        @Override
+        public ProductImg[] newArray(int size) {
+            return new ProductImg[size];
+        }
+    };
 }

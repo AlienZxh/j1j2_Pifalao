@@ -1,10 +1,12 @@
 package com.j1j2.pifalao.feature.walletmanager;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableInt;
 import android.view.View;
 
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.Module;
+import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+import in.workarounds.bundler.annotations.Required;
 
 /**
  * Created by alienzxh on 16-3-23.
@@ -32,12 +35,20 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
     @Inject
     WalletManagerViewModel walletManagerViewModel;
 
+    @Inject
+    User user;
+
     @Arg
+    @Required(false)
     Module module;
 
     private List<Coupon> normalCoupons = null;
     private List<Coupon> deliveryCoupons = null;
     private List<Coupon> goodsCoupons = null;
+
+    public ObservableInt normalCouponsNum = new ObservableInt();
+    public ObservableInt deliveryCouponsNum = new ObservableInt();
+    public ObservableInt goodsCouponsNum = new ObservableInt();
 
     @Override
     protected void initBinding() {
@@ -47,7 +58,7 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initViews() {
-        walletManagerViewModel.queryAllCoupons();
+        walletManagerViewModel.queryAllCoupons(module);
     }
 
     public void initCoupons(List<Coupon> couponList) {
@@ -63,17 +74,22 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
                 goodsCoupons.add(coupon);
             }
         }
+        normalCouponsNum.set(normalCoupons.size());
+        deliveryCouponsNum.set(deliveryCoupons.size());
+        goodsCouponsNum.set(goodsCoupons.size());
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new WalletManagerModule(this, module)).inject(this);
+        MainAplication.get(this).getUserComponent().plus(new WalletManagerModule(this)).inject(this);
     }
 
     @Override
     public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
         if (null != normalCoupons && v == binding.coupon) {
             navigate.navigateToCoupons(this, null, false, module, CouponsActivity.COUPON_NORMAL, normalCoupons);
         }
