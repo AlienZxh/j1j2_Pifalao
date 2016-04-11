@@ -19,11 +19,9 @@ import retrofit2.Retrofit;
 public class ProductDetailModule {
 
     private ProductDetailActivity productDetailActivity;
-    private ProductSimple productSimple;
 
-    public ProductDetailModule(ProductDetailActivity productDetailActivity, ProductSimple productSimple) {
+    public ProductDetailModule(ProductDetailActivity productDetailActivity) {
         this.productDetailActivity = productDetailActivity;
-        this.productSimple = productSimple;
     }
 
     @Provides
@@ -52,14 +50,8 @@ public class ProductDetailModule {
 
     @Provides
     @ActivityScope
-    ProductSimple productSimple() {
-        return productSimple;
-    }
-
-    @Provides
-    @ActivityScope
-    ProductDetailViewModel productDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ProductSimple productSimple, ShopCartApi shopCartApi, UserFavoriteApi userFavoriteApi) {
-        return new ProductDetailViewModel(productDetailActivity, productApi, productSimple, shopCartApi,userFavoriteApi);
+    ProductDetailViewModel productDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ShopCartApi shopCartApi, UserFavoriteApi userFavoriteApi) {
+        return new ProductDetailViewModel(productDetailActivity, productApi, shopCartApi, userFavoriteApi);
     }
 
 }

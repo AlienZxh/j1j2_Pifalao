@@ -7,8 +7,9 @@ import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.SetOrderReadStateBody;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.app.event.OrderCancelEvent;
+import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,7 +42,7 @@ public class OrdersViewModel {
     public void queryOrders(boolean isRefresh, final int orderType) {
         if (isRefresh) {
             pageIndex = 1;
-            ordersActivity.setLoadMoreEnable(true);
+            ordersActivity.setLoadMoreBegin();
         }
         userOrderApi.queryOrders("" + pageIndex, "" + pageSize, "" + orderType)
                 .compose(ordersActivity.<WebReturn<PagerManager<OrderSimple>>>bindToLifecycle())
@@ -56,23 +57,10 @@ public class OrdersViewModel {
                         if (pageIndex == 1) {
                             ordersAdapter = new OrdersAdapter(orderSimplePagerManager.getList());
                             ordersActivity.setOrdersAdapter(ordersAdapter);
-//                            ordersAdapter.notifyItemRangeChanged(0, orderSimplePagerManager.getList().size());
-                            if (pageIndex == pageCount) {
-                                ordersActivity.setLoadMoreFinish();
-                                ordersActivity.setLoadMoreEnable(false);
-                            }
+                        } else if (pageIndex <= pageCount) {
+                            ordersAdapter.addAll(orderSimplePagerManager.getList());
                         } else {
-                            if (pageIndex < pageCount) {
-                                ordersAdapter.addAll(orderSimplePagerManager.getList());
-                                ordersActivity.setLoadMoreFinish();
-                            } else if (pageIndex == pageCount) {
-                                ordersAdapter.addAll(orderSimplePagerManager.getList());
-                                ordersActivity.setLoadMoreFinish();
-                                ordersActivity.setLoadMoreEnable(false);
-                            } else {
-                                ordersActivity.setLoadMoreFinish();
-                                ordersActivity.setLoadMoreEnable(false);
-                            }
+                            ordersActivity.setLoadMoreComplete();
                         }
                         pageIndex++;
                     }
@@ -98,7 +86,32 @@ public class OrdersViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         Toast.makeText(ordersActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                        EventBus.getDefault().post(new OrderCancelEvent());
+                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
+
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        Toast.makeText(ordersActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+    public void receiveOrder(int orderId) {
+        userOrderApi.confrimReceive(orderId)
+                .compose(ordersActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        Toast.makeText(ordersActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_CLIENTWAITFORRECEVIE, Constant.OrderType.ORDERTYPE_WAITFORRATE));
 
                     }
 

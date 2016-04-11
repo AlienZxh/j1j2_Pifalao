@@ -59,9 +59,9 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
         }
         if (v == binding.logout) {
             MainAplication.get(this).loginOut();
-            EventBus.getDefault().postSticky(new LogStateEvent(false));
             shopCart.clear();
             unReadInfoManager.clear();
+            EventBus.getDefault().postSticky(new LogStateEvent(false));
             finish();
         }
     }

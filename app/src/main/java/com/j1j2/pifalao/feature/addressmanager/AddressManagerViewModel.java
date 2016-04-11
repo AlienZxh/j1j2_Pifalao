@@ -1,5 +1,7 @@
 package com.j1j2.pifalao.feature.addressmanager;
 
+import android.widget.Toast;
+
 import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.WebReturn;
@@ -38,6 +40,52 @@ public class AddressManagerViewModel {
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
 
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+    public void setDefaultAddress(int addressId) {
+        userAddressApi.setUserDefaultAddress(addressId)
+                .compose(addressManagerActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        queryAddress();
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        Toast.makeText(addressManagerActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+    public void deleteAddress(int addressId, final int position) {
+        userAddressApi.deleteUserAddress(addressId)
+                .compose(addressManagerActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        addressManagerAdapter.deletePosition(position);
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        Toast.makeText(addressManagerActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

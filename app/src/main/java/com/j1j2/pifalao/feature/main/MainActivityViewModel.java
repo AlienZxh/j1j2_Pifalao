@@ -38,7 +38,6 @@ public class MainActivityViewModel {
                 .subscribe(new WebReturnSubscriber<List<ShopCartItem>>() {
                     @Override
                     public void onWebReturnSucess(List<ShopCartItem> mShopCartItems) {
-
                         mainActivity.setShopCart(mShopCartItems);
                     }
 

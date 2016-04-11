@@ -12,6 +12,9 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +34,7 @@ public class ShopCartViewModel {
     private ShopCartApi shopCartApi;
     private CountDownApi countDownApi;
     private ShopCartActivity shopCartActivity;
-    private Module module;
+    private int moduleId;
     private ShopCartAdapter shopCartAdapter;
     private ShopCart shopCart;
 
@@ -43,16 +46,16 @@ public class ShopCartViewModel {
 
     private List<ShopCartItem> shopCartItems;
 
-    public ShopCartViewModel(ShopCartApi shopCartApi, ShopCartActivity shopCartActivity, Module module, CountDownApi countDownApi, ShopCart shopCart) {
+    public ShopCartViewModel(ShopCartApi shopCartApi, ShopCartActivity shopCartActivity, int moduleId, CountDownApi countDownApi, ShopCart shopCart) {
         this.shopCartApi = shopCartApi;
         this.countDownApi = countDownApi;
         this.shopCartActivity = shopCartActivity;
-        this.module = module;
+        this.moduleId = moduleId;
         this.shopCart = shopCart;
     }
 
     public void queryShopCart() {
-        shopCartApi.queryShopCart(module.getWareHouseModuleId())
+        shopCartApi.queryShopCart(moduleId)
                 .compose(shopCartActivity.<WebReturn<List<ShopCartItem>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -86,7 +89,7 @@ public class ShopCartViewModel {
                     @Override
                     public void onWebReturnSucess(String str) {
                         Toast.makeText(shopCartActivity, str, Toast.LENGTH_SHORT).show();
-                        queryShopCart();
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
@@ -110,7 +113,7 @@ public class ShopCartViewModel {
                     @Override
                     public void onWebReturnSucess(String str) {
                         Toast.makeText(shopCartActivity, str, Toast.LENGTH_SHORT).show();
-                        queryShopCart();
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
@@ -126,7 +129,7 @@ public class ShopCartViewModel {
     }
 
     public void CountDown() {
-        countDownApi.QueryDeliveryCountDownOfModule(module.getWareHouseModuleId())
+        countDownApi.QueryDeliveryCountDownOfModule(moduleId)
                 .compose(shopCartActivity.<WebReturn<UserDeliveryTime>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())

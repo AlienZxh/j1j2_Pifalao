@@ -22,7 +22,7 @@
         android:orientation="vertical"
         app:badge_bgColor="@color/colorAccent"
         app:badge_gravity="rightTop"
-        app:badge_horizontalMargin="10dp"
+        app:badge_horizontalMargin="20dp"
         app:badge_textSize="12sp"
         tools:ignore="MissingPrefix">
 

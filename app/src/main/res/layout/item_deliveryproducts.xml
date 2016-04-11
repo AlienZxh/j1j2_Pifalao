@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <variable
+            name="productSimple"
+            type="com.j1j2.data.model.ProductSimple" />
+
+        <variable
+            name="shopCart"
+            type="com.j1j2.pifalao.app.ShopCart" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_small"
+        android:paddingTop="@dimen/padding_small">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="140px"
+            android:layout_height="140px"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/padding_small"
+            app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            fresco:roundingBorderColor="@color/colorGrayF0F0F0"
+            fresco:roundingBorderWidth="1px" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="68px"
+                android:layout_marginBottom="@dimen/padding_noraml"
+                android:maxLines="2"
+                android:text="@{productSimple.Name}"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="18px" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <com.j1j2.common.view.quantityview.StateQuantityView
+                    android:id="@+id/quantityview"
+                    android:layout_width="160px"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/padding_noraml"
+                    app:quantity ="@{shopCart.shopCartItemBaseUnitNum.get(productSimple.MainId)??0}"/>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -54,8 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/content_height_normal"
             android:layout_below="@id/toolbar"
-            bind:isLogin="@{shopCartViewModel.ShopCartActivity.isLogin}"
             bind:hour="@{shopCartViewModel.hour}"
+            bind:isLogin="@{shopCartViewModel.ShopCartActivity.isLogin}"
             bind:minute="@{shopCartViewModel.minute}"
             bind:second="@{shopCartViewModel.second}" />
 
@@ -75,6 +75,33 @@
             android:background="@drawable/bottom_bar_bg"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_small"
+                android:text="共"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="4px"
+                android:text="@{String.valueOf(shopCartViewModel.shopCart.AllUnitNum)}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_biger"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="件"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -83,6 +110,7 @@
                 android:orientation="vertical"
                 android:paddingRight="16px"
                 android:paddingTop="4px">
+
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"

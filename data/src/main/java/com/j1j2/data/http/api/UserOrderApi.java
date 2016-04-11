@@ -30,15 +30,15 @@ public interface UserOrderApi {
 
     @POST("UserOrder/CancleOrder")
     Observable<WebReturn<String>> cancleOrder(@Query("orderId") int orderId);
+
+    @POST("UserOrder/ConfrimReceive")
+    Observable<WebReturn<String>> confrimReceive(@Query("orderId") int orderId);
     //_____________________________________________________________________________
 
 
     @POST("UserOrder/QueryOrderProudctDetails")
     Observable<String> queryOrderProudctDetails(@Query("orderIdStr") String orderIdStr);
 
-
-    @POST("UserOrder/ConfrimReceive")
-    Observable<String> confrimReceive(@Query("orderId") int orderId);
 
     @POST("UserOrder/OrderRate")
     Observable<String> orderRate(@Body ProductSaleOrderRateBody productSaleOrderRateBody);

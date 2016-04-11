@@ -27,10 +27,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  */
 @RequireBundler
 public class CouponsActivity extends BaseActivity implements View.OnClickListener {
-    public static final int COUPON_ALL = 0;
-    public static final int COUPON_DELIVERY = 1;
-    public static final int COUPON_NORMAL = 2;
-    public static final int COUPON_GOODS = 3;
+
 
     ActivityCouponsBinding binding;
 

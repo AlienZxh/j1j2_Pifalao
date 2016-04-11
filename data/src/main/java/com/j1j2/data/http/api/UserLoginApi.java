@@ -19,10 +19,12 @@ public interface UserLoginApi {
 
     @POST("UserLogin/QueryUserDetail")
     Observable<WebReturn<User>> queryUserDetail();
-    //______________________________________________________________________________________
 
     @POST("UserLogin/UpdateUserTerminalDetail")
-    Observable<String> updateUserTerminalDetail(@Body LoginBody loginBody);
+    Observable<WebReturn<String>> updateUserTerminalDetail(@Body LoginBody loginBody);
+    //______________________________________________________________________________________
+
+
 
 
 }

@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <import type="android.view.View" />
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+
+        <variable
+            name="deleteBtnClick"
+            type="OnClickListener" />
+
+        <variable
+            name="defaultBtnClick"
+            type="OnClickListener" />
+
+        <variable
+            name="modifyBtnClick"
+            type="OnClickListener" />
 
         <variable
             name="address"
             type="com.j1j2.data.model.Address" />
     </data>
 
-    <com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:OnClickListener="@{onClick}">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:background="@drawable/item_messages_bg"
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingTop="@dimen/padding_noraml">
@@ -42,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{address.ReceiverName}"
                     android:textColor="@color/colorText2a2a2a"
-                    android:textSize="@dimen/text_biger"
+                    android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
             </com.zhy.autolayout.AutoLinearLayout>
 
@@ -89,9 +109,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{address.Address}"
+                    android:text="@{(address.AddressSegementF??&quot;&quot;)+(address.AddressSegementS??&quot;&quot;)+(address.AddressSegementT??&quot;&quot;)+(address.Address??&quot;&quot;)}"
                     android:textColor="@color/colorText2a2a2a"
-                    android:textSize="@dimen/text_biger"
+                    android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
             </com.zhy.autolayout.AutoLinearLayout>
 
@@ -108,58 +128,76 @@
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/padding_noraml">
 
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/icon_round_checke"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/icon_small"
-                    android:visibility="@{address.IsDefaultAddress?View.GONE:View.VISIBLE}" />
+                    app:OnClickListener="@{defaultBtnClick}">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_small"
-                    android:paddingRight="@dimen/text_biger"
-                    android:text="设为默认"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_big"
-                    android:visibility="@{address.IsDefaultAddress?View.GONE:View.VISIBLE}" />
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/icon_round_checke"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/icon_small"
+                        android:visibility="@{address.isDefaultAddress?View.GONE:View.VISIBLE}" />
 
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/icon_delete"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/icon_small" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_small"
+                        android:paddingRight="@dimen/text_biger"
+                        android:text="设为默认"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/text_big"
+                        android:visibility="@{address.isDefaultAddress?View.GONE:View.VISIBLE}" />
+                </com.zhy.autolayout.AutoLinearLayout>
 
-                <TextView
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_small"
-                    android:paddingRight="@dimen/text_biger"
-                    android:text="删除"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_big" />
+                    app:OnClickListener="@{deleteBtnClick}">
 
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/icon_edit"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/icon_small" />
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/icon_delete"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/icon_small" />
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_small"
+                        android:paddingRight="@dimen/text_biger"
+                        android:text="删除"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/text_big" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_small"
-                    android:paddingRight="@dimen/text_biger"
-                    android:text="修改"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_big" />
+                    app:OnClickListener="@{modifyBtnClick}">
+
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/icon_edit"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/icon_small" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_small"
+                        android:paddingRight="@dimen/text_biger"
+                        android:text="修改"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/text_big" />
+                </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -172,6 +210,6 @@
             android:text="@string/icon_address_default"
             android:textColor="@color/colorPrimary"
             android:textSize="120px"
-            android:visibility="@{address.IsDefaultAddress?View.VISIBLE : View.GONE}" />
+            android:visibility="@{address.isDefaultAddress?View.VISIBLE : View.GONE}" />
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

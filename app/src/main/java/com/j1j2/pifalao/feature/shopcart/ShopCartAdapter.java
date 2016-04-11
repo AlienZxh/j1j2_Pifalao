@@ -29,6 +29,8 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.ShopCa
 
     public interface OnShopCartChangeListener {
 
+        void onLayoutClickListener(View view, ShopCartItem shopCart, int position);
+
         void onRemoveBtnClickListener(View view, ShopCartItem shopCart, int position);
 
         void onQuantityChangeListener(View view, ShopCartItem shopCart, int quantity, int position);
@@ -71,6 +73,13 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.ShopCa
         @Override
         public void bind(@NonNull final ShopCartItem data, final int position) {
             binding.setShopCartItem(data);
+            binding.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onShopCartChangeListener != null)
+                        onShopCartChangeListener.onLayoutClickListener(v, data, position);
+                }
+            });
             binding.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.j1j2.data.model.Coupon;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,11 @@ public class CouponsTabAdapter extends FragmentPagerAdapter {
     public CouponsTabAdapter(FragmentManager fm, List<Coupon> couponList) {
         super(fm);
         for (Coupon coupon : couponList) {
-            if (coupon.getState() == 1) {
-                coupons1.add(coupon);
-            } else if (coupon.getState() == 2) {
+            if (coupon.getState() == 2) {
                 coupons2.add(coupon);
-            } else {
+            } else if (coupon.getState() == 1 && !coupon.isExpired()) {
+                coupons1.add(coupon);
+            } else if (coupon.isExpired() || coupon.getState() == 3) {
                 coupons3.add(coupon);
             }
         }
@@ -57,7 +58,7 @@ public class CouponsTabAdapter extends FragmentPagerAdapter {
             case 1:
                 return "已使用(" + coupons2.size() + ")";
             case 2:
-                return "已作废(" + coupons3.size() + ")";
+                return "已过期(" + coupons3.size() + ")";
         }
         return super.getPageTitle(position);
     }

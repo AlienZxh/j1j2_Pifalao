@@ -16,6 +16,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.model.LatLng;
@@ -35,6 +36,7 @@ import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +69,8 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     private OverlayManager servicepointOverlayManager = null;
     private List<OverlayOptions> overlayOptionses = null;
+
+    private boolean isFirst = true;
 
     @Override
     protected void initBinding() {
@@ -116,14 +120,13 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
             i++;
         }
         servicepointOverlayManager.addToMap();
-        servicepointOverlayManager.zoomToSpan();
         markIcon.recycle();
     }
 
     public LatLng getNortheast(BDLocation location) {
         LatLng mapPoint = new LatLng(location.getLatitude(), location.getLongitude());
         Point centerPoint = mBaiduMap.getProjection().toScreenLocation(mapPoint);
-        float pixels = mBaiduMap.getProjection().metersToEquatorPixels(2500);
+        float pixels = mBaiduMap.getProjection().metersToEquatorPixels(30000);
         Point northeastPoint = new Point((int) (centerPoint.x + pixels), (int) (centerPoint.y + pixels));
         return mBaiduMap.getProjection().fromScreenLocation(northeastPoint);
     }
@@ -131,7 +134,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     public LatLng getSouthwest(BDLocation location) {
         LatLng mapPoint = new LatLng(location.getLatitude(), location.getLongitude());
         Point centerPoint = mBaiduMap.getProjection().toScreenLocation(mapPoint);
-        float pixels = mBaiduMap.getProjection().metersToEquatorPixels(2500);
+        float pixels = mBaiduMap.getProjection().metersToEquatorPixels(30000);
         Point southwestPoint = new Point((int) (centerPoint.x - pixels), (int) (centerPoint.y - pixels));
         return mBaiduMap.getProjection().fromScreenLocation(southwestPoint);
     }
@@ -139,24 +142,9 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LocationEvent locationEvent = EventBus.getDefault().getStickyEvent(LocationEvent.class);
-        if (locationEvent != null)
-            locationViewModel.onCreate(locationEvent.getLocation());
-        else {
-            Observable.just(1).compose(this.<Integer>bindToLifecycle())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.newThread())
-                    .subscribe(new Action1<Integer>() {
-                        @Override
-                        public void call(Integer integer) {
-                            while (EventBus.getDefault().getStickyEvent(LocationEvent.class) == null) {
 
-                            }
-                            locationViewModel.onCreate(EventBus.getDefault().getStickyEvent(LocationEvent.class).getLocation());
-                        }
-                    });
-        }
     }
+
 
     @Override
     protected void onDestroy() {
@@ -171,13 +159,43 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         servicepointOverlayManager = new ServicePointOverlayManager(mBaiduMap, overlayOptionses);
 
         LatLng point = new LatLng(28.175983, 113.023015);
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 17.0f);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 14.0f);
         mBaiduMap.setMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
 
     }
 
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onLocationEvent(LocationEvent event) {
+        BDLocation location = event.getLocation();
+        locationViewModel.onCreate(location);
+        moveToMyLocation(location);
+    }
+
+    public void moveToMyLocation(BDLocation location) {
+        if (location == null)
+            return;
+        // 地图显示我的位置
+        MyLocationData locData = new MyLocationData.Builder()
+                .accuracy(location.getRadius())// 定位精度
+                .direction(100)// GPS定位时方向角度,顺时针0-360
+                .latitude(location.getLatitude())// 百度纬度坐标
+                .longitude(location.getLongitude())// 百度经度坐标
+                .speed(location.getSpeed())// GPS定位时速度
+                .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
+                .build();
+        if (mBaiduMap == null)
+            return;
+        if (isFirst) {
+            isFirst = false;
+            mBaiduMap.setMyLocationData(locData);
+            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 14.0f);
+            mBaiduMap.setMapStatus(u);
+        }
+    }
 
     @Override
     protected MapView getMapView() {

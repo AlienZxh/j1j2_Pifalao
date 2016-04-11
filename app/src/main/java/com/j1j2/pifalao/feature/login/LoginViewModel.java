@@ -66,7 +66,7 @@ public class LoginViewModel {
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-
+                        Toast.makeText(loginActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

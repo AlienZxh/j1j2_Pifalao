@@ -1,7 +1,5 @@
 package com.j1j2.pifalao.feature.launch.di;
 
-import com.google.gson.Gson;
-import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
@@ -30,6 +28,7 @@ public class LaunchModule {
         return retrofit.create(UserLoginApi.class);
     }
 
+
     @Provides
     @ActivityScope
     LaunchActivity launchActivity() {
@@ -38,7 +37,7 @@ public class LaunchModule {
 
     @Provides
     @ActivityScope
-    LaunchViewModel launchViewModel(UserLoginApi userLoginApi, LaunchActivity launchActivity, UserLoginPreference userLoginPreference, Gson gson) {
-        return new LaunchViewModel(userLoginApi, launchActivity, gson, userLoginPreference);
+    LaunchViewModel launchViewModel(UserLoginApi userLoginApi, LaunchActivity launchActivity, UserLoginPreference userLoginPreference) {
+        return new LaunchViewModel(userLoginApi, launchActivity, userLoginPreference);
     }
 }

@@ -8,8 +8,9 @@ import com.j1j2.data.http.api.UserOrderApi;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.app.event.OrderCancelEvent;
+import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,7 +97,7 @@ public class OrderDetailViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         Toast.makeText(orderDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                        EventBus.getDefault().post(new OrderCancelEvent());
+                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
                         orderDetailActivity.finish();
                     }
 

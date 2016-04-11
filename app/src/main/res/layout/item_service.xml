@@ -31,6 +31,13 @@
             android:layout_marginTop="20px">
 
             <TextView
+                android:layout_width="110px"
+                android:layout_height="110px"
+                android:layout_gravity="center"
+                android:background="@drawable/service_item_bg"
+                app:layout_auto_basewidth="height" />
+
+            <TextView
                 android:id="@+id/icon"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="wrap_content"

@@ -54,11 +54,6 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
                 if (clickId == R.id.addBtn) {
                     quantity++;
                 }
-                if (quantity <= 0) {
-                    quantity = 1;
-                } else if (quantity > 9999) {
-                    quantity = 9999;
-                }
                 quantityEdit.setText("" + quantity);
                 return super.onSingleTapUp(e);
             }
@@ -72,8 +67,7 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
         addBtn = (TextView) findViewById(R.id.addBtn);
         quantityEdit = (EditText) findViewById(R.id.quantityEdit);
 
-//        minusBtn.setOnClickListener(this);
-//        addBtn.setOnClickListener(this);
+
         minusBtn.setOnTouchListener(this);
         addBtn.setOnTouchListener(this);
         quantityEdit.addTextChangedListener(this);
@@ -82,37 +76,11 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
 
 
     @Override
-    public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        int height = getHeight();
-        int width = getWidth();
-
-//        minusBtn.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.4f)));
-//        addBtn.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.4f)));
-//        quantityEdit.setTextSize(AutoUtils.getPercentHeightSize((int) (height * 0.25f)));
-    }
-
-    @Override
     public boolean onTouch(View v, MotionEvent event) {
         clickId = v.getId();
         return gestureDetector.onTouchEvent(event);
     }
 
-//    @Override
-//    public void onClick(View v) {
-//        if (v.getId() == R.id.minusBtn) {
-//            quantity--;
-//        }
-//        if (v.getId() == R.id.addBtn) {
-//            quantity++;
-//        }
-//        if (quantity <= 0) {
-//            quantity = 1;
-//        } else if (quantity > 9999) {
-//            quantity = 9999;
-//        }
-//        quantityEdit.setText("" + quantity);
-//    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

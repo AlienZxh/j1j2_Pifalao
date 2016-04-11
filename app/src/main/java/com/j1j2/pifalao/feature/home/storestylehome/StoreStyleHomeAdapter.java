@@ -52,8 +52,8 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
         mItems = new ArrayList<>();
         if (null == secondarySorts)
             return;
-        this.marginHorizontal = AutoUtils.getPercentWidthSize(25);
-        this.marginVertical = AutoUtils.getPercentHeightSize(25);
+        this.marginHorizontal = AutoUtils.getPercentWidthSize(15);
+        this.marginVertical = AutoUtils.getPercentHeightSize(15);
         int sectionFirstPosition = 0;
         int spanCount = 3;
         Rect rect;

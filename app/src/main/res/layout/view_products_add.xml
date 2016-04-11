@@ -96,6 +96,7 @@
                 android:id="@+id/dialog_unitList"
                 android:layout_width="match_parent"
                 android:layout_height="64px"
+                android:layout_marginLeft="@dimen/padding_noraml"
                 android:layout_marginRight="@dimen/padding_noraml" />
 
             <TextView
@@ -116,14 +117,14 @@
 
             <com.zhy.autolayout.AutoRelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/content_height_biger"
+                android:layout_height="115px"
                 android:layout_alignParentBottom="true">
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/height_bottombar"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/bottom_bar_bg"
+                    android:background="@drawable/products_bottom_bar"
                     android:orientation="horizontal">
 
                     <com.zhy.autolayout.AutoLinearLayout
@@ -181,9 +182,9 @@
                 <cn.bingoogolapple.badgeview.BGABadgeTextView
                     android:id="@+id/dialog_shopcart"
                     fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="92px"
-                    android:layout_height=" 92px"
-                    android:layout_marginBottom="8px"
+                    android:layout_width="@dimen/shopcart_circle_size"
+                    android:layout_height="@dimen/shopcart_circle_size"
+                    android:layout_marginBottom="10px"
                     android:layout_marginLeft="18px"
                     android:background="@drawable/shopcart_circle_bg"
                     android:gravity="center"
@@ -193,8 +194,8 @@
                     app:badge_bgColor="@color/colorAccent"
                     app:badge_gravity="rightTop"
                     app:badge_textSize="12sp"
-                    app:showNum="@{shopCart.AllUnitNum}"
-                    app:layout_auto_basewidth="height" />
+                    app:layout_auto_basewidth="height"
+                    app:showNum="@{shopCart.AllUnitNum}" />
 
             </com.zhy.autolayout.AutoRelativeLayout>
 

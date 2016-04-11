@@ -1,12 +1,17 @@
 package com.j1j2.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by alienzxh on 16-3-16.
  */
-public class ProductDetail {
+public class ProductDetail implements Parcelable {
     /**
+     * ModuleId
+     * ModuleType
      * Imgs : [{"ImgId":201,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","Size":1},{"ImgId":202,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","Size":1},{"ImgId":4359,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_0.jpg","Size":3},{"ImgId":4360,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_0.jpg","Size":3},{"ImgId":8331,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","Size":1},{"ImgId":8332,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","Size":1},{"ImgId":12302,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_2.jpg","Size":3},{"ImgId":12303,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_2.jpg","Size":3},{"ImgId":16269,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_2.jpg","Size":1},{"ImgId":16270,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_2.jpg","Size":1},{"ImgId":20236,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_1.jpg","Size":3},{"ImgId":20237,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_1.jpg","Size":3},{"ImgId":24160,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_1.jpg","Size":1},{"ImgId":24161,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_1.jpg","Size":1},{"ImgId":28083,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_3.jpg","Size":3},{"ImgId":28084,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_3.jpg","Size":3},{"ImgId":32012,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_3.jpg","Size":1},{"ImgId":32013,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_3.jpg","Size":1},{"ImgId":35863,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_10.jpg","Size":3},{"ImgId":35864,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_10.jpg","Size":3},{"ImgId":39744,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_10.jpg","Size":1},{"ImgId":39745,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_10.jpg","Size":1},{"ImgId":43526,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_11.jpg","Size":3},{"ImgId":43527,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/640_640/18208_11.jpg","Size":3},{"ImgId":47387,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_11.jpg","Size":1},{"ImgId":47388,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_11.jpg","Size":1},{"ImgId":51167,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/240_240/18208_0.jpg","Size":2},{"ImgId":51168,"MainId":0,"ImgUrl":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/240_240/18208_0.jpg","Size":2}]
      * ProductUnits : [{"LimitSalesNumber":0,"TotalSalesLimit":0,"Remains":0,"Views":579,"Sells":329,"ProductId":28425,"Unit":"包","ProductMainId":5377,"RetialPrice":4.5,"MemberPrice":3.92,"ProductState":1,"ProductStateStr":"正常","AvgPrimeCost":null,"LastPrimeCost":3.55,"Menmonics":null,"Factor":1,"IsBaseItem":true,"IsBaseItemStr":"是","ProductRank":28425,"MainImg":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","BarCode":"6901668166203","Note":null},{"LimitSalesNumber":0,"TotalSalesLimit":0,"Remains":0,"Views":208,"Sells":98,"ProductId":28426,"Unit":"件","ProductMainId":5377,"RetialPrice":108,"MemberPrice":94.15,"ProductState":1,"ProductStateStr":"正常","AvgPrimeCost":null,"LastPrimeCost":85.08,"Menmonics":null,"Factor":24,"IsBaseItem":false,"IsBaseItemStr":"否","ProductRank":28426,"MainImg":"http://data.j1j2.com/ResourceFiles/ProductImages/20140715/70_70/18208_0.jpg","BarCode":"6901668866202","Note":null}]
      * MainId : 5377
@@ -34,7 +39,6 @@ public class ProductDetail {
      * ActivityId : null
      * ProductRank : 0
      */
-
     private int MainId;
     private String Name;
     private int MainCategoryId;
@@ -44,6 +48,7 @@ public class ProductDetail {
     private String BaseUnit;
     private String Brand;
     private int ModuleId;
+    private int ModuleType;
     private String InvalidStr;
     private boolean Invalid;
     private boolean IsPromotion;
@@ -164,6 +169,14 @@ public class ProductDetail {
 
     public void setModuleId(int moduleId) {
         ModuleId = moduleId;
+    }
+
+    public int getModuleType() {
+        return ModuleType;
+    }
+
+    public void setModuleType(int moduleType) {
+        ModuleType = moduleType;
     }
 
     public String getInvalidStr() {
@@ -302,35 +315,85 @@ public class ProductDetail {
         ProductUnits = productUnits;
     }
 
+
     @Override
-    public String toString() {
-        return "ProductDetail{" +
-                "MainId=" + MainId +
-                ", Name='" + Name + '\'' +
-                ", MainCategoryId=" + MainCategoryId +
-                ", SubCategoryId=" + SubCategoryId +
-                ", NameSpell='" + NameSpell + '\'' +
-                ", Spec='" + Spec + '\'' +
-                ", BaseUnit='" + BaseUnit + '\'' +
-                ", Brand='" + Brand + '\'' +
-                ", ModuleId=" + ModuleId +
-                ", InvalidStr='" + InvalidStr + '\'' +
-                ", Invalid=" + Invalid +
-                ", IsPromotion=" + IsPromotion +
-                ", IsNew=" + IsNew +
-                ", IsRecommend=" + IsRecommend +
-                ", IsActivity=" + IsActivity +
-                ", EnableStock=" + EnableStock +
-                ", Quantity=" + Quantity +
-                ", Introduction='" + Introduction + '\'' +
-                ", MainImg='" + MainImg + '\'' +
-                ", OwnCode='" + OwnCode + '\'' +
-                ", TradeUnit='" + TradeUnit + '\'' +
-                ", TradeToBaseFactor=" + TradeToBaseFactor +
-                ", ActivityId=" + ActivityId +
-                ", ProductRank=" + ProductRank +
-                ", Imgs=" + Imgs +
-                ", ProductUnits=" + ProductUnits +
-                '}';
+    public int describeContents() {
+        return 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.MainId);
+        dest.writeString(this.Name);
+        dest.writeInt(this.MainCategoryId);
+        dest.writeInt(this.SubCategoryId);
+        dest.writeString(this.NameSpell);
+        dest.writeString(this.Spec);
+        dest.writeString(this.BaseUnit);
+        dest.writeString(this.Brand);
+        dest.writeInt(this.ModuleId);
+        dest.writeInt(this.ModuleType);
+        dest.writeString(this.InvalidStr);
+        dest.writeByte(Invalid ? (byte) 1 : (byte) 0);
+        dest.writeByte(IsPromotion ? (byte) 1 : (byte) 0);
+        dest.writeByte(IsNew ? (byte) 1 : (byte) 0);
+        dest.writeByte(IsRecommend ? (byte) 1 : (byte) 0);
+        dest.writeByte(IsActivity ? (byte) 1 : (byte) 0);
+        dest.writeByte(EnableStock ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.Quantity);
+        dest.writeString(this.Introduction);
+        dest.writeString(this.MainImg);
+        dest.writeString(this.OwnCode);
+        dest.writeString(this.TradeUnit);
+        dest.writeInt(this.TradeToBaseFactor);
+        dest.writeInt(this.ActivityId);
+        dest.writeInt(this.ProductRank);
+        dest.writeTypedList(Imgs);
+        dest.writeTypedList(ProductUnits);
+    }
+
+    public ProductDetail() {
+    }
+
+    protected ProductDetail(Parcel in) {
+        this.MainId = in.readInt();
+        this.Name = in.readString();
+        this.MainCategoryId = in.readInt();
+        this.SubCategoryId = in.readInt();
+        this.NameSpell = in.readString();
+        this.Spec = in.readString();
+        this.BaseUnit = in.readString();
+        this.Brand = in.readString();
+        this.ModuleId = in.readInt();
+        this.ModuleType = in.readInt();
+        this.InvalidStr = in.readString();
+        this.Invalid = in.readByte() != 0;
+        this.IsPromotion = in.readByte() != 0;
+        this.IsNew = in.readByte() != 0;
+        this.IsRecommend = in.readByte() != 0;
+        this.IsActivity = in.readByte() != 0;
+        this.EnableStock = in.readByte() != 0;
+        this.Quantity = in.readInt();
+        this.Introduction = in.readString();
+        this.MainImg = in.readString();
+        this.OwnCode = in.readString();
+        this.TradeUnit = in.readString();
+        this.TradeToBaseFactor = in.readInt();
+        this.ActivityId = in.readInt();
+        this.ProductRank = in.readInt();
+        this.Imgs = in.createTypedArrayList(ProductImg.CREATOR);
+        this.ProductUnits = in.createTypedArrayList(ProductUnit.CREATOR);
+    }
+
+    public static final Parcelable.Creator<ProductDetail> CREATOR = new Parcelable.Creator<ProductDetail>() {
+        @Override
+        public ProductDetail createFromParcel(Parcel source) {
+            return new ProductDetail(source);
+        }
+
+        @Override
+        public ProductDetail[] newArray(int size) {
+            return new ProductDetail[size];
+        }
+    };
 }

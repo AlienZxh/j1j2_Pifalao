@@ -17,12 +17,16 @@
         <variable
             name="onClick"
             type="OnClickListener" />
+
+        <variable
+            name="isShowBaseUnit"
+            type="boolean" />
     </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/padding_noraml"
+        android:layout_marginRight="@dimen/padding_noraml"
         android:background="@drawable/productdetail_unit_bg_selector"
         android:gravity="center"
         android:orientation="vertical"
@@ -31,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{productUnit.Unit+&quot;(&quot;+(productUnit.Factor+baseUnit)+&quot;)&quot;}"
+            android:text="@{productUnit.Unit+(isShowBaseUnit?(&quot;(&quot;+(productUnit.Factor+baseUnit)+&quot;)&quot;):&quot;&quot;)}"
             android:textColor="@drawable/text_click_orange_colors"
             android:textSize="@dimen/text_normal" />
     </com.zhy.autolayout.AutoLinearLayout>

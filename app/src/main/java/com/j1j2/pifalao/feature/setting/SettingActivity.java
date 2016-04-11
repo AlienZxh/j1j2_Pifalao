@@ -1,10 +1,13 @@
 package com.j1j2.pifalao.feature.setting;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.view.View;
+import android.widget.Toast;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -35,8 +38,23 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
-        if (v == binding.serviceCall)
-            return;
+        if (v == binding.serviceCall) {
+            PackageManager pkm = this.getPackageManager();
+            boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+            if (has_permission) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "没有拨打电话权限", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (v == binding.aboutUs)
+            navigate.navigateToAboutUs(this, null, false);
+        if (v == binding.feedback) {
+            navigate.navigateToFeedBack(this, null, false);
+        }
+
     }
 
     public static String getLocalVersionName(Context ctx) {

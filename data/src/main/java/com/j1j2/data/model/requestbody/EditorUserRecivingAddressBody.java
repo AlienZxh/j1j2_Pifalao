@@ -1,19 +1,24 @@
 package com.j1j2.data.model.requestbody;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alienzxh on 16-3-10.
  */
-public class EditorUserRecivingAddressBody {
-    private int AddressId;
-    private int UserId;
-    private String Address;
+public class EditorUserRecivingAddressBody  {
+    private int AddressId;//修改必填
+
+    private boolean IsDefaultAddress;
     private String ReceiverTel;
     private String ReceiverName;
-    private boolean IsDefaultAddress;
-    private String userIdStr;
-    private String loginAccount;
     private double Lat;
     private double Lng;
+
+    private String AddressSegementF;
+    private String AddressSegementS;
+    private String AddressSegementT;
+    private String Address;
 
     public int getAddressId() {
         return AddressId;
@@ -23,12 +28,12 @@ public class EditorUserRecivingAddressBody {
         AddressId = addressId;
     }
 
-    public int getUserId() {
-        return UserId;
+    public boolean isDefaultAddress() {
+        return IsDefaultAddress;
     }
 
-    public void setUserId(int userId) {
-        UserId = userId;
+    public void setIsDefaultAddress(boolean isDefaultAddress) {
+        IsDefaultAddress = isDefaultAddress;
     }
 
     public String getAddress() {
@@ -55,30 +60,6 @@ public class EditorUserRecivingAddressBody {
         ReceiverName = receiverName;
     }
 
-    public boolean isDefaultAddress() {
-        return IsDefaultAddress;
-    }
-
-    public void setIsDefaultAddress(boolean isDefaultAddress) {
-        IsDefaultAddress = isDefaultAddress;
-    }
-
-    public String getUserIdStr() {
-        return userIdStr;
-    }
-
-    public void setUserIdStr(String userIdStr) {
-        this.userIdStr = userIdStr;
-    }
-
-    public String getLoginAccount() {
-        return loginAccount;
-    }
-
-    public void setLoginAccount(String loginAccount) {
-        this.loginAccount = loginAccount;
-    }
-
     public double getLat() {
         return Lat;
     }
@@ -95,19 +76,27 @@ public class EditorUserRecivingAddressBody {
         Lng = lng;
     }
 
-    @Override
-    public String toString() {
-        return "EditorUserRecivingAddressBody{" +
-                "AddressId=" + AddressId +
-                ", UserId=" + UserId +
-                ", Address='" + Address + '\'' +
-                ", ReceiverTel='" + ReceiverTel + '\'' +
-                ", ReceiverName='" + ReceiverName + '\'' +
-                ", IsDefaultAddress=" + IsDefaultAddress +
-                ", userIdStr='" + userIdStr + '\'' +
-                ", loginAccount='" + loginAccount + '\'' +
-                ", Lat=" + Lat +
-                ", Lng=" + Lng +
-                '}';
+    public String getAddressSegementF() {
+        return AddressSegementF;
+    }
+
+    public void setAddressSegementF(String addressSegementF) {
+        AddressSegementF = addressSegementF;
+    }
+
+    public String getAddressSegementS() {
+        return AddressSegementS;
+    }
+
+    public void setAddressSegementS(String addressSegementS) {
+        AddressSegementS = addressSegementS;
+    }
+
+    public String getAddressSegementT() {
+        return AddressSegementT;
+    }
+
+    public void setAddressSegementT(String addressSegementT) {
+        AddressSegementT = addressSegementT;
     }
 }

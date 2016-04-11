@@ -13,6 +13,7 @@ public class OrderSimple implements Parcelable {
     /**
      * "ModuleId": 23,
      * "ModuleName": "进货佬批发网",
+     * ModuleType
      * OrderId : 14281
      * OrderSubmitTimeStr : 2015-09-11 02:22:56
      * OrderSum : 39
@@ -28,8 +29,8 @@ public class OrderSimple implements Parcelable {
      * ProductAmout : 41
      * SaveAmount : 9
      * Coupons : []
-     * FreightType : 2
-     * FreightTypeStr : 服务点自提
+     * DeliveryType : 2
+     * DeliveryTypeStr : 服务点自提
      * PredictSendTime : 2015-09-12 有空就来拿
      * ConnectedServicePoint : 星沙星城国际服务点
      * ServicePoint : 1
@@ -38,6 +39,7 @@ public class OrderSimple implements Parcelable {
      * CalculateDistance : 0.1
      */
     private int ModuleId;
+    private int ModuleType;
     private String ModuleName;
     private int OrderId;
     private String OrderSubmitTimeStr;
@@ -52,8 +54,8 @@ public class OrderSimple implements Parcelable {
     private String ContacterAddress;
     private double ProductAmout;
     private double SaveAmount;
-    private int FreightType;
-    private String FreightTypeStr;
+    private int DeliveryType;
+    private String DeliveryTypeStr;
     private String PredictSendTime;
     private String ConnectedServicePoint;
     private int ServicePointId;
@@ -84,6 +86,14 @@ public class OrderSimple implements Parcelable {
 
     public void setModuleId(int moduleId) {
         ModuleId = moduleId;
+    }
+
+    public int getModuleType() {
+        return ModuleType;
+    }
+
+    public void setModuleType(int moduleType) {
+        ModuleType = moduleType;
     }
 
     public String getModuleName() {
@@ -198,20 +208,20 @@ public class OrderSimple implements Parcelable {
         SaveAmount = saveAmount;
     }
 
-    public int getFreightType() {
-        return FreightType;
+    public int getDeliveryType() {
+        return DeliveryType;
     }
 
-    public void setFreightType(int freightType) {
-        FreightType = freightType;
+    public void setDeliveryType(int deliveryType) {
+        DeliveryType = deliveryType;
     }
 
-    public String getFreightTypeStr() {
-        return FreightTypeStr;
+    public String getDeliveryTypeStr() {
+        return DeliveryTypeStr;
     }
 
-    public void setFreightTypeStr(String freightTypeStr) {
-        FreightTypeStr = freightTypeStr;
+    public void setDeliveryTypeStr(String deliveryTypeStr) {
+        DeliveryTypeStr = deliveryTypeStr;
     }
 
     public String getPredictSendTime() {
@@ -287,6 +297,7 @@ public class OrderSimple implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.ModuleId);
+        dest.writeInt(this.ModuleType);
         dest.writeString(this.ModuleName);
         dest.writeInt(this.OrderId);
         dest.writeString(this.OrderSubmitTimeStr);
@@ -301,8 +312,8 @@ public class OrderSimple implements Parcelable {
         dest.writeString(this.ContacterAddress);
         dest.writeDouble(this.ProductAmout);
         dest.writeDouble(this.SaveAmount);
-        dest.writeInt(this.FreightType);
-        dest.writeString(this.FreightTypeStr);
+        dest.writeInt(this.DeliveryType);
+        dest.writeString(this.DeliveryTypeStr);
         dest.writeString(this.PredictSendTime);
         dest.writeString(this.ConnectedServicePoint);
         dest.writeInt(this.ServicePointId);
@@ -318,6 +329,7 @@ public class OrderSimple implements Parcelable {
 
     protected OrderSimple(Parcel in) {
         this.ModuleId = in.readInt();
+        this.ModuleType = in.readInt();
         this.ModuleName = in.readString();
         this.OrderId = in.readInt();
         this.OrderSubmitTimeStr = in.readString();
@@ -332,8 +344,8 @@ public class OrderSimple implements Parcelable {
         this.ContacterAddress = in.readString();
         this.ProductAmout = in.readDouble();
         this.SaveAmount = in.readDouble();
-        this.FreightType = in.readInt();
-        this.FreightTypeStr = in.readString();
+        this.DeliveryType = in.readInt();
+        this.DeliveryTypeStr = in.readString();
         this.PredictSendTime = in.readString();
         this.ConnectedServicePoint = in.readString();
         this.ServicePointId = in.readInt();

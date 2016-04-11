@@ -32,6 +32,9 @@
     <string name="icon_supplier">&#xe6af;</string>
     <string name="icon_mine_fill">&#xe697;</string>
     <string name="icon_mine">&#xe698;</string>
+    <string name="icon_sort_fill">&#xe695;</string>
+    <string name="icon_sort">&#xe696;</string>
+
 
     <string name="icon_search">&#xe60c;</string>
 
@@ -118,4 +121,15 @@
 
     <string name="icon_location_fill">&#xe605;</string>
 
+    <string name="icon_hot_fill">&#xe65d;</string>
+    <string name="icon_hot">&#xe65e;</string>
+    <string name="icon_history">&#xe629;</string>
+
+    <string name="icon_shop">&#xe61e;</string>
+
+    <string name="icon_timeout">&#xe6b2;</string>
+    <string name="icon_used">&#xe6b3;</string>
+
+    <string name="icon_notification">&#xe619;</string>
+    <string name="icon_discount">&#xe6ca;</string>
 </resources>

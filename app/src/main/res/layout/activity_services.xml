@@ -78,7 +78,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:gravity="center"
-                    android:text="@string/icon_daeva_user2"
+                    android:text="@string/icon_mine"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/icon_normal"
                     app:OnClickListener="@{onClick}" />
@@ -108,6 +108,7 @@
                     android:layout_height="@dimen/height_services_point_img"
                     android:layout_gravity="center_vertical"
                     app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
+                    fresco:failureImage="@drawable/servicepoint_default"
                     fresco:roundAsCircle="true"
                     fresco:roundingBorderColor="@color/colorGrayCCCCCC"
                     fresco:roundingBorderWidth="1px" />
@@ -144,29 +145,23 @@
                 android:layout_height="1px"
                 android:background="@color/colorGrayEDEDED" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.skyfishjy.library.RippleBackground
-                    android:id="@+id/rippleView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone"
-                    app:rb_color="@color/colorPrimary" />
 
                 <ImageView
                     android:id="@+id/radar_bg_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
+                    android:scaleType="center"
                     android:src="@drawable/services_radar_bg_img" />
 
-                <ImageView
+                <com.j1j2.common.view.rotateimageview.NewRotateImageView
                     android:id="@+id/radar_img"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
+                    android:scaleType="center"
                     android:src="@drawable/services_radar_img" />
 
                 <android.support.v7.widget.RecyclerView
@@ -175,11 +170,11 @@
                     android:layout_height="match_parent">
 
                 </android.support.v7.widget.RecyclerView>
-            </RelativeLayout>
+            </FrameLayout>
 
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.j1j2.common.view.autowidget.AutoDragRelativeLayout
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="570px"
@@ -192,15 +187,15 @@
                 android:layout_height="100px"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/padding_noraml"
+                android:layout_marginBottom="110px"
                 android:layout_marginRight="@dimen/padding_noraml"
                 android:background="@drawable/services_dragview_bg"
                 android:gravity="center"
                 android:text="@string/icon_qr_code"
                 android:textColor="@color/colorWhite"
-                android:textSize="60px"
+                android:textSize="70px"
                 app:OnClickListener="@{onClick}"
                 app:layout_auto_basewidth="height" />
-        </com.j1j2.common.view.autowidget.AutoDragRelativeLayout>
+        </com.zhy.autolayout.AutoRelativeLayout>
     </com.zhy.autolayout.AutoFrameLayout>
 </layout>

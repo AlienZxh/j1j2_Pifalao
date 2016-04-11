@@ -30,7 +30,7 @@ public class Coupon implements Parcelable {
     private double CouponValue;
     private int Type;
     private double Constraints;//限制
-    private int State;//1:为使用 2：已使用 3：已作废
+    private int State;//1:未使用 2：已使用 3：已作废
     private int UserId;
     private int OrderId;
     private String CreateTimeStr;

@@ -1,10 +1,15 @@
 package com.j1j2.pifalao.feature.collects;
 
+import android.widget.Toast;
+
 import com.j1j2.data.http.api.UserFavoriteApi;
 import com.j1j2.data.model.CollectedProduct;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.data.model.requestbody.RemoveUserFavoritesBody;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -20,7 +25,6 @@ public class CollectsViewModel {
     private int pageSize = 300;
     private int pageCount = 0;
 
-    private CollectsAdapter collectsAdapter;
 
     public CollectsViewModel(CollectsActivity collectsActivity, UserFavoriteApi userFavoriteApi) {
         this.collectsActivity = collectsActivity;
@@ -35,8 +39,8 @@ public class CollectsViewModel {
                 .subscribe(new WebReturnSubscriber<PagerManager<CollectedProduct>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<CollectedProduct> collectedProductPagerManager) {
-                        collectsAdapter = new CollectsAdapter(collectedProductPagerManager.getList());
-                        collectsActivity.setAdapter(collectsAdapter);
+
+                        collectsActivity.setAdapter(collectedProductPagerManager.getList());
                     }
 
                     @Override
@@ -49,5 +53,36 @@ public class CollectsViewModel {
 
                     }
                 });
+    }
+
+    public void removeItemFromUserFavorites(List<Integer> mainIds) {
+        RemoveUserFavoritesBody removeUserFavoritesBody = new RemoveUserFavoritesBody();
+        removeUserFavoritesBody.setMainIdList(mainIds);
+        userFavoriteApi.removeItemFromUserFavorites(removeUserFavoritesBody)
+                .compose(collectsActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        Toast.makeText(collectsActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        queryCollects();
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        Toast.makeText(collectsActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+
+    }
+
+    public CollectsActivity getCollectsActivity() {
+        return collectsActivity;
     }
 }

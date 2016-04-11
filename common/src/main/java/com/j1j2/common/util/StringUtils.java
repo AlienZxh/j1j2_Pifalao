@@ -4,7 +4,10 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 
+import com.j1j2.data.model.Address;
+import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.ProductUnit;
 import com.j1j2.data.model.ShopCartItem;
 
 import java.util.List;
@@ -91,7 +94,18 @@ public class StringUtils {
         return "共" + quantity + "件商品";
     }
 
-    
+    public static CharSequence getCouponLimit(Coupon coupon) {
+        String limit = "";
+        switch (coupon.getType()) {
+            case 1:
+                limit = "配送费满" + coupon.getCouponValue() + "元可用";
+                return limit;
+            case 2:
+                limit = "订单满" + coupon.getConstraints() + "元可用";
+                return limit;
+        }
+        return limit;
+    }
 
     public static CharSequence getOrdersState(int orderType) {
         switch (orderType) {
@@ -110,5 +124,47 @@ public class StringUtils {
             default:
                 return "已退订";
         }
+    }
+
+    public static double getCouponValue(Coupon coupon, double freight) {
+        double value = 0.0;
+        if (coupon != null)
+            switch (coupon.getType()) {
+                case 1:
+                    value = (coupon.getCouponValue() <= freight ? coupon.getCouponValue() : freight);
+                    return value;
+                case 2:
+                    value = coupon.getCouponValue();
+                    return value;
+            }
+        return value;
+    }
+
+    public static CharSequence getAddressStr(Address address) {
+        if (address == null)
+            return "";
+        return address.getAddressSegementF() + address.getAddressSegementS() + address.getAddressSegementT() + address.getAddress();
+    }
+
+    public static CharSequence getProductDetailUnit(List<ProductUnit> productUnits) {
+        String result = "";
+        if (null == productUnits || productUnits.size() <= 0)
+            return result;
+
+        for (ProductUnit productUnit : productUnits) {
+            result += productUnit.getUnit() + "、";
+        }
+        return result.substring(0, result.length() - 1);
+    }
+
+    public static CharSequence getProductDetailBarCode(List<ProductUnit> productUnits) {
+        String result = "";
+        if (null == productUnits || productUnits.size() <= 0)
+            return result;
+
+        for (ProductUnit productUnit : productUnits) {
+            result += productUnit.getBarCode() + "、";
+        }
+        return result.substring(0, result.length() - 1);
     }
 }

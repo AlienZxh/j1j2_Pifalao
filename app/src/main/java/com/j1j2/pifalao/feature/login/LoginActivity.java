@@ -1,7 +1,9 @@
 package com.j1j2.pifalao.feature.login;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -34,6 +36,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Inject
     UserLoginPreference userLoginPreference;
 
+    InputMethodManager imm;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
@@ -42,6 +46,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     protected void initViews() {
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         binding.autoLoginCeck.setChecked(userLoginPreference.getIsAutoLogin(false));
         if (userLoginPreference.getIsAutoLogin(false)) {
             binding.username.setText(userLoginPreference.getUsername(""));
@@ -71,13 +76,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (binding.username.hasFocus())
+                imm.hideSoftInputFromWindow(binding.username.getWindowToken(), 0);
+            if (binding.password.hasFocus())
+                imm.hideSoftInputFromWindow(binding.password.getWindowToken(), 0);
             loginViewModel.login(username, password, binding.autoLoginCeck.isChecked());
         }
         if (v == binding.registerBtn) {
             navigate.navigateToRegisterStepOne(this, null, false);
         }
         if (v == binding.forgetPSW)
-            Toast.makeText(this, "找回密码", Toast.LENGTH_SHORT).show();
+            return;
     }
 
     @Override
@@ -87,9 +96,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Subscribe
     public void onRegisterSuccessEvent(RegisterSuccessEvent event) {
-        if (event.isLogin())
+        if (event.isLogin()) {
+
             finish();
-        else {
+        } else {
             binding.username.setText(event.getLoginAccount());
             binding.password.setText(event.getPassWord());
         }

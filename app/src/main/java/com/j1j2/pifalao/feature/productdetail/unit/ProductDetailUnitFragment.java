@@ -42,6 +42,9 @@ public class ProductDetailUnitFragment extends BaseFragment implements ProductDe
     @Arg
     String baseUnit;
 
+    @Arg
+    int moduleType;
+
     SingleSelector singleSelector;
 
     ProductUnit selectUnit;
@@ -62,7 +65,7 @@ public class ProductDetailUnitFragment extends BaseFragment implements ProductDe
     protected void initViews() {
         singleSelector = new SingleSelector();
         binding.unitList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productUnits, singleSelector,baseUnit);
+        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productUnits, singleSelector, baseUnit, moduleType);
         binding.unitList.setAdapter(productDetailUnitAdapter);
         productDetailUnitAdapter.setOnUnitItemClickListener(this);
         selectUnit = productUnits.get(0);

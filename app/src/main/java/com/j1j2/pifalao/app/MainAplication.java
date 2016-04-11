@@ -1,8 +1,10 @@
 package com.j1j2.pifalao.app;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -19,12 +21,18 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 
 import javax.inject.Inject;
+
+import cn.jpush.android.api.JPushInterface;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 /**
@@ -36,12 +44,8 @@ public class MainAplication extends Application {
     private AppComponent appComponent;
     private UserComponent userComponent;
 
-
     @Inject
     UserLoginPreference userLoginPreference;
-
-    @Inject
-    Gson gson;
 
     public static RefWatcher getRefWatcher(Context context) {
         return get(context).refWatcher;
@@ -64,19 +68,34 @@ public class MainAplication extends Application {
         }
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         String processName = getProcessName();
         if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
             initLogger();
+            initBaiduMap();
             initComponent();
+            initJPush();
             initLeakCanary();
             initFresco();
-            initBaiduMap();
+            initOkHttpUtil();
+            initRealm();
         }
     }
 
+    private void initRealm() {
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).deleteRealmIfMigrationNeeded().build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+        Logger.d("realm初始化完成");
+    }
+
+    private void initOkHttpUtil() {
+        if (BuildConfig.DEBUG)
+            OkHttpUtils.getInstance().debug("pifalao");
+        Logger.d("OkHttpUtil初始化完成");
+    }
 
     private void initLogger() {
         if (BuildConfig.DEBUG)
@@ -87,6 +106,15 @@ public class MainAplication extends Application {
                     .logLevel(LogLevel.NONE);
         Logger.d("Logger初始化完成");
 
+    }
+
+    private void initJPush() {
+        if (BuildConfig.DEBUG)
+            JPushInterface.setDebugMode(true);
+        else
+            JPushInterface.setDebugMode(false);
+        JPushInterface.init(this);
+        Logger.d("JPush初始化完成");
     }
 
     private void initComponent() {

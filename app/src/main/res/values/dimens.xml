@@ -50,13 +50,13 @@
     <dimen name="height_services_point_img">100px</dimen>
     <dimen name="height_services_img">120px</dimen>
 
-    <dimen name="height_item_store_head">76px</dimen>
+    <dimen name="height_item_store_head">88px</dimen>
 
     <dimen name="height_search_edit">62px</dimen>
 
     <dimen name="height_products_img_size">168px</dimen>
 
-    <dimen name="height_bottombar">90px</dimen>
+    <dimen name="height_bottombar">100px</dimen>
 
     <dimen name="width_servicepoint_img">691px</dimen>
     <dimen name="width_servicepoint_bottom_btn">307px</dimen>
@@ -67,5 +67,7 @@
     <dimen name="icon_hometab">44px</dimen>
 
     <dimen name="circle_tab_size">8dp</dimen>
+
+    <dimen name="shopcart_circle_size">105px</dimen>
 
 </resources>

@@ -24,6 +24,16 @@ public class OrderProductsAdapter extends RecyclerView.Adapter<OrderProductsAdap
         this.productDetails = productDetails;
     }
 
+    public interface OnItemClickListener {
+        void onItemClickListener(View v, OrderProductDetail orderProductDetail, int position);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @Override
     public OrderProductsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -52,8 +62,15 @@ public class OrderProductsAdapter extends RecyclerView.Adapter<OrderProductsAdap
         }
 
         @Override
-        public void bind(@NonNull OrderProductDetail data, int position) {
+        public void bind(@NonNull final OrderProductDetail data, final int position) {
             binding.setOrderProductDetail(data);
+            binding.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null)
+                        onItemClickListener.onItemClickListener(v, data, position);
+                }
+            });
         }
     }
 }

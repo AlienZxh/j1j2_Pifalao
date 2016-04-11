@@ -10,6 +10,7 @@ import com.j1j2.common.view.recyclerviewchoicemode.SelectableHolder;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemProductdetailUnitBinding;
 
@@ -20,14 +21,15 @@ import java.util.List;
  */
 public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetailUnitAdapter.ProductDetailUnitViewHolder> {
     private List<ProductUnit> productUnits;
-
     private SingleSelector singleSelector;
     private String baseUnit;
+    private int moduleType;
 
-    public ProductDetailUnitAdapter(List<ProductUnit> productUnits, SingleSelector singleSelector, String baseUnit) {
+    public ProductDetailUnitAdapter(List<ProductUnit> productUnits, SingleSelector singleSelector, String baseUnit, int moduleType) {
         this.productUnits = productUnits;
         this.singleSelector = singleSelector;
         this.baseUnit = baseUnit;
+        this.moduleType = moduleType;
     }
 
     public interface OnUnitItemClickListener {
@@ -80,6 +82,7 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
             if (position == 0) {
                 singleSelector.setSelected(0, getItemId(), true);
             }
+            binding.setIsShowBaseUnit(moduleType == Constant.ModuleType.SHOPSERVICE);
             binding.setProductUnit(data);
             binding.setBaseUnit(baseUnit);
             binding.setOnClick(new View.OnClickListener() {

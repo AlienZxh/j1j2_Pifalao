@@ -47,14 +47,12 @@
             android:orientation="horizontal"
             android:paddingLeft="24px">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="32px"
+                android:layout_height="44px"
                 android:layout_marginRight="@dimen/padding_small"
-                android:text="@string/icon_safe"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_biger" />
+                android:src="@drawable/goods_details_activity_assure_storehouse"
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,14 +76,12 @@
             android:orientation="horizontal"
             android:paddingLeft="24px">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="32px"
+                android:layout_height="44px"
                 android:layout_marginRight="@dimen/padding_small"
-                android:text="@string/icon_safe"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_biger" />
+                android:src="@drawable/goods_details_activity_assure_certified"
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,14 +105,12 @@
             android:orientation="horizontal"
             android:paddingLeft="24px">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="32px"
+                android:layout_height="44px"
                 android:layout_marginRight="@dimen/padding_small"
-                android:text="@string/icon_safe"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_biger" />
+                android:src="@drawable/goods_details_activity_assure_deliver"
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -140,14 +134,12 @@
             android:orientation="horizontal"
             android:paddingLeft="24px">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:layout_width="32px"
+                android:layout_height="44px"
                 android:layout_marginRight="@dimen/padding_small"
-                android:text="@string/icon_safe"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_biger" />
+                android:src="@drawable/goods_details_activity_assure_return"
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:layout_width="wrap_content"

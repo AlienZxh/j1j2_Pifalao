@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.catservicepoint;
 
 import android.databinding.DataBindingUtil;
+import android.view.View;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -34,7 +35,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-29.
  */
 @RequireBundler
-public class CatServicePointActivity extends BaseMapActivity {
+public class CatServicePointActivity extends BaseMapActivity implements View.OnClickListener {
 
     ActivityCatservicepointBinding binding;
 
@@ -113,5 +114,11 @@ public class CatServicePointActivity extends BaseMapActivity {
                 .build();
         if (mBaiduMap != null)
             mBaiduMap.setMyLocationData(locData);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == binding.backBtn)
+            onBackPressed();
     }
 }

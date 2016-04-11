@@ -6,9 +6,9 @@
 
         <import type="com.j1j2.common.util.StringUtils" />
 
-        <variable
-            name="servicepoint"
-            type="com.j1j2.data.model.ServicePoint" />
+        <import type="android.view.View" />
+
+        <import type="com.j1j2.pifalao.app.Constant" />
 
         <variable
             name="shopCart"
@@ -19,14 +19,14 @@
             type="com.j1j2.pifalao.feature.confirmorder.ConfirmOrderViewModel" />
     </data>
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorLayoutBg"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
         <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/actionbar_height"
             android:background="@color/colorPrimary"
@@ -53,443 +53,619 @@
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-
-        <View
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_productdetail"
-            android:background="@drawable/item_products_divider" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10px"
-            android:background="@drawable/confirmorder_adress_divder_bg" />
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorConfirmOrderAddress"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/padding_small"
-            android:paddingLeft="@dimen/padding_noraml"
-            android:paddingRight="@dimen/padding_noraml"
-            android:paddingTop="28px">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="6px"
-                android:background="@drawable/orange_conner_tag_bg"
-                android:padding="3px"
-                android:text="自提点"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{servicepoint.Name}"
-                android:textColor="@color/colorText333"
-                android:textSize="30px"
-                android:textStyle="bold" />
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorConfirmOrderAddress"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="6px"
-            android:paddingLeft="@dimen/padding_noraml"
-            android:paddingRight="@dimen/padding_noraml"
-            android:paddingTop="6px">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="营业时间："
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{servicepoint.ServiceTime}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_normal" />
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorConfirmOrderAddress"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingBottom="28px"
-            android:paddingLeft="@dimen/padding_noraml"
-            android:paddingRight="@dimen/padding_noraml"
-            android:paddingTop="6px">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="自提地址："
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{servicepoint.AddressDetail}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_normal" />
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10px"
-            android:background="@drawable/confirmorder_adress_divder_bg" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_productdetail"
-            android:background="@drawable/item_products_divider" />
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/padding_biger">
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:id="@+id/timPickerBtn"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px"
-                app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="自提时间："
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@{confirmOrderViewModel.confirmOrderActivity.deliveryTime}"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_normal"
-                    android:textStyle="bold" />
-
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_noraml"
-                    android:layout_marginRight="@dimen/padding_noraml"
-                    android:text="@string/icon_arrow_right"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_1px"
-                android:background="@color/colorGrayDEDEDE" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:scrollbars="none">
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_small" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="支付方式："
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
+                    android:background="@drawable/item_messages_bg"
+                    android:orientation="vertical"
+                    android:visibility="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightTypeDetail.SysDeliveryType==Constant.DeliveryType.PICKBYSELF?View.VISIBLE : View.GONE}">
 
-                <TextView
-                    android:layout_width="0dp"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10px"
+                        android:background="@drawable/confirmorder_adress_divder_bg" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConfirmOrderAddress"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/padding_small"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingRight="@dimen/padding_noraml"
+                        android:paddingTop="28px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="6px"
+                            android:background="@drawable/orange_conner_tag_bg"
+                            android:padding="3px"
+                            android:text="自提点"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.ServicePointDetail.Name}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="30px"
+                            android:textStyle="bold" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConfirmOrderAddress"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingRight="@dimen/padding_noraml"
+                        android:paddingTop="6px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="营业时间："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.ServicePointDetail.ServiceTime}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConfirmOrderAddress"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="28px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingRight="@dimen/padding_noraml"
+                        android:paddingTop="6px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="自提地址："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.ServicePointDetail.AddressDetail}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10px"
+                        android:background="@drawable/confirmorder_adress_divder_bg" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/addressLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="货到付款"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
+                    android:background="@drawable/item_messages_bg"
+                    android:orientation="vertical"
+                    android:visibility="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightTypeDetail.SysDeliveryType==Constant.DeliveryType.HOMEDELIVERY?View.VISIBLE : View.GONE}"
+                    app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
 
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10px"
+                        android:background="@drawable/confirmorder_adress_divder_bg" />
+
+                    <com.zhy.autolayout.AutoRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorConfirmOrderAddress">
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:id="@+id/addressTop"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="12px"
+                            android:paddingLeft="@dimen/padding_noraml"
+                            android:paddingRight="@dimen/padding_noraml"
+                            android:paddingTop="@dimen/padding_biger">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="收货人："
+                                android:textColor="@color/colorTextaaa"
+                                android:textSize="@dimen/text_normal" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.AddressDetail.ReceiverName}"
+                                android:textColor="@color/colorText333"
+                                android:textSize="@dimen/text_big"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/padding_big"
+                                android:text="联系电话："
+                                android:textColor="@color/colorTextaaa"
+                                android:textSize="@dimen/text_normal" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.AddressDetail.ReceiverTel}"
+                                android:textColor="@color/colorText333"
+                                android:textSize="@dimen/text_big"
+                                android:textStyle="bold" />
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/addressTop"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/padding_biger"
+                            android:paddingLeft="@dimen/padding_noraml"
+                            android:paddingRight="@dimen/padding_noraml"
+                            android:paddingTop="12px">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="收货地址："
+                                android:textColor="@color/colorTextaaa"
+                                android:textSize="@dimen/text_normal" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{StringUtils.getAddressStr(confirmOrderViewModel.confirmOrderActivity.orderSubmitState.AddressDetail)}"
+                                android:textColor="@color/colorText333"
+                                android:textSize="@dimen/text_big" />
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <TextView
+                            fontPath="iconfont/iconfont.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:layout_marginRight="@dimen/padding_noraml"
+                            android:text="@string/icon_arrow_right"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoRelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10px"
+                        android:background="@drawable/confirmorder_adress_divder_bg" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_small"
+                    android:visibility="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightTypeDetail.SysDeliveryType==Constant.DeliveryType.HOMEDELIVERY?View.VISIBLE : View.GONE}" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_noraml"
-                    android:layout_marginRight="@dimen/padding_noraml"
-                    android:text="@string/icon_arrow_right"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_1px"
-                android:background="@color/colorGrayDEDEDE" />
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="　优惠券："
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="无"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_noraml"
-                    android:layout_marginRight="@dimen/padding_noraml"
-                    android:text="@string/icon_arrow_right"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_1px"
-                android:background="@color/colorGrayDEDEDE" />
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="132px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/orderProductList"
-                    android:layout_width="440px"
-                    android:layout_height="100px" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@{StringUtils.getOrdersQuantity(shopCart.AllUnitNum)}"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_noraml"
-                    android:layout_marginRight="@dimen/padding_noraml"
-                    android:text="@string/icon_arrow_right"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_1px"
-                android:background="@color/colorGrayDEDEDE" />
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="用户留言："
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <EditText
-                    android:id="@+id/memo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/colorWhite"
+                    android:background="@drawable/item_messages_bg"
                     android:gravity="center_vertical"
-                    android:hint="选填，用户可填写要求内容"
-                    android:textColor="@color/colorText333"
-                    android:textColorHint="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/padding_noraml"
+                    android:paddingLeft="@dimen/padding_biger"
+                    android:paddingTop="@dimen/padding_noraml"
+                    android:visibility="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightTypeDetail.SysDeliveryType==Constant.DeliveryType.HOMEDELIVERY?View.VISIBLE : View.GONE}">
 
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/icon_shop"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_biger" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="32px"
+                        android:layout_marginLeft="@dimen/padding_small"
+                        android:gravity="center_vertical"
+                        android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.ServicePointDetail.Name}"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/text_normal"
+                        android:textStyle="bold" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_small" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_messages_bg"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/padding_biger">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:id="@+id/timPickerBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px"
+                        app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightTypeDetail.SysDeliveryType==Constant.DeliveryType.HOMEDELIVERY?&quot;送货时间：&quot;:&quot;自提时间：&quot;}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.PredictSendTime??&quot;&quot;}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_normal"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            fontPath="iconfont/iconfont.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:layout_marginRight="@dimen/padding_noraml"
+                            android:text="@string/icon_arrow_right"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayDEDEDE" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="支付方式："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="货到付款"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            fontPath="iconfont/iconfont.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:layout_marginRight="@dimen/padding_noraml"
+                            android:text="@string/icon_arrow_right"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayDEDEDE" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:id="@+id/couponBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px"
+                        app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="　优惠券："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.Coupon==null?(confirmOrderViewModel.confirmOrderActivity.coupons.size()+&quot;张可用优惠券&quot;):(&quot;已使用&quot;+confirmOrderViewModel.confirmOrderActivity.orderSubmitState.Coupon.CouponName)}"
+                            android:textColor="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.Coupon==null?@color/colorText333:@color/colorAccent}"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            fontPath="iconfont/iconfont.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:layout_marginRight="@dimen/padding_noraml"
+                            android:text="@string/icon_arrow_right"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayDEDEDE" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:id="@+id/productList"
+                        android:layout_width="match_parent"
+                        android:layout_height="132px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px"
+                        app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/orderProductList"
+                            android:layout_width="440px"
+                            android:layout_height="100px" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{StringUtils.getOrdersQuantity(shopCart.AllUnitNum)}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            fontPath="iconfont/iconfont.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:layout_marginRight="@dimen/padding_noraml"
+                            android:text="@string/icon_arrow_right"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayDEDEDE" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="用户留言："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <EditText
+                            android:id="@+id/memo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/colorWhite"
+                            android:gravity="center_vertical"
+                            android:hint="选填，用户可填写要求内容"
+                            android:textColor="@color/colorText333"
+                            android:textColorHint="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_small" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/item_messages_bg"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/padding_biger">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="商品合计"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="40px"
+                            android:background="@drawable/green_conner_tag_bg"
+                            android:gravity="right"
+                            android:paddingLeft="4px"
+                            android:paddingRight="4px"
+                            android:text="@{&quot;已节省：&quot;+StringUtils.getPriceStr(shopCart.AllSave)+&quot;元&quot;}"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingRight="@dimen/padding_noraml"
+                            android:text="@{StringUtils.getPriceWiteSymbol(shopCart.AllMemberPrice)}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_big" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayDEDEDE" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="　配送费"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="40px"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="+"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_biger" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingRight="@dimen/padding_noraml"
+                            android:text="@{&quot;￥&quot;+confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightValue}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_big" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayDEDEDE" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="84px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="16px"
+                        android:paddingTop="16px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="　　优惠"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="40px"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="-"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_biger" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingRight="@dimen/padding_noraml"
+                            android:text="@{&quot;￥&quot;+StringUtils.getCouponValue(confirmOrderViewModel.confirmOrderActivity.orderSubmitState.Coupon,confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightValue)}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_big" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="110px" />
             </com.zhy.autolayout.AutoLinearLayout>
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_productdetail"
-            android:background="@drawable/item_products_divider" />
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/padding_biger">
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="商品合计"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="40px"
-                    android:background="@drawable/orange_conner_tag_bg"
-                    android:gravity="right"
-                    android:paddingLeft="4px"
-                    android:paddingRight="4px"
-                    android:text="@{&quot;已节省：&quot;+StringUtils.getPriceStr(shopCart.AllSave)+&quot;元&quot;}"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:paddingRight="@dimen/padding_noraml"
-                    android:text="@{StringUtils.getPriceWiteSymbol(shopCart.AllMemberPrice)}"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_big" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="　配送费"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="40px"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="+"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_biger" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:paddingRight="@dimen/padding_noraml"
-                    android:text="￥0.0"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_big" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="16px"
-                android:paddingTop="16px">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="　　优惠"
-                    android:textColor="@color/colorText333"
-                    android:textSize="@dimen/text_normal" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="40px"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="-"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_biger" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="right"
-                    android:paddingRight="@dimen/padding_noraml"
-                    android:text="￥0.0"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/text_big" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+        </ScrollView>
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -506,7 +682,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -518,11 +693,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{StringUtils.getPriceWiteSymbol(shopCart.AllMemberPrice)}"
+                    android:text="@{StringUtils.getPriceWiteSymbol(shopCart.AllMemberPrice-StringUtils.getCouponValue(confirmOrderViewModel.confirmOrderActivity.orderSubmitState.Coupon,confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightValue)+confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightValue)}"
                     android:textColor="@color/colorRed"
                     android:textSize="40px"
                     android:textStyle="bold" />
-
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -543,5 +717,5 @@
                 android:textSize="30px"
                 app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}" />
         </com.zhy.autolayout.AutoLinearLayout>
-    </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

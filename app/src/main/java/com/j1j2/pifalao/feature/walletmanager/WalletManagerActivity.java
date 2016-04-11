@@ -8,6 +8,7 @@ import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityWalletmanagerBinding;
@@ -91,13 +92,13 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
         if (v == binding.backBtn)
             onBackPressed();
         if (null != normalCoupons && v == binding.coupon) {
-            navigate.navigateToCoupons(this, null, false, module, CouponsActivity.COUPON_NORMAL, normalCoupons);
+            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL, normalCoupons);
         }
         if (null != deliveryCoupons && v == binding.deliverycoupon) {
-            navigate.navigateToCoupons(this, null, false, module, CouponsActivity.COUPON_DELIVERY, deliveryCoupons);
+            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_DELIVERY, deliveryCoupons);
         }
         if (null != goodsCoupons && v == binding.goodscoupon) {
-            navigate.navigateToCoupons(this, null, false, module, CouponsActivity.COUPON_GOODS, goodsCoupons);
+            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_GOODS, goodsCoupons);
         }
     }
 }

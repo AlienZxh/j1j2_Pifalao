@@ -2,7 +2,6 @@ package com.j1j2.pifalao.app.base;
 
 import android.databinding.BindingAdapter;
 
-import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeRelativeLayout;
 
@@ -37,7 +36,6 @@ public class CustomBinding {
         else
             linearLayout.hiddenBadge();
     }
-
 
 
 }

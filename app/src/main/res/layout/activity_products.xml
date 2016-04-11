@@ -6,7 +6,9 @@
     tools:context=".feature.products.ProductsActivity">
 
     <data>
-
+        <variable
+            name="shopCart"
+            type="com.j1j2.pifalao.app.ShopCart" />
         <variable
             name="productViewModel"
             type="com.j1j2.pifalao.feature.products.ProductsViewModel" />
@@ -49,17 +51,17 @@
                     android:textSize="@dimen/text_actionbar_title" />
 
 
-                <TextView
-                    android:id="@+id/sortBtn"
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/sortSpinner"
                     fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_width="180px"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
+                    android:background="@color/colorPrimary"
                     android:gravity="center"
                     android:text="@string/icon_filter"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/icon_normal"
-                    app:OnClickListener="@{productViewModel.productsActivity}" />
+                    android:textSize="@dimen/icon_normal" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
 
@@ -88,7 +90,7 @@
             android:layout_height="100px"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="100px"
+            android:layout_marginBottom="@dimen/padding_noraml"
             android:layout_marginRight="@dimen/padding_noraml"
             android:background="@drawable/services_dragview_bg"
             android:gravity="center"
@@ -100,7 +102,7 @@
             app:badge_gravity="rightTop"
             app:badge_textSize="12sp"
             app:layout_auto_basewidth="height"
-            app:showNum="@{productViewModel.productsActivity.shopCart.AllUnitNum}" />
+            app:showNum="@{shopCart.AllUnitNum}" />
 
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

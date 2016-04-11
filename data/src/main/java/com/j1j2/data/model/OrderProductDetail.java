@@ -8,19 +8,22 @@ import android.os.Parcelable;
  */
 public class OrderProductDetail implements Parcelable {
 
+
     /**
-     * ProductId : 30879
-     * OwnCode : null
-     * BarCode : 6935284455588
-     * ProductName : 卫龙2连包亲嘴豆筋绿色1*12*50
-     * RetailPrice : 0.5
-     * ProductUnit : 包
-     * ThumbImgPath : http://data.j1j2.com/ResourceFiles/OptimizeImgs/2015-06-18/70/93_1_2.jpg
-     * MemberPrice : 0.41
-     * Quantity : 100
+     * ProductId : 27466
+     * ProductMainId : 1993
+     * OwnCode : asd
+     * BarCode : 6935145301825
+     * ProductName : 锐澳橙味伏加鸡尾酒1*24&
+     * RetailPrice : 288.1
+     * ProductUnit : 件
+     * ThumbImgPath : http://data.j1j2.com/ResourceFiles/ProductImages/20140717/70_70/20102_0.jpg
+     * MemberPrice : 241.8
+     * Quantity : 1
      * AppendQuantity : 0
-     * ScalingFactor : 1
-     * BaseUnit : 包
+     * ScalingFactor : 0
+     * BaseUnit : string
+     * ActualDelivery : 1
      */
 
     private int ProductId;
@@ -34,111 +37,120 @@ public class OrderProductDetail implements Parcelable {
     private double MemberPrice;
     private int Quantity;
     private int AppendQuantity;
-    private double ScalingFactor;
+    private int ScalingFactor;
     private String BaseUnit;
+    private int ActualDelivery;
 
     public int getProductId() {
         return ProductId;
     }
 
-    public void setProductId(int productId) {
-        ProductId = productId;
+    public void setProductId(int ProductId) {
+        this.ProductId = ProductId;
     }
 
     public int getProductMainId() {
         return ProductMainId;
     }
 
-    public void setProductMainId(int productMainId) {
-        ProductMainId = productMainId;
+    public void setProductMainId(int ProductMainId) {
+        this.ProductMainId = ProductMainId;
     }
 
     public String getOwnCode() {
         return OwnCode;
     }
 
-    public void setOwnCode(String ownCode) {
-        OwnCode = ownCode;
+    public void setOwnCode(String OwnCode) {
+        this.OwnCode = OwnCode;
     }
 
     public String getBarCode() {
         return BarCode;
     }
 
-    public void setBarCode(String barCode) {
-        BarCode = barCode;
+    public void setBarCode(String BarCode) {
+        this.BarCode = BarCode;
     }
 
     public String getProductName() {
         return ProductName;
     }
 
-    public void setProductName(String productName) {
-        ProductName = productName;
+    public void setProductName(String ProductName) {
+        this.ProductName = ProductName;
     }
 
     public double getRetailPrice() {
         return RetailPrice;
     }
 
-    public void setRetailPrice(double retailPrice) {
-        RetailPrice = retailPrice;
+    public void setRetailPrice(double RetailPrice) {
+        this.RetailPrice = RetailPrice;
     }
 
     public String getProductUnit() {
         return ProductUnit;
     }
 
-    public void setProductUnit(String productUnit) {
-        ProductUnit = productUnit;
+    public void setProductUnit(String ProductUnit) {
+        this.ProductUnit = ProductUnit;
     }
 
     public String getThumbImgPath() {
         return ThumbImgPath;
     }
 
-    public void setThumbImgPath(String thumbImgPath) {
-        ThumbImgPath = thumbImgPath;
+    public void setThumbImgPath(String ThumbImgPath) {
+        this.ThumbImgPath = ThumbImgPath;
     }
 
     public double getMemberPrice() {
         return MemberPrice;
     }
 
-    public void setMemberPrice(double memberPrice) {
-        MemberPrice = memberPrice;
+    public void setMemberPrice(double MemberPrice) {
+        this.MemberPrice = MemberPrice;
     }
 
     public int getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(int quantity) {
-        Quantity = quantity;
+    public void setQuantity(int Quantity) {
+        this.Quantity = Quantity;
     }
 
     public int getAppendQuantity() {
         return AppendQuantity;
     }
 
-    public void setAppendQuantity(int appendQuantity) {
-        AppendQuantity = appendQuantity;
+    public void setAppendQuantity(int AppendQuantity) {
+        this.AppendQuantity = AppendQuantity;
     }
 
-    public double getScalingFactor() {
+    public int getScalingFactor() {
         return ScalingFactor;
     }
 
-    public void setScalingFactor(double scalingFactor) {
-        ScalingFactor = scalingFactor;
+    public void setScalingFactor(int ScalingFactor) {
+        this.ScalingFactor = ScalingFactor;
     }
 
     public String getBaseUnit() {
         return BaseUnit;
     }
 
-    public void setBaseUnit(String baseUnit) {
-        BaseUnit = baseUnit;
+    public void setBaseUnit(String BaseUnit) {
+        this.BaseUnit = BaseUnit;
+    }
+
+    public int getActualDelivery() {
+        return ActualDelivery;
+    }
+
+    public void setActualDelivery(int ActualDelivery) {
+        this.ActualDelivery = ActualDelivery;
     }
 
     @Override
@@ -157,6 +169,7 @@ public class OrderProductDetail implements Parcelable {
                 ", AppendQuantity=" + AppendQuantity +
                 ", ScalingFactor=" + ScalingFactor +
                 ", BaseUnit='" + BaseUnit + '\'' +
+                ", ActualDelivery=" + ActualDelivery +
                 '}';
     }
 
@@ -179,8 +192,9 @@ public class OrderProductDetail implements Parcelable {
         dest.writeDouble(this.MemberPrice);
         dest.writeInt(this.Quantity);
         dest.writeInt(this.AppendQuantity);
-        dest.writeDouble(this.ScalingFactor);
+        dest.writeInt(this.ScalingFactor);
         dest.writeString(this.BaseUnit);
+        dest.writeInt(this.ActualDelivery);
     }
 
     public OrderProductDetail() {
@@ -198,8 +212,9 @@ public class OrderProductDetail implements Parcelable {
         this.MemberPrice = in.readDouble();
         this.Quantity = in.readInt();
         this.AppendQuantity = in.readInt();
-        this.ScalingFactor = in.readDouble();
+        this.ScalingFactor = in.readInt();
         this.BaseUnit = in.readString();
+        this.ActualDelivery = in.readInt();
     }
 
     public static final Parcelable.Creator<OrderProductDetail> CREATOR = new Parcelable.Creator<OrderProductDetail>() {

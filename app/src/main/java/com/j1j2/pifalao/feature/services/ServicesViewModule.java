@@ -1,10 +1,15 @@
 package com.j1j2.pifalao.feature.services;
 
+import android.widget.Toast;
+
 import com.j1j2.data.http.api.ServicePointApi;
+import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.data.model.requestbody.LoginBody;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
@@ -12,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -32,15 +38,18 @@ public class ServicesViewModule {
 
     UserVipApi userVipApi;
 
+    UserLoginApi userLoginApi;
+
     ServicesActivity servicesActivity;
     private Subscription subscription;
     private ServicesAdapter servicesAdapter;
 
-    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi) {
+    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi) {
         this.servicePointApi = servicePointApi;
         this.servicesActivity = servicesActivity;
         this.servicePoint = servicePoint;
         this.userVipApi = userVipApi;
+        this.userLoginApi = userLoginApi;
         this.modules = new ArrayList<>();
         this.servicesAdapter = new ServicesAdapter(modules);
     }
@@ -61,7 +70,12 @@ public class ServicesViewModule {
                 .doOnCompleted(new Action0() {
                     @Override
                     public void call() {
-
+                        Module module = new Module();
+                        module.setModuleName("更多");
+                        module.setSubscribed(true);
+                        module.setWareHouseModuleId(36);
+                        module.setModuleType(Constant.ModuleType.MORE);
+                        servicesAdapter.add(module);
                         servicesActivity.stopSearchAnimate();
                     }
                 })
@@ -111,6 +125,33 @@ public class ServicesViewModule {
                 });
 
     }
+
+    public void updateUserTerminalDetail(final String deviceToken) {
+        LoginBody loginBody = new LoginBody();
+        loginBody.setTerminalType(1);
+        loginBody.setDeviceToken(deviceToken);
+        userLoginApi.updateUserTerminalDetail(loginBody)
+                .compose(servicesActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
 
     public void stopQueryQRCode() {
         if (subscription != null)

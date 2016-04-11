@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
 
         <variable
             name="text"
@@ -15,13 +22,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20px"
-            android:layout_marginTop="20px"
             android:gravity="center"
+            android:paddingBottom="14px"
+            android:paddingLeft="24px"
+            android:paddingRight="24px"
+            android:paddingTop="14px"
             android:singleLine="true"
             android:text="@{text}"
             android:textColor="@color/colorText333"
-            android:textSize="@dimen/text_big" />
+            android:textSize="@dimen/text_normal"
+            app:OnClickListener="@{onClick}" />
 
     </com.j1j2.common.view.autowidget.AutoCardView>
 </layout>

@@ -4,17 +4,15 @@ import android.databinding.DataBindingUtil;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
-import com.j1j2.pifalao.app.event.OrderCancelEvent;
+import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityOrdersBinding;
+import com.j1j2.pifalao.feature.orderproducts.OrderProductsActivity;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
-import com.j1j2.pifalao.feature.products.ProductsAdapter;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
@@ -33,13 +31,6 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, OrdersAdapter.OnOrdersClickListener, View.OnClickListener {
 
-    public static final int ORDERTYPE_ALL = 0;//全部
-    public static final int ORDERTYPE_SUBMIT = 1;//已下单
-    public static final int ORDERTYPE_EXECUTING = 4;//处理中
-    public static final int ORDERTYPE_CLIENTWAITFORRECEVIE = 16;//待收货
-    public static final int ORDERTYPE_WAITFORRATE = 32;//待评价
-    public static final int ORDERTYPE_COMPLETE = 64;//已完成
-    public static final int ORDERTYPE_INVALID = 256;//已退订
 
     ActivityOrdersBinding binding;
 
@@ -53,15 +44,16 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orders);
         binding.setOrdersViewModel(ordersViewModel);
+        binding.orderList.getRecyclerView().setClipToPadding(false);
+        binding.orderList.getRecyclerView().setPadding(0, AutoUtils.getPercentHeightSize(10), 0, AutoUtils.getPercentHeightSize(10));
         binding.orderList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.orderList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)
-                .drawable(R.drawable.item_products_divider)
+                .colorResId(R.color.colorTransparent)
                 .size(AutoUtils.getPercentHeightSize(8))
                 .build());
         binding.orderList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.orderList.setRefreshListener(this);
-        binding.orderList.setOnMoreListener(this);
     }
 
     @Override
@@ -91,18 +83,24 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
         ordersAdapter.setOnOrdersClickListener(this);
     }
 
-    public void setLoadMoreEnable(boolean is) {
-        binding.orderList.setLoadingMore(is);
+    public void setLoadMoreBegin() {
+        binding.orderList.setupMoreListener(this, 1);
     }
 
-    public void setLoadMoreFinish() {
+    public void setLoadMoreComplete() {
         binding.orderList.hideMoreProgress();
+        binding.orderList.removeMoreListener();
     }
 
     @Override
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
+    }
+
+    @Override
+    public void onReceiveClickListener(View view, OrderSimple orderSimple, int position) {
+        ordersViewModel.receiveOrder(orderSimple.getOrderId());
     }
 
     @Override
@@ -125,10 +123,14 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     }
 
+    @Override
+    public void onOrderProductClickListener(View view, OrderSimple orderSimple, int position) {
+        navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_ORDERS, orderSimple.getModuleId(), null, orderSimple.getProductDetails());
+    }
 
     @Subscribe
-    public void onOrderCancelEvent(OrderCancelEvent event) {
-        orderType = ORDERTYPE_INVALID;
+    public void onOrderStateChangeEvent(OrderStateChangeEvent event) {
+        orderType = event.getNewOrderState();
         ordersViewModel.queryOrders(true, orderType);
     }
 }

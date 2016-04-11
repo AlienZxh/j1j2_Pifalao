@@ -13,53 +13,73 @@ public class Module implements Parcelable {
      * ModuleName : 超市类批发
      * Subscribed : true
      * DisplayRank : 1
+     * ModuleType
+     * OrderAmountMinLimit
+     * ModuleServiceScope
      */
 
     private int WareHouseModuleId;
     private String ModuleName;
     private boolean Subscribed;
     private int DisplayRank;
+    private int ModuleType;
+    private double OrderAmountMinLimit;
+    private String ModuleServiceScope;
 
     public int getWareHouseModuleId() {
         return WareHouseModuleId;
     }
 
-    public void setWareHouseModuleId(int WareHouseModuleId) {
-        this.WareHouseModuleId = WareHouseModuleId;
+    public void setWareHouseModuleId(int wareHouseModuleId) {
+        WareHouseModuleId = wareHouseModuleId;
     }
 
     public String getModuleName() {
         return ModuleName;
     }
 
-    public void setModuleName(String ModuleName) {
-        this.ModuleName = ModuleName;
+    public void setModuleName(String moduleName) {
+        ModuleName = moduleName;
     }
 
     public boolean isSubscribed() {
         return Subscribed;
     }
 
-    public void setSubscribed(boolean Subscribed) {
-        this.Subscribed = Subscribed;
+    public void setSubscribed(boolean subscribed) {
+        Subscribed = subscribed;
     }
 
     public int getDisplayRank() {
         return DisplayRank;
     }
 
-    public void setDisplayRank(int DisplayRank) {
-        this.DisplayRank = DisplayRank;
+    public void setDisplayRank(int displayRank) {
+        DisplayRank = displayRank;
     }
 
-    @Override
-    public String toString() {
-        return "Module{" +
-                "WareHouseModuleId=" + WareHouseModuleId +
-                ", ModuleName='" + ModuleName + '\'' +
-                ", Subscribed=" + Subscribed +
-                ", DisplayRank=" + DisplayRank +
-                '}';
+    public int getModuleType() {
+        return ModuleType;
+    }
+
+    public void setModuleType(int moduleType) {
+        ModuleType = moduleType;
+    }
+
+    public double getOrderAmountMinLimit() {
+        return OrderAmountMinLimit;
+    }
+
+    public void setOrderAmountMinLimit(double orderAmountMinLimit) {
+        OrderAmountMinLimit = orderAmountMinLimit;
+    }
+
+    public String getModuleServiceScope() {
+        return ModuleServiceScope;
+    }
+
+    public void setModuleServiceScope(String moduleServiceScope) {
+        ModuleServiceScope = moduleServiceScope;
     }
 
 
@@ -74,6 +94,9 @@ public class Module implements Parcelable {
         dest.writeString(this.ModuleName);
         dest.writeByte(Subscribed ? (byte) 1 : (byte) 0);
         dest.writeInt(this.DisplayRank);
+        dest.writeInt(this.ModuleType);
+        dest.writeDouble(this.OrderAmountMinLimit);
+        dest.writeString(this.ModuleServiceScope);
     }
 
     public Module() {
@@ -84,6 +107,9 @@ public class Module implements Parcelable {
         this.ModuleName = in.readString();
         this.Subscribed = in.readByte() != 0;
         this.DisplayRank = in.readInt();
+        this.ModuleType = in.readInt();
+        this.OrderAmountMinLimit = in.readDouble();
+        this.ModuleServiceScope = in.readString();
     }
 
     public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {

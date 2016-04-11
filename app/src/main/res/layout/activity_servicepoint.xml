@@ -65,6 +65,7 @@
                     android:layout_height="@dimen/height_servicepoint_img"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
+                    fresco:failureImage="@drawable/servicepoint_default"
                     app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+servicePointViewModel.servicePoint.getServicePointImg()))}"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
@@ -95,10 +96,9 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/content_height_normal"
-                        android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/padding_biger"
                         android:text="营业时间："
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
@@ -132,10 +132,9 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/content_height_normal"
-                        android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/padding_biger"
                         android:text="可提供的服务："
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
@@ -169,10 +168,9 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/content_height_normal"
-                        android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
                         android:gravity="center_vertical"
-                        android:paddingLeft="@dimen/padding_biger"
                         android:text="服务点地址："
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />

@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 import javax.inject.Inject;
 
 import in.workarounds.bundler.Bundler;
+import io.realm.Realm;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -32,6 +33,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected Navigate navigate;
 
     protected Fragment currentFragment;
+
+    protected Realm realm;
 
     protected void initActionBar() {
     }
@@ -52,6 +55,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        realm = Realm.getDefaultInstance();
         setupActivityComponent();
         initBinding();
         initActionBar();
@@ -62,6 +66,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        realm.close();
         EventBus.getDefault().unregister(this);
     }
 
@@ -95,7 +100,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     @Subscribe
-    public void onBaseEvent(BaseEvent baseEvent){
+    public void onBaseEvent(BaseEvent baseEvent) {
 
     }
 }

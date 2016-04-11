@@ -11,6 +11,17 @@
 
         <import type="com.j1j2.common.util.StringUtils" />
 
+        <import type="android.view.View" />
+
+
+        <variable
+            name="isModifyMode"
+            type="android.databinding.ObservableBoolean" />
+
+        <variable
+            name="isSelect"
+            type="boolean" />
+
         <variable
             name="onClick"
             type="OnClickListener" />
@@ -179,6 +190,19 @@
                 android:textSize="@dimen/text_normal" />
 
         </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:background="@color/colorWhite"
+            android:text="@{isSelect?@string/icon_round_check_fill:@string/icon_round_checke}"
+            android:textColor="@{isSelect?@color/colorAccent:@color/colorGrayDEDEDE}"
+            android:textSize="@dimen/icon_normal"
+            android:visibility="@{isModifyMode.get()?View.VISIBLE:View.GONE}" />
 
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

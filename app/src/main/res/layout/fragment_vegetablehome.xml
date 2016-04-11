@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vegetableHomeViewModel"
+            type="com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeViewModel" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionbar_height"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/backBtn"
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/icon_back"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_normal"
+                    app:OnClickListener="@{vegetableHomeViewModel.vegetableHomeFragment}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="蔬菜类批发"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_title" />
+
+                <TextView
+                    android:id="@+id/searchBtn"
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/actionbar_height"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:text="@string/icon_search"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_normal"
+                    app:OnClickListener="@{vegetableHomeViewModel.vegetableHomeFragment}" />
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.zhy.autolayout.AutoRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="320px">
+
+                        <com.j1j2.common.view.viewpager.autoscrollviewpager.AutoScrollViewPager
+                            android:id="@+id/viewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <com.j1j2.common.view.smarttablayout.SmartTabLayout
+                            android:id="@+id/tab"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/padding_big"
+                            app:stl_clickable="false"
+                            app:stl_customTabTextLayoutId="@layout/view_tabcircle"
+                            app:stl_dividerColor="@color/colorTransparent"
+                            app:stl_dividerThickness="0dp"
+                            app:stl_indicatorColor="@color/colorWhite"
+                            app:stl_indicatorCornerRadius="@dimen/circle_tab_size"
+                            app:stl_indicatorGravity="center"
+                            app:stl_indicatorInFront="true"
+                            app:stl_indicatorInterpolation="linear"
+                            app:stl_indicatorThickness="@dimen/circle_tab_size"
+                            app:stl_underlineColor="@color/colorTransparent"
+                            app:stl_underlineThickness="0dp" />
+                    </com.zhy.autolayout.AutoRelativeLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="56px"
+                        android:background="@drawable/item_messages_bg"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4px"
+                        android:paddingTop="4px">
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:layout_width="120px"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                fontPath="iconfont/iconfont.ttf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/icon_notification"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/text_biger" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="6px"
+                                android:text="消息"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/text_normal" />
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <View
+                            android:layout_width="@dimen/height_1px"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/padding_small"
+                            android:layout_marginTop="@dimen/padding_small"
+                            android:background="@color/colorGrayDEDEDE" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="@dimen/padding_small"
+                            android:text="批发佬蔬菜水果服务正式上线啦！"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72px"
+                        android:layout_marginTop="14px"
+                        android:background="@drawable/item_messages_bg"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:text="限时抢购"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_big"
+                            android:text="（剩余3小时24分钟）"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_normal"
+                            android:textStyle="bold" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/activityProducts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorLayoutBg" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72px"
+                        android:layout_marginTop="14px"
+                        android:background="@drawable/item_messages_bg"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
+                            android:text="热门分类"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big"
+                            android:textStyle="bold" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/hotSortList"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorLayoutBg" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+            </ScrollView>
+        </com.zhy.autolayout.AutoLinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

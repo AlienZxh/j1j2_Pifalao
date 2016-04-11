@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <variable
+            name="productDetail"
+            type="com.j1j2.data.model.ProductDetail" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="700px"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="38px"
+            android:layout_marginTop="@dimen/padding_big"
+            android:text="规格："
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="78px"
+            android:text="@{productDetail.Spec}"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="38px"
+            android:layout_marginRight="38px"
+            android:background="@drawable/dash_divider"
+            android:layerType="software" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="38px"
+            android:layout_marginTop="@dimen/padding_big"
+            android:text="单位："
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="78px"
+            android:text="@{StringUtils.getProductDetailUnit(productDetail.ProductUnits)}"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="38px"
+            android:layout_marginRight="38px"
+            android:background="@drawable/dash_divider"
+            android:layerType="software" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="38px"
+            android:layout_marginTop="@dimen/padding_big"
+            android:text="品牌："
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="78px"
+            android:text="@{productDetail.Brand}"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="38px"
+            android:layout_marginRight="38px"
+            android:background="@drawable/dash_divider"
+            android:layerType="software" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="38px"
+            android:layout_marginTop="@dimen/padding_big"
+            android:text="条码："
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16px"
+            android:layout_marginLeft="78px"
+            android:text="@{StringUtils.getProductDetailBarCode(productDetail.ProductUnits)}"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="38px"
+            android:layout_marginRight="38px"
+            android:background="@drawable/dash_divider"
+            android:layerType="software" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

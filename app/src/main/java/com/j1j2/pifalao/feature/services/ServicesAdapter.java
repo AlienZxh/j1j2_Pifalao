@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Module;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemServiceBinding;
 
@@ -30,24 +31,27 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
 
     public ServicesAdapter(List<Module> modules) {
         this.modules = modules;
-        moduleColors.put(23, colors[0]);
-        moduleIconId.put(23, iconId[0]);
+        moduleColors.put(Constant.ModuleType.SHOPSERVICE, colors[0]);
+        moduleIconId.put(Constant.ModuleType.SHOPSERVICE, iconId[0]);
 
-        moduleColors.put(25, colors[1]);
-        moduleIconId.put(25, iconId[1]);
+        moduleColors.put(Constant.ModuleType.DELIVERY, colors[1]);
+        moduleIconId.put(Constant.ModuleType.DELIVERY, iconId[1]);
 
-        moduleColors.put(26, colors[2]);
-        moduleIconId.put(26, iconId[2]);
+        moduleColors.put(Constant.ModuleType.VEGETABLE, colors[2]);
+        moduleIconId.put(Constant.ModuleType.VEGETABLE, iconId[2]);
 
-        moduleColors.put(27, colors[3]);
-        moduleIconId.put(27, iconId[3]);
+        moduleColors.put(Constant.ModuleType.HOUSEKEEPING, colors[3]);
+        moduleIconId.put(Constant.ModuleType.HOUSEKEEPING, iconId[3]);
 
-        moduleColors.put(28, colors[4]);
-        moduleIconId.put(28, iconId[4]);
+        moduleColors.put(Constant.ModuleType.VIP, colors[4]);
+        moduleIconId.put(Constant.ModuleType.VIP, iconId[4]);
+
+        moduleColors.put(Constant.ModuleType.MORE, colors[5]);
+        moduleIconId.put(Constant.ModuleType.MORE, iconId[5]);
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(View view, Module module);
+        void onItemClickListener(View view, Module module, int position);
     }
 
     private OnItemClickListener onItemClickListener;
@@ -87,7 +91,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
 
     @Override
     public int getItemCount() {
-        return null == this.modules ? 0 : (modules.size() > 5 ? 5 : modules.size());
+        return null == this.modules ? 0 : modules.size();
     }
 
     public class ServicesViewHolder extends AutoBindingViewHolder<ItemServiceBinding, Module> {
@@ -104,19 +108,18 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
         }
 
         @Override
-        public void bind(@NonNull final Module data, int position) {
+        public void bind(@NonNull final Module data, final int position) {
 
-            binding.icon.setText(context.getResources().getString(moduleIconId.get(data.getWareHouseModuleId()) == null ? iconId[5] : moduleIconId.get(data.getWareHouseModuleId())));
-            binding.icon.setTextColor(moduleColors.get(data.getWareHouseModuleId()) == null ? colors[5] : moduleColors.get(data.getWareHouseModuleId()));
+            binding.icon.setText(context.getResources().getString(moduleIconId.get(data.getModuleType()) == null ? iconId[5] : moduleIconId.get(data.getModuleType())));
+            binding.icon.setTextColor(moduleColors.get(data.getModuleType()) == null ? colors[5] : moduleColors.get(data.getModuleType()));
             binding.setModule(data);
-            if (data.isSubscribed())
-                binding.setOnClick(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onItemClickListener != null)
-                            onItemClickListener.onItemClickListener(v, data);
-                    }
-                });
+            binding.setOnClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null)
+                        onItemClickListener.onItemClickListener(v, data, position);
+                }
+            });
         }
     }
 }

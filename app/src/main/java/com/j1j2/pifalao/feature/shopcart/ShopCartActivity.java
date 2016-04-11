@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.shopcart;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Toast;
@@ -13,13 +14,16 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
+import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.RegisterSuccessEvent;
+import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityShopcartBinding;
 import com.j1j2.pifalao.feature.shopcart.di.ShopCartModule;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -38,7 +42,7 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     ActivityShopcartBinding binding;
 
     @Arg
-    Module module;
+    int moduleId;
 
     @Inject
     ShopCartViewModel shopCartViewModel;
@@ -75,17 +79,22 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new ShopCartModule(this, module)).inject(this);
+        MainAplication.get(this).getUserComponent().plus(new ShopCartModule(this, moduleId)).inject(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v == binding.confirmOrder) {
-            navigate.navigateToConfirmOrder(this, null, false, module, shopCartViewModel.getShopCartItems());
+            navigate.navigateToConfirmOrder(this, null, false, moduleId, shopCartViewModel.getShopCartItems());
         }
         if (v == binding.backBtn) {
             onBackPressed();
         }
+    }
+
+    @Override
+    public void onLayoutClickListener(View view, ShopCartItem shopCart, int position) {
+        navigate.navigateToProductDetailActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, shopCart.getProductMainId());
     }
 
     @Override
@@ -104,6 +113,20 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     @Subscribe
     public void onConfirmOrderSuccessEvent(ConfirmOrderSuccessEvent event) {
         finish();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onShopCartChangeEvent(ShopCartChangeEvent event) {
+        shopCartViewModel.queryShopCart();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onLogStateChangeEvent(LogStateEvent event) {
+        if (event.isLogin()) {
+
+        } else {
+            navigate.navigateToLogin(this, null, true);
+        }
     }
 }
 

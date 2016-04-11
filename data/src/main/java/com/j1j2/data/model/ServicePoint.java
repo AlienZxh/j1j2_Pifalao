@@ -62,184 +62,159 @@ public class ServicePoint implements Parcelable {
         this.distance = distance;
     }
     //______________________________________
-    public void setServicePointId(int ServicePointId) {
-        this.ServicePointId = ServicePointId;
-    }
-
-    public void setName(String Name) {
-        this.Name = Name;
-    }
-
-    public void setMobile(String Mobile) {
-        this.Mobile = Mobile;
-    }
-
-    public void setAddressDetail(String AddressDetail) {
-        this.AddressDetail = AddressDetail;
-    }
-
-    public void setNote(String Note) {
-        this.Note = Note;
-    }
-
-    public void setState(int State) {
-        this.State = State;
-    }
-
-    public void setReferCode(String ReferCode) {
-        this.ReferCode = ReferCode;
-    }
-
-    public void setPCCId(int PCCId) {
-        this.PCCId = PCCId;
-    }
-
-    public void setApllyTime(String ApllyTime) {
-        this.ApllyTime = ApllyTime;
-    }
-
-    public void setAuditTime(String AuditTime) {
-        this.AuditTime = AuditTime;
-    }
-
-    public void setLat(double Lat) {
-        this.Lat = Lat;
-    }
-
-    public void setLng(double Lng) {
-        this.Lng = Lng;
-    }
-
-    public void setServiceTime(String ServiceTime) {
-        this.ServiceTime = ServiceTime;
-    }
-
-    public void setServicePhone(String ServicePhone) {
-        this.ServicePhone = ServicePhone;
-    }
-
-    public void setOpenOrClosed(boolean OpenOrClosed) {
-        this.OpenOrClosed = OpenOrClosed;
-    }
-
-    public void setServicePointImg(String ServicePointImg) {
-        this.ServicePointImg = ServicePointImg;
-    }
-
-    public void setInstroduce(String Instroduce) {
-        this.Instroduce = Instroduce;
-    }
-
-    public void setPickUpSelfSupport(boolean PickUpSelfSupport) {
-        this.PickUpSelfSupport = PickUpSelfSupport;
-    }
-
-    public void setHomeDeliverySupport(boolean HomeDeliverySupport) {
-        this.HomeDeliverySupport = HomeDeliverySupport;
-    }
 
     public int getServicePointId() {
         return ServicePointId;
+    }
+
+    public void setServicePointId(int servicePointId) {
+        ServicePointId = servicePointId;
     }
 
     public String getName() {
         return Name;
     }
 
+    public void setName(String name) {
+        Name = name;
+    }
+
     public String getMobile() {
         return Mobile;
+    }
+
+    public void setMobile(String mobile) {
+        Mobile = mobile;
     }
 
     public String getAddressDetail() {
         return AddressDetail;
     }
 
+    public void setAddressDetail(String addressDetail) {
+        AddressDetail = addressDetail;
+    }
+
     public String getNote() {
         return Note;
+    }
+
+    public void setNote(String note) {
+        Note = note;
     }
 
     public int getState() {
         return State;
     }
 
+    public void setState(int state) {
+        State = state;
+    }
+
     public String getReferCode() {
         return ReferCode;
+    }
+
+    public void setReferCode(String referCode) {
+        ReferCode = referCode;
     }
 
     public int getPCCId() {
         return PCCId;
     }
 
+    public void setPCCId(int PCCId) {
+        this.PCCId = PCCId;
+    }
+
     public String getApllyTime() {
         return ApllyTime;
+    }
+
+    public void setApllyTime(String apllyTime) {
+        ApllyTime = apllyTime;
     }
 
     public String getAuditTime() {
         return AuditTime;
     }
 
+    public void setAuditTime(String auditTime) {
+        AuditTime = auditTime;
+    }
+
     public double getLat() {
         return Lat;
+    }
+
+    public void setLat(double lat) {
+        Lat = lat;
     }
 
     public double getLng() {
         return Lng;
     }
 
+    public void setLng(double lng) {
+        Lng = lng;
+    }
+
     public String getServiceTime() {
         return ServiceTime;
+    }
+
+    public void setServiceTime(String serviceTime) {
+        ServiceTime = serviceTime;
     }
 
     public String getServicePhone() {
         return ServicePhone;
     }
 
+    public void setServicePhone(String servicePhone) {
+        ServicePhone = servicePhone;
+    }
+
     public boolean isOpenOrClosed() {
         return OpenOrClosed;
+    }
+
+    public void setOpenOrClosed(boolean openOrClosed) {
+        OpenOrClosed = openOrClosed;
     }
 
     public String getServicePointImg() {
         return ServicePointImg;
     }
 
+    public void setServicePointImg(String servicePointImg) {
+        ServicePointImg = servicePointImg;
+    }
+
     public String getInstroduce() {
         return Instroduce;
+    }
+
+    public void setInstroduce(String instroduce) {
+        Instroduce = instroduce;
     }
 
     public boolean isPickUpSelfSupport() {
         return PickUpSelfSupport;
     }
 
+    public void setPickUpSelfSupport(boolean pickUpSelfSupport) {
+        PickUpSelfSupport = pickUpSelfSupport;
+    }
+
     public boolean isHomeDeliverySupport() {
         return HomeDeliverySupport;
     }
 
-
-    @Override
-    public String toString() {
-        return "ServicePoint{" +
-                "ServicePointId=" + ServicePointId +
-                ", Name='" + Name + '\'' +
-                ", Mobile='" + Mobile + '\'' +
-                ", AddressDetail='" + AddressDetail + '\'' +
-                ", Note='" + Note + '\'' +
-                ", State=" + State +
-                ", ReferCode='" + ReferCode + '\'' +
-                ", PCCId=" + PCCId +
-                ", ApllyTime='" + ApllyTime + '\'' +
-                ", AuditTime='" + AuditTime + '\'' +
-                ", Lat=" + Lat +
-                ", Lng=" + Lng +
-                ", ServiceTime='" + ServiceTime + '\'' +
-                ", ServicePhone='" + ServicePhone + '\'' +
-                ", OpenOrClosed=" + OpenOrClosed +
-                ", ServicePointImg='" + ServicePointImg + '\'' +
-                ", Instroduce='" + Instroduce + '\'' +
-                ", PickUpSelfSupport=" + PickUpSelfSupport +
-                ", HomeDeliverySupport=" + HomeDeliverySupport +
-                ", distance=" + distance +
-                '}';
+    public void setHomeDeliverySupport(boolean homeDeliverySupport) {
+        HomeDeliverySupport = homeDeliverySupport;
     }
+
 
     @Override
     public int describeContents() {
@@ -267,6 +242,7 @@ public class ServicePoint implements Parcelable {
         dest.writeString(this.Instroduce);
         dest.writeByte(PickUpSelfSupport ? (byte) 1 : (byte) 0);
         dest.writeByte(HomeDeliverySupport ? (byte) 1 : (byte) 0);
+        dest.writeDouble(this.distance);
     }
 
     public ServicePoint() {
@@ -292,13 +268,16 @@ public class ServicePoint implements Parcelable {
         this.Instroduce = in.readString();
         this.PickUpSelfSupport = in.readByte() != 0;
         this.HomeDeliverySupport = in.readByte() != 0;
+        this.distance = in.readDouble();
     }
 
     public static final Parcelable.Creator<ServicePoint> CREATOR = new Parcelable.Creator<ServicePoint>() {
+        @Override
         public ServicePoint createFromParcel(Parcel source) {
             return new ServicePoint(source);
         }
 
+        @Override
         public ServicePoint[] newArray(int size) {
             return new ServicePoint[size];
         }

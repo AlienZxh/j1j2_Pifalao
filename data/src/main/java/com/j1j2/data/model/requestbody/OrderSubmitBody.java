@@ -5,16 +5,33 @@ package com.j1j2.data.model.requestbody;
  */
 public class OrderSubmitBody {
 
-    private int AddressId;// 用户选择的地址的主键编号
-    private String ProductCoupon;// 选择的商品优惠券的字符串 编码 前台需要传递该参数
-    private String FreightCoupon;// 选择的配送费优惠券的 字符串 编码 前台需要传递该参数
-    private int FreightType;// 选择的运费方式
+    private int FreightID;// 选择的运费方式
+
     private int ServicePointId;// 用户选择的自提或者关联的服务点
+    private int AddressId;// 用户选择的地址的主键编号
+
+    private String CouponCode;
     private double CalculateDistance;// 终端计算的用户与相关服务点见的路径距离
     private double SaveAmount;// 订单此次节省金额
     private String OrderMemo;// 订单其它备注
     private String PredictSendTime;// 订单预计配送时间
     private int ModuleId;//服务模块
+
+    public int getFreightID() {
+        return FreightID;
+    }
+
+    public void setFreightID(int freightID) {
+        FreightID = freightID;
+    }
+
+    public int getServicePointId() {
+        return ServicePointId;
+    }
+
+    public void setServicePointId(int servicePointId) {
+        ServicePointId = servicePointId;
+    }
 
     public int getAddressId() {
         return AddressId;
@@ -24,36 +41,12 @@ public class OrderSubmitBody {
         AddressId = addressId;
     }
 
-    public String getProductCoupon() {
-        return ProductCoupon;
+    public String getCouponCode() {
+        return CouponCode;
     }
 
-    public void setProductCoupon(String productCoupon) {
-        ProductCoupon = productCoupon;
-    }
-
-    public String getFreightCoupon() {
-        return FreightCoupon;
-    }
-
-    public void setFreightCoupon(String freightCoupon) {
-        FreightCoupon = freightCoupon;
-    }
-
-    public int getFreightType() {
-        return FreightType;
-    }
-
-    public void setFreightType(int freightType) {
-        FreightType = freightType;
-    }
-
-    public int getServicePointId() {
-        return ServicePointId;
-    }
-
-    public void setServicePointId(int servicePointId) {
-        ServicePointId = servicePointId;
+    public void setCouponCode(String couponCode) {
+        CouponCode = couponCode;
     }
 
     public double getCalculateDistance() {
@@ -94,21 +87,5 @@ public class OrderSubmitBody {
 
     public void setModuleId(int moduleId) {
         ModuleId = moduleId;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderSubmitBody{" +
-                "AddressId=" + AddressId +
-                ", ProductCoupon='" + ProductCoupon + '\'' +
-                ", FreightCoupon='" + FreightCoupon + '\'' +
-                ", FreightType=" + FreightType +
-                ", ServicePointId=" + ServicePointId +
-                ", CalculateDistance=" + CalculateDistance +
-                ", SaveAmount=" + SaveAmount +
-                ", OrderMemo='" + OrderMemo + '\'' +
-                ", PredictSendTime='" + PredictSendTime + '\'' +
-                ", ModuleId=" + ModuleId +
-                '}';
     }
 }

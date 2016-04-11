@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="38px"
+            android:layout_marginRight="38px"
+            android:orientation="horizontal"
+            android:paddingBottom="16px"
+            android:paddingTop="16px">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="会员用户"
+                android:gravity="center"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="批发数量"
+                android:gravity="center"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="下单时间"
+                android:gravity="center"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal"
+                android:textStyle="bold" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="38px"
+            android:layout_marginRight="38px"
+            android:background="@color/colorDividerE9E9E9" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recordList"
+            android:layout_width="match_parent"
+            android:layout_height="750px" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

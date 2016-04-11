@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80px"
+    android:gravity="center"
+    android:background="@color/colorPrimary"
+    android:orientation="horizontal"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:id="@+id/backBtn"
+        fontPath="iconfont/iconfont.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/icon_filter"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/icon_normal" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_small"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_biger" />
+
+</com.zhy.autolayout.AutoLinearLayout>

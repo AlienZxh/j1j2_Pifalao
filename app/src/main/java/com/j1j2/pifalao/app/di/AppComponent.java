@@ -5,8 +5,17 @@ import com.j1j2.pifalao.feature.city.di.CityComponent;
 import com.j1j2.pifalao.feature.city.di.CityModule;
 import com.j1j2.pifalao.feature.guide.di.GuideComponent;
 import com.j1j2.pifalao.feature.guide.di.GuideModule;
+import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsComponent;
+import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsModule;
+import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryHomeServicepointFragment;
+import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointComponent;
+import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointModule;
+import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeComponent;
+import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeComponent;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
+import com.j1j2.pifalao.feature.home.vegetablehome.di.VegetableHomeComponent;
+import com.j1j2.pifalao.feature.home.vegetablehome.di.VegetableHomeModule;
 import com.j1j2.pifalao.feature.launch.di.LaunchComponent;
 import com.j1j2.pifalao.feature.launch.di.LaunchModule;
 import com.j1j2.pifalao.feature.location.di.LocationComponent;
@@ -29,6 +38,8 @@ import com.j1j2.pifalao.feature.servicepoint.di.ServicePointComponent;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointModule;
 import com.j1j2.pifalao.feature.services.di.ServicesComponent;
 import com.j1j2.pifalao.feature.services.di.ServicesModule;
+import com.j1j2.pifalao.feature.vegetablesort.di.VegetableSortComponent;
+import com.j1j2.pifalao.feature.vegetablesort.di.VegetableSortModule;
 
 import javax.inject.Singleton;
 
@@ -60,6 +71,8 @@ public interface AppComponent {
 
     StoreStyleHomeComponent plus(StoreStyleHomeModule storeStyleHomeModule);
 
+    VegetableHomeComponent plus(VegetableHomeModule vegetableHomeModule);
+
     ProductsComponent plus(ProductsModule productsModule);
 
     ProductDetailComponent plus(ProductDetailModule productDetailModule);
@@ -73,4 +86,12 @@ public interface AppComponent {
     RegisterStepOneComponent plus(RegisterStepOneModule registerStepOneModule);
 
     RegisterStepTwoComponent plus(RegisterStepTwoModule registerStepTwoModule);
+
+    DeliveryHomeComponent plus(DeliveryHomeModule deliveryHomeModule);
+
+    VegetableSortComponent plus(VegetableSortModule vegetableSortModule);
+
+    DeliveryServicepointComponent plus(DeliveryServicepointModule deliveryServicepointModule);
+
+    DeliveryProductsComponent plus(DeliveryProductsModule deliveryProductsModule);
 }

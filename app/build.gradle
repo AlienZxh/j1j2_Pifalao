@@ -66,7 +66,7 @@ android {
             shrinkResources true
 
             buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9091\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Soft/UpdateOnline.xml\""
         }
     }
@@ -111,6 +111,7 @@ dependencies {
     compile appDependencies.storebox
 
     compile appDependencies.eventbus
+    compile appDependencies.okhttputils
     //单元测试
     testCompile appTestDependencies.junit
     //UI测试
@@ -118,5 +119,4 @@ dependencies {
     androidTestCompile appAndroidTestDependencies.espresso
     androidTestCompile appAndroidTestDependencies.runner
     androidTestCompile appAndroidTestDependencies.rules
-
 }

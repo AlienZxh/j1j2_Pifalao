@@ -60,6 +60,8 @@ public class LocationViewModel {
                 .doOnNext(new Action1<WebReturn<List<City>>>() {
                     @Override
                     public void call(WebReturn<List<City>> listWebReturn) {
+                        if (districts.size() > 0)
+                            districts.clear();
                         districts.addAll(listWebReturn.getDetail());
                         locationDistrictAdapter.notifyDataSetChanged();
                     }
@@ -72,6 +74,7 @@ public class LocationViewModel {
                         LatLng southwest = locationActivity.getSouthwest(location);
 
                         return servicePointApi.queryServicePointWithOutDistanceInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude);
+
                     }
                 })
                 .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())

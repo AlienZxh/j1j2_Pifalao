@@ -35,110 +35,94 @@ public class City implements Parcelable {
     private int ServicePointCount;
     private String PlatformDescription;
 
-    public void setPCCId(int PCCId) {
-        this.PCCId = PCCId;
-    }
-
-    public void setPCCName(String PCCName) {
-        this.PCCName = PCCName;
-    }
-
-    public void setParentId(int ParentId) {
-        this.ParentId = ParentId;
-    }
-
-    public void setOpenState(boolean OpenState) {
-        this.OpenState = OpenState;
-    }
-
-    public void setIsHot(boolean IsHot) {
-        this.IsHot = IsHot;
-    }
-
-    public void setLastUpdateTime(String LastUpdateTime) {
-        this.LastUpdateTime = LastUpdateTime;
-    }
-
-    public void setCityType(int CityType) {
-        this.CityType = CityType;
-    }
-
-    public void setOpenImgPath(String OpenImgPath) {
-        this.OpenImgPath = OpenImgPath;
-    }
-
-    public void setClosedImgPath(String ClosedImgPath) {
-        this.ClosedImgPath = ClosedImgPath;
-    }
-
-    public void setServicePointCount(int ServicePointCount) {
-        this.ServicePointCount = ServicePointCount;
-    }
-
-    public void setPlatformDescription(String PlatformDescription) {
-        this.PlatformDescription = PlatformDescription;
-    }
-
     public int getPCCId() {
         return PCCId;
+    }
+
+    public void setPCCId(int PCCId) {
+        this.PCCId = PCCId;
     }
 
     public String getPCCName() {
         return PCCName;
     }
 
+    public void setPCCName(String PCCName) {
+        this.PCCName = PCCName;
+    }
+
     public int getParentId() {
         return ParentId;
+    }
+
+    public void setParentId(int parentId) {
+        ParentId = parentId;
     }
 
     public boolean isOpenState() {
         return OpenState;
     }
 
-    public boolean isIsHot() {
+    public void setOpenState(boolean openState) {
+        OpenState = openState;
+    }
+
+    public boolean isHot() {
         return IsHot;
+    }
+
+    public void setIsHot(boolean isHot) {
+        IsHot = isHot;
     }
 
     public String getLastUpdateTime() {
         return LastUpdateTime;
     }
 
+    public void setLastUpdateTime(String lastUpdateTime) {
+        LastUpdateTime = lastUpdateTime;
+    }
+
     public int getCityType() {
         return CityType;
+    }
+
+    public void setCityType(int cityType) {
+        CityType = cityType;
     }
 
     public String getOpenImgPath() {
         return OpenImgPath;
     }
 
+    public void setOpenImgPath(String openImgPath) {
+        OpenImgPath = openImgPath;
+    }
+
     public String getClosedImgPath() {
         return ClosedImgPath;
+    }
+
+    public void setClosedImgPath(String closedImgPath) {
+        ClosedImgPath = closedImgPath;
     }
 
     public int getServicePointCount() {
         return ServicePointCount;
     }
 
+    public void setServicePointCount(int servicePointCount) {
+        ServicePointCount = servicePointCount;
+    }
+
     public String getPlatformDescription() {
         return PlatformDescription;
     }
 
-    @Override
-    public String toString() {
-        return "City{" +
-                "PCCId=" + PCCId +
-                ", PCCName='" + PCCName + '\'' +
-                ", ParentId=" + ParentId +
-                ", OpenState=" + OpenState +
-                ", IsHot=" + IsHot +
-                ", LastUpdateTime='" + LastUpdateTime + '\'' +
-                ", CityType=" + CityType +
-                ", OpenImgPath='" + OpenImgPath + '\'' +
-                ", ClosedImgPath='" + ClosedImgPath + '\'' +
-                ", ServicePointCount=" + ServicePointCount +
-                ", PlatformDescription='" + PlatformDescription + '\'' +
-                '}';
+    public void setPlatformDescription(String platformDescription) {
+        PlatformDescription = platformDescription;
     }
+
 
     @Override
     public int describeContents() {
@@ -178,10 +162,12 @@ public class City implements Parcelable {
     }
 
     public static final Parcelable.Creator<City> CREATOR = new Parcelable.Creator<City>() {
+        @Override
         public City createFromParcel(Parcel source) {
             return new City(source);
         }
 
+        @Override
         public City[] newArray(int size) {
             return new City[size];
         }

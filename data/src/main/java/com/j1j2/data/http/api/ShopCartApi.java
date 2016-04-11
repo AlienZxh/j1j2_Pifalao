@@ -1,5 +1,6 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.OrderSubmitBody;
@@ -31,27 +32,21 @@ public interface ShopCartApi {
 
     @POST("ShopCart/SubmitOrder")
     Observable<WebReturn<Integer>> submitOrder(@Body OrderSubmitBody orderSubmitBody);
+
+    @POST("ShopCart/QueryValidFreight")
+    Observable<WebReturn<List<FreightType>>> queryValidFreight(@Query("moduleId") int moduleId);
     //______________________________________________________________________________________________
 
     @POST("ShopCart/QueryUserServicePoint")
     Observable<String> queryUserServicePoint();
 
-    @POST("ShopCart/QueryValidFreight")
-    Observable<String> queryValidFreight();
-
-
     @POST("ShopCart/ClearShopCart")
     Observable<String> clearShopCart(@Query("moduleId") int moduleId);
-
-
-
 
     @POST("ShopCart/ValidateSubmitOrder")
     Observable<String> validateSubmitOrder();
 
-
     @POST("ShopCart/QueryCouponEffective")
     Observable<String> queryCouponEffective(@Query("guid") int guid, @Query("moduleId") int moduleId);
-
 
 }

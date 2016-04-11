@@ -42,6 +42,7 @@ ext {
     badgeviewVersion = "1.1.0"
 
     eventbusVersion = "3.0.0"
+    okhttputilsVersion = "2.3.8"
 
     //Testing
     jUnitVersion = '4.12'
@@ -72,6 +73,7 @@ ext {
             rxlifecycleComponents: "com.trello:rxlifecycle-components:${rxlifecycleVersion}",
             storebox             : "net.orange-box.storebox:storebox-lib:${storeboxVersion}",
             eventbus             : "org.greenrobot:eventbus:${eventbusVersion}",
+            okhttputils             : "com.zhy:okhttputils:${okhttputilsVersion}",
     ]
 
     appReleaseDependencies = [

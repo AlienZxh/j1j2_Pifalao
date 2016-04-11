@@ -4,9 +4,10 @@ import android.databinding.DataBindingUtil;
 import android.view.View;
 
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.event.OrderCancelEvent;
+import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityOrdermanagerBinding;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerModule;
 import com.j1j2.pifalao.feature.orders.OrdersActivity;
@@ -44,17 +45,17 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.SubmitOrder) {
-            navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_SUBMIT);
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_SUBMIT);
         } else if (v == binding.ExcutingOrder) {
-            navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_EXECUTING);
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_EXECUTING);
         } else if (v == binding.ClientWaitForRecevieOrder) {
-            navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_CLIENTWAITFORRECEVIE);
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_CLIENTWAITFORRECEVIE);
         } else if (v == binding.WaitForRateOrder) {
-            navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_WAITFORRATE);
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_WAITFORRATE);
         } else if (v == binding.InvalidOrder) {
-            navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_INVALID);
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_INVALID);
         } else if (v == binding.allOrder) {
-            navigate.navigateToOrders(this, null, false, OrdersActivity.ORDERTYPE_ALL);
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_ALL);
         }
     }
 
@@ -65,7 +66,7 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Subscribe
-    public void onOrderCancelEvent(OrderCancelEvent event) {
+    public void onOrderCancelEvent(OrderStateChangeEvent event) {
         orderManagerViewModel.queryOrderStatistics();
     }
 }

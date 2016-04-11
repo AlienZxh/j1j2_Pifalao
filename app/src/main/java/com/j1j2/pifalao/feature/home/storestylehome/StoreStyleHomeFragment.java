@@ -46,9 +46,6 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
 
     FragmentStoreStyleHomeBinding binding;
 
-    @Inject
-    ProductApi productApi;
-
     @Arg
     Module module;
 
@@ -76,6 +73,12 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
         manager = new GridLayoutManager(getContext(), 3);
         binding.sortList.setLayoutManager(manager);
         storeStyleHomeViewModel.queryProductSort();
+        StoreStyleHomeTopAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopAdapter();
+        binding.viewPager.setAdapter(storeStyleHomeTopAdapter);
+        binding.tab.setViewPager(binding.viewPager);
+        binding.viewPager.startAutoScroll(2000);
+        binding.viewPager.setInterval(2000);
+        binding.viewPager.startAutoScroll();
     }
 
     public void setListAdapter(final StoreStyleHomeAdapter storeStyleHomeAdapter) {

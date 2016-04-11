@@ -32,7 +32,6 @@ dependencies {
     compile commonDependencies.design
     compile commonDependencies.supportv4
     compile commonDependencies.cardview
-    compile commonDependencies.ripplebackground
     compile commonDependencies.flexibledivider
     compile commonDependencies.animators
     compile commonDependencies.superrecyclerview

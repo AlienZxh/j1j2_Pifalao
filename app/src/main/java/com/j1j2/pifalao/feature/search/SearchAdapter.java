@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemSearchBinding;
@@ -21,6 +22,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     public SearchAdapter(List<String> strs) {
         this.strs = strs;
+    }
+
+    public interface OnKeyClickListener {
+        void onKeyClickListener(View view, String key, int position);
+    }
+
+    private OnKeyClickListener onKeyClickListener;
+
+
+    public void setOnKeyClickListener(OnKeyClickListener onKeyClickListener) {
+        this.onKeyClickListener = onKeyClickListener;
     }
 
     @Override
@@ -52,8 +64,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         }
 
         @Override
-        public void bind(@NonNull String data, int position) {
+        public void bind(@NonNull final String data, final int position) {
             binding.setText(data);
+            binding.setOnClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onKeyClickListener != null)
+                        onKeyClickListener.onKeyClickListener(v, data, position);
+                }
+            });
         }
     }
 

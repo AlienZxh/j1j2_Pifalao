@@ -74,7 +74,7 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/versionCheck"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="88px"
             android:background="@color/colorWhite"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -120,7 +120,7 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/aboutUs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="88px"
             android:background="@color/colorWhite"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -166,7 +166,7 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/feedback"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="88px"
             android:background="@color/colorWhite"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -210,7 +210,7 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/serviceCall"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="88px"
             android:background="@color/colorWhite"
             android:gravity="center_vertical"
             android:orientation="horizontal"

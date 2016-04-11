@@ -10,7 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AdapterView;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.data.model.Module;
@@ -29,12 +29,14 @@ import com.j1j2.pifalao.feature.products.di.ProductsModule;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,15 +44,12 @@ import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
 import in.workarounds.bundler.annotations.Required;
-import rx.Observable;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-3-12.
  */
 @RequireBundler(requireAll = false)
-public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, ProductsAdapter.OnProductsClickListener, View.OnClickListener {
+public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, ProductsAdapter.OnProductsClickListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     public static final int PRODUCTS_TYPE_SORT = 1;
     public static final int PRODUCTS_TYPE_SEARCH = 2;
@@ -82,8 +81,6 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     public ObservableBoolean isLogin = new ObservableBoolean();
 
-
-
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_products);
@@ -97,7 +94,6 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
                 .build());
         binding.productList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.productList.setRefreshListener(this);
-        binding.productList.setOnMoreListener(this);
     }
 
     @Override
@@ -115,6 +111,15 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         dialogBinding.dialogShopcart.setOnClickListener(this);
         dialogBinding.dialogAdd.setOnClickListener(this);
         queryProducts(true);
+        //_____________________________________________________________________________
+        List<String> strings = new ArrayList<>();
+        strings.add("默认");
+        strings.add("销量");
+        strings.add("价格");
+        strings.add("人气");
+        binding.sortSpinner.setAdapter(new ProductFilterAdapter(strings, this));
+        binding.sortSpinner.setOnItemSelectedListener(this);
+        binding.sortSpinner.setSelection(0);
     }
 
     public void queryProducts(boolean isRefresh) {
@@ -125,17 +130,21 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     public void setProdutsAdapter(ProductsAdapter productsAdapter) {
-        binding.productList.setAdapter(productsAdapter);
-        productsAdapter.setOnProductsClickListener(this);
+        if (binding.productList.getAdapter() == null || binding.productList.getAdapter() != productsAdapter) {
+            binding.productList.setAdapter(productsAdapter);
+            productsAdapter.setOnProductsClickListener(this);
+        }
     }
 
-    public void setLoadMoreEnable(boolean is) {
-        binding.productList.setLoadingMore(is);
+    public void setLoadMoreBegin() {
+        binding.productList.setupMoreListener(this, 1);
     }
 
-    public void setLoadMoreFinish() {
+    public void setLoadMoreComplete() {
         binding.productList.hideMoreProgress();
+        binding.productList.removeMoreListener();
     }
+
 
     @Override
     protected void setupActivityComponent() {
@@ -166,7 +175,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
             if (addDialog.isShowing())
                 addDialog.dismiss();
             if (MainAplication.get(this).isLogin())
-                navigate.navigateToShopCart(this, null, false, module);
+                navigate.navigateToShopCart(this, null, false, module.getWareHouseModuleId());
             else
                 navigate.navigateToLogin(this, null, false);
         }
@@ -175,9 +184,6 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
             if (addDialog.isShowing())
                 addDialog.dismiss();
             onBackPressed();
-        }
-        if (v == binding.sortBtn) {
-
         }
         if (v == dialogBinding.dialogAdd) {
             productsViewModel.addItemToShopCart(selectedUnit, dialogBinding.dialogQuantityview.getQuantity());
@@ -191,24 +197,13 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         if (event.isLogin()) {
             shopCart = MainAplication.get(this).getUserComponent().shopCart();
             dialogBinding.setShopCart(shopCart);
-            if (productsViewModel.getProductAdapter() == null)
-                Observable.just(shopCart).compose(this.<ShopCart>bindToLifecycle())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.newThread())
-                        .subscribe(new Action1<ShopCart>() {
-                            @Override
-                            public void call(ShopCart shopCart) {
-                                while (productsViewModel.getProductAdapter() == null) {
-
-                                }
-                                productsViewModel.getProductAdapter().setShopCart(shopCart);
-                            }
-                        });
-            else
-                productsViewModel.getProductAdapter().setShopCart(shopCart);
+            productsViewModel.getProductAdapter().setShopCart(shopCart);
+            binding.setShopCart(shopCart);
             isLogin.set(true);
             productsViewModel.CountDown();
         } else {
+            if (shopCart != null)
+                shopCart.clear();
             isLogin.set(false);
         }
     }
@@ -224,8 +219,19 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        productsViewModel.setOrderBy(position);
+        queryProducts(true);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
     public void onItemClickListener(View view, ProductSimple productSimple, int position) {
-        navigate.navigateToProductDetailActivity(ProductsActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, productSimple, module);
+        navigate.navigateToProductDetailActivity(ProductsActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, productSimple.getMainId());
     }
 
     @Override
@@ -245,7 +251,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         dialogBinding.dialogRealPrice.setText("零售价：￥" + productSimple.getProductUnits().get(0).getRetialPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
         dialogBinding.dialogRealPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         dialogBinding.dialogMemberPrice.setText("批发价：￥" + productSimple.getProductUnits().get(0).getMemberPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
-        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productSimple.getProductUnits(), singleSelector, productSimple.getBaseUnit());
+        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productSimple.getProductUnits(), singleSelector, productSimple.getBaseUnit(), module.getWareHouseModuleId());
         dialogBinding.dialogUnitList.setLayoutManager(new GridLayoutManager(this, 3));
         dialogBinding.dialogUnitList.setAdapter(productDetailUnitAdapter);
         selectedUnit = productSimple.getProductUnits().get(0);

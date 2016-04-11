@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="deliveryServicepointViewModel"
+            type="com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryServicepointViewModel" />
+
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="营业时间："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{deliveryServicepointViewModel.servicePoint.getServiceTime()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="可提供的服务："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{deliveryServicepointViewModel.moduletr}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="服务点地址："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{deliveryServicepointViewModel.servicePoint.getAddressDetail()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="联系电话："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{deliveryServicepointViewModel.servicePoint.Mobile}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bottombar_height" />
+            </com.zhy.autolayout.AutoLinearLayout>
+        </ScrollView>
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

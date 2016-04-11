@@ -30,6 +30,29 @@ public class AddressManagerAdapter extends RecyclerView.Adapter<AddressManagerAd
         return new AddressManagerViewHolder(itemView);
     }
 
+    public interface OnAddressClickListener {
+        void onAddressClickListener(View v, Address address, int position);
+
+        void onDefaultBtnClickListener(View v, Address address, int position);
+
+        void onDeleteBtnClickListener(View v, Address address, int position);
+
+        void onModitfyBtnClickListener(View v, Address address, int position);
+    }
+
+    private OnAddressClickListener onAddressClickListener;
+
+    public void setOnAddressClickListener(OnAddressClickListener onAddressClickListener) {
+        this.onAddressClickListener = onAddressClickListener;
+    }
+
+    public void deletePosition(int position) {
+        if (addressList != null && addressList.size() >= (position - 1)) {
+            addressList.remove(position);
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onBindViewHolder(AddressManagerViewHolder holder, int position) {
         holder.bind(addressList.get(position), position);
@@ -51,8 +74,36 @@ public class AddressManagerAdapter extends RecyclerView.Adapter<AddressManagerAd
         }
 
         @Override
-        public void bind(@NonNull Address data, int position) {
+        public void bind(@NonNull final Address data, final int position) {
             binding.setAddress(data);
+            binding.setOnClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onAddressClickListener != null)
+                        onAddressClickListener.onAddressClickListener(v, data, position);
+                }
+            });
+            binding.setDefaultBtnClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onAddressClickListener != null)
+                        onAddressClickListener.onDefaultBtnClickListener(v, data, position);
+                }
+            });
+            binding.setDeleteBtnClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onAddressClickListener != null)
+                        onAddressClickListener.onDeleteBtnClickListener(v, data, position);
+                }
+            });
+            binding.setModifyBtnClick(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onAddressClickListener != null)
+                        onAddressClickListener.onModitfyBtnClickListener(v, data, position);
+                }
+            });
         }
     }
 }

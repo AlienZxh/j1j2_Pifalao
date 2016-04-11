@@ -26,9 +26,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     private List<ProductSimple> productSimples;
     private ShopCart shopCart;
+    private int moduleType;
 
-    public ProductsAdapter(List<ProductSimple> productSimples) {
+    public ProductsAdapter(List<ProductSimple> productSimples, int moduleType) {
         this.productSimples = productSimples;
+        this.moduleType = moduleType;
     }
 
     public void addAll(Collection<ProductSimple> newProductSimples) {
@@ -39,8 +41,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         notifyItemRangeInserted(startIndex, newProductSimples.size());
     }
 
-    public void clearAll() {
+    public void initData(Collection<ProductSimple> newProductSimples) {
         productSimples.clear();
+        if (null != productSimples && null != newProductSimples) {
+            productSimples.addAll(newProductSimples);
+        }
         notifyDataSetChanged();
     }
 
@@ -98,8 +103,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
                 binding.normalPrice.setText("市场价：" + data.getProductUnits().get(0).getRetialPrice() + "元/" + data.getProductUnits().get(0).getUnit());
                 binding.normalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
-            Logger.d("zzz" + shopCart);
 
+            binding.setModuleType(moduleType);
             binding.setShopCart(shopCart);
 
 

@@ -17,6 +17,9 @@ import com.j1j2.data.model.requestbody.RemoveUserFavoritesBody;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +37,7 @@ public class ProductDetailViewModel {
     private ProductApi productApi;
     private ShopCartApi shopCartApi;
     private UserFavoriteApi userFavoriteApi;
-    private ProductSimple productSimple;
+
 
     public ObservableField<ProductDetail> productDetail = new ObservableField<>();
     public ObservableBoolean isCollect = new ObservableBoolean(false);
@@ -47,17 +50,15 @@ public class ProductDetailViewModel {
             "res://com.j1j2.pifalao/" + R.drawable.view_productdetail_show_storehouse_img2};
 
 
-    public ProductDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ProductSimple productSimple, ShopCartApi shopCartApi, UserFavoriteApi userFavoriteApi) {
+    public ProductDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ShopCartApi shopCartApi, UserFavoriteApi userFavoriteApi) {
         this.productDetailActivity = productDetailActivity;
         this.productApi = productApi;
         this.shopCartApi = shopCartApi;
-        this.productSimple = productSimple;
         this.userFavoriteApi = userFavoriteApi;
-
     }
 
-    public void queryProductDetail() {
-        productApi.queryProductDetails(productSimple.getMainId())
+    public void queryProductDetail(int mainId) {
+        productApi.queryProductDetails(mainId)
                 .compose(productDetailActivity.<WebReturn<ProductDetail>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -75,7 +76,8 @@ public class ProductDetailViewModel {
                                 break;
                         }
                         productDetailActivity.initBanner(sizeProductImgs);
-                        productDetailActivity.initBottomViewPager(sizeProductImgs);
+                        productDetailActivity.initUnitsSelect(mProductDetail);
+                        productDetailActivity.initBottomViewPager(sizeProductImgs, mProductDetail.getProductUnits().get(0).getProductId(), mProductDetail);
                     }
 
                     @Override
@@ -98,13 +100,14 @@ public class ProductDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productDetailActivity, s, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                         productDetailActivity.addShopCart(unit, quantity);
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productDetailActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -114,29 +117,29 @@ public class ProductDetailViewModel {
                 });
     }
 
-    public void clooectBtnClick() {
+    public void clooectBtnClick(int mainId) {
         if (isCollect.get()) {
-            removeItemFromUserFavorites();
+            removeItemFromUserFavorites(mainId);
         } else {
-            addProductToFavorites();
+            addProductToFavorites(mainId);
         }
     }
 
-    public void addProductToFavorites() {
-        userFavoriteApi.addProductToFavorites(productSimple.getMainId())
+    public void addProductToFavorites(int mainId) {
+        userFavoriteApi.addProductToFavorites(mainId)
                 .compose(productDetailActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productDetailActivity, s, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                         isCollect.set(true);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productDetailActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -147,9 +150,9 @@ public class ProductDetailViewModel {
     }
 
 
-    public void removeItemFromUserFavorites() {
+    public void removeItemFromUserFavorites(int mainId) {
         List<Integer> integers = new ArrayList<>();
-        integers.add(productSimple.getMainId());
+        integers.add(mainId);
         RemoveUserFavoritesBody removeUserFavoritesBody = new RemoveUserFavoritesBody();
         removeUserFavoritesBody.setMainIdList(integers);
         userFavoriteApi.removeItemFromUserFavorites(removeUserFavoritesBody)
@@ -159,13 +162,13 @@ public class ProductDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productDetailActivity, s, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                         isCollect.set(false);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productDetailActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                         isCollect.set(true);
                     }
 
@@ -176,8 +179,8 @@ public class ProductDetailViewModel {
                 });
     }
 
-    public void queryProductHasBeenCollected() {
-        userFavoriteApi.queryProductHasBeenCollected(productSimple.getMainId())
+    public void queryProductHasBeenCollected(int mainId) {
+        userFavoriteApi.queryProductHasBeenCollected(mainId)
                 .compose(productDetailActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

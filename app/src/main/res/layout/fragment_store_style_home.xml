@@ -63,16 +63,54 @@
                     app:OnClickListener="@{onClick}" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/sortList"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/colorLayoutBg">
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
-            </android.support.v7.widget.RecyclerView>
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <com.zhy.autolayout.AutoRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="320px">
+
+                        <com.j1j2.common.view.viewpager.autoscrollviewpager.AutoScrollViewPager
+                            android:id="@+id/viewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <com.j1j2.common.view.smarttablayout.SmartTabLayout
+                            android:id="@+id/tab"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="@dimen/padding_big"
+                            app:stl_clickable="false"
+                            app:stl_customTabTextLayoutId="@layout/view_tabcircle"
+                            app:stl_dividerColor="@color/colorTransparent"
+                            app:stl_dividerThickness="0dp"
+                            app:stl_indicatorColor="@color/colorWhite"
+                            app:stl_indicatorCornerRadius="@dimen/circle_tab_size"
+                            app:stl_indicatorGravity="center"
+                            app:stl_indicatorInFront="true"
+                            app:stl_indicatorInterpolation="linear"
+                            app:stl_indicatorThickness="@dimen/circle_tab_size"
+                            app:stl_underlineColor="@color/colorTransparent"
+                            app:stl_underlineThickness="0dp" />
+                    </com.zhy.autolayout.AutoRelativeLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/sortList"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorDividerE9E9E9" />
+                </com.zhy.autolayout.AutoLinearLayout>
+            </ScrollView>
         </com.zhy.autolayout.AutoLinearLayout>
     </android.support.design.widget.CoordinatorLayout>
-
 </layout>

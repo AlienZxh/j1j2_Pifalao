@@ -20,8 +20,10 @@
 -dontusemixedcaseclassnames  #是否使用大小写混合
 -dontskipnonpubliclibraryclasses  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
 -dontpreverify  #混淆时是否做预校验（可去掉加快混淆速度）
+-dontoptimize #不优化输入的类文件
 -verbose #混淆时是否记录日志（混淆后生产映射文件 map 类名 -> 转化后类名的映射
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  #淆采用的算法
+
 
 -keep public class * extends android.app.Activity  #所有activity的子类不要去混淆
 -keep public class * extends android.app.Application
@@ -118,9 +120,22 @@
 -keep class android.support.v7.** { *; }
 #---------------End: proguard configuration for android v4 v7扩展包 ----------
 
-##---------------Begin: proguard configuration for okio  ----------
- -dontwarn okio.**
-##---------------End: proguard configuration for okio  ----------
+##---------------Begin: proguard configuration for okio、okhttp、okhttputils ----------
+#okhttp
+-dontwarn okhttp3.**
+-keep class okhttp3.**{*;}
+-keep interface okhttp3.**{*;}
+
+#okio
+-dontwarn okio.**
+-keep class okio.**{*;}
+-keep interface okio.**{*;}
+
+#okhttputils
+-dontwarn com.zhy.http.**
+-keep class com.zhy.http.**{*;}
+-keep interface com.zhy.http.**{*;}
+##---------------End: proguard configuration for okio、okhttp、okhttputils  ----------
 
 ##---------------Begin: proguard configuration for retrofit2  ----------
 -dontwarn retrofit2.**
@@ -128,12 +143,15 @@
 ##---------------End: proguard configuration for retrofit2  ----------
 
 ##---------------Begin: proguard configuration for Gson  ----------
+-dontwarn com.google.**
+-keep class com.google.gson.** {*;}
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.stream.** { *; }
 # Application classes that will be serialized/deserialized over Gson
 -keep class com.j1j2.data.model.** { *; }  ##这里需要改成解析到哪个  javabean
+-keep class com.j1j2.pifalao.app.sharedpreferences.** { *; }
 ##---------------End: proguard configuration for Gson  ----------
 
 ##---------------Begin: proguard configuration for rxjava  ----------
@@ -176,11 +194,30 @@
 }
 -keep enum org.greenrobot.eventbus.ThreadMode { *; }
 # Only required if you use AsyncExecutor
-#-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-#    <init>(java.lang.Throwable);
-#}
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+#
+-keep class com.j1j2.pifalao.app.event.** { *; }
 ##---------------End: proguard configuration for eventbus  ----------
 
+##---------------Begin: proguard configuration for jpush  ----------
+
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+#==================protobuf======================
+-dontwarn com.google.**
+-keep class com.google.protobuf.** {*;}
+##---------------End: proguard configuration for jpush  ----------
+
+##---------------Begin: proguard configuration for realm  ----------
+-keep class io.realm.annotations.RealmModule
+-keep @io.realm.annotations.RealmModule class *
+-keep class io.realm.internal.Keep
+-keep @io.realm.internal.Keep class * { *; }
+-dontwarn javax.**
+-dontwarn io.realm.**
+##---------------End: proguard configuration for realm  ----------
 
 
 

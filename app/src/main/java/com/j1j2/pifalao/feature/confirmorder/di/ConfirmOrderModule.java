@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.confirmorder.di;
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserAddressApi;
+import com.j1j2.data.http.api.UserCouponApi;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.confirmorder.ConfirmOrderActivity;
@@ -54,13 +55,20 @@ public class ConfirmOrderModule {
 
     @Provides
     @ActivityScope
-    CountDownApi countDownApi(Retrofit retrofit) {
-        return retrofit.create(CountDownApi.class);
+    UserCouponApi userCouponApi(Retrofit retrofit) {
+        return retrofit.create(UserCouponApi.class);
     }
 
     @Provides
     @ActivityScope
-    ConfirmOrderViewModel confirmOrderViewModel(ConfirmOrderActivity confirmOrderActivity, ShopCartApi shopCartApi, List<ShopCartItem> shopCartItems, CountDownApi countDownApi) {
-        return new ConfirmOrderViewModel(confirmOrderActivity, shopCartApi, shopCartItems, countDownApi);
+    CountDownApi countDownApi(Retrofit retrofit) {
+        return retrofit.create(CountDownApi.class);
+    }
+
+
+    @Provides
+    @ActivityScope
+    ConfirmOrderViewModel confirmOrderViewModel(ConfirmOrderActivity confirmOrderActivity, ShopCartApi shopCartApi, List<ShopCartItem> shopCartItems, CountDownApi countDownApi, UserCouponApi userCouponApi, UserAddressApi userAddressApi) {
+        return new ConfirmOrderViewModel(confirmOrderActivity, shopCartApi, countDownApi, userCouponApi, userAddressApi, shopCartItems);
     }
 }

@@ -1,101 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
+        <import type="android.view.View" />
+        <import type="com.j1j2.common.util.StringUtils" />
 
         <variable
             name="coupon"
             type="com.j1j2.data.model.Coupon" />
     </data>
 
-    <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="220px"
-        android:orientation="horizontal"
         android:paddingLeft="24px"
         android:paddingRight="24px">
 
         <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="7"
-            android:background="@color/colorPrimary"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="32px">
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:background="@{(coupon.State==1&amp;&amp;(!coupon.isExpired))?@color/colorPrimary : @color/colorGrayd2d2d2}"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="32px">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="￥"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="60px" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{&quot;&quot;+coupon.CouponValue}"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="104px"
+                        android:textStyle="bold" />
+                </com.zhy.autolayout.AutoLinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="￥"
+                    android:text="@{coupon.CouponName+&quot;(&quot;+StringUtils.getCouponLimit(coupon)+&quot;)&quot;}"
                     android:textColor="@color/colorWhite"
-                    android:textSize="60px" />
+                    android:textSize="@dimen/text_big" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{&quot;&quot;+coupon.CouponValue}"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="104px"
-                    android:textStyle="bold" />
             </com.zhy.autolayout.AutoLinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{coupon.CouponName}"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_big" />
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/colorWhite"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="72px"
+                    android:gravity="center"
+                    android:text="有效期"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_normal"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="44px"
+                    android:gravity="center"
+                    android:text="@{coupon.CreateTimeStr.substring(0,10)}"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="44px"
+                    android:gravity="center"
+                    android:text="|"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="44px"
+                    android:gravity="center"
+                    android:text="@{coupon.ExpiryDateStr.contains(&quot;9999&quot;)?&quot;不限时间&quot;:coupon.ExpiryDateStr.substring(0,10)}"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+            </com.zhy.autolayout.AutoLinearLayout>
 
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@color/colorWhite"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="72px"
-                android:gravity="center"
-                android:text="有效期"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_normal"
-                android:textStyle="bold" />
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="420px"
+            android:layout_marginTop="30px"
+            android:text="@string/icon_timeout"
+            android:textColor="#ffbebebe"
+            android:textSize="140px"
+            android:visibility="@{(coupon.State!=2&amp;&amp;coupon.isExpired)?View.VISIBLE : View.GONE}" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="44px"
-                android:gravity="center"
-                android:text="@{coupon.CreateTimeStr.substring(0,10)}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="420px"
+            android:layout_marginTop="30px"
+            android:text="@string/icon_used"
+            android:textColor="#ffbebebe"
+            android:textSize="140px"
+            android:visibility="@{coupon.State==2?View.VISIBLE : View.GONE}" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="44px"
-                android:gravity="center"
-                android:text="|"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="44px"
-                android:gravity="center"
-                android:text="@{coupon.ExpiryDateStr.contains(&quot;9999&quot;)?&quot;不限时间&quot;:coupon.ExpiryDateStr.substring(0,10)}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
-        </com.zhy.autolayout.AutoLinearLayout>
-
-    </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

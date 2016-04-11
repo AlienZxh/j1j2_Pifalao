@@ -15,9 +15,14 @@ import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
+import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -43,7 +48,7 @@ public class ProductsViewModel {
 
     private String key;
 
-    private int orderBy = 0;
+    private int orderBy = 0;//2:按价格  1:销量   3:人气  0:默认
 
     private int pageIndex = 1;
     private final int pageSize = 20;
@@ -64,13 +69,14 @@ public class ProductsViewModel {
         this.countDownApi = countDownApi;
         this.key = key;
         this.shopCartApi = shopCartApi;
+        productAdapter = new ProductsAdapter(new ArrayList<ProductSimple>(), module.getModuleType());
     }
 
 
     public void queryProductyByKey(boolean isRefresh) {
         if (isRefresh) {
             pageIndex = 1;
-            productsActivity.setLoadMoreEnable(true);
+            productsActivity.setLoadMoreBegin();
         }
         productApi.puzzyQueryProduct(module.getWareHouseModuleId(), "" + pageIndex, "" + pageSize, key)
                 .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
@@ -79,31 +85,16 @@ public class ProductsViewModel {
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
-
                         pageCount = productSimplePagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            productAdapter = new ProductsAdapter(productSimplePagerManager.getList());
+                            productAdapter.initData(productSimplePagerManager.getList());
                             productsActivity.setProdutsAdapter(productAdapter);
-                            productAdapter.notifyItemRangeChanged(0, productSimplePagerManager.getList().size());
-                            if (pageIndex == pageCount) {
-                                productsActivity.setLoadMoreFinish();
-                                productsActivity.setLoadMoreEnable(false);
-                            }
+                        } else if (pageIndex <= pageCount) {
+                            productAdapter.addAll(productSimplePagerManager.getList());
                         } else {
-                            if (pageIndex < pageCount) {
-                                productAdapter.addAll(productSimplePagerManager.getList());
-                                productsActivity.setLoadMoreFinish();
-                            } else if (pageIndex == pageCount) {
-                                productAdapter.addAll(productSimplePagerManager.getList());
-                                productsActivity.setLoadMoreFinish();
-                                productsActivity.setLoadMoreEnable(false);
-                            } else {
-                                productsActivity.setLoadMoreFinish();
-                                productsActivity.setLoadMoreEnable(false);
-                            }
+                            productsActivity.setLoadMoreComplete();
                         }
                         pageIndex++;
-
                     }
 
                     @Override
@@ -122,7 +113,7 @@ public class ProductsViewModel {
     public void queryProductyBySortId(boolean isRefresh) {
         if (isRefresh) {
             pageIndex = 1;
-            productsActivity.setLoadMoreEnable(true);
+            productsActivity.setLoadMoreBegin();
         }
         productApi.queryProductyBySortId("" + productSort.getSortId(), "" + pageIndex, "" + pageSize, "" + (productSort.getParentSortId() <= 0), orderBy)
                 .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
@@ -133,25 +124,12 @@ public class ProductsViewModel {
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
                         pageCount = productSimplePagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            productAdapter = new ProductsAdapter(productSimplePagerManager.getList());
+                            productAdapter.initData(productSimplePagerManager.getList());
                             productsActivity.setProdutsAdapter(productAdapter);
-                            productAdapter.notifyItemRangeChanged(0, productSimplePagerManager.getList().size());
-                            if (pageIndex == pageCount) {
-                                productsActivity.setLoadMoreFinish();
-                                productsActivity.setLoadMoreEnable(false);
-                            }
+                        } else if (pageIndex <= pageCount) {
+                            productAdapter.addAll(productSimplePagerManager.getList());
                         } else {
-                            if (pageIndex < pageCount) {
-                                productAdapter.addAll(productSimplePagerManager.getList());
-                                productsActivity.setLoadMoreFinish();
-                            } else if (pageIndex == pageCount) {
-                                productAdapter.addAll(productSimplePagerManager.getList());
-                                productsActivity.setLoadMoreFinish();
-                                productsActivity.setLoadMoreEnable(false);
-                            } else {
-                                productsActivity.setLoadMoreFinish();
-                                productsActivity.setLoadMoreEnable(false);
-                            }
+                            productsActivity.setLoadMoreComplete();
                         }
                         pageIndex++;
                     }
@@ -213,6 +191,7 @@ public class ProductsViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         productsActivity.addShopCart(unit, quantity);
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
@@ -235,6 +214,14 @@ public class ProductsViewModel {
         hour.set(hours < 10 ? ("0" + hours) : ("" + hours));
         minute.set(minutes < 10 ? ("0" + minutes) : ("" + minutes));
         second.set(seconds < 10 ? ("0" + seconds) : ("" + seconds));
+    }
+
+    public int getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(int orderBy) {
+        this.orderBy = orderBy;
     }
 
     public ProductSort getProductSort() {

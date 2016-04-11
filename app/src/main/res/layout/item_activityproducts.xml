@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.net.Uri" />
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+        <variable
+            name="productSimple"
+            type="com.j1j2.data.model.ProductSimple" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="200px"
+        android:layout_height="272px"
+        android:background="@color/colorWhite"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:OnClickListener="@{onClick}">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            fresco:viewAspectRatio="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36px"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_normal"
+            android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice+&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="36px"
+            android:gravity="center_vertical"
+            android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).RetialPrice+&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FF4AB134</color>
+
+    <color name="colorTransparentPrimary">#AA4AB134</color>
+
     <color name="colorPrimaryDark">#FF469435</color>
     <color name="colorAccent">#FFFF9900</color>
     <color name="colorAccentDark">#FFFF6F00</color>
@@ -24,6 +27,7 @@
     <color name="colorGrayE8E8E8">#FFE8E8E8</color>
     <color name="colorGrayF0F0F0">#FFF0F0F0</color>
     <color name="colorGrayCCCCCC">#FFCCCCCC</color>
+    <color name="colorGrayd2d2d2">#FFd2d2d2</color>
     <color name="colorGrayDEDEDE">#FFDEDEDE</color>
     <color name="colorGrayEDEDED">#FFEDEDED</color>
     <color name="colorGrayfcfcfc">#FFfcfcfc</color>
@@ -35,6 +39,9 @@
     <color name="colorBlueBtnDark">#FF2E8AB1</color>
 
     <color name="colorTransparentWhite">#E5FFFFFF</color>
+
+    <color name="colorTransparentProductSells">#E5FFFFFF</color>
+
 
     <color name="colorModuleGreen">#FF22AC38</color>
 

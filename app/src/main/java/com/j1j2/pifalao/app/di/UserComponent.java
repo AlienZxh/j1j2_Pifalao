@@ -6,6 +6,8 @@ import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.UserScope;
 import com.j1j2.pifalao.feature.account.di.AccountComponent;
 import com.j1j2.pifalao.feature.account.di.AccountModule;
+import com.j1j2.pifalao.feature.addaddress.di.AddAddressComponent;
+import com.j1j2.pifalao.feature.addaddress.di.AddAddressModule;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerComponent;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerModule;
 import com.j1j2.pifalao.feature.catservicepoint.di.CatServicePointComponent;
@@ -18,6 +20,10 @@ import com.j1j2.pifalao.feature.confirmorder.di.ConfirmOrderComponent;
 import com.j1j2.pifalao.feature.confirmorder.di.ConfirmOrderModule;
 import com.j1j2.pifalao.feature.coupons.di.CouponsComponent;
 import com.j1j2.pifalao.feature.coupons.di.CouponsModule;
+import com.j1j2.pifalao.feature.couponselect.di.CouponSelectComponent;
+import com.j1j2.pifalao.feature.couponselect.di.CouponSelectModule;
+import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityComponent;
+import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityModule;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterComponent;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.pifalao.feature.messages.di.MessagesComponent;
@@ -26,6 +32,8 @@ import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailComponent;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailModule;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerComponent;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerModule;
+import com.j1j2.pifalao.feature.orderproducts.di.OrderProductsComponent;
+import com.j1j2.pifalao.feature.orderproducts.di.OrderProductsModule;
 import com.j1j2.pifalao.feature.orders.di.OrdersComponent;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeComponent;
@@ -86,4 +94,11 @@ public interface UserComponent {
 
     CatServicePointComponent plus(CatServicePointModule catServicePointModule);
 
+    AddAddressComponent plus(AddAddressModule addAddressModule);
+
+    OrderProductsComponent plus(OrderProductsModule orderProductsModule);
+
+    CouponSelectComponent plus(CouponSelectModule couponSelectModule);
+
+    IndividualActivityComponent plus(IndividualActivityModule individualActivityModule);
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <variable
+            name="productSort"
+            type="com.j1j2.data.model.ProductSort" />
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        app:OnClickListener="@{onClick}">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40px"
+                android:layout_marginTop="@dimen/padding_noraml"
+                android:gravity="center_vertical"
+                android:text="@{productSort.SortName}"
+                android:textColor="@color/colorText333"
+                android:textSize="26px"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40px"
+                android:gravity="center_vertical"
+                android:text="@{productSort.SortDescription}"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/padding_noraml"
+            app:imageURI="@{Uri.parse(productSort.AppImgPath??@string/text_empty)}"
+            fresco:viewAspectRatio="1" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

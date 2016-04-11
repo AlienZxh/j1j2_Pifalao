@@ -36,6 +36,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
     }
 
     public interface OnOrdersClickListener {
+
+        void onReceiveClickListener(View view, OrderSimple orderSimple, int position);
+
         void onDetailClickListener(View view, OrderSimple orderSimple, int position);
 
         void onServicePointIconClickListener(View view, OrderSimple orderSimple, int position);
@@ -43,6 +46,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         void onCancelPointIconClickListener(View view, OrderSimple orderSimple, int position);
 
         void onCommentPointIconClickListener(View view, OrderSimple orderSimple, int position);
+
+        void onOrderProductClickListener(View view, OrderSimple orderSimple, int position);
     }
 
     private OnOrdersClickListener onOrdersClickListener;
@@ -103,6 +108,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
                     }
                     if (v == binding.servicepoint) {
                         onOrdersClickListener.onServicePointIconClickListener(v, data, position);
+                    }
+                    if(v==binding.orderProduct){
+                        onOrdersClickListener.onOrderProductClickListener(v, data, position);
+                    }
+                    if(v==binding.receive){
+                        onOrdersClickListener.onReceiveClickListener(v, data, position);
                     }
                 }
             });

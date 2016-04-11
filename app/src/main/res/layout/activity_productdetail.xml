@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -21,6 +21,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
+
         <com.j1j2.common.view.autowidget.AutoNestedScrolling
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -32,33 +33,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <com.zhy.autolayout.AutoRelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/actionbar_height"
-                    android:background="@color/colorPrimary"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/backBtn"
-                        fontPath="iconfont/iconfont.ttf"
-                        android:layout_width="@dimen/actionbar_height"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/icon_back"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/icon_normal"
-                        app:OnClickListener="@{productDetailViewModel.productDetailActivity}" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:gravity="center"
-                        android:text="@string/productdetail_actionbar_title"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/text_actionbar_title" />
-
-                </com.zhy.autolayout.AutoRelativeLayout>
 
                 <com.zhy.autolayout.AutoRelativeLayout
                     android:layout_width="match_parent"
@@ -95,12 +69,13 @@
                         android:layout_height="@dimen/content_height_big"
                         android:layout_alignParentBottom="true"
                         android:background="@color/colorTransparentGray"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_noraml"
                             android:layout_marginRight="4px"
                             android:background="@drawable/orange_conner_white_tag_bg"
                             android:paddingLeft="6px"
@@ -124,7 +99,7 @@
                         android:layout_height="92px"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/padding_noraml"
-                        android:layout_marginTop="@dimen/padding_noraml"
+                        android:layout_marginTop="130px"
                         android:background="@{productDetailViewModel.isCollect?@drawable/collect_btn_select_bg:@drawable/collect_btn_bg}"
                         android:gravity="center"
                         android:orientation="vertical"
@@ -150,6 +125,7 @@
 
                 <include
                     layout="@layout/view_productdetail_price"
+                    bind:moduleType="@{productDetailViewModel.productDetail.ModuleType}"
                     bind:price="@{productDetailViewModel.selectUnit}" />
 
                 <View
@@ -210,7 +186,7 @@
 
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/content_height_biger"
+            android:layout_height="115px"
             android:layout_alignParentBottom="true">
 
             <com.zhy.autolayout.AutoLinearLayout
@@ -276,9 +252,9 @@
             <cn.bingoogolapple.badgeview.BGABadgeTextView
                 android:id="@+id/shopCartBtn"
                 fontPath="iconfont/iconfont.ttf"
-                android:layout_width="92px"
-                android:layout_height=" 92px"
-                android:layout_marginBottom="8px"
+                android:layout_width="@dimen/shopcart_circle_size"
+                android:layout_height="@dimen/shopcart_circle_size"
+                android:layout_marginBottom="10px"
                 android:layout_marginLeft="18px"
                 android:background="@drawable/shopcart_circle_bg"
                 android:gravity="center"
@@ -293,6 +269,36 @@
                 app:showNum="@{shopCart.AllUnitNum}" />
 
         </com.zhy.autolayout.AutoRelativeLayout>
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorTransparentPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{productDetailViewModel.productDetailActivity}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/productdetail_actionbar_title"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
     </com.zhy.autolayout.AutoRelativeLayout>
 
 </layout>

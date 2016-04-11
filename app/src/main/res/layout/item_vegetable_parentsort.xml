@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
+
+        <import type="android.graphics.Typeface" />
+
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+
+        <variable
+            name="sortName"
+            type="String" />
+
+        <variable
+            name="isSelect"
+            type="boolean" />
+
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_locatin_district_height"
+        android:background="@drawable/item_location_district_selector"
+        android:gravity="center"
+        app:OnClickListener="@{onClick}">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{sortName}"
+            android:textColor="@drawable/text_click_colors"
+            android:textSize="30px"
+            app:typeface="@{isSelect?Typeface.DEFAULT_BOLD : Typeface.DEFAULT}" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

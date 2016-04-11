@@ -47,4 +47,8 @@ public class CatServicePointViewModel {
                     }
                 });
     }
+
+    public CatServicePointActivity getCatServicePointActivity() {
+        return catServicePointActivity;
+    }
 }

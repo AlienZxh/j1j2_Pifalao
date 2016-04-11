@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -24,7 +25,7 @@ import in.workarounds.bundler.annotations.Required;
  * Created by alienzxh on 16-3-22.
  */
 @RequireBundler
-public class OrderDetailActivity extends BaseActivity implements View.OnClickListener {
+public class OrderDetailActivity extends BaseActivity implements View.OnClickListener, OrderProductsAdapter.OnItemClickListener {
     ActivityOrderdetailBinding binding;
 
     @Arg
@@ -48,6 +49,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     public void setOrderProductListAdapter(OrderProductsAdapter orderProductListAdapter) {
         binding.orderProductList.setAdapter(orderProductListAdapter);
+        orderProductListAdapter.setOnItemClickListener(this);
 
     }
 
@@ -74,16 +76,25 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
-        if (v == binding.catservicepoint)
+        if (v == binding.catservicepoint || v == binding.servicepoint)
             if (orderSimple != null)
                 navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
             else
                 navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getServicePointId());
-        if (v == binding.servicepoint) {
-            if (orderDetailViewModel.servicePointObservableField.get() != null)
-                navigate.navigateToServicePointActivity(this, null, false, orderDetailViewModel.servicePointObservableField.get());
-        }
-        if (v == binding.cancel)
+        if (v == binding.cancel) {
             orderDetailViewModel.cancleOrder(orderId);
+        }
+        if (v == binding.receive) {
+
+        }
+        if (v == binding.comment) {
+
+        }
+
+    }
+
+    @Override
+    public void onItemClickListener(View v, OrderProductDetail orderProductDetail, int position) {
+        navigate.navigateToProductDetailActivity(this, null, false, orderProductDetail.getProductMainId());
     }
 }

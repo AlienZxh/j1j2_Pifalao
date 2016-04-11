@@ -19,11 +19,11 @@ import retrofit2.Retrofit;
 public class ShopCartModule {
 
     private ShopCartActivity shopCartActivity;
-    private com.j1j2.data.model.Module module;
+    private int moduleId;
 
-    public ShopCartModule(ShopCartActivity shopCartActivity, com.j1j2.data.model.Module module) {
+    public ShopCartModule(ShopCartActivity shopCartActivity, int moduleId) {
         this.shopCartActivity = shopCartActivity;
-        this.module = module;
+        this.moduleId = moduleId;
     }
 
     @Provides
@@ -46,13 +46,13 @@ public class ShopCartModule {
 
     @Provides
     @ActivityScope
-    com.j1j2.data.model.Module module() {
-        return module;
+    int moduleId() {
+        return moduleId;
     }
 
     @Provides
     @ActivityScope
-    ShopCartViewModel shopCartViewModel(ShopCartApi shopCartApi, ShopCartActivity shopCartActivity, com.j1j2.data.model.Module module, CountDownApi countDownApi, ShopCart shopCart) {
-        return new ShopCartViewModel(shopCartApi, shopCartActivity, module, countDownApi, shopCart);
+    ShopCartViewModel shopCartViewModel(ShopCartApi shopCartApi, ShopCartActivity shopCartActivity, int moduleId, CountDownApi countDownApi, ShopCart shopCart) {
+        return new ShopCartViewModel(shopCartApi, shopCartActivity, moduleId, countDownApi, shopCart);
     }
 }
