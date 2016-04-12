@@ -107,7 +107,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             binding.setModuleType(moduleType);
             binding.setShopCart(shopCart);
 
-
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

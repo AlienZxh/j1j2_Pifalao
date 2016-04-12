@@ -19,7 +19,10 @@
         android:layout_height="@dimen/content_height_biger"
         android:layout_centerVertical="true"
         app:imageURI="@{Uri.parse(shopCartItem.ThumbImgPath??@string/text_empty)}"
+        fresco:failureImage="@drawable/loadimg_error"
+        fresco:placeholderImage="@drawable/loadimg_loading"
         fresco:roundedCornerRadius="5dp"
         fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-        fresco:roundingBorderWidth="1px" />
+        fresco:roundingBorderWidth="1px"
+        />
 </layout>

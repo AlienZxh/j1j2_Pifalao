@@ -55,7 +55,6 @@ public class ServicesViewModule {
     }
 
     public void queryServicePointServiceModules() {
-        servicesActivity.startSearchAnimate();
         servicePointApi.queryServicePointServiceModules(servicePoint.getServicePointId())
                 .compose(servicesActivity.<WebReturn<List<Module>>>bindToLifecycle())
                 .delay(1, TimeUnit.SECONDS)
@@ -63,19 +62,23 @@ public class ServicesViewModule {
                 .flatMap(new Func1<WebReturn<List<Module>>, Observable<Module>>() {
                     @Override
                     public Observable<Module> call(WebReturn<List<Module>> listWebReturn) {
-                        return Observable.from(listWebReturn.getDetail());
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnCompleted(new Action0() {
-                    @Override
-                    public void call() {
+                        servicesActivity.setModules(listWebReturn.getDetail());
+                        List<Module> moduleList = new ArrayList<Module>();
+                        moduleList.addAll(listWebReturn.getDetail());
                         Module module = new Module();
                         module.setModuleName("更多");
                         module.setSubscribed(true);
                         module.setWareHouseModuleId(36);
                         module.setModuleType(Constant.ModuleType.MORE);
-                        servicesAdapter.add(module);
+                        moduleList.add(5, module);
+                        return Observable.from(moduleList);
+                    }
+                })
+                .compose(servicesActivity.<Module>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnCompleted(new Action0() {
+                    @Override
+                    public void call() {
                         servicesActivity.stopSearchAnimate();
                     }
                 })
@@ -85,7 +88,8 @@ public class ServicesViewModule {
                     public void onNext(Module module) {
                         super.onNext(module);
                         servicesAdapter.add(module);
-
+                        if (module.getModuleType() == Constant.ModuleType.MORE)
+                            onCompleted();
                     }
                 });
     }

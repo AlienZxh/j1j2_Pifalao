@@ -19,14 +19,13 @@ import java.util.List;
 /**
  * Created by alienzxh on 16-4-8.
  */
-public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProductsAdapter.DeliveryProductsViewHolder> {
+public class  DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProductsAdapter.DeliveryProductsViewHolder> {
 
     private List<ProductSimple> productSimples;
     private ShopCart shopCart;
 
     public DeliveryProductsAdapter(List<ProductSimple> productSimples) {
         this.productSimples = productSimples;
-        this.shopCart = shopCart;
     }
 
     public void setShopCart(ShopCart shopCart) {

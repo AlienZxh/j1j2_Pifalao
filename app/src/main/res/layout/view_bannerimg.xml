@@ -9,6 +9,10 @@
         android:id="@+id/draw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        fresco:failureImage="@drawable/loadimg_loading"
+        fresco:failureImageScaleType="centerCrop"
+        fresco:placeholderImage="@drawable/loadimg_error"
+        fresco:placeholderImageScaleType="centerCrop"
         fresco:viewAspectRatio="1.0" />
 
 </LinearLayout>

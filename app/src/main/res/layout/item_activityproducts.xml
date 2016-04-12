@@ -6,11 +6,13 @@
     <data>
 
         <import type="android.net.Uri" />
+
         <import type="android.view.View.OnClickListener" />
 
         <variable
             name="onClick"
             type="OnClickListener" />
+
         <variable
             name="productSimple"
             type="com.j1j2.data.model.ProductSimple" />
@@ -28,15 +30,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            fresco:failureImage="@drawable/loadimg_error"
+            fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:viewAspectRatio="1" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="36px"
             android:gravity="center_vertical"
+            android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice+&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/text_normal"
-            android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice+&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
             android:textStyle="bold" />
 
         <TextView

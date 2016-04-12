@@ -1,8 +1,10 @@
 package com.j1j2.pifalao.app.sharedpreferences;
 
 import com.j1j2.data.model.City;
+import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.app.sharedpreferences.TypeAdapter.CityAdapter;
+import com.j1j2.pifalao.app.sharedpreferences.TypeAdapter.ModuleAdapter;
 import com.j1j2.pifalao.app.sharedpreferences.TypeAdapter.ServicePointAdapter;
 import com.j1j2.pifalao.app.sharedpreferences.TypeAdapter.StringListTypeAdapter;
 
@@ -19,6 +21,7 @@ public interface UserRelativePreference {
     public static final String KEY_ISFIRST = "key_isfirst";
     public static final String KEY_SELECTED_CITY = "key_selected_city";
     public static final String KEY_SELECTED_SERVICEPOINT = "key_selected_servicepoint";
+    public static final String KEY_SELECTED_MODULE = "key_selected_module";
     public static final String KEY_HISTORY_KEY = "key_history_key";
 
     @KeyByString(KEY_ISFIRST)
@@ -56,6 +59,19 @@ public interface UserRelativePreference {
     @KeyByString(KEY_SELECTED_SERVICEPOINT)
     @RemoveMethod
     UserRelativePreference removeSelectedServicePoint();
+
+
+    @KeyByString(KEY_SELECTED_MODULE)
+    @TypeAdapter(ModuleAdapter.class)
+    Module getSelectedModule(Module mDefault);
+
+    @KeyByString(KEY_SELECTED_MODULE)
+    @TypeAdapter(ModuleAdapter.class)
+    UserRelativePreference setSelectedModule(Module module);
+
+    @KeyByString(KEY_SELECTED_MODULE)
+    @RemoveMethod
+    UserRelativePreference removeSelectedModule();
 
 
     @KeyByString(KEY_HISTORY_KEY)

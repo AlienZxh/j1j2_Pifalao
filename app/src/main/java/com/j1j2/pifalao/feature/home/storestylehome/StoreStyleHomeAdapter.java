@@ -64,13 +64,20 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
             mItems.add(new LineItem(secondarySorts.get(i).getParentProductSort(), true, rect, sectionFirstPosition, i));
             if (null == secondarySorts.get(i).getChildFoodSorts())
                 continue;
-            int itemCount = secondarySorts.get(i).getChildFoodSorts().size();
-            int lastSpan = itemCount % spanCount;
+            int childSortSize = secondarySorts.get(i).getChildFoodSorts().size();
+            int itemCount = childSortSize + 1;
+
             for (int j = 0; j < itemCount; j++) {
-                rect = CustomGridItemDecoration.computeGridRect(j, itemCount, spanCount, marginVertical, marginHorizontal);
-                mItems.add(new LineItem(secondarySorts.get(i).getChildFoodSorts().get(j), false, rect, sectionFirstPosition, i));
+                if (j < childSortSize) {
+                    rect = CustomGridItemDecoration.computeGridRect(j, itemCount, spanCount, marginVertical, marginHorizontal);
+                    mItems.add(new LineItem(secondarySorts.get(i).getChildFoodSorts().get(j), false, rect, sectionFirstPosition, i));
+                } else {
+                    rect = CustomGridItemDecoration.computeGridRect(j, itemCount, spanCount, marginVertical, marginHorizontal);
+                    mItems.add(new LineItem(secondarySorts.get(i).getParentProductSort(), false, rect, sectionFirstPosition, i));
+                }
             }
-            sectionFirstPosition += (1 + secondarySorts.get(i).getChildFoodSorts().size());
+
+            sectionFirstPosition += (1 + itemCount);
         }
     }
 

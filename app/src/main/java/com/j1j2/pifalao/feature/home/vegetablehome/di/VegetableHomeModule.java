@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.home.vegetablehome.di;
 
 import com.j1j2.data.http.api.BannerActivityApi;
+import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeFragment;
@@ -42,7 +43,13 @@ public class VegetableHomeModule {
 
     @Provides
     @ActivityScope
-    VegetableHomeViewModel vegetableHomeViewModel(VegetableHomeFragment vegetableHomeFragment, ProductApi productApi, BannerActivityApi bannerActivityApi) {
-        return new VegetableHomeViewModel(vegetableHomeFragment, productApi, bannerActivityApi);
+    CountDownApi countDownApi(Retrofit retrofit) {
+        return retrofit.create(CountDownApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    VegetableHomeViewModel vegetableHomeViewModel(VegetableHomeFragment vegetableHomeFragment, ProductApi productApi, BannerActivityApi bannerActivityApi, CountDownApi countDownApi) {
+        return new VegetableHomeViewModel(vegetableHomeFragment, productApi, bannerActivityApi, countDownApi);
     }
 }

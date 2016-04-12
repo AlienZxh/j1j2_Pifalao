@@ -77,7 +77,7 @@
                     android:id="@+id/quantityview"
                     android:layout_width="200px"
                     android:layout_height="match_parent"
-                    app:quantity="@{shopCartItem.Quantity}"/>
+                    app:quantity="@{shopCartItem.Quantity}" />
 
                 <View
                     android:layout_width="0dp"
@@ -100,6 +100,8 @@
             android:layout_height="@dimen/height_products_img_size"
             android:layout_centerVertical="true"
             app:imageURI="@{Uri.parse(shopCartItem.ThumbImgPath??@string/text_empty)}"
+            fresco:failureImage="@drawable/loadimg_error"
+            fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:roundedCornerRadius="5dp"
             fresco:roundingBorderColor="@color/colorGrayF0F0F0"
             fresco:roundingBorderWidth="1px" />

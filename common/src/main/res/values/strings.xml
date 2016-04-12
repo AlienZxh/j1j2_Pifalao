@@ -132,4 +132,10 @@
 
     <string name="icon_notification">&#xe619;</string>
     <string name="icon_discount">&#xe6ca;</string>
+
+    <string name="icon_creative_fill">&#xe651;</string>
+
+    <string name="icon_delivery_tag">&#xe6d9;</string>
+    <string name="icon_pickbyself_tag">&#xe6da;</string>
+    <string name="icon_online_tag">&#xe6db;</string>
 </resources>

@@ -52,12 +52,19 @@
 
         </com.zhy.autolayout.AutoLinearLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="right"
+            android:layout_gravity="bottom"
             android:layout_marginTop="@dimen/padding_noraml"
             app:imageURI="@{Uri.parse(productSort.AppImgPath??@string/text_empty)}"
+            fresco:failureImage="@drawable/loadimg_error"
+            fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:viewAspectRatio="1" />
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

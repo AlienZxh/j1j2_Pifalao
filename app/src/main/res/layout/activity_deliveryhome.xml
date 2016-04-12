@@ -7,11 +7,17 @@
 
         <import type="com.j1j2.pifalao.BuildConfig" />
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
         <import type="android.net.Uri" />
 
         <variable
             name="servicePoint"
             type="com.j1j2.data.model.ServicePoint" />
+
+        <variable
+            name="freightType"
+            type="com.j1j2.data.model.FreightType" />
 
         <variable
             name="deliveryHomeViewModel"
@@ -98,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16px"
-                    android:text="@{&quot;配送时间：&quot;+servicePoint.ServiceTime}"
+                    android:text="@{&quot;配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freightType)}"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_normal" />
 
@@ -168,7 +174,7 @@
                         android:gravity="center"
                         android:paddingLeft="6px"
                         android:paddingRight="6px"
-                        android:text="配送费￥0"
+                        android:text="@{&quot;配送费￥&quot;+freightType.Fixed}"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_normal" />
                 </com.zhy.autolayout.AutoLinearLayout>

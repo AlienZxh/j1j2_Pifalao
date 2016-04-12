@@ -1,14 +1,9 @@
 package com.j1j2.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import io.realm.RealmObject;
-
 /**
  * Created by alienzxh on 16-3-11.
  */
-public class User extends RealmObject {
+public class User  {
 
     /**
      * UserId : 760
@@ -47,6 +42,7 @@ public class User extends RealmObject {
     private double UserSaveAmount;
     private int UserLevelId;
     private double Balance;
+
 
     public void setUserId(int UserId) {
         this.UserId = UserId;

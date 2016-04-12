@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.SecondarySort;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemVegetableChildsortBinding;
@@ -17,10 +18,10 @@ import java.util.List;
  * Created by alienzxh on 16-4-6.
  */
 public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChildSortAdapter.VegetableChildSortViewHolder> {
-    private List<ProductSort> productSorts;
+    private SecondarySort secondarySort;
 
-    public VegetableChildSortAdapter(List<ProductSort> productSorts) {
-        this.productSorts = productSorts;
+    public VegetableChildSortAdapter(SecondarySort secondarySort) {
+        this.secondarySort = secondarySort;
     }
 
     public interface OnChildSortClickListener {
@@ -42,12 +43,15 @@ public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChi
 
     @Override
     public void onBindViewHolder(VegetableChildSortViewHolder holder, int position) {
-        holder.bind(productSorts.get(position), position);
+        if (position < secondarySort.getChildFoodSorts().size())
+            holder.bind(secondarySort.getChildFoodSorts().get(position), position);
+        else
+            holder.bind(secondarySort.getParentProductSort(), position);
     }
 
     @Override
     public int getItemCount() {
-        return null == productSorts ? 0 : productSorts.size();
+        return null == secondarySort.getChildFoodSorts() ? 0 : secondarySort.getChildFoodSorts().size() + 1;
     }
 
     public class VegetableChildSortViewHolder extends AutoBindingViewHolder<ItemVegetableChildsortBinding, ProductSort> {

@@ -12,6 +12,8 @@ import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.De
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointModule;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeComponent;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
+import com.j1j2.pifalao.feature.home.morehome.di.MoreHomeComponent;
+import com.j1j2.pifalao.feature.home.morehome.di.MoreHomeModule;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeComponent;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
 import com.j1j2.pifalao.feature.home.vegetablehome.di.VegetableHomeComponent;
@@ -94,4 +96,6 @@ public interface AppComponent {
     DeliveryServicepointComponent plus(DeliveryServicepointModule deliveryServicepointModule);
 
     DeliveryProductsComponent plus(DeliveryProductsModule deliveryProductsModule);
+
+    MoreHomeComponent plus(MoreHomeModule moreHomeModule);
 }

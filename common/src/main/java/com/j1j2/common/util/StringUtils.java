@@ -6,6 +6,7 @@ import android.text.style.StrikethroughSpan;
 
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
+import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.data.model.ShopCartItem;
@@ -166,5 +167,13 @@ public class StringUtils {
             result += productUnit.getBarCode() + "、";
         }
         return result.substring(0, result.length() - 1);
+    }
+
+    public static CharSequence getServiceTimeWithFreightType(FreightType freightType) {
+        String result = "";
+        if (null == freightType)
+            return result;
+        result = freightType.getDliveryTimeSegement().substring(0, 5) + "-" + freightType.getDliveryTimeSegement().substring(freightType.getDliveryTimeSegement().length() - 5, freightType.getDliveryTimeSegement().length());
+        return result;
     }
 }

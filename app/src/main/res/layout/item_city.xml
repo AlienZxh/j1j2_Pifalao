@@ -37,7 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:imageURI="@{Uri.parse(city.OpenState?(BuildConfig.IMAGE_URL+city.OpenImgPath):(BuildConfig.IMAGE_URL+city.ClosedImgPath))}"
-            fresco:viewAspectRatio="1" />
+            fresco:failureImage="@drawable/loadimg_error"
+            fresco:placeholderImage="@drawable/loadimg_loading"
+            fresco:viewAspectRatio="1"
+             />
 
         <TextView
             android:layout_width="wrap_content"

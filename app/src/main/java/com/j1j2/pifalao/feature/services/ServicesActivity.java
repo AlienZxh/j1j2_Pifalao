@@ -66,6 +66,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import cn.jpush.android.api.JPushInterface;
@@ -78,7 +80,7 @@ import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
  * Created by alienzxh on 16-3-12.
  */
 @RequireBundler
-public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener, View.OnClickListener, OnDismissListener, Animation.AnimationListener, OnGetRoutePlanResultListener {
+public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener, View.OnClickListener, OnDismissListener, OnGetRoutePlanResultListener {
 
     ActivityServicesBinding binding;
 
@@ -97,8 +99,6 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     ViewQrcodeBinding qrBinding;
     DialogPlus qrDialog;
 
-    RotateAnimation rotateAnimation;
-
     RoutePlanSearch routePlanSearch = RoutePlanSearch.newInstance();
     PlanNode enNode;
     int nodeIndex = -1; // 节点索引,供浏览节点时使用
@@ -109,6 +109,11 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     Circle circleOverlay = null;
 
     float rememberScreenBrightness = 0.0f;
+
+    Bitmap appBitmap;
+    Bitmap qrBitMap;
+
+    List<Module> modules;
 
     @Override
     protected void initBinding() {
@@ -122,12 +127,8 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         Window window = getWindow();
         WindowManager.LayoutParams windowLp = window.getAttributes();
         rememberScreenBrightness = windowLp.screenBrightness;
-
-
-        rotateAnimation = new RotateAnimation(0, 720, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        rotateAnimation.setInterpolator(new LinearInterpolator());//不停顿
-        rotateAnimation.setDuration(2000);
-        rotateAnimation.setAnimationListener(this);
+        //________________________________________________________________________________
+        appBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
         //______________________________________________________________________________________
         qrBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_qrcode, null, false);
         qrDialog = DialogPlus.newDialog(this).setGravity(Gravity.CENTER)
@@ -176,20 +177,17 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         showExitDialog();
     }
 
-    public void startSearchAnimate() {
-//        binding.radarImg.startAnimation(rotateAnimation);
-//        binding.radarImg.setRotateDegree();
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
     }
 
-
     public void stopSearchAnimate() {
-//        binding.radarImg.clearAnimation();
         binding.radarImg.postDelayed(new Runnable() {
             @Override
             public void run() {
                 binding.radarImg.stopRotate(false);
-                binding.radarImg.setVisibility(View.INVISIBLE);
-                binding.radarBgImg.setVisibility(View.INVISIBLE);
+                binding.radarImg.setVisibility(View.GONE);
+                binding.radarBgImg.setVisibility(View.GONE);
             }
         }, 1800);
     }
@@ -212,37 +210,17 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
 
-//        addServicepointOverlay();
         routePlanSearch.setOnGetRoutePlanResultListener(this);
     }
-
-//    private void addServicepointOverlay() {
-//        BitmapDescriptor markIcon = BitmapDescriptorFactory
-//                .fromResource(R.drawable.icon_servicepoint);
-//        if (servicepointMark != null)
-//            servicepointMark.remove();
-//
-//        servicepointMarkOptions = new MarkerOptions();
-//        servicepointMarkOptions.position(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
-//        servicepointMarkOptions.draggable(false);
-//        servicepointMarkOptions.animateType(MarkerOptions.MarkerAnimateType.drop);
-//        servicepointMarkOptions.icon(markIcon);
-//        servicepointMark = (Marker) mBaiduMap.addOverlay(servicepointMarkOptions);
-//        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(servicepointMark.getPosition(), 17.0f);
-//        mBaiduMap.setMapStatus(u);
-//        markIcon.recycle();
-//    }
 
 
     public void setQRCode(final String str) {
         qrBinding.qrcodeImg.post(new Runnable() {
             @Override
             public void run() {
-
                 Toast.makeText(getApplicationContext(), "特权码已刷新", Toast.LENGTH_SHORT).show();
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-                Bitmap qr = QRCodeUtils.createQRCodeWithLogo(str, qrBinding.qrcodeImg.getHeight(), bitmap);
-                qrBinding.qrcodeImg.setImageBitmap(qr);
+                qrBitMap = QRCodeUtils.createQRCodeWithLogo(str, qrBinding.qrcodeImg.getHeight(), appBitmap);
+                qrBinding.qrcodeImg.setImageBitmap(qrBitMap);
             }
         });
 
@@ -255,11 +233,17 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        binding.radarImg.stopRotate(false);
+        binding.radarImg.setVisibility(View.GONE);
+        binding.radarBgImg.setVisibility(View.GONE);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         routePlanSearch.destroy();
-        binding.radarImg.clearAnimation();
-
     }
 
     @Override
@@ -272,12 +256,16 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     public void onItemClickListener(View view, Module module, int position) {
         if (module.getModuleType() == Constant.ModuleType.DELIVERY && module.isSubscribed()) {
             navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint, module);
+            userRelativePreference.setSelectedModule(module);
         } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE && module.isSubscribed()) {
             navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
+            userRelativePreference.setSelectedModule(module);
         } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE && module.isSubscribed()) {
             navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
+            userRelativePreference.setSelectedModule(module);
         } else if (module.getModuleType() == Constant.ModuleType.MORE && module.isSubscribed()) {
-            navigate.navigateToMoreModule(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module);
+            navigate.navigateToMoreModule(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, modules);
+            userRelativePreference.setSelectedModule(module);
         }
     }
 
@@ -326,23 +314,6 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             MainAplication.get(this).loginOut();
             EventBus.getDefault().postSticky(new LogStateEvent(false));
         }
-    }
-
-
-    @Override
-    public void onAnimationStart(Animation animation) {
-
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        binding.radarImg.setVisibility(View.INVISIBLE);
-        binding.radarBgImg.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void onAnimationRepeat(Animation animation) {
-
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

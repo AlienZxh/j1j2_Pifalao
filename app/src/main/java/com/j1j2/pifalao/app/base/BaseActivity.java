@@ -1,12 +1,9 @@
 package com.j1j2.pifalao.app.base;
 
 import android.content.Context;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
@@ -20,8 +17,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
-import in.workarounds.bundler.Bundler;
-import io.realm.Realm;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -34,7 +29,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     protected Fragment currentFragment;
 
-    protected Realm realm;
 
     protected void initActionBar() {
     }
@@ -55,7 +49,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        realm = Realm.getDefaultInstance();
         setupActivityComponent();
         initBinding();
         initActionBar();
@@ -66,7 +59,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.close();
+
         EventBus.getDefault().unregister(this);
     }
 

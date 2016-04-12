@@ -564,12 +564,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToMoreModule(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+    public void navigateToMoreModule(Activity context, ActivityOptionsCompat options, boolean isFinish, List<Module> modules) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.moreHomeActivity(module).start(context);
+            Bundler.moreHomeActivity(modules).start(context);
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
-            ActivityCompat.startActivity(context, Bundler.moreHomeActivity(module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.moreHomeActivity(modules).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

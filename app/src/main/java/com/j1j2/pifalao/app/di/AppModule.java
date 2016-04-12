@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
+import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.orhanobut.logger.Logger;
@@ -22,7 +23,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.RealmObject;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -63,7 +63,7 @@ public class AppModule {
                 .setExclusionStrategies(new ExclusionStrategy() {
                     @Override
                     public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getAnnotation(Expose.class) != null || f.getDeclaringClass().equals(RealmObject.class);
+                        return f.getAnnotation(Expose.class) != null;
                     }
 
                     @Override
@@ -84,6 +84,12 @@ public class AppModule {
     @Singleton
     UserRelativePreference userRelativePreference(MainAplication application) {
         return StoreBox.create(application.getApplicationContext(), UserRelativePreference.class);
+    }
+
+    @Provides
+    @Singleton
+    FreightTypePrefrence freightTypePrefrence(MainAplication application) {
+        return StoreBox.create(application.getApplicationContext(), FreightTypePrefrence.class);
     }
 
     @Provides

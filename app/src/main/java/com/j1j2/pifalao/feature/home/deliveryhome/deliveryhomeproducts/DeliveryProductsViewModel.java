@@ -10,6 +10,7 @@ import com.j1j2.data.model.ProductUnit;
 import com.j1j2.data.model.SecondarySort;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.feature.vegetablesort.VegetableSortFragment;
@@ -156,7 +157,7 @@ public class DeliveryProductsViewModel {
     }
 
     public void queryProductyBySortId(int productSortId) {
-        productApi.queryProductyBySortId("" + productSortId, "" + 1, "" + 200, "" + false, 0)
+        productApi.queryProductyBySortId("" + productSortId, "" + 1, "" + 200, "" + false, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_DEFAULT)
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -176,6 +177,54 @@ public class DeliveryProductsViewModel {
 
                     }
                 });
+    }
+
+    public void querySellsProducts(int productSortId) {
+        productApi.queryProductyBySortId("" + productSortId, "" + 1, "" + 200, "" + true, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_SELLS)
+                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                    @Override
+                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+                        deliveryHomeProductsFragment.initProducts(productSimplePagerManager.getList());
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+
+    public void queryActivityProducts(int moduleId) {
+        productApi.queryActivityProducts(1, 200, moduleId, 1, "", "")
+                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                    @Override
+                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+                        deliveryHomeProductsFragment.initProducts(productSimplePagerManager.getList());
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+
     }
 
     public DeliveryHomeProductsFragment getDeliveryHomeProductsFragment() {

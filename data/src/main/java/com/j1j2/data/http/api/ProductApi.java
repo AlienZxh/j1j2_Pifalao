@@ -58,7 +58,6 @@ public interface ProductApi {
     @POST("Product/QueryProductRemains")
     Observable<String> queryProductRemains(@Query("productId") int productId);
 
-
     @POST("Product/UpdateProductViews")
     Observable<String> updateProductViews(@Query("productId") int productId);
 

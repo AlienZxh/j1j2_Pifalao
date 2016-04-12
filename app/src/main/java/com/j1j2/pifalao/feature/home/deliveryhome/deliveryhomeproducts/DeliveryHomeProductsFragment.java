@@ -119,7 +119,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         binding.parentSortList.setAdapter(deliverySortAdapter);
         deliverySortAdapter.setOnSortClickListener(this);
         singleSelector.setSelected(0, deliverySortAdapter.getItemId(0), true);
-        deliveryProductsViewModel.queryProductyBySortId(secondarySort.getChildFoodSorts().get(0).getSortId());
+        deliveryProductsViewModel.querySellsProducts(secondarySort.getParentProductSort().getSortId());
     }
 
     public void initProducts(List<ProductSimple> productSimples) {
@@ -166,7 +166,13 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
     @Override
     public void onSortClick(View view, ProductSort parentSort, ProductSort childSort, int position) {
-        deliveryProductsViewModel.queryProductyBySortId(childSort.getSortId());
+
+        if (position == 0) {
+            deliveryProductsViewModel.querySellsProducts(parentSort.getSortId());
+        } else if (position == 1) {
+            deliveryProductsViewModel.queryActivityProducts(module.getWareHouseModuleId());
+        } else
+            deliveryProductsViewModel.queryProductyBySortId(childSort.getSortId());
     }
 
     @Override

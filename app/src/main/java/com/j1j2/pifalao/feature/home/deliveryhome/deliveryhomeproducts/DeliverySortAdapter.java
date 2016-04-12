@@ -48,12 +48,19 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
 
     @Override
     public void onBindViewHolder(DeliverySortViewHolder holder, int position) {
-        holder.bind(secondarySort.getChildFoodSorts().get(position), position);
+
+        if (position == 0) {
+            holder.bind(secondarySort.getParentProductSort(), position);
+        } else if (position == 1) {
+            holder.bind(secondarySort.getParentProductSort(), position);
+        } else
+            holder.bind(secondarySort.getChildFoodSorts().get(position - 2), position);
+
     }
 
     @Override
     public int getItemCount() {
-        return null == secondarySort.getChildFoodSorts() ? 0 : secondarySort.getChildFoodSorts().size();
+        return null == secondarySort.getChildFoodSorts() ? 0 : (secondarySort.getChildFoodSorts().size() + 2);
     }
 
     public class DeliverySortViewHolder extends AutoBindingViewHolder<ItemDeliverysortBinding, ProductSort> implements SelectableHolder {
@@ -76,7 +83,12 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
             singleSelector.bindHolder(this, position, getItemId());
             binding.setIsSelect(singleSelector.isSelected(position, getItemId()));
             binding.setPosition(position);
-            binding.setSortName(data.getSortName());
+            if (position == 0)
+                binding.setSortName("销量排行");
+            else if (position == 1)
+                binding.setSortName("折扣促销");
+            else
+                binding.setSortName(data.getSortName());
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

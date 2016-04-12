@@ -73,7 +73,7 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
     }
 
     public void initBanner(List<ProductImg> productImgs) {
-        binding.viewPager.setAdapter(new ProductImgAdapter(productImgs));
+        binding.viewPager.setAdapter(new ProductImgCycleAdapter(productImgs));
         binding.viewPager.startAutoScroll(2000);
         binding.viewPager.setInterval(2000);
         binding.tab.setViewPager(binding.viewPager);
@@ -84,7 +84,7 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         changeFragment(R.id.unitFragment, productDetailUnitFragment);
     }
 
-    public void initBottomViewPager(List<ProductImg> productImgs,int productId,ProductDetail productDetail) {
+    public void initBottomViewPager(List<ProductImg> productImgs, int productId, ProductDetail productDetail) {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(Bundler.productDetailImgFragment(productImgs).create());
         fragments.add(Bundler.productDetailParamsFragment(productDetail).create());
@@ -100,6 +100,20 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         Bundler.inject(this);
         productDetailComponent = MainAplication.get(this).getAppComponent().plus(new ProductDetailModule(this));
         productDetailComponent.inject(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // stop auto scroll when onPause
+        binding.viewPager.stopAutoScroll();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // start auto scroll when onResume
+        binding.viewPager.startAutoScroll();
     }
 
     public void addShopCart(ProductUnit unit, int Quantity) {

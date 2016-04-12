@@ -34,7 +34,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-4-6.
  */
 @RequireBundler
-public class VegetableSortFragment extends BaseFragment implements VegetableParentSortAdapter.OnSortSelectListener, VegetableChildSortAdapter.OnChildSortClickListener,View.OnClickListener {
+public class VegetableSortFragment extends BaseFragment implements VegetableParentSortAdapter.OnSortSelectListener, VegetableChildSortAdapter.OnChildSortClickListener, View.OnClickListener {
 
     public interface VegetableSortFragmentListener extends HasComponent<MainComponent> {
         void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
@@ -81,11 +81,11 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
         singleSelector.setSelected(0, vegetableParentSortAdapter.getItemId(0), true);
         vegetableParentSortAdapter.setOnSortSelectListener(this);
 
-        initChildList(secondarySorts.get(0).getChildFoodSorts());
+        initChildList(secondarySorts.get(0));
     }
 
-    public void initChildList(List<ProductSort> productSorts) {
-        VegetableChildSortAdapter vegetableChildSortAdapter = new VegetableChildSortAdapter(productSorts);
+    public void initChildList(SecondarySort secondarySort) {
+        VegetableChildSortAdapter vegetableChildSortAdapter = new VegetableChildSortAdapter(secondarySort);
         binding.childSortList.setAdapter(vegetableChildSortAdapter);
         vegetableChildSortAdapter.setOnChildSortClickListener(this);
     }
@@ -99,7 +99,7 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
 
     @Override
     public void onSortSelectListener(View v, SecondarySort secondarySort, int position) {
-        initChildList(secondarySort.getChildFoodSorts());
+        initChildList(secondarySort);
     }
 
     @Override

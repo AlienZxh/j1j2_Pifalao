@@ -6,9 +6,13 @@
     <data>
 
         <import type="android.net.Uri" />
+
         <import type="android.view.View" />
+
         <import type="android.view.View.OnClickListener" />
+
         <import type="com.j1j2.pifalao.app.Constant" />
+
         <variable
             name="onClick"
             type="OnClickListener" />
@@ -134,12 +138,12 @@
                 </com.zhy.autolayout.AutoLinearLayout>
 
                 <com.zhy.autolayout.AutoLinearLayout
-                    android:visibility="@{moduleType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE : View.GONE}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="@{moduleType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE : View.GONE}">
 
                     <TextView
                         android:id="@+id/normalPrice"
@@ -182,9 +186,12 @@
             android:layout_width="@dimen/height_products_img_size"
             android:layout_height="@dimen/height_products_img_size"
             app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            fresco:failureImage="@drawable/loadimg_error"
+            fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:roundedCornerRadius="5dp"
             fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-            fresco:roundingBorderWidth="1px" />
+            fresco:roundingBorderWidth="1px"
+            />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="152px"

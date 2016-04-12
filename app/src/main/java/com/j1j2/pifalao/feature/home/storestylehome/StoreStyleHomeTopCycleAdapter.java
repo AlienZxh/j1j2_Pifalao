@@ -1,31 +1,24 @@
-package com.j1j2.pifalao.feature.home.vegetablehome;
+package com.j1j2.pifalao.feature.home.storestylehome;
 
+import android.content.Context;
 import android.net.Uri;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.j1j2.common.view.viewpager.autoscrollviewpager.RecyclingPagerAdapter;
-import com.j1j2.data.model.BannerActivity;
-import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 /**
- * Created by alienzxh on 16-4-8.
+ * Created by alienzxh on 16-4-12.
  */
-public class VegetableHomeTopAdapter extends RecyclingPagerAdapter {
-    private List<BannerActivity> bannerActivities;
+public class StoreStyleHomeTopCycleAdapter extends RecyclingPagerAdapter {
+    private int[] imgId = {R.drawable.storestylehometop_top_img_1,
+            R.drawable.storestylehometop_top_img_2,
+            R.drawable.storestylehometop_top_img_3,
+            R.drawable.storestylehometop_top_img_4};
 
-    public VegetableHomeTopAdapter(List<BannerActivity> bannerActivities) {
-        this.bannerActivities = bannerActivities;
-    }
 
     private int getPosition(int position) {
         return position;
@@ -42,7 +35,7 @@ public class VegetableHomeTopAdapter extends RecyclingPagerAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.draweeView.setImageURI(Uri.parse(BuildConfig.IMAGE_URL + bannerActivities.get(position).getBannerAppImg()));
+        holder.draweeView.setImageURI(Uri.parse("res://com.j1j2.pifalao/" + imgId[position]));
         return view;
     }
 
@@ -52,7 +45,6 @@ public class VegetableHomeTopAdapter extends RecyclingPagerAdapter {
 
     @Override
     public int getCount() {
-        return null == bannerActivities ? 0 : bannerActivities.size();
+        return imgId.length;
     }
-
 }

@@ -1,14 +1,12 @@
 package com.j1j2.pifalao.app;
 
-import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.google.gson.Gson;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.di.AppComponent;
@@ -26,13 +24,10 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import cn.jpush.android.api.JPushInterface;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 
 /**
@@ -81,15 +76,10 @@ public class MainAplication extends Application {
             initLeakCanary();
             initFresco();
             initOkHttpUtil();
-            initRealm();
         }
     }
 
-    private void initRealm() {
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).deleteRealmIfMigrationNeeded().build();
-        Realm.setDefaultConfiguration(realmConfiguration);
-        Logger.d("realm初始化完成");
-    }
+
 
     private void initOkHttpUtil() {
         if (BuildConfig.DEBUG)

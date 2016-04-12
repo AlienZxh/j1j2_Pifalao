@@ -39,7 +39,7 @@
             android:text="@string/icon_location"
             android:textColor="@drawable/text_click_colors"
             android:textSize="@dimen/item_locatin_icon"
-            android:visibility="@{position==0?View.VISIBLE : View.GONE}" />
+            android:visibility="@{position==0?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:layout_width="wrap_content"

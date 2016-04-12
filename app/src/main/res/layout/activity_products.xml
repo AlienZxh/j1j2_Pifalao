@@ -6,9 +6,11 @@
     tools:context=".feature.products.ProductsActivity">
 
     <data>
+
         <variable
             name="shopCart"
             type="com.j1j2.pifalao.app.ShopCart" />
+
         <variable
             name="productViewModel"
             type="com.j1j2.pifalao.feature.products.ProductsViewModel" />
@@ -69,6 +71,7 @@
                 layout="@layout/view_deliverytime"
                 bind:hour="@{productViewModel.hour}"
                 bind:isLogin="@{productViewModel.productsActivity.isLogin}"
+                bind:isVisible="@{1==1}"
                 bind:minute="@{productViewModel.minute}"
                 bind:second="@{productViewModel.second}" />
 

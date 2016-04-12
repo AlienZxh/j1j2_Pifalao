@@ -82,7 +82,7 @@ public class WheelView extends ScrollView {
     }
 
 
-    public static final int OFF_SET_DEFAULT = 1;
+    public static final int OFF_SET_DEFAULT = 2;
     int offset = OFF_SET_DEFAULT; // 偏移量（需要在最前面和最后面补全）
 
     public int getOffset() {

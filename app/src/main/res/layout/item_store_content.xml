@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:singleLine="true"
-            android:text="@{productSort.SortName}"
+            android:text="@{productSort.ParentSortId==0?&quot;全部&quot;:productSort.SortName}"
             android:textColor="@color/colorText333"
             android:textSize="@dimen/text_normal" />
 

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 
 import com.j1j2.data.model.Coupon;
+import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ServicePoint;
@@ -13,6 +14,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.databinding.ActivityDeliveryhomeBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.DeliveryHomeProductsFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
@@ -43,6 +45,9 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     @Inject
     DeliveryHomeViewModel deliveryHomeViewModel;
 
+    @Inject
+    FreightTypePrefrence freightTypePrefrence;
+
     ShopCart shopCart = null;
 
     @Override
@@ -59,6 +64,13 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
         fragments.add(Bundler.deliveryHomeServicepointFragment(servicePoint).create());
         binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments));
         binding.tab.setViewPager(binding.viewpager);
+        //________________________________________________________________________________
+        deliveryHomeViewModel.queryFreightType(module.getWareHouseModuleId());
+    }
+
+    public void initFreightType(FreightType freightType) {
+        freightTypePrefrence.setDeliveryFreightType(freightType);
+        binding.setFreightType(freightType);
     }
 
     @Override

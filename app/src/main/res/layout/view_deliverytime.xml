@@ -22,10 +22,15 @@
         <variable
             name="isLogin"
             type="boolean" />
+
+        <variable
+            name="isVisible"
+            type="boolean"/>
     </data>
 
     <com.zhy.autolayout.AutoFrameLayout
         android:layout_width="match_parent"
+        android:visibility="@{isVisible?View.VISIBLE:View.GONE}"
         android:layout_height="@dimen/content_height_normal">
 
         <com.zhy.autolayout.AutoLinearLayout

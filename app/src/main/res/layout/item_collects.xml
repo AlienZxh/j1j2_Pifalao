@@ -169,9 +169,12 @@
             android:layout_width="@dimen/height_products_img_size"
             android:layout_height="@dimen/height_products_img_size"
             app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            fresco:failureImage="@drawable/loadimg_error"
+            fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:roundedCornerRadius="5dp"
             fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-            fresco:roundingBorderWidth="1px" />
+            fresco:roundingBorderWidth="1px"
+            />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="152px"

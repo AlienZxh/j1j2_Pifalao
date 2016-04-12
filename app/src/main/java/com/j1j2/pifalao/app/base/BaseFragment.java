@@ -14,8 +14,6 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import io.realm.Realm;
-
 /**
  * Created by alienzxh on 16-3-16.
  */
@@ -24,7 +22,7 @@ public abstract class BaseFragment extends RxFragment {
 
     protected abstract void initViews();
 
-    private Realm realm;
+
 
     protected void setupActivityComponent() {
 
@@ -33,6 +31,7 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setupActivityComponent();
     }
 
@@ -50,16 +49,11 @@ public abstract class BaseFragment extends RxFragment {
             EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        realm = Realm.getDefaultInstance();
-    }
 
     @Override
     public void onStop() {
         super.onStop();
-        realm.close();
+
     }
 
     @Override

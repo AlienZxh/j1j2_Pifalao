@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -17,6 +18,8 @@ import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.RegisterSuccessEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
+import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityShopcartBinding;
 import com.j1j2.pifalao.feature.shopcart.di.ShopCartModule;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -49,11 +52,16 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     public ObservableBoolean isLogin = new ObservableBoolean(true);
 
+    @Inject
+    UserRelativePreference userRelativePreference;
+    @Inject
+    FreightTypePrefrence freightTypePrefrence;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopcart);
         binding.setShopCartViewModel(shopCartViewModel);
-
+        binding.setModule(userRelativePreference.getSelectedModule(null));
     }
 
     @Override
@@ -67,7 +75,10 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
         binding.shopcartlist.getRecyclerView().setClipToPadding(false);
         binding.shopcartlist.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(100));
         shopCartViewModel.queryShopCart();
-        shopCartViewModel.CountDown();
+        if (userRelativePreference.getSelectedModule(null).getModuleType() == Constant.ModuleType.DELIVERY)
+            binding.setFreightType(freightTypePrefrence.getDeliveryFreightType(null));
+        else
+            shopCartViewModel.CountDown();
     }
 
     public void setAdapter(ShopCartAdapter adapter) {

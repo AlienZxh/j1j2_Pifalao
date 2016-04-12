@@ -62,6 +62,18 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        binding.viewPager.stopAutoScroll();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.viewPager.startAutoScroll();
+    }
+
+    @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_store_style_home, container, false);
         binding.setOnClick(this);
@@ -73,7 +85,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
         manager = new GridLayoutManager(getContext(), 3);
         binding.sortList.setLayoutManager(manager);
         storeStyleHomeViewModel.queryProductSort();
-        StoreStyleHomeTopAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopAdapter();
+        StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter();
         binding.viewPager.setAdapter(storeStyleHomeTopAdapter);
         binding.tab.setViewPager(binding.viewPager);
         binding.viewPager.startAutoScroll(2000);
