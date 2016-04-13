@@ -7,6 +7,8 @@
 
         <import type="android.net.Uri" />
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
         <import type="android.view.View.OnClickListener" />
 
         <variable
@@ -47,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36px"
             android:gravity="center_vertical"
-            android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).RetialPrice+&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+            android:text="@{StringUtils.getStrWithStrikethrough(&quot;￥&quot;+productSimple.ProductUnits.get(0).RetialPrice)}"
             android:textColor="@color/colorText999"
             android:textSize="@dimen/text_normal" />
 

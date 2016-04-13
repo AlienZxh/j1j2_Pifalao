@@ -33,8 +33,7 @@
             fresco:failureImage="@drawable/loadimg_error"
             fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-            fresco:roundingBorderWidth="1px"
-            />
+            fresco:roundingBorderWidth="1px" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -64,7 +63,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice}"
+                    android:text="@{&quot;￥&quot;+(productSimple.ProductUnits.get(0)==null?&quot;&quot;:(&quot;&quot;+productSimple.ProductUnits.get(0).MemberPrice))}"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
@@ -72,7 +71,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+                    android:text="@{&quot;/&quot;+(productSimple.ProductUnits.get(0)==null?&quot;&quot;:productSimple.ProductUnits.get(0).Unit)}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 

@@ -36,7 +36,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="73"
-                android:background="@color/colorWhite" />
+                android:background="@color/colorWhite"
+                android:clipToPadding="false"
+                android:paddingBottom="110px" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -50,11 +52,11 @@
             android:layout_marginBottom="@dimen/padding_noraml"
             android:layout_marginRight="@dimen/padding_noraml"
             android:background="@drawable/services_dragview_bg"
+            android:clickable="true"
             android:gravity="center"
             android:text="@string/icon_shopcart"
             android:textColor="@color/colorWhite"
             android:textSize="60px"
-            android:clickable="true"
             app:OnClickListener="@{deliveryProductsViewModel.deliveryHomeProductsFragment}"
             app:badge_bgColor="@color/colorRed"
             app:badge_gravity="rightTop"

@@ -92,6 +92,8 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
 
     }
 
+
+
     @Override
     public void onDefaultBtnClickListener(View v, Address address, int position) {
         addressManagerViewModel.setDefaultAddress(address.getAddressId());

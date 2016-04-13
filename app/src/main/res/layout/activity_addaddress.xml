@@ -261,8 +261,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:singleLine="true"
                     android:gravity="center_vertical"
+                    android:singleLine="true"
                     android:text="点击选择"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
@@ -355,10 +355,10 @@
             android:layout_marginTop="100px"
             android:background="@drawable/orange_conner_btn_selector"
             android:gravity="center"
-            android:text="添加地址"
+            android:text="@{addAddressViewModel.addAddressActivity.activityType==addAddressViewModel.addAddressActivity.ADD_NEW_ADDRESS?&quot;添加地址&quot;:&quot;确认保存&quot;}"
             android:textColor="@color/colorWhite"
             android:textSize="30px"
-            app:onClickListener="@{addAddressViewModel.addAddressActivity}"/>
+            app:onClickListener="@{addAddressViewModel.addAddressActivity}" />
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

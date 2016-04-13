@@ -22,9 +22,11 @@ import java.util.List;
  */
 public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.ShopCartViewHolder> {
     private List<ShopCartItem> shopCartItems;
+    private int moduleType;
 
-    public ShopCartAdapter(List<ShopCartItem> shopCartItems) {
+    public ShopCartAdapter(List<ShopCartItem> shopCartItems, int moduleType) {
         this.shopCartItems = shopCartItems;
+        this.moduleType = moduleType;
     }
 
     public interface OnShopCartChangeListener {
@@ -73,6 +75,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.ShopCa
         @Override
         public void bind(@NonNull final ShopCartItem data, final int position) {
             binding.setShopCartItem(data);
+            binding.setModuleType(moduleType);
             binding.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -54,7 +54,7 @@ public class ShopCartViewModel {
         this.shopCart = shopCart;
     }
 
-    public void queryShopCart() {
+    public void queryShopCart(final int moduleType) {
         shopCartApi.queryShopCart(moduleId)
                 .compose(shopCartActivity.<WebReturn<List<ShopCartItem>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -63,7 +63,7 @@ public class ShopCartViewModel {
                     @Override
                     public void onWebReturnSucess(List<ShopCartItem> mShopCartItems) {
                         shopCartItems = mShopCartItems;
-                        shopCartAdapter = new ShopCartAdapter(shopCartItems);
+                        shopCartAdapter = new ShopCartAdapter(shopCartItems, moduleType);
                         shopCartActivity.setAdapter(shopCartAdapter);
                         shopCart.setShopCartItemList(shopCartItems);
                     }

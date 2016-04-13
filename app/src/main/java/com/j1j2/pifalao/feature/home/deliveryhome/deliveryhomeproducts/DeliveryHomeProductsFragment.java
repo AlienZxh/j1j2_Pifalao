@@ -182,13 +182,22 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
     @Override
     public void onQuantityChange(StateQuantityView view, ProductSimple productSimple, int position, int quantity) {
-        if (null == deliveryProductsViewModel.getShopCartItems() || deliveryProductsViewModel.getShopCartItems().size() <= 0)
-            return;
-        if (quantity == deliveryProductsViewModel.getShopCartItems().get(position).getQuantity())
+        if (null == deliveryProductsViewModel.getShopCartItems() || deliveryProductsViewModel.getShopCartItems().size() <= position)
             return;
         if (isOnBackGround)
             return;
-        deliveryProductsViewModel.getShopCartItems().get(position).setQuantity(quantity);
+
+        for (ShopCartItem shopCartItem : deliveryProductsViewModel.getShopCartItems()) {
+            if (shopCartItem.getProductMainId() == productSimple.getMainId()) {
+                if (quantity == shopCartItem.getQuantity()) {
+                    return;
+                } else {
+                    shopCartItem.setQuantity(quantity);
+                }
+                break;
+            }
+        }
+
         deliveryProductsViewModel.updateShopCart();
     }
 

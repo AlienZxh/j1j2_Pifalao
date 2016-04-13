@@ -153,7 +153,7 @@ public class StringUtils {
             return result;
 
         for (ProductUnit productUnit : productUnits) {
-            result += productUnit.getUnit() + "、";
+            result += (productUnit.getUnit() == null ? "" : productUnit.getUnit()) + "、";
         }
         return result.substring(0, result.length() - 1);
     }
@@ -164,7 +164,7 @@ public class StringUtils {
             return result;
 
         for (ProductUnit productUnit : productUnits) {
-            result += productUnit.getBarCode() + "、";
+            result += (productUnit.getBarCode() == null ? "" : productUnit.getBarCode()) + "、";
         }
         return result.substring(0, result.length() - 1);
     }

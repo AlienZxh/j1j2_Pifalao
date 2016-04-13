@@ -48,7 +48,7 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
     AddAddressViewModel addAddressViewModel;
 
     @Arg
-    int activityType;
+    public int activityType;
 
     @Arg
     @Required(false)

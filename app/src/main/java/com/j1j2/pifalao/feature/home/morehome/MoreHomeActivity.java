@@ -72,13 +72,13 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onItemClickListener(View view, Module module, int position) {
         if (module.getModuleType() == Constant.ModuleType.DELIVERY && module.isSubscribed()) {
-            navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, userRelativePreference.getSelectedServicePoint(null), module);
+            navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, userRelativePreference.getSelectedServicePoint(null), module);
             userRelativePreference.setSelectedModule(module);
         } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE && module.isSubscribed()) {
-            navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, module, MainActivity.STORESTYLE);
+            navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
             userRelativePreference.setSelectedModule(module);
         } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE && module.isSubscribed()) {
-            navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, module, MainActivity.VEGETABLE);
+            navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
             userRelativePreference.setSelectedModule(module);
         }
     }

@@ -1,11 +1,15 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.OfflineOrderProduct;
+import com.j1j2.data.model.OfflineOrderSimple;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.OrderStatistics;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ProductSaleOrderRateBody;
 import com.j1j2.data.model.requestbody.SetOrderReadStateBody;
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -33,6 +37,13 @@ public interface UserOrderApi {
 
     @POST("UserOrder/ConfrimReceive")
     Observable<WebReturn<String>> confrimReceive(@Query("orderId") int orderId);
+
+    @POST("UserOrder/QueryOfflineOrders")
+    Observable<WebReturn<PagerManager<OfflineOrderSimple>>> queryOfflineOrders(@Query("pageIndex") int pageIndex);
+
+
+    @POST("UserOrder/QueryOfflineOrderDetails")
+    Observable<WebReturn<List<OfflineOrderProduct>>> queryOfflineOrderDetails(@Query("offlineOrderId") int offlineOrderId);
     //_____________________________________________________________________________
 
 
@@ -46,9 +57,5 @@ public interface UserOrderApi {
     @POST("UserOrder/QueryOrderRate")
     Observable<String> queryOrderRate(@Query("orderId") int orderId);
 
-    @POST("UserOrder/QueryOfflineOrders")
-    Observable<String> queryOfflineOrders(@Query("pageIndex") int pageIndex);
 
-    @POST("UserOrder/QueryOfflineOrderDetails")
-    Observable<String> queryOfflineOrderDetails(@Query("offlineOrderId") int offlineOrderId);
 }

@@ -185,11 +185,21 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         binding.radarImg.postDelayed(new Runnable() {
             @Override
             public void run() {
-                binding.radarImg.stopRotate(false);
-                binding.radarImg.setVisibility(View.GONE);
-                binding.radarBgImg.setVisibility(View.GONE);
+                clearAnimImg();
             }
         }, 1800);
+    }
+
+    private void clearAnimImg() {
+//        binding.radarImg.stopRotate(false);
+//        binding.radarImg.setVisibility(View.GONE);
+//        binding.radarBgImg.setVisibility(View.GONE);
+        binding.radarImg.stopRotate(false);
+        if (binding.radarImg != null)
+            binding.imgLayout.removeView(binding.radarImg);
+        if (binding.radarBgImg != null)
+            binding.imgLayout.removeView(binding.radarBgImg);
+
     }
 
     @Override
@@ -235,9 +245,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     @Override
     protected void onStop() {
         super.onStop();
-        binding.radarImg.stopRotate(false);
-        binding.radarImg.setVisibility(View.GONE);
-        binding.radarBgImg.setVisibility(View.GONE);
+        clearAnimImg();
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -26,6 +27,11 @@ import com.baidu.mapapi.search.district.DistrictResult;
 import com.baidu.mapapi.search.district.DistrictSearch;
 import com.baidu.mapapi.search.district.DistrictSearchOption;
 import com.baidu.mapapi.search.district.OnGetDistricSearchResultListener;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiBoundSearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
@@ -61,7 +67,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-31.
  */
 @RequireBundler
-public class AddressSelectActivity extends BaseMapActivity implements OnGetDistricSearchResultListener, OnGetSuggestionResultListener, OnGetPoiSearchResultListener, AddressSelectAdapter.OnAddressSelectListener, View.OnClickListener, TextWatcher, AdapterView.OnItemClickListener {
+public class AddressSelectActivity extends BaseMapActivity implements OnGetGeoCoderResultListener, OnGetSuggestionResultListener, OnGetPoiSearchResultListener, AddressSelectAdapter.OnAddressSelectListener, View.OnClickListener, TextWatcher, AdapterView.OnItemClickListener, BaiduMap.OnMapStatusChangeListener {
     ActivityAddressselectBinding binding;
 
     @Arg
@@ -70,9 +76,6 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
     @Arg
     String district;
 
-    DistrictSearch districtSearch;
-    DistrictSearchOption districtSearchOption;
-
     PoiSearch poiSearch;
     PoiNearbySearchOption poiNearbySearchOption;
     PoiBoundSearchOption poiBoundSearchOption;
@@ -80,29 +83,30 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
     SuggestionSearch suggestionSearch;
     SuggestionSearchOption suggestionSearchOption;
 
-    private OverlayManager servicepointOverlayManager = null;
-    private List<OverlayOptions> overlayOptionses = null;
+    GeoCoder geoCoderSearch;
+    ReverseGeoCodeOption reverseGeoCodeOption;
+
+    boolean isFirst = true;
 
     @Override
     protected void initMap() {
         getMapView().showZoomControls(false);
         getMapView().showScaleControl(true);
 
-        overlayOptionses = new ArrayList<>();
-        servicepointOverlayManager = new AddressOverlayManager(mBaiduMap, overlayOptionses);
 
         LatLng point = new LatLng(28.175983, 113.023015);
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 14.0f);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 20.0f);
         mBaiduMap.setMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
+        mBaiduMap.setOnMapStatusChangeListener(this);
 
         poiSearch = PoiSearch.newInstance();
         poiSearch.setOnGetPoiSearchResultListener(this);
-        districtSearch = DistrictSearch.newInstance();
-        districtSearch.setOnDistrictSearchListener(this);
         suggestionSearch = SuggestionSearch.newInstance();
         suggestionSearch.setOnGetSuggestionResultListener(this);
+        geoCoderSearch = GeoCoder.newInstance();
+        geoCoderSearch.setOnGetGeoCodeResultListener(this);
     }
 
     @Override
@@ -133,9 +137,10 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        districtSearch.destroy();
+
         suggestionSearch.destroy();
         poiSearch.destroy();
+        geoCoderSearch.destroy();
     }
 
     @Override
@@ -150,16 +155,28 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
         if (location == null)
             return;
         refreshMyLocation(location);
-        if (poiSearch == null || poiNearbySearchOption != null)
+        if (isFirst) {
+            toMayLocation(location);
+            isFirst = false;
+        }
+        if (poiSearch == null)
             return;
+        searchNearby(location);
+    }
+
+    public void searchNearby(BDLocation location) {
         poiNearbySearchOption = new PoiNearbySearchOption()
                 .sortType(PoiSortType.distance_from_near_to_far)
                 .location(new LatLng(location.getLatitude(), location.getLongitude()))
-                .radius(10000)
-                .keyword("小区")
-                .pageNum(1).pageCapacity(20);
+                .radius(3000)
+                .keyword(location.getStreet())
+                .pageNum(1).pageCapacity(50);
         poiSearch.searchNearby(poiNearbySearchOption);
+    }
 
+    public void searchPoint(LatLng point) {
+        reverseGeoCodeOption = new ReverseGeoCodeOption().location(point);
+        geoCoderSearch.reverseGeoCode(reverseGeoCodeOption);
     }
 
     public void refreshMyLocation(BDLocation location) {
@@ -171,34 +188,16 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
                 .speed(location.getSpeed())// GPS定位时速度
                 .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
                 .build();
-        if (mBaiduMap != null)
-            mBaiduMap.setMyLocationData(locData);
+        if (mBaiduMap == null)
+            return;
+        mBaiduMap.setMyLocationData(locData);
+
     }
 
-    public void refreshPoisMarker(List<PoiInfo> poiInfos) {
-        if (overlayOptionses.size() > 0) {
-            servicepointOverlayManager.removeFromMap();
-            overlayOptionses.clear();
-        }
-        if (null == poiInfos || poiInfos.size() <= 0)
-            return;
-        BitmapDescriptor markIcon = BitmapDescriptorFactory
-                .fromResource(R.drawable.icon_servicepoint);
-        int i = 0;
-        for (PoiInfo poiInfo : poiInfos) {
-            MarkerOptions mark = new MarkerOptions()//
-                    .position(poiInfo.location)//
-                    .icon(markIcon)//
-                    .zIndex(i)//
-                    .draggable(false)//
-                    .animateType(MarkerOptions.MarkerAnimateType.none);
-            // 把数据的shopId保存到队列
-            overlayOptionses.add(mark);
-            i++;
-        }
-        servicepointOverlayManager.addToMap();
-        servicepointOverlayManager.zoomToSpan();
-        markIcon.recycle();
+    public void toMayLocation(BDLocation location) {
+        LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 20.0f);
+        mBaiduMap.setMapStatus(u);
     }
 
 
@@ -236,15 +235,36 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
 
     }
 
+
     @Override
-    public void onGetDistrictResult(DistrictResult districtResult) {
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
 
     }
 
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+        searchPoint(mapStatus.target);
+    }
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
+        AddressSelectAdapter addressSelectAdapter = new AddressSelectAdapter(reverseGeoCodeResult.getPoiList());
+        binding.addressList.setAdapter(addressSelectAdapter);
+        addressSelectAdapter.setOnAddressSelectListener(this);
+    }
 
     @Override
     public void onGetPoiResult(PoiResult poiResult) {
-        refreshPoisMarker(poiResult.getAllPoi());
         AddressSelectAdapter addressSelectAdapter = new AddressSelectAdapter(poiResult.getAllPoi());
         binding.addressList.setAdapter(addressSelectAdapter);
         addressSelectAdapter.setOnAddressSelectListener(this);
@@ -271,29 +291,5 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetDistr
     public void onAddressSelectListener(View view, PoiInfo poiInfo, int poistion) {
         EventBus.getDefault().post(new AddressSelectEvent().setAddressType(AddressSelectEvent.POIINFO).setPoiInfo(poiInfo));
         finish();
-    }
-
-    public class AddressOverlayManager extends OverlayManager {
-        private List<OverlayOptions> overlayOptionses;
-
-        public AddressOverlayManager(BaiduMap baiduMap, List<OverlayOptions> overlayOptionses) {
-            super(baiduMap);
-            this.overlayOptionses = overlayOptionses;
-        }
-
-        @Override
-        public List<OverlayOptions> getOverlayOptions() {
-            return this.overlayOptionses;
-        }
-
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            return false;
-        }
-
-        @Override
-        public boolean onPolylineClick(Polyline polyline) {
-            return false;
-        }
     }
 }

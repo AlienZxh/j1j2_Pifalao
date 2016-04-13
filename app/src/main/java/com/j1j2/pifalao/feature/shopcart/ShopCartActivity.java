@@ -57,11 +57,15 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     @Inject
     FreightTypePrefrence freightTypePrefrence;
 
+    Module module;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopcart);
         binding.setShopCartViewModel(shopCartViewModel);
-        binding.setModule(userRelativePreference.getSelectedModule(null));
+
+        module = userRelativePreference.getSelectedModule(null);
+        binding.setModule(module);
     }
 
     @Override
@@ -74,8 +78,8 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
                 .build());
         binding.shopcartlist.getRecyclerView().setClipToPadding(false);
         binding.shopcartlist.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(100));
-        shopCartViewModel.queryShopCart();
-        if (userRelativePreference.getSelectedModule(null).getModuleType() == Constant.ModuleType.DELIVERY)
+        shopCartViewModel.queryShopCart(module.getModuleType());
+        if (module.getModuleType() == Constant.ModuleType.DELIVERY)
             binding.setFreightType(freightTypePrefrence.getDeliveryFreightType(null));
         else
             shopCartViewModel.CountDown();
@@ -128,7 +132,7 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onShopCartChangeEvent(ShopCartChangeEvent event) {
-        shopCartViewModel.queryShopCart();
+        shopCartViewModel.queryShopCart(module.getModuleType());
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
