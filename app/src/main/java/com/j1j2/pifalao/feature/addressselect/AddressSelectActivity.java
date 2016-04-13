@@ -9,24 +9,13 @@ import android.widget.AdapterView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.overlayutil.OverlayManager;
 import com.baidu.mapapi.search.core.PoiInfo;
-import com.baidu.mapapi.search.district.DistrictResult;
-import com.baidu.mapapi.search.district.DistrictSearch;
-import com.baidu.mapapi.search.district.DistrictSearchOption;
-import com.baidu.mapapi.search.district.OnGetDistricSearchResultListener;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
@@ -55,9 +44,6 @@ import com.zhy.autolayout.utils.AutoUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;

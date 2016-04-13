@@ -37,6 +37,7 @@ public class OrderSimple implements Parcelable {
      * ReceiveAddressLat : 28.235209
      * ReceiveAddressLng : 113.117742
      * CalculateDistance : 0.1
+     * OrderMemo
      */
     private int ModuleId;
     private int ModuleType;
@@ -46,6 +47,7 @@ public class OrderSimple implements Parcelable {
     private double OrderSum;
     private double Freight;
     private int OrderState;
+    private String OrderMemo;
     private String OrderEvaluate;
     private String AdminReply;
     private String DealSubmitTimeStr;
@@ -142,6 +144,14 @@ public class OrderSimple implements Parcelable {
 
     public void setOrderState(int orderState) {
         OrderState = orderState;
+    }
+
+    public String getOrderMemo() {
+        return OrderMemo;
+    }
+
+    public void setOrderMemo(String orderMemo) {
+        OrderMemo = orderMemo;
     }
 
     public String getOrderEvaluate() {
@@ -304,6 +314,7 @@ public class OrderSimple implements Parcelable {
         dest.writeDouble(this.OrderSum);
         dest.writeDouble(this.Freight);
         dest.writeInt(this.OrderState);
+        dest.writeString(this.OrderMemo);
         dest.writeString(this.OrderEvaluate);
         dest.writeString(this.AdminReply);
         dest.writeString(this.DealSubmitTimeStr);
@@ -336,6 +347,7 @@ public class OrderSimple implements Parcelable {
         this.OrderSum = in.readDouble();
         this.Freight = in.readDouble();
         this.OrderState = in.readInt();
+        this.OrderMemo = in.readString();
         this.OrderEvaluate = in.readString();
         this.AdminReply = in.readString();
         this.DealSubmitTimeStr = in.readString();

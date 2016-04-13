@@ -46,9 +46,6 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
-import rx.Observable;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-3-9.

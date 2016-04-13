@@ -16,44 +16,13 @@ import org.greenrobot.eventbus.EventBus;
  */
 public abstract class BaseLocationActivity extends BaseActivity {
     // 定位相关
-    public LocationClient mLocationClient = null;
-    public BDLocationListener myListener = new MyLocationListener();
+    protected LocationClient mLocationClient = null;
+    protected BDLocationListener locationListener;
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initLocation();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mLocationClient.start();
-        Logger.d("定位开始了");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mLocationClient.stop();
-        Logger.d("定位结束了");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mLocationClient.isStarted())
-            mLocationClient.stop();
-        mLocationClient.unRegisterLocationListener(myListener);
-        mLocationClient = null;
-        myListener = null;
-        Logger.d("定位释放了");
-    }
-
-    private void initLocation() {
+    protected void initLocation() {
         mLocationClient = new LocationClient(getApplicationContext()); // 声明LocationClient类
-        mLocationClient.registerLocationListener(myListener); // 注册监听函数
+        mLocationClient.registerLocationListener(locationListener); // 注册监听函数
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");// 可选，默认gcj02，设置返回的定位结果坐标系
@@ -61,10 +30,10 @@ public abstract class BaseLocationActivity extends BaseActivity {
         option.setScanSpan(span);// 可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);// 可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);// 可选，默认false,设置是否使用gps
-        option.setLocationNotify(true);//
+//        option.setLocationNotify(true);//
         // 可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
         option.setIsNeedLocationDescribe(true);// 可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-        //option.setIsNeedLocationPoiList(true);//
+//        option.setIsNeedLocationPoiList(true);//
         // 可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         // option.setIgnoreKillProcess(false);//
         // 可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
@@ -73,6 +42,46 @@ public abstract class BaseLocationActivity extends BaseActivity {
         //option.setEnableSimulateGps(false);// 可选，默认false，设置是否需要过滤gps仿真结果，默认需要
         mLocationClient.setLocOption(option);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        locationListener = new MyLocationListener();
+        initLocation();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mLocationClient != null) {
+            mLocationClient.start();
+            Logger.d("定位开始了");
+        }
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mLocationClient != null) {
+            mLocationClient.stop();
+            Logger.d("定位结束了");
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLocationClient != null) {
+            if (mLocationClient.isStarted())
+                mLocationClient.stop();
+            mLocationClient.unRegisterLocationListener(locationListener);
+            mLocationClient = null;
+            locationListener = null;
+            Logger.d("定位释放了");
+        }
+    }
+
 
     public class MyLocationListener implements BDLocationListener {
 

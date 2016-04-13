@@ -85,6 +85,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
         manager = new GridLayoutManager(getContext(), 3);
         binding.sortList.setLayoutManager(manager);
         storeStyleHomeViewModel.queryProductSort();
+//________________________________________________________
         StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter();
         binding.viewPager.setAdapter(storeStyleHomeTopAdapter);
         binding.tab.setViewPager(binding.viewPager);

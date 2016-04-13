@@ -15,6 +15,7 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.OrderSubmitBody;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
+import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -65,6 +66,7 @@ public class ConfirmOrderViewModel {
                     public void onWebReturnSucess(Integer orderId) {
                         confirmOrderActivity.clearShopCart();
                         EventBus.getDefault().post(new ConfirmOrderSuccessEvent());
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
                         confirmOrderActivity.navigateToSuccess(orderId);
                     }
 

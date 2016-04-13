@@ -37,7 +37,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductAdapte
 
     @Override
     public int getItemCount() {
-        return null == shopCartItems ? 0 : shopCartItems.size();
+        return null == shopCartItems ? 0 : (shopCartItems.size() > 4 ? 4 : shopCartItems.size());
     }
 
     public class OrderProductViewHolder extends AutoBindingViewHolder<ItemOrdersimpleBinding, ShopCartItem> {

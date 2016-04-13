@@ -5,8 +5,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.di.AppComponent;
@@ -24,6 +27,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -80,7 +85,6 @@ public class MainAplication extends Application {
     }
 
 
-
     private void initOkHttpUtil() {
         if (BuildConfig.DEBUG)
             OkHttpUtils.getInstance().debug("pifalao");
@@ -123,7 +127,17 @@ public class MainAplication extends Application {
     }
 
     private void initFresco() {
-        Fresco.initialize(this);
+        if (BuildConfig.DEBUG) {
+            Set<RequestListener> requestListeners = new HashSet<>();
+            requestListeners.add(new RequestLoggingListener());
+            ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                    .setRequestListeners(requestListeners)
+                    .build();
+            FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+            Fresco.initialize(this, config);
+        } else {
+            Fresco.initialize(this);
+        }
         Logger.d("Fresco初始化完成");
     }
 

@@ -184,6 +184,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/padding_big"
                             android:text="（剩余3小时24分钟）"
+                            android:visibility="gone"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_normal"
                             android:textStyle="bold" />

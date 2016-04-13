@@ -21,6 +21,7 @@ import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.MainTab;
+import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.LoginCookieTimeoutEvent;
 import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
@@ -186,6 +187,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
             mainActivityViewModel.queryUserUnReadInfo();
         }
     }
+
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onShopCartChangeEvent(ShopCartChangeEvent event) {
