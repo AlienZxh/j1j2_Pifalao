@@ -4,6 +4,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="com.j1j2.common.util.StringUtils" />
 
         <variable
@@ -99,7 +100,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="@{coupon.ExpiryDateStr.contains(&quot;9999&quot;)?&quot;不限时间&quot;:coupon.ExpiryDateStr.substring(0,10)}"
+                    android:text="@{coupon.ExpiryDateStr==null||coupon.ExpiryDateStr.length()&lt;=0?&quot;不限时间&quot;:coupon.ExpiryDateStr.substring(0,10)}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
             </com.zhy.autolayout.AutoLinearLayout>

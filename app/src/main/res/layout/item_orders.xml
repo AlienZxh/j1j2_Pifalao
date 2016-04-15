@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/icon_shopservice"
-                android:textColor="@color/colorTextaaa"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_biger" />
 
             <TextView

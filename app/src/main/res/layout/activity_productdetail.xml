@@ -6,7 +6,7 @@
     <data>
 
         <import type="com.j1j2.common.util.StringUtils" />
-
+        <import type="android.view.View" />
         <variable
             name="shopCart"
             type="com.j1j2.pifalao.app.ShopCart" />
@@ -138,21 +138,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <View
+                <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/padding_productdetail"
-                    android:background="@drawable/item_products_divider" />
+                    android:layout_height="wrap_content"
+                    android:visibility="@{productDetailViewModel.productDetail.ModuleType==2?View.VISIBLE:View.GONE}"
+                    android:orientation="vertical">
 
-                <include layout="@layout/view_productdetail_ensure" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/padding_productdetail"
+                        android:background="@drawable/item_products_divider" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/padding_productdetail"
-                    android:background="@drawable/item_products_divider" />
+                    <include layout="@layout/view_productdetail_ensure" />
 
-                <include
-                    layout="@layout/view_productdetail_show"
-                    bind:array="@{productDetailViewModel.array}" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/padding_productdetail"
+                        android:background="@drawable/item_products_divider" />
+
+                    <include
+                        layout="@layout/view_productdetail_show"
+                        bind:array="@{productDetailViewModel.array}" />
+                </com.zhy.autolayout.AutoLinearLayout>
 
                 <View
                     android:layout_width="match_parent"

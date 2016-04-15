@@ -178,8 +178,7 @@ public class MainAplication extends Application {
         releaseUserComponent();
         userLoginPreference.setIsAutoLogin(false)
                 .removeLoginCookie()
-                .removeUserInfo()
-                .removePassWord();
+                .removeUserInfo();
     }
 
 }

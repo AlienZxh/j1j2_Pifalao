@@ -103,17 +103,20 @@ public class CatServicePointActivity extends BaseMapActivity implements View.OnC
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         BDLocation location = event.getLocation();
-        // 地图显示我的位置
-        MyLocationData locData = new MyLocationData.Builder()
-                .accuracy(location.getRadius())// 定位精度
-                .direction(100)// GPS定位时方向角度,顺时针0-360
-                .latitude(location.getLatitude())// 百度纬度坐标
-                .longitude(location.getLongitude())// 百度经度坐标
-                .speed(location.getSpeed())// GPS定位时速度
-                .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
-                .build();
-        if (mBaiduMap != null)
-            mBaiduMap.setMyLocationData(locData);
+        if (isLocationSuccess(location)) {
+            // 地图显示我的位置
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())// 定位精度
+                    .direction(100)// GPS定位时方向角度,顺时针0-360
+                    .latitude(location.getLatitude())// 百度纬度坐标
+                    .longitude(location.getLongitude())// 百度经度坐标
+                    .speed(location.getSpeed())// GPS定位时速度
+                    .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
+                    .build();
+            if (mBaiduMap != null)
+                mBaiduMap.setMyLocationData(locData);
+        }
+
     }
 
     @Override

@@ -15,5 +15,7 @@ import retrofit2.Retrofit;
 @ActivityScope
 @Subcomponent(modules = {IndividualActivityModule.class})
 public interface IndividualActivityComponent {
+
     void inject(IndividualCenterActivity individualCenterActivity);
+
 }

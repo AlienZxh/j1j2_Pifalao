@@ -138,16 +138,16 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetGeoCo
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         BDLocation location = event.getLocation();
-        if (location == null)
-            return;
-        refreshMyLocation(location);
-        if (isFirst) {
-            toMayLocation(location);
-            isFirst = false;
+        if (isLocationSuccess(location)) {
+            refreshMyLocation(location);
+            if (isFirst) {
+                toMayLocation(location);
+                isFirst = false;
+            }
+            if (poiSearch == null)
+                return;
+            searchNearby(location);
         }
-        if (poiSearch == null)
-            return;
-        searchNearby(location);
     }
 
     public void searchNearby(BDLocation location) {

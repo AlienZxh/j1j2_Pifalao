@@ -68,7 +68,7 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
                 toolbarTitle.set("注册成功");
                 message.set("恭喜您注册成功！");
                 binding.cancelBtn.setVisibility(View.GONE);
-                confirmBtnStr.set("进入仓库免费试用90天");
+                confirmBtnStr.set("进入仓库");
                 break;
         }
     }

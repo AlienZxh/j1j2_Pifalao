@@ -26,6 +26,7 @@ import com.j1j2.pifalao.databinding.ActivityProductsBinding;
 import com.j1j2.pifalao.databinding.ViewProductsAddBinding;
 import com.j1j2.pifalao.feature.productdetail.unit.ProductDetailUnitAdapter;
 import com.j1j2.pifalao.feature.products.di.ProductsModule;
+import com.litesuits.common.utils.PackageUtil;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
@@ -58,7 +59,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Arg
     @Required(true)
-    Module module;
+    public Module module;
     @Arg
     @Required(true)
     int activityType;

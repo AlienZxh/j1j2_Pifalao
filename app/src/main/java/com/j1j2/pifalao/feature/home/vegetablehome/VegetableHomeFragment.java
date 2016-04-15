@@ -57,7 +57,7 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
     FragmentVegetablehomeBinding binding;
 
     @Arg
-    Module module;
+    public Module module;
 
     @Inject
     VegetableHomeViewModel vegetableHomeViewModel;

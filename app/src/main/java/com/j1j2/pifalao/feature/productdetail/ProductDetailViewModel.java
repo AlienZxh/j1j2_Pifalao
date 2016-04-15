@@ -202,6 +202,7 @@ public class ProductDetailViewModel {
                 });
     }
 
+
     public ProductDetailActivity getProductDetailActivity() {
         return productDetailActivity;
     }

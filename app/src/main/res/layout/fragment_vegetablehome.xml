@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.j1j2.pifalao.app.Constant" />
+
         <variable
             name="vegetableHomeViewModel"
             type="com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeViewModel" />
@@ -108,8 +110,8 @@
                         android:layout_below="@id/toolbar"
                         bind:hour="@{vegetableHomeViewModel.hour}"
                         bind:isLogin="@{vegetableHomeViewModel.vegetableHomeFragment.isLogin}"
-                        bind:isVisible="@{1==1}"
                         bind:minute="@{vegetableHomeViewModel.minute}"
+                        bind:module="@{vegetableHomeViewModel.vegetableHomeFragment.module}"
                         bind:second="@{vegetableHomeViewModel.second}" />
 
                     <com.zhy.autolayout.AutoLinearLayout
@@ -184,10 +186,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/padding_big"
                             android:text="（剩余3小时24分钟）"
-                            android:visibility="gone"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_normal"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:visibility="gone" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
                     <android.support.v7.widget.RecyclerView

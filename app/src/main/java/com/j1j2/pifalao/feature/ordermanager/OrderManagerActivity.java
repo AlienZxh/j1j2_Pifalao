@@ -37,6 +37,7 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        orderManagerViewModel.queryOfflineOrders();
         orderManagerViewModel.queryOrderStatistics();
     }
 
@@ -56,6 +57,8 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_INVALID);
         } else if (v == binding.allOrder) {
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_ALL);
+        } else if (v == binding.offLineOrder) {
+            navigate.navigateToOfflineOrder(this, null, false);
         }
     }
 

@@ -150,7 +150,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="180px"
                     android:gravity="center_vertical"
-                    android:text="@{orderProductSimple.activityType==1?&quot;销量：&quot;:&quot;实际发货：&quot;}"
+                    android:text="@{orderProductSimple.activityType==1?&quot;销量：&quot;:&quot;&quot;}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 
@@ -158,7 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="@{@{orderProductSimple.activityType==1?(&quot;&quot;+orderProductSimple.Sells):(&quot;&quot;+orderProductSimple.ActualDelivery)}}"
+                    android:text="@{@{orderProductSimple.activityType==1?(&quot;&quot;+orderProductSimple.Sells):(&quot;&quot;)}}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 

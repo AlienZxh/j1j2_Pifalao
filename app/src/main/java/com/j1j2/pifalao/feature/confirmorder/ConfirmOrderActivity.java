@@ -12,6 +12,7 @@ import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.DeliveryServiceTime;
 import com.j1j2.data.model.FreightType;
+import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -56,6 +57,8 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     @Arg(serializer = ParcelListSerializer.class)
     List<ShopCartItem> shopCartItems;
 
+    public Module module;
+
     @Inject
     ConfirmOrderViewModel confirmOrderViewModel;
 
@@ -79,10 +82,12 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_confirmorder);
         binding.setShopCart(shopCart);
         binding.setConfirmOrderViewModel(confirmOrderViewModel);
+        module = userRelativePreference.getSelectedModule(null);
     }
 
     @Override
     protected void initViews() {
+        //___________________________________________________________
         dialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_deliverytime_picker, null, false);
         timeDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
                 .setCancelable(true)
@@ -93,14 +98,14 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
                 .create();
         dialogBinding.timeickerCancel.setOnClickListener(this);
         dialogBinding.timeickerConFirm.setOnClickListener(this);
-
+        //__________________________________________________________
+        confirmOrderViewModel.CountDown(moduleId);
         //___________________________________
         binding.orderProductList.setLayoutManager(new GridLayoutManager(this, 4));
         OrderProductAdapter orderProductAdapter = new OrderProductAdapter(shopCartItems);
         binding.orderProductList.setAdapter(orderProductAdapter);
         //_______________________________
         confirmOrderViewModel.queryFreightType(moduleId);
-
     }
 
     @Override

@@ -66,13 +66,12 @@
                     android:textSize="@dimen/icon_normal" />
             </com.zhy.autolayout.AutoRelativeLayout>
 
-
             <include
                 layout="@layout/view_deliverytime"
                 bind:hour="@{productViewModel.hour}"
                 bind:isLogin="@{productViewModel.productsActivity.isLogin}"
-                bind:isVisible="@{1==1}"
                 bind:minute="@{productViewModel.minute}"
+                bind:module="@{productViewModel.productsActivity.module}"
                 bind:second="@{productViewModel.second}" />
 
             <com.malinskiy.superrecyclerview.SuperRecyclerView

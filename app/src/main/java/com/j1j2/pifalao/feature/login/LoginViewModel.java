@@ -53,12 +53,11 @@ public class LoginViewModel {
                         MainAplication.get(loginActivity).login(user);
                         if (isAutoLogin) {
                             userLoginPreference.setIsAutoLogin(true);
-                            userLoginPreference.setUserName(username);
-                            userLoginPreference.setPassWord(password);
                         } else {
-                            userLoginPreference.setUserName(username);
-                            userLoginPreference.removeIsAutoLogin().removePassWord();
+                            userLoginPreference.removeIsAutoLogin();
                         }
+                        userLoginPreference.setUserName(username);
+                        userLoginPreference.setPassWord(password);
                         EventBus.getDefault().postSticky(new LogStateEvent(true));
                         Toast.makeText(loginActivity.getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                         loginActivity.finish();

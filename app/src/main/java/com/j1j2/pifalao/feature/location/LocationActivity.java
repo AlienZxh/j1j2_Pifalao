@@ -167,8 +167,13 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         BDLocation location = event.getLocation();
-        locationViewModel.onCreate(location);
-        moveToMyLocation(location);
+        if (isLocationSuccess(location)) {
+            locationViewModel.onCreate(location);
+            moveToMyLocation(location);
+        } else {
+            locationViewModel.onLocationErrorCreate();
+        }
+
     }
 
     public void moveToMyLocation(BDLocation location) {

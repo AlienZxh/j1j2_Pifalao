@@ -176,4 +176,9 @@ public class StringUtils {
         result = freightType.getDliveryTimeSegement().substring(0, 5) + "-" + freightType.getDliveryTimeSegement().substring(freightType.getDliveryTimeSegement().length() - 5, freightType.getDliveryTimeSegement().length());
         return result;
     }
+
+    public static CharSequence getUserBalanceStr(double price) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
+        return "" + df.format(Math.abs(price));
+    }
 }

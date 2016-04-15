@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -63,6 +64,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <include
+                    layout="@layout/view_deliverytime"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/content_height_normal"
+                    android:layout_below="@id/toolbar"
+                    bind:freight="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.FreightTypeDetail}"
+                    bind:hour="@{confirmOrderViewModel.hour}"
+                    bind:isLogin="@{true}"
+                    bind:minute="@{confirmOrderViewModel.minute}"
+                    bind:module="@{confirmOrderViewModel.confirmOrderActivity.module}"
+                    bind:second="@{confirmOrderViewModel.second}" />
 
                 <View
                     android:layout_width="match_parent"

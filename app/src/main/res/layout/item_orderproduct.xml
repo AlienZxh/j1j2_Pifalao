@@ -10,19 +10,18 @@
         <import type="android.net.Uri" />
 
         <variable
-            name="orderProductDetail"
-            type="com.j1j2.data.model.OrderProductDetail" />
+            name="urlStr"
+            type="String" />
     </data>
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="@dimen/content_height_biger"
         android:layout_height="@dimen/content_height_biger"
         android:layout_centerVertical="true"
-        app:imageURI="@{Uri.parse(orderProductDetail.ThumbImgPath??@string/text_empty)}"
+        app:imageURI="@{Uri.parse(urlStr??@string/text_empty)}"
         fresco:failureImage="@drawable/loadimg_error"
         fresco:placeholderImage="@drawable/loadimg_loading"
         fresco:roundedCornerRadius="5dp"
         fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-        fresco:roundingBorderWidth="1px"
-         />
+        fresco:roundingBorderWidth="1px" />
 </layout>

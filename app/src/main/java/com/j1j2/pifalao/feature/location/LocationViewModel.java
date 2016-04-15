@@ -52,6 +52,38 @@ public class LocationViewModel {
     }
 
 
+    public void onLocationErrorCreate() {
+        servicePointApi.queryCityDistric(city.getPCCId())
+                .compose(locationActivity.<WebReturn<List<City>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Action1<WebReturn<List<City>>>() {
+                    @Override
+                    public void call(WebReturn<List<City>> listWebReturn) {
+                        if (districts.size() > 0)
+                            districts.clear();
+                        districts.addAll(listWebReturn.getDetail());
+                        locationDistrictAdapter.notifyDataSetChanged();
+                    }
+                }).observeOn(Schedulers.io())
+                .flatMap(new Func1<WebReturn<List<City>>, Observable<WebReturn<List<ServicePoint>>>>() {
+                    @Override
+                    public Observable<WebReturn<List<ServicePoint>>> call(WebReturn<List<City>> listWebReturn) {
+                        return servicePointApi.queryServicePointInCity(city.getPCCId());
+
+                    }
+                })
+                .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
+                    @Override
+                    public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
+                        super.onNext(listWebReturn);
+                        refreshServicePointData(null, listWebReturn.getDetail());
+                    }
+                });
+    }
+
     public void onCreate(final BDLocation location) {
         servicePointApi.queryCityDistric(city.getPCCId())
                 .compose(locationActivity.<WebReturn<List<City>>>bindToLifecycle())
@@ -107,7 +139,6 @@ public class LocationViewModel {
     public void queryNearByServicePoint(final BDLocation location) {
         LatLng northeast = locationActivity.getNortheast(location);
         LatLng southwest = locationActivity.getSouthwest(location);
-
         servicePointApi.queryServicePointWithOutDistanceInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude)
                 .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -122,12 +153,13 @@ public class LocationViewModel {
     }
 
     private void refreshServicePointData(BDLocation location, List<ServicePoint> mServicePoints) {
-
-        LatLng mPoint = new LatLng(location.getLatitude(), location.getLongitude());
-        LatLng mServicePoint = null;
-        for (ServicePoint servicePoint : mServicePoints) {
-            mServicePoint = new LatLng(servicePoint.getLat(), servicePoint.getLng());
-            servicePoint.setDistance(DistanceUtil.getDistance(mPoint, mServicePoint));
+        if (location != null) {
+            LatLng mPoint = new LatLng(location.getLatitude(), location.getLongitude());
+            LatLng mServicePoint = null;
+            for (ServicePoint servicePoint : mServicePoints) {
+                mServicePoint = new LatLng(servicePoint.getLat(), servicePoint.getLng());
+                servicePoint.setDistance(DistanceUtil.getDistance(mPoint, mServicePoint));
+            }
         }
         Collections.sort(mServicePoints, new Comparator<ServicePoint>() {
             @Override

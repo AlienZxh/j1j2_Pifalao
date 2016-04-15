@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="android.view.View" />
+
+        <import type="android.view.View.OnClickListener" />
+
+        <import type="com.j1j2.pifalao.app.Constant" />
+
+        <variable
+            name="onClick"
+            type="OnClickListener" />
+
+        <variable
+            name="offlineOrderSimple"
+            type="com.j1j2.data.model.OfflineOrderSimple" />
+    </data>
+
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{onClick}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="线下订单详情"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.j1j2.common.view.autowidget.AutoNestedScrolling
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_productdetail"
+                    android:background="@drawable/item_products_divider" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/padding_noraml"
+                    android:paddingTop="@dimen/padding_noraml">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/padding_noraml"
+                        android:paddingLeft="@dimen/padding_noraml">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="订单状态："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="已完成"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginBottom="@dimen/padding_small"
+                        android:background="@drawable/dash_divider"
+                        android:layerType="software" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="配送方式："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="店内消费"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="支付方式："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="现金支付"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="实收金额："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{&quot;&quot;+offlineOrderSimple.PayAmount}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="收银找零："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{&quot;&quot;+offlineOrderSimple.Change}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="账户存零："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{&quot;&quot;+offlineOrderSimple.SaveBalance}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="奖励积分："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="@{&quot;&quot;+offlineOrderSimple.Point}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="订单编号："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="@{&quot;&quot;+offlineOrderSimple.OrderNO}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="8px"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingTop="8px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="消费时间："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:text="@{&quot;&quot;+offlineOrderSimple.SubmitTimeStr}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_productdetail"
+                    android:background="@drawable/item_products_divider" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="76px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/padding_noraml"
+                        android:paddingRight="@dimen/padding_noraml">
+
+                        <TextView
+                            fontPath="iconfont/iconfont.ttf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/icon_shopservice"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_biger" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="@dimen/padding_noraml"
+                            android:text="@{offlineOrderSimple.ShopName}"
+                            android:textColor="@color/colorText2a2a2a"
+                            android:textSize="@dimen/text_normal"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{StringUtils.getOrdersQuantity(offlineOrderSimple.ProductDetails==null?0:offlineOrderSimple.ProductDetails.size())}"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@drawable/dash_divider"
+                        android:layerType="software" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/orderProductList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_productdetail"
+                    android:background="@drawable/item_products_divider" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/padding_noraml">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="64px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6px"
+                        android:paddingRight="@dimen/padding_noraml"
+                        android:paddingTop="6px">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="商品合计"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="40px"
+                            android:background="@drawable/orange_conner_tag_bg"
+                            android:gravity="right"
+                            android:paddingLeft="4px"
+                            android:paddingRight="4px"
+                            android:text="@{&quot;已节省：&quot;+offlineOrderSimple.OrderDiscount+&quot;元&quot;}"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@{&quot;￥&quot;+offlineOrderSimple.Amount}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="64px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="6px"
+                        android:paddingRight="@dimen/padding_noraml"
+                        android:paddingTop="6px">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{offlineOrderSimple.UseBalance-offlineOrderSimple.SaveBalance>0?&quot;使用余额&quot;:&quot;存入余额&quot;}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="40px"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="@{offlineOrderSimple.UseBalance-offlineOrderSimple.SaveBalance>0?&quot;-&quot;:&quot;+&quot;}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_biger" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@{&quot;￥&quot;+StringUtils.getUserBalanceStr(offlineOrderSimple.UseBalance-offlineOrderSimple.SaveBalance)}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_big" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_1px"
+                        android:background="@color/colorGrayEDEDED" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="76px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="12px"
+                        android:paddingRight="@dimen/padding_noraml"
+                        android:paddingTop="12px">
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="40px"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="总金额："
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="@{&quot;￥&quot;+StringUtils.getPriceStr(offlineOrderSimple.Amount+offlineOrderSimple.SaveBalance-offlineOrderSimple.UseBalance)}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_biger"
+                            android:textStyle="bold" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_1px"
+                    android:background="@color/colorGrayEDEDED" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="20px" />
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.j1j2.common.view.autowidget.AutoNestedScrolling>
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</layout>

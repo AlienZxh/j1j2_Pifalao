@@ -82,54 +82,78 @@ public abstract class BaseLocationActivity extends BaseActivity {
         }
     }
 
+    protected boolean isLocationSuccess(BDLocation location) {
+        if (null == location)
+            return false;
+        switch (location.getLocType()) {
+            case BDLocation.TypeGpsLocation:
+            case BDLocation.TypeNetWorkLocation:
+            case BDLocation.TypeOffLineLocation:
+            case BDLocation.TypeCacheLocation:
+                return true;
+            case BDLocation.TypeServerError:
+                Logger.d("onReceiveLocation:服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
+                return false;
+            case BDLocation.TypeNetWorkException:
+                Logger.d("onReceiveLocation:网络不通导致定位失败，请检查网络是否通畅");
+                return false;
+            case BDLocation.TypeCriteriaException:
+                Logger.d("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+                return false;
+        }
+        return false;
+    }
+
 
     public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
             // Receive Location
-            if (location == null) {
-                return;
-            }
-            //        StringBuffer sb = new StringBuffer(256);
-//        sb.append("time : ");
-//        sb.append(location.getTime());
-//        sb.append("\nerror code : ");
-//        sb.append(location.getLocType());
-//        sb.append("\nlatitude : ");
-//        sb.append(location.getLatitude());
-//        sb.append("\nlontitude : ");
-//        sb.append(location.getLongitude());
-//        sb.append("\nradius : ");
-//        sb.append(location.getRadius());
-//        sb.append("\naddr : ");
-//        sb.append(location.getLocationDescribe());
-//        sb.append("\nProvince : ");
-//        sb.append(location.getProvince());
-//        sb.append("\ncity : ");
-//        sb.append(location.getCity());
-//        sb.append("\nDistrict : ");
-//        sb.append(location.getDistrict());
-//        Logger.d(sb.toString());
-            switch (location.getLocType()) {
-                case BDLocation.TypeGpsLocation:
-                case BDLocation.TypeNetWorkLocation:
-                case BDLocation.TypeOffLineLocation:
-                case BDLocation.TypeCacheLocation:
-                    EventBus.getDefault().postSticky(new LocationEvent(location));
-//                    Logger.d("成功发送位置信息");
-                    break;
-                case BDLocation.TypeServerError:
-                    Logger.d("onReceiveLocation:服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-                    break;
-                case BDLocation.TypeNetWorkException:
-                    Logger.d("onReceiveLocation:网络不通导致定位失败，请检查网络是否通畅");
-                    break;
-                case BDLocation.TypeCriteriaException:
-                    Logger.d("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-                    break;
-            }
+            EventBus.getDefault().postSticky(new LocationEvent(location));
+//            if (location == null) {
+//                return;
+//            }
+//            //        StringBuffer sb = new StringBuffer(256);
+////        sb.append("time : ");
+////        sb.append(location.getTime());
+////        sb.append("\nerror code : ");
+////        sb.append(location.getLocType());
+////        sb.append("\nlatitude : ");
+////        sb.append(location.getLatitude());
+////        sb.append("\nlontitude : ");
+////        sb.append(location.getLongitude());
+////        sb.append("\nradius : ");
+////        sb.append(location.getRadius());
+////        sb.append("\naddr : ");
+////        sb.append(location.getLocationDescribe());
+////        sb.append("\nProvince : ");
+////        sb.append(location.getProvince());
+////        sb.append("\ncity : ");
+////        sb.append(location.getCity());
+////        sb.append("\nDistrict : ");
+////        sb.append(location.getDistrict());
+////        Logger.d(sb.toString());
+//            switch (location.getLocType()) {
+//                case BDLocation.TypeGpsLocation:
+//                case BDLocation.TypeNetWorkLocation:
+//                case BDLocation.TypeOffLineLocation:
+//                case BDLocation.TypeCacheLocation:
+//                    EventBus.getDefault().postSticky(new LocationEvent(location));
+////                    Logger.d("成功发送位置信息");
+//                    break;
+//                case BDLocation.TypeServerError:
+//                    Logger.d("onReceiveLocation:服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
+//                    break;
+//                case BDLocation.TypeNetWorkException:
+//                    Logger.d("onReceiveLocation:网络不通导致定位失败，请检查网络是否通畅");
+//                    break;
+//                case BDLocation.TypeCriteriaException:
+//                    Logger.d("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
+//                    break;
+//            }
         }
     }
 
 }
+

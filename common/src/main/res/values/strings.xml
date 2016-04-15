@@ -76,6 +76,7 @@
     <string name="icon_collectmanager">&#xe6b5;</string>
     <string name="icon_accountmanager">&#xe6ba;</string>
 
+    <string name="icon_order_offline">&#xe6ee;</string>
     <string name="icon_order_submit">&#xe6b4;</string>
     <string name="icon_order_excuting">&#xe6bb;</string>
     <string name="icon_order_clientwaitforrecevie">&#xe6b4;</string>
@@ -138,4 +139,6 @@
     <string name="icon_delivery_tag">&#xe6d9;</string>
     <string name="icon_pickbyself_tag">&#xe6da;</string>
     <string name="icon_online_tag">&#xe6db;</string>
+
+
 </resources>

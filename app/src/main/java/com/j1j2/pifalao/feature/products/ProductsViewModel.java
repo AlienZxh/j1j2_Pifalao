@@ -190,13 +190,14 @@ public class ProductsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
+                        Toast.makeText(productsActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                         productsActivity.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productsActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(productsActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

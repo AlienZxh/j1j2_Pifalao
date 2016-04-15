@@ -46,7 +46,63 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_productdetail"
+            android:layout_height="@dimen/padding_noraml"
+            android:background="@drawable/item_products_divider" />
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/offLineOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffffdb"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_big"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_big"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_offline"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="实体店消费记录"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.offlineOrderCount}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_noraml"
             android:background="@drawable/item_products_divider" />
 
 

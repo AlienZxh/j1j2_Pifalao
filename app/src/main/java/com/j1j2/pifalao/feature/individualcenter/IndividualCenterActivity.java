@@ -83,7 +83,6 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLogStateChangeEvent(LogStateEvent event) {
-
         if (event.isLogin()) {
 
         } else {
@@ -104,7 +103,7 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Override
     public void navigateToAddressManager() {
-        navigate.navigateToAddressManager(this, null, false,false);
+        navigate.navigateToAddressManager(this, null, false, false);
     }
 
     @Override

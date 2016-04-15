@@ -9,6 +9,7 @@ import com.j1j2.data.model.Address;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.Module;
+import com.j1j2.data.model.OfflineOrderSimple;
 import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.ProductSort;
@@ -570,6 +571,45 @@ public class Navigate {
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
             ActivityCompat.startActivity(context, Bundler.moreHomeActivity(modules).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToVipHome(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.vipHomeActivity().start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.vipHomeActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOfflineOrder(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.offlineOrdersActivity().start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.offlineOrdersActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOfflineOrderDetail(Activity context, ActivityOptionsCompat options, boolean isFinish, OfflineOrderSimple offlineOrderSimple) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.offlineOrderDetailActivity(offlineOrderSimple).start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.offlineOrderDetailActivity(offlineOrderSimple).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

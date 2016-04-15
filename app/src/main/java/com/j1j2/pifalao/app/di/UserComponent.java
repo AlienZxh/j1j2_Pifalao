@@ -22,12 +22,17 @@ import com.j1j2.pifalao.feature.coupons.di.CouponsComponent;
 import com.j1j2.pifalao.feature.coupons.di.CouponsModule;
 import com.j1j2.pifalao.feature.couponselect.di.CouponSelectComponent;
 import com.j1j2.pifalao.feature.couponselect.di.CouponSelectModule;
+import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
+import com.j1j2.pifalao.feature.home.viphome.di.VipHomeComponent;
+import com.j1j2.pifalao.feature.home.viphome.di.VipHomeModule;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityComponent;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityModule;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterComponent;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.pifalao.feature.messages.di.MessagesComponent;
 import com.j1j2.pifalao.feature.messages.di.MessagesModule;
+import com.j1j2.pifalao.feature.offlineorders.di.OfflineOrdersComponent;
+import com.j1j2.pifalao.feature.offlineorders.di.OfflineOrdersModule;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailComponent;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailModule;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerComponent;
@@ -61,6 +66,8 @@ public interface UserComponent {
     ShopCart shopCart();
 
     UnReadInfoManager unReadInfoManager();
+
+    IndividualActivityComponent plus(IndividualActivityModule individualActivityModule);
 
     IndividualCenterComponent plus(IndividualCenterModule individualCenterModule);
 
@@ -100,5 +107,7 @@ public interface UserComponent {
 
     CouponSelectComponent plus(CouponSelectModule couponSelectModule);
 
-    IndividualActivityComponent plus(IndividualActivityModule individualActivityModule);
+    VipHomeComponent plus(VipHomeModule vipHomeModule);
+
+    OfflineOrdersComponent plus(OfflineOrdersModule offlineOrdersModule);
 }

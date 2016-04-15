@@ -66,8 +66,6 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initViews() {
-
-
         productDetailViewModel.queryProductDetail(mainId);
         productDetailViewModel.queryProductHasBeenCollected(mainId);
     }
