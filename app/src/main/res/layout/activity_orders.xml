@@ -28,6 +28,7 @@
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:background="@drawable/actionbar_btn_bg"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"

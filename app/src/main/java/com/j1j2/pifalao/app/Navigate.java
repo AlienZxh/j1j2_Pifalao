@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 
+import com.baidu.location.BDLocation;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Coupon;
@@ -71,12 +72,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToServicePointActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint) {
+    public void navigateToServicePointActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint, BDLocation location) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.servicePointActivity(servicePoint).start(context);
+            Bundler.servicePointActivity(servicePoint, location).start(context);
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
-            ActivityCompat.startActivity(context, Bundler.servicePointActivity(servicePoint).intent(context),
+            ActivityCompat.startActivity(context, Bundler.servicePointActivity(servicePoint, location).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -292,12 +293,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToCoupons(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module, int couponType, List<Coupon> couponList) {
+    public void navigateToCoupons(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module, int couponType) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.couponsActivity(module, couponType, couponList).start(context);
+            Bundler.couponsActivity(module, couponType).start(context);
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
-            ActivityCompat.startActivity(context, Bundler.couponsActivity(module, couponType, couponList).intent(context),
+            ActivityCompat.startActivity(context, Bundler.couponsActivity(module, couponType).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -610,6 +611,19 @@ public class Navigate {
             context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
             ActivityCompat.startActivity(context, Bundler.offlineOrderDetailActivity(offlineOrderSimple).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToUnsubscribe(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.unsubscribeActivity().start(context);
+            context.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.unsubscribeActivity().intent(context),
                     options.toBundle());
         }
         if (isFinish) {

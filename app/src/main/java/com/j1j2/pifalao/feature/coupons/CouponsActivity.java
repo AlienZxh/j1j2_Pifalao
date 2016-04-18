@@ -38,8 +38,6 @@ public class CouponsActivity extends BaseActivity implements View.OnClickListene
     Module module;
     @Arg
     int couponType;
-    @Arg(serializer = ParcelListSerializer.class)
-    List<Coupon> coupons;
 
     @Override
     protected void initBinding() {
@@ -49,6 +47,10 @@ public class CouponsActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initViews() {
+        couponsViewModel.queryAllCoupons(couponType, module);
+    }
+
+    public void initCoupons(List<Coupon> coupons) {
         CouponsTabAdapter couponsTabAdapter = new CouponsTabAdapter(getSupportFragmentManager(), coupons);
         binding.viewpager.setAdapter(couponsTabAdapter);
         binding.tab.setViewPager(binding.viewpager);

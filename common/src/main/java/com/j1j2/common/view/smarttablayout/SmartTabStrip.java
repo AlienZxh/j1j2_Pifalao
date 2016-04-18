@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.j1j2.common.R;
+import com.zhy.autolayout.AutoLinearLayout;
 
 
 /**
@@ -35,7 +36,7 @@ import com.j1j2.common.R;
  * Forked from Google Samples &gt; SlidingTabsBasic &gt;
  * <a href="https://developer.android.com/samples/SlidingTabsBasic/src/com.example.android.common/view/SlidingTabLayout.html">SlidingTabStrip</a>
  */
-class SmartTabStrip extends LinearLayout {
+class SmartTabStrip extends AutoLinearLayout {
 
   private static final int GRAVITY_BOTTOM = 0;
   private static final int GRAVITY_TOP = 1;

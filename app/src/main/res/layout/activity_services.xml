@@ -40,26 +40,33 @@
                 android:background="@color/colorPrimary"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.zhy.autolayout.AutoLinearLayout
                     android:id="@+id/servicepoint"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/padding_actionbar_btn"
-                    android:text="切换"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_actionbar_btn"
-                    app:OnClickListener="@{onClick}" />
+                    android:background="@drawable/actionbar_btn_bg"
+                    android:orientation="horizontal"
+                    app:OnClickListener="@{onClick}">
 
-                <TextView
-                    fontPath="iconfont/iconfont.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/servicepoint"
-                    android:gravity="center_vertical"
-                    android:text="@string/icon_unfold"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/padding_actionbar_btn"
+                        android:text="切换"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_actionbar_btn" />
+
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingRight="16px"
+                        android:text="@string/icon_unfold"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+                </com.zhy.autolayout.AutoLinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -77,6 +84,7 @@
                     android:layout_width="@dimen/actionbar_height"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
+                    android:background="@drawable/actionbar_btn_bg"
                     android:gravity="center"
                     android:text="@string/icon_mine"
                     android:textColor="@color/colorWhite"
@@ -167,7 +175,9 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/moduleList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="25px" />
             </FrameLayout>
 
         </com.zhy.autolayout.AutoLinearLayout>

@@ -173,8 +173,7 @@
             fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:roundedCornerRadius="5dp"
             fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-            fresco:roundingBorderWidth="1px"
-            />
+            fresco:roundingBorderWidth="1px" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="152px"
@@ -182,7 +181,8 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:background="@color/colorProductBuy"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
 
             <TextView

@@ -2,6 +2,7 @@ package com.j1j2.common.util;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.StrikethroughSpan;
 
 import com.j1j2.data.model.Address;
@@ -99,10 +100,10 @@ public class StringUtils {
         String limit = "";
         switch (coupon.getType()) {
             case 1:
-                limit = "配送费满" + coupon.getCouponValue() + "元可用";
+//                limit = "配送费满" + coupon.getCouponValue() + "元可用";
                 return limit;
             case 2:
-                limit = "订单满" + coupon.getConstraints() + "元可用";
+                limit = "(订单满" + coupon.getConstraints() + "元可用)";
                 return limit;
         }
         return limit;
@@ -144,7 +145,12 @@ public class StringUtils {
     public static CharSequence getAddressStr(Address address) {
         if (address == null)
             return "";
-        return address.getAddressSegementF() + address.getAddressSegementS() + address.getAddressSegementT() + address.getAddress();
+        StringBuilder str = new StringBuilder();
+        str.append(address.getAddressSegementF() == null ? "" : address.getAddressSegementF());
+        str.append(address.getAddressSegementS() == null ? "" : address.getAddressSegementS());
+        str.append(address.getAddressSegementT() == null ? "" : address.getAddressSegementT());
+        str.append(address.getAddress() == null ? "" : address.getAddress());
+        return str.toString();
     }
 
     public static CharSequence getProductDetailUnit(List<ProductUnit> productUnits) {

@@ -55,6 +55,7 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_walletmanager);
         binding.setWalletManagerViewModel(walletManagerViewModel);
+        binding.setUser(user);
     }
 
     @Override
@@ -92,13 +93,13 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
         if (v == binding.backBtn)
             onBackPressed();
         if (null != normalCoupons && v == binding.coupon) {
-            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL, normalCoupons);
+            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
         }
         if (null != deliveryCoupons && v == binding.deliverycoupon) {
-            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_DELIVERY, deliveryCoupons);
+            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_DELIVERY);
         }
         if (null != goodsCoupons && v == binding.goodscoupon) {
-            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_GOODS, goodsCoupons);
+            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_GOODS);
         }
     }
 }

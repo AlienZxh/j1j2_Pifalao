@@ -20,10 +20,12 @@ public class OrderProductListAdapter extends RecyclerView.Adapter<OrderProductLi
 
     private List<OrderProductSimple> orderProductSimples;
     private ShopCart shopCart;
+    private int moduleType;
 
-    public OrderProductListAdapter(List<OrderProductSimple> orderProductSimples, ShopCart shopCart) {
+    public OrderProductListAdapter(List<OrderProductSimple> orderProductSimples, ShopCart shopCart, int moduleType) {
         this.orderProductSimples = orderProductSimples;
         this.shopCart = shopCart;
+        this.moduleType = moduleType;
     }
 
     public interface OnItemClickListener {
@@ -67,6 +69,7 @@ public class OrderProductListAdapter extends RecyclerView.Adapter<OrderProductLi
         public void bind(@NonNull final OrderProductSimple data, final int position) {
             binding.setOrderProductSimple(data);
             binding.setShopCart(shopCart);
+            binding.setModuleType(moduleType);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

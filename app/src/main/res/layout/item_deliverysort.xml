@@ -31,7 +31,7 @@
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_locatin_district_height"
+        android:layout_height="@dimen/content_height_biger"
         android:background="@drawable/item_location_district_selector"
         android:gravity="center"
         app:OnClickListener="@{onClick}">

@@ -18,20 +18,33 @@
     <com.j1j2.common.view.autowidget.AutoCardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_item_store_head"
-        android:orientation="horizontal"
+        android:foreground="@drawable/item_store_content_bg"
         app:OnClickListener="@{onClick}"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="3dp"
         app:cardElevation="2px">
 
-        <TextView
+        <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:singleLine="true"
-            android:text="@{productSort.ParentSortId==0?&quot;全部&quot;:productSort.SortName}"
-            android:textColor="@color/colorText333"
-            android:textSize="@dimen/text_normal" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@{productSort.ParentSortId==0?&quot;全部&quot;:productSort.SortName}"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;(&quot;+productSort.ProductCount+&quot;)&quot;}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+        </com.zhy.autolayout.AutoLinearLayout>
     </com.j1j2.common.view.autowidget.AutoCardView>
 </layout>

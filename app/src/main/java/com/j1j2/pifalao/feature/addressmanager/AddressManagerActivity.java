@@ -44,6 +44,8 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     @Arg
     boolean isSelect;
 
+    AlertDialog deleteAddressDialog;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_adressmanager);
@@ -66,6 +68,8 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     @Override
     protected void initViews() {
         addressManagerViewModel.queryAddress();
+        //_____________________________________________________
+
     }
 
     @Override
@@ -92,7 +96,12 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
 
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (deleteAddressDialog != null && deleteAddressDialog.isShowing())
+            deleteAddressDialog.cancel();
+    }
 
     @Override
     public void onDefaultBtnClickListener(View v, Address address, int position) {
@@ -110,19 +119,20 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     }
 
     public void showDeleteDialog(final int addressId, final int position) {
-        new AlertDialog.Builder(this)
+        deleteAddressDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setNegativeButton("取消", null)
-                .setMessage("确认删除该地址吗吗？")
+                .setMessage("确认删除该地址吗？")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         addressManagerViewModel.deleteAddress(addressId, position);
                     }
                 })
-                .create()
-                .show();
+                .create();
+        deleteAddressDialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

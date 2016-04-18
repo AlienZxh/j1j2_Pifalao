@@ -20,7 +20,9 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_great"
+        android:background="@drawable/item_servies_bg"
+        android:paddingTop="25px"
+        android:paddingBottom="25px"
         android:gravity="center"
         android:orientation="vertical"
         app:OnClickListener="@{onClick}">
@@ -54,7 +56,7 @@
                 android:text="@string/icon_service_disable"
                 android:textColor="@color/colorTransparentGray"
                 android:textSize="@dimen/height_services_img"
-                android:visibility="@{module.Subscribed?View.GONE:View.VISIBLE}"
+                android:visibility="gone"
                 app:layout_auto_basewidth="height" />
 
             <TextView
@@ -65,7 +67,7 @@
                 android:text="暂未开通"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_normal"
-                android:visibility="@{module.Subscribed?View.GONE:View.VISIBLE}" />
+                android:visibility="gone" />
         </com.zhy.autolayout.AutoFrameLayout>
 
         <TextView

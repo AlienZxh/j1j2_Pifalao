@@ -23,6 +23,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
+                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal" />
 
@@ -66,6 +67,7 @@
             <TextView
                 android:id="@+id/searchBtn"
                 android:layout_width="130px"
+                android:background="@drawable/actionbar_btn_bg"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
@@ -74,11 +76,23 @@
                 android:textSize="@dimen/text_big" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/mapView"
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="center"
+                android:src="@drawable/address_location" />
+        </com.zhy.autolayout.AutoRelativeLayout>
 
         <View
             android:layout_width="match_parent"

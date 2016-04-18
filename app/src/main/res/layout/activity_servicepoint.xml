@@ -18,8 +18,8 @@
 
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoRelativeLayout
@@ -31,14 +31,15 @@
 
             <TextView
                 android:id="@+id/backBtn"
-                app:onClickListener="@{servicePointViewModel.servicePointActivity}"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
+                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:onClickListener="@{servicePointViewModel.servicePointActivity}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,8 +66,8 @@
                     android:layout_height="@dimen/height_servicepoint_img"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
-                    fresco:failureImage="@drawable/servicepoint_default"
                     app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+servicePointViewModel.servicePoint.getServicePointImg()))}"
+                    fresco:failureImage="@drawable/servicepoint_default"
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px" />
@@ -156,33 +157,53 @@
                     android:background="@drawable/dash_divider"
                     android:layerType="software" />
 
-
-                <com.zhy.autolayout.AutoLinearLayout
-                    android:layout_width="wrap_content"
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
                     android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
                     android:layout_marginRight="@dimen/padding_left_servicepoint_content"
-                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content">
 
-                    <TextView
+                    <com.zhy.autolayout.AutoLinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="14px"
-                        android:gravity="center_vertical"
-                        android:text="服务点地址："
-                        android:textColor="@color/colorText999"
-                        android:textSize="@dimen/text_big" />
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="14px"
+                            android:gravity="center_vertical"
+                            android:text="服务点地址："
+                            android:textColor="@color/colorText999"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{servicePointViewModel.servicePoint.getAddressDetail()}"
+                            android:textColor="@color/colorText2a2a2a"
+                            android:textSize="@dimen/text_biger" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{servicePointViewModel.servicePoint.getAddressDetail()}"
-                        android:textColor="@color/colorText2a2a2a"
-                        android:textSize="@dimen/text_biger" />
-
-                </com.zhy.autolayout.AutoLinearLayout>
+                        android:id="@+id/navigationBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="100px"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/padding_noraml"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/icon_navigation"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/icon_normal"
+                        app:onClickListener="@{servicePointViewModel.servicePointActivity}" />
+                </com.zhy.autolayout.AutoRelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -207,14 +228,14 @@
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:id="@+id/callBtn"
-                app:onClickListener="@{servicePointViewModel.servicePointActivity}"
                 android:layout_width="@dimen/width_servicepoint_bottom_btn"
                 android:layout_height="@dimen/content_height_big"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/padding_biger"
                 android:layout_marginStart="@dimen/padding_biger"
                 android:background="@drawable/green_conner_hollow_btn"
-                android:gravity="center">
+                android:gravity="center"
+                app:onClickListener="@{servicePointViewModel.servicePointActivity}">
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"
@@ -237,7 +258,6 @@
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:id="@+id/inBtn"
-                app:onClickListener="@{servicePointViewModel.servicePointActivity}"
                 android:layout_width="@dimen/width_servicepoint_bottom_btn"
                 android:layout_height="@dimen/content_height_big"
                 android:layout_alignParentRight="true"
@@ -245,7 +265,8 @@
                 android:layout_marginEnd="@dimen/padding_biger"
                 android:layout_marginRight="@dimen/padding_biger"
                 android:background="@drawable/orange_conner_hollow_btn"
-                android:gravity="center">
+                android:gravity="center"
+                app:onClickListener="@{servicePointViewModel.servicePointActivity}">
 
                 <TextView
                     fontPath="iconfont/iconfont.ttf"

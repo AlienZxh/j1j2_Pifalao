@@ -23,6 +23,7 @@ public interface UserRelativePreference {
     public static final String KEY_SELECTED_SERVICEPOINT = "key_selected_servicepoint";
     public static final String KEY_SELECTED_MODULE = "key_selected_module";
     public static final String KEY_HISTORY_KEY = "key_history_key";
+    public static final String KEY_USER_IMG = "key_user_img";
 
     @KeyByString(KEY_ISFIRST)
     boolean getIsFirst(boolean mDefault);
@@ -85,5 +86,15 @@ public interface UserRelativePreference {
     @KeyByString(KEY_HISTORY_KEY)
     @RemoveMethod
     UserRelativePreference removeHistoryKey();
+
+    @KeyByString(KEY_USER_IMG)
+    String getUserImg(String mDefault);
+
+    @KeyByString(KEY_USER_IMG)
+    UserRelativePreference setUserImg(String imgPaht);
+
+    @KeyByString(KEY_USER_IMG)
+    @RemoveMethod
+    UserRelativePreference removeUserImg();
 
 }

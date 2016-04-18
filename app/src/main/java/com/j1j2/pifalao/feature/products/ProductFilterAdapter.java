@@ -19,7 +19,7 @@ public class ProductFilterAdapter extends BaseAdapter {
 
     private List<String> strings;
     private Context context;
-
+    int[] iconIds = {R.string.icon_filter, R.string.icon_sale_filter, R.string.icon_price_filter, R.string.icon_hot_filter};
 
     public ProductFilterAdapter(List<String> strings, Context context) {
         this.strings = strings;
@@ -45,7 +45,7 @@ public class ProductFilterAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return context.getResources().getString(R.string.icon_filter);
+        return strings.get(position);
     }
 
     @Override
@@ -60,6 +60,7 @@ public class ProductFilterAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_productfilter, parent, false);
+            holder.icon = (TextView) convertView.findViewById(R.id.icon);
             holder.textView = (TextView) convertView.findViewById(R.id.text);
             convertView.setTag(holder);
             //对于listview，注意添加这一行，即可在item上使用高度
@@ -67,11 +68,13 @@ public class ProductFilterAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        holder.icon.setText(context.getText(iconIds[position]));
         holder.textView.setText(strings.get(position));
         return convertView;
     }
 
     public final class ViewHolder {
         public TextView textView;
+        public TextView icon;
     }
 }

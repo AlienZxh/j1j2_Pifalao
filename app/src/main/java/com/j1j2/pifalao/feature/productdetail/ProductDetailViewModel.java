@@ -15,6 +15,7 @@ import com.j1j2.data.model.ProductUnit;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.RemoveUserFavoritesBody;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
@@ -75,8 +76,11 @@ public class ProductDetailViewModel {
                             if (sizeProductImgs.size() == 4)
                                 break;
                         }
+                        productDetailActivity.moduleType = mProductDetail.getModuleType();
                         productDetailActivity.initBanner(sizeProductImgs);
-                        productDetailActivity.initUnitsSelect(mProductDetail);
+                        productDetailActivity.initPrice(mProductDetail);
+                        if (mProductDetail.getModuleType() != Constant.ModuleType.DELIVERY)
+                            productDetailActivity.initUnitsSelect(mProductDetail);
                         productDetailActivity.initBottomViewPager(sizeProductImgs, mProductDetail.getProductUnits().get(0).getProductId(), mProductDetail);
                     }
 

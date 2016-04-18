@@ -69,6 +69,7 @@ public class DeliveryProductsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
+//                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                         deliveryHomeProductsFragment.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
@@ -109,7 +110,7 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void updateShopCart() {
+    public void updateShopCart(final boolean showAnim) {
         shopCartApi.updateShopCart(shopCartItems)
                 .compose(deliveryHomeProductsFragment.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -117,7 +118,8 @@ public class DeliveryProductsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String str) {
-                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+                        if (!showAnim)
+                            Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), str, Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 

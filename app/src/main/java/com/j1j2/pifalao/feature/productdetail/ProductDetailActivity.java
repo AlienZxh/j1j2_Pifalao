@@ -14,6 +14,7 @@ import com.j1j2.data.model.ProductImg;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -22,6 +23,7 @@ import com.j1j2.pifalao.databinding.ActivityProductdetailBinding;
 import com.j1j2.pifalao.feature.main.MainAdapter;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
+import com.j1j2.pifalao.feature.productdetail.price.PoductDetailPriceFragment;
 import com.j1j2.pifalao.feature.productdetail.record.ProductDetailRecordFragment;
 import com.j1j2.pifalao.feature.productdetail.unit.ProductDetailUnitFragment;
 
@@ -42,7 +44,7 @@ import in.workarounds.bundler.annotations.Required;
  * Created by alienzxh on 16-3-16.
  */
 @RequireBundler
-public class ProductDetailActivity extends BaseActivity implements View.OnClickListener, ProductDetailUnitFragment.ProductDetailUnitFragmentListener, ProductDetailRecordFragment.ProductDetailRecordFragmentListener {
+public class ProductDetailActivity extends BaseActivity implements View.OnClickListener, ProductDetailUnitFragment.ProductDetailUnitFragmentListener, PoductDetailPriceFragment.PoductDetailPriceFragmentListener, ProductDetailRecordFragment.ProductDetailRecordFragmentListener {
 
     ActivityProductdetailBinding binding;
 
@@ -52,11 +54,14 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
     @Inject
     ProductDetailViewModel productDetailViewModel;
 
+    PoductDetailPriceFragment productDetailPriceFragment;
     ProductDetailUnitFragment productDetailUnitFragment;
 
     ShopCart shopCart;
 
     ProductDetailComponent productDetailComponent;
+
+    public int moduleType = -1;
 
     @Override
     protected void initBinding() {
@@ -75,6 +80,11 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         binding.viewPager.startAutoScroll(2000);
         binding.viewPager.setInterval(2000);
         binding.tab.setViewPager(binding.viewPager);
+    }
+
+    public void initPrice(ProductDetail productDetail) {
+        productDetailPriceFragment = Bundler.poductDetailPriceFragment(productDetail.getProductUnits(), productDetail.getBaseUnit(), productDetail.getModuleType()).create();
+        changeFragment(R.id.priceFragment, productDetailPriceFragment);
     }
 
     public void initUnitsSelect(ProductDetail productDetail) {
@@ -137,8 +147,8 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
             if (v == binding.collectBtn)
                 productDetailViewModel.clooectBtnClick(mainId);
             if (v == binding.addBtn)
-                if (productDetailViewModel.productDetail.get() != null)
-                    productDetailViewModel.addItemToShopCart(productDetailUnitFragment.getSelectUnit(), productDetailUnitFragment.getQuantity(), productDetailViewModel.productDetail.get().getModuleId());
+                if (productDetailViewModel.productDetail.get() != null && productDetailViewModel.selectUnit.get() != null && moduleType != -1)
+                    productDetailViewModel.addItemToShopCart(productDetailViewModel.selectUnit.get(), moduleType== Constant.ModuleType.DELIVERY?productDetailPriceFragment.getQuantity() :productDetailUnitFragment.getQuantity(), productDetailViewModel.productDetail.get().getModuleId());
             if (v == binding.shopCartBtn) {
                 if (productDetailViewModel.productDetail.get() != null)
                     navigate.navigateToShopCart(this, null, false, productDetailViewModel.productDetail.get().getModuleId());
@@ -157,7 +167,7 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void setSelectUnit(ProductUnit unit) {
-
+        productDetailPriceFragment.setSelectUnit(unit);
         productDetailViewModel.selectUnit.set(unit);
     }
 }

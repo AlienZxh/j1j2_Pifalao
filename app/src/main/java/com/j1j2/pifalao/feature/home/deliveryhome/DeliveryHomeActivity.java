@@ -17,6 +17,7 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.databinding.ActivityDeliveryhomeBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.DeliveryHomeProductsFragment;
+import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryHomeServicepointFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     ShopCart shopCart = null;
 
+    DeliveryHomeServicepointFragment deliveryHomeServicepointFragment;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_deliveryhome);
@@ -59,9 +62,10 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        deliveryHomeServicepointFragment = Bundler.deliveryHomeServicepointFragment(servicePoint).create();
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(Bundler.deliveryHomeProductsFragment(module).create());
-        fragments.add(Bundler.deliveryHomeServicepointFragment(servicePoint).create());
+        fragments.add(deliveryHomeServicepointFragment);
         binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments));
         binding.tab.setViewPager(binding.viewpager);
         //________________________________________________________________________________
@@ -71,6 +75,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     public void initFreightType(FreightType freightType) {
         freightTypePrefrence.setDeliveryFreightType(freightType);
         binding.setFreightType(freightType);
+        deliveryHomeServicepointFragment.setFreightType(freightType);
     }
 
     @Override

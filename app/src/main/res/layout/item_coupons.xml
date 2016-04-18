@@ -57,7 +57,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{coupon.CouponName+&quot;(&quot;+StringUtils.getCouponLimit(coupon)+&quot;)&quot;}"
+                    android:text="@{coupon.CouponName+StringUtils.getCouponLimit(coupon)}"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_big" />
 
@@ -129,6 +129,16 @@
             android:textColor="#ffbebebe"
             android:textSize="140px"
             android:visibility="@{coupon.State==2?View.VISIBLE : View.GONE}" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_small"
+            android:maxLines="1"
+            android:text="@{coupon.ModuleConstraint??&quot;&quot;}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_normal" />
 
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

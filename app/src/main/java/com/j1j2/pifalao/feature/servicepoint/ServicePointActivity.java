@@ -8,11 +8,16 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviParaOption;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.FinishLocationActivityEvent;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityServicepointBinding;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointModule;
 
@@ -34,9 +39,14 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
 
     @Arg
     ServicePoint servicePoint;
+    @Arg
+    BDLocation location;
 
     @Inject
     ServicePointViewModel servicePointViewModel;
+
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     @Override
     protected void initBinding() {
@@ -69,8 +79,21 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
                 Toast.makeText(this, "没有拨打电话权限", Toast.LENGTH_SHORT).show();
             }
         }
+        if (v == binding.navigationBtn) {
+            if (location == null) {
+                Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            NaviParaOption naviParaOption = new NaviParaOption()
+                    .startPoint(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .endPoint(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
+            BaiduMapNavigation.setSupportWebNavi(true);
+            BaiduMapNavigation.openBaiduMapNavi(naviParaOption, this);
+
+        }
         if (v == binding.inBtn) {
             EventBus.getDefault().post(new FinishLocationActivityEvent());
+            userRelativePreference.setSelectedServicePoint(servicePoint);
             navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePoint);
         }
         if (v == binding.backBtn) {

@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.v7.widget.GridLayoutManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.AddressListChangeEvent;
 import com.j1j2.pifalao.app.event.CouponSelectEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.app.event.UserAddressSelectEvent;
@@ -30,6 +32,7 @@ import com.j1j2.pifalao.feature.orderproducts.OrderProductsActivity;
 import com.j1j2.pifalao.feature.successresult.SuccessResultActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -122,13 +125,14 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     public void initTimePicker(int deliveryType, List<DeliveryServiceTime> deliveryServiceTimes) {
         List<String> items = new ArrayList<>();
-        if (deliveryType == Constant.DeliveryType.PICKBYSELF)
-            items.add("明天有空就来拿");
-        else if (deliveryType == Constant.DeliveryType.HOMEDELIVERY)
-            items.add("货到电话预约");
-
-        for (DeliveryServiceTime deliveryServiceTime : deliveryServiceTimes) {
-            items.add(deliveryServiceTime.getFullLocalStringTimeSegement());
+        if (deliveryType == Constant.DeliveryType.PICKBYSELF) {
+            items.add(deliveryServiceTimes.get(0).getFullLocalStringTimeSegement().substring(0, 2) + "有空就来拿");
+            for (DeliveryServiceTime deliveryServiceTime : deliveryServiceTimes) {
+                items.add(deliveryServiceTime.getFullLocalStringTimeSegement());
+            }
+        } else if (deliveryType == Constant.DeliveryType.HOMEDELIVERY) {
+            items.add("立即配送");
+            items.add("电话预约");
         }
         dialogBinding.timePicker.setItems(items);
         dialogBinding.timePicker.setClipToPadding(false);
@@ -158,14 +162,20 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         if (allCoupons == null) {
             allCoupons = mAllCoupons;
         }
+        if (coupons.size() > 0)
+            coupons.clear();
         for (Coupon coupon : mAllCoupons) {
-            if (coupon.getType() == Constant.CouponType.COUPON_DELIVERY) {
-                if (coupon.getState() == 1 && !coupon.isExpired() && orderSubmitState.FreightValue.get() > 0) {
-                    coupons.add(coupon);
-                }
-            } else if (coupon.getType() == Constant.CouponType.COUPON_NORMAL) {
+//            if (coupon.getType() == Constant.CouponType.COUPON_DELIVERY) {
+//                if (coupon.getState() == 1 && !coupon.isExpired() && orderSubmitState.FreightValue.get() > 0) {
+//                    coupons.add(coupon);
+//                }
+//            } else
+            if (coupon.getType() == Constant.CouponType.COUPON_NORMAL) {
                 if (coupon.getState() == 1 && !coupon.isExpired() && shopCart.getAllMemberPrice() >= coupon.getConstraints()) {
-                    coupons.add(coupon);
+                    if (TextUtils.isEmpty(coupon.getModuleIdStr()))
+                        coupons.add(coupon);
+                    else if (coupon.getModuleIdStr().contains("" + module.getWareHouseModuleId()) || coupon.getModuleIdStr().equals("null"))
+                        coupons.add(coupon);
                 }
             }
         }
@@ -181,6 +191,10 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         if (v == binding.confirmOrder) {
             if (null == orderSubmitState.PredictSendTime.get()) {
                 Toast.makeText(this, "请选择自提时间", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (orderSubmitState.FreightTypeDetail.get().getSysDeliveryType() == Constant.DeliveryType.HOMEDELIVERY && null == orderSubmitState.AddressDetail.get()) {
+                Toast.makeText(this, "请选择地址", Toast.LENGTH_SHORT).show();
                 return;
             }
             orderSubmitState.OrderMemo = binding.memo.getText().toString();
@@ -207,6 +221,11 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             navigate.navigateToAddressManager(this, null, false, true);
         }
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onAddressListChangeEvent(AddressListChangeEvent event) {
+        confirmOrderViewModel.queryDefaultAddress();
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

@@ -6,7 +6,11 @@
     <data>
 
         <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="com.j1j2.pifalao.app.Constant" />
+
         <import type="android.view.View" />
+
         <variable
             name="shopCart"
             type="com.j1j2.pifalao.app.ShopCart" />
@@ -82,7 +86,13 @@
                             android:paddingRight="6px"
                             android:text="@string/self_product"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_normal" />
+                            android:textSize="@dimen/text_normal"
+                            android:visibility="@{productDetailViewModel.productDetail.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
+
+                        <View
+                            android:layout_width="@dimen/padding_noraml"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{productDetailViewModel.productDetail.ModuleType==Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -123,26 +133,33 @@
                     </com.zhy.autolayout.AutoLinearLayout>
                 </com.zhy.autolayout.AutoRelativeLayout>
 
-                <include
-                    layout="@layout/view_productdetail_price"
-                    bind:moduleType="@{productDetailViewModel.productDetail.ModuleType}"
-                    bind:price="@{productDetailViewModel.selectUnit}" />
+                <!--<include-->
+                <!--layout="@layout/view_productdetail_price"-->
+                <!--bind:moduleType="@{productDetailViewModel.productDetail.ModuleType}"-->
+                <!--bind:price="@{productDetailViewModel.selectUnit}" />-->
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:id="@+id/priceFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/padding_productdetail"
-                    android:background="@drawable/item_products_divider" />
+                    android:background="@drawable/item_products_divider"
+                    android:visibility="@{productDetailViewModel.productDetail.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                 <com.zhy.autolayout.AutoFrameLayout
                     android:id="@+id/unitFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="@{productDetailViewModel.productDetail.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{productDetailViewModel.productDetail.ModuleType==2?View.VISIBLE:View.GONE}"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{productDetailViewModel.productDetail.ModuleType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE:View.GONE}">
 
                     <View
                         android:layout_width="match_parent"
@@ -289,6 +306,7 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_productdetail_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"

@@ -1,7 +1,9 @@
 package com.j1j2.pifalao.feature.orders;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -40,6 +42,9 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Inject
     OrdersViewModel ordersViewModel;
 
+    AlertDialog deleteOrderDialog;
+
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orders);
@@ -67,6 +72,30 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
         Bundler.inject(this);
         MainAplication.get(this).getUserComponent().plus(new OrdersModule(this)).inject(this);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (deleteOrderDialog != null && deleteOrderDialog.isShowing())
+            deleteOrderDialog.cancel();
+    }
+
+    public void showDeleteDialog(final int orderId) {
+        deleteOrderDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setNegativeButton("取消", null)
+                .setMessage("确认删除该订单吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ordersViewModel.cancleOrder(orderId);
+                    }
+                })
+                .create();
+        deleteOrderDialog.show();
+    }
+
 
     @Override
     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
@@ -115,7 +144,7 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     @Override
     public void onCancelPointIconClickListener(View view, OrderSimple orderSimple, int position) {
-        ordersViewModel.cancleOrder(orderSimple.getOrderId());
+        showDeleteDialog(orderSimple.getOrderId());
     }
 
     @Override

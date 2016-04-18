@@ -1,11 +1,14 @@
 package com.j1j2.pifalao.feature.orderdetail;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.OrderSimple;
+import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -37,6 +40,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Inject
     OrderDetailViewModel orderDetailViewModel;
+
+    AlertDialog deleteOrderDialog;
 
     @Override
     protected void initBinding() {
@@ -73,6 +78,30 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (deleteOrderDialog != null && deleteOrderDialog.isShowing())
+            deleteOrderDialog.cancel();
+    }
+
+    public void showDeleteDialog(final int orderId) {
+        deleteOrderDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setNegativeButton("取消", null)
+                .setMessage("确认删除该订单吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        orderDetailViewModel.cancleOrder(orderId);
+                    }
+                })
+                .create();
+        deleteOrderDialog.show();
+    }
+
+
+    @Override
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
@@ -82,7 +111,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             else
                 navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getServicePointId());
         if (v == binding.cancel) {
-            orderDetailViewModel.cancleOrder(orderId);
+            showDeleteDialog(orderId);
         }
         if (v == binding.receive) {
 

@@ -249,7 +249,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     private void initDialogView(ProductSimple productSimple) {
         dialogBinding.dialogImg.setImageURI(Uri.parse(productSimple.getMainImg() == null ? "" : productSimple.getMainImg()));
         dialogBinding.dialogName.setText(productSimple.getName());
-        dialogBinding.dialogRealPrice.setText("零售价：￥" + productSimple.getProductUnits().get(0).getRetialPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
+        dialogBinding.dialogRealPrice.setText("市场价：￥" + productSimple.getProductUnits().get(0).getRetialPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
         dialogBinding.dialogRealPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         dialogBinding.dialogMemberPrice.setText("批发价：￥" + productSimple.getProductUnits().get(0).getMemberPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
         ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productSimple.getProductUnits(), singleSelector, productSimple.getBaseUnit(), module.getWareHouseModuleId());

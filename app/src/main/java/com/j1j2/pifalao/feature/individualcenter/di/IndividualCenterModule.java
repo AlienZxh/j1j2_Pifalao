@@ -30,8 +30,8 @@ public class IndividualCenterModule {
 
     @Provides
     @ActivityScope
-    IndividualCenterViewModel individualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment) {
-        return new IndividualCenterViewModel(user, individualCenterFragment);
+    IndividualCenterViewModel individualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi) {
+        return new IndividualCenterViewModel(user, individualCenterFragment, userLoginApi);
     }
 
     @Provides

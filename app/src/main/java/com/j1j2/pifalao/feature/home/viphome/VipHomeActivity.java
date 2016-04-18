@@ -3,25 +3,27 @@ package com.j1j2.pifalao.feature.home.viphome;
 import android.databinding.DataBindingUtil;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.github.lzyzsd.jsbridge.BridgeHandler;
+import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityViphomeBinding;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeModule;
-import com.litesuits.common.assist.Check;
 import com.litesuits.common.assist.Network;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
 
     @Inject
     UserLoginPreference userLoginPreference;
+    @Inject
+    UserRelativePreference userRelativePreference;
     @Inject
     Gson gson;
 
@@ -61,26 +65,26 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
         cookieManager.setCookie(BuildConfig.IMAGE_URL + "/VIPPrivilege/Index", cookies.get(0).toString());
 
         WebSettings webSettings = binding.webview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-//        if (Network.isAvailable(this)) {
-//            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        } else {
-//            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-//        }
+        if (Network.isAvailable(this)) {
+            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        } else {
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        }
 
         binding.webview.loadUrl(BuildConfig.IMAGE_URL + "/VIPPrivilege/Index");
-        binding.webview.setWebViewClient(new WebViewClient() {
+        binding.webview.registerHandler("goToUserCoupon", new BridgeHandler() {
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                binding.webview.loadUrl(url);
-                return true;
+            public void handler(String data, CallBackFunction function) {
+                navigate.navigateToCoupons(VipHomeActivity.this, null, false, userRelativePreference.getSelectedModule(null), Constant.CouponType.COUPON_NORMAL);
+                function.onCallBack("submitFromWeb exe, response data from Java");
             }
-
-
-
         });
-        binding.webview.setWebChromeClient(new WebChromeClient() {
-
+        binding.webview.registerHandler("goBackToFrame", new BridgeHandler() {
+            @Override
+            public void handler(String data, CallBackFunction function) {
+                onBackPressed();
+                function.onCallBack("submitFromWeb exe, response data from Java");
+            }
         });
 
     }
@@ -96,6 +100,7 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
 //        super.onBackPressed();
         if (binding.webview.canGoBack()) {
             binding.webview.goBack();
+
         } else {
             finish();
         }

@@ -15,8 +15,8 @@
         android:layout_marginRight="38px"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="16px"
-        android:paddingTop="16px">
+        android:paddingBottom="25px"
+        android:paddingTop="25px">
 
         <TextView
             android:layout_width="0dp"

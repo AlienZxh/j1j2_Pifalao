@@ -30,6 +30,7 @@
             <TextView
                 android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
+                android:background="@drawable/actionbar_btn_bg"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"

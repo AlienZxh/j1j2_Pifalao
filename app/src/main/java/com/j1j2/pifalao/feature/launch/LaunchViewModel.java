@@ -7,6 +7,7 @@ import com.j1j2.data.model.UpdateInfo;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
+import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.LogStateEvent;
@@ -27,6 +28,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,7 +53,7 @@ public class LaunchViewModel {
     private static final String saveFileName = "pifalao.apk";
     private RequestCall downloadAPKCall = OkHttpUtils//
             .get()//
-            .url("http://218.244.128.140:9091/Resources/apk/pifalao.apk")//
+            .url(BuildConfig.APK_URL)//
             .tag("downloadAPK")//
             .build();
 
@@ -106,7 +108,7 @@ public class LaunchViewModel {
     public void getUpdateInfo() {
         OkHttpUtils
                 .get()
-                .url("http://218.244.128.140:9091/Resources/apk/UpdateOnline.xml")
+                .url(BuildConfig.UPDATE_URL)
                 .build()
                 .execute(new Callback<UpdateInfo>() {
                     @Override
@@ -141,6 +143,7 @@ public class LaunchViewModel {
         loginBody.setUserType(5);
         loginBody.setTerminalType(1);
         userLoginApi.login(loginBody)
+                .delay(1, TimeUnit.SECONDS)
                 .compose(launchActivity.<WebReturn<User>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())

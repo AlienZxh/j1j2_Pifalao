@@ -44,6 +44,7 @@
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:background="@drawable/actionbar_btn_bg"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
@@ -54,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="跑腿快送"
+                android:text="@{deliveryHomeViewModel.deliveryHomeActivity.module.ModuleName}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
@@ -189,7 +190,7 @@
             android:layout_height="90px"
             android:background="@color/colorWhite"
             app:stl_defaultTabTextColor="@drawable/text_select_accent_colors"
-            app:stl_defaultTabTextSize="14sp"
+            app:stl_defaultTabTextSize="@dimen/text_big"
             app:stl_distributeEvenly="true"
             app:stl_dividerColor="@color/colorGrayDEDEDE"
             app:stl_dividerThickness="1px"

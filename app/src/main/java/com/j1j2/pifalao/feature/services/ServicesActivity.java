@@ -259,26 +259,31 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     @Override
     public void onItemClickListener(View view, Module module, int position) {
-        if (module.getModuleType() == Constant.ModuleType.DELIVERY && module.isSubscribed()) {
-            navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint, module);
-            userRelativePreference.setSelectedModule(module);
-        } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE && module.isSubscribed()) {
-            navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
-            userRelativePreference.setSelectedModule(module);
-        } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE && module.isSubscribed()) {
-            navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
-            userRelativePreference.setSelectedModule(module);
-        } else if (module.getModuleType() == Constant.ModuleType.MORE && module.isSubscribed()) {
-            navigate.navigateToMoreModule(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, modules);
-            userRelativePreference.setSelectedModule(module);
-        } else if (module.getModuleType() == Constant.ModuleType.VIP && module.isSubscribed()) {
-            if (MainAplication.get(this).isLogin()) {
-                navigate.navigateToVipHome(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+
+
+        if (module.isSubscribed()) {
+            if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
+                navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint, module);
                 userRelativePreference.setSelectedModule(module);
-            } else {
-                navigate.navigateToLogin(this, null, false);
+            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+                navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
+                navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.MORE) {
+                navigate.navigateToMoreModule(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, modules);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.VIP) {
+                if (MainAplication.get(this).isLogin()) {
+                    navigate.navigateToVipHome(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+                    userRelativePreference.setSelectedModule(module);
+                } else {
+                    navigate.navigateToLogin(this, null, false);
+                }
             }
-        }
+        } else
+            navigate.navigateToUnsubscribe(this, null, false);
     }
 
     @Override

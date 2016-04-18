@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_small"
-                android:text="@{module.ModuleType==Constant.ModuleType.VEGETABLE?&quot;截止21点下单还剩：&quot;:&quot;距离仓库发货还剩：&quot;}"
+                android:text="@{module.ModuleType==Constant.ModuleType.VEGETABLE?&quot;距离21点订单截止还剩：&quot;:&quot;距离仓库发货还剩：&quot;}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="6px"
-                android:text="@{&quot;温馨提示：&quot;+module.OrderAmountMinLimit+&quot;元起送，配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freight)}"
+                android:text="@{&quot;温馨提示：本店&quot;+module.OrderAmountMinLimit+&quot;元起送，配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freight)}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 

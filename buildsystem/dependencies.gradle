@@ -44,6 +44,9 @@ ext {
     eventbusVersion = "3.0.0"
     okhttputilsVersion = "2.3.8"
 
+    jsbridgeVersion = "1.0.4"
+    galleryfinalVersion = "1.4.8.7"
+
     //Testing
     jUnitVersion = '4.12'
 
@@ -69,12 +72,15 @@ ext {
             supportAnnotations   : "com.android.support:support-annotations:${supportVersion}",
             javaxAnnotation      : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
             fresco               : "com.facebook.fresco:fresco:${frescoVersion}",
+            webpsupport          : "com.facebook.fresco:webpsupport:${frescoVersion}",
             rxlifecycle          : "com.trello:rxlifecycle:${rxlifecycleVersion}",
             rxlifecycleComponents: "com.trello:rxlifecycle-components:${rxlifecycleVersion}",
             storebox             : "net.orange-box.storebox:storebox-lib:${storeboxVersion}",
             eventbus             : "org.greenrobot:eventbus:${eventbusVersion}",
-            okhttputils             : "com.zhy:okhttputils:${okhttputilsVersion}",
+            okhttputils          : "com.zhy:okhttputils:${okhttputilsVersion}",
     ]
+
+
 
     appReleaseDependencies = [
             leakcanary: "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
@@ -127,7 +133,8 @@ ext {
             zxing            : "com.google.zxing:core:${zxingVersion}",
             nineold          : "com.nineoldandroids:library:${nineoldVersion}",
             badgeview        : "cn.bingoogolapple:bga-badgeview:${badgeviewVersion}",
-
+            jsbridge         : "com.github.lzyzsd:jsbridge:${jsbridgeVersion}",
+            galleryfinal     : "cn.finalteam:galleryfinal:${galleryfinalVersion}",
     ]
 
 

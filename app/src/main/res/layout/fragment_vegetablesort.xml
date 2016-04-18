@@ -29,6 +29,7 @@
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_search"
                 android:textColor="@color/colorWhite"

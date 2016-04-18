@@ -27,26 +27,33 @@
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
-            <TextView
+            <com.zhy.autolayout.AutoLinearLayout
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingLeft="@dimen/padding_actionbar_btn"
-                android:text="@{StringUtils.getLocation(locationViewModel.city.PCCName)}"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_btn"
-                app:onClickListener="@{locationViewModel.locationActivity}" />
+                android:background="@drawable/actionbar_btn_bg"
+                android:orientation="horizontal"
+                app:onClickListener="@{locationViewModel.locationActivity}">
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/location"
-                android:gravity="center_vertical"
-                android:text="@string/icon_unfold"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/padding_actionbar_btn"
+                    android:text="@{StringUtils.getLocation(locationViewModel.city.PCCName)}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_btn" />
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingRight="16px"
+                    android:text="@string/icon_unfold"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+            </com.zhy.autolayout.AutoLinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,7 +90,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="73"
                 android:background="@color/colorWhite"
-                app:layout_empty="@layout/view_empty"
+                app:layout_empty="@layout/view_location_empty"
                 app:layout_moreProgress="@layout/view_progressbar"
                 app:layout_progress="@layout/view_progressbar" />
 

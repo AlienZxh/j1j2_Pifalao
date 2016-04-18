@@ -1,11 +1,13 @@
 package com.j1j2.pifalao.feature.setting;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,7 +56,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         if (v == binding.feedback) {
             navigate.navigateToFeedBack(this, null, false);
         }
+        if (v == binding.versionCheck)
+            showVersionDialog();
 
+    }
+
+    public void showVersionDialog() {
+        new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setMessage("已是最新版本")
+                .setPositiveButton("确定", null)
+                .create()
+                .show();
     }
 
     public static String getLocalVersionName(Context ctx) {

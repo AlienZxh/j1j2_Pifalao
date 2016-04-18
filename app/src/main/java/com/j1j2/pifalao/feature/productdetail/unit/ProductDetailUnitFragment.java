@@ -47,8 +47,6 @@ public class ProductDetailUnitFragment extends BaseFragment implements ProductDe
 
     SingleSelector singleSelector;
 
-    ProductUnit selectUnit;
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -68,7 +66,8 @@ public class ProductDetailUnitFragment extends BaseFragment implements ProductDe
         ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productUnits, singleSelector, baseUnit, moduleType);
         binding.unitList.setAdapter(productDetailUnitAdapter);
         productDetailUnitAdapter.setOnUnitItemClickListener(this);
-        selectUnit = productUnits.get(0);
+        if (productDetailUnitFragmentListener != null)
+            productDetailUnitFragmentListener.setSelectUnit(productUnits.get(0));
     }
 
     @Override
@@ -79,14 +78,12 @@ public class ProductDetailUnitFragment extends BaseFragment implements ProductDe
 
     @Override
     public void OnUnitItemClickListener(View view, ProductUnit unit, int position) {
-        selectUnit = unit;
+
         if (productDetailUnitFragmentListener != null)
             productDetailUnitFragmentListener.setSelectUnit(unit);
     }
 
-    public ProductUnit getSelectUnit() {
-        return selectUnit;
-    }
+
 
     public int getQuantity() {
         return binding.quantityview.getQuantity();

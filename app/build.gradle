@@ -17,6 +17,15 @@ android {
     compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
     buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'arm64-v8a', 'armeabi-v7a', 'armeabi'
+//            universalApk false
+//        }
+//    }
+
     dataBinding {
         enabled true
     }
@@ -54,20 +63,22 @@ android {
             zipAlignEnabled true
             shrinkResources true
 
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9091/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9091\""
-            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:9091/Resources/Soft/UpdateOnline.xml\""
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
+            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
+            buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }
         debug {
             signingConfig signingConfigs.debug
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
 
             buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
             buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
-            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Soft/UpdateOnline.xml\""
+            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
+            buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }
     }
 }
@@ -105,6 +116,7 @@ dependencies {
     releaseCompile appReleaseDependencies.leakcanary
     //图片加载
     compile appDependencies.fresco
+    compile appDependencies.webpsupport
     //rxlifecycle
     compile appDependencies.rxlifecycle
     compile appDependencies.rxlifecycleComponents

@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.net.Uri" />
+        <import type="com.j1j2.pifalao.BuildConfig" />
 
         <variable
             name="productSort"
@@ -21,6 +22,7 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/item_servies_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:OnClickListener="@{onClick}">
@@ -31,7 +33,7 @@
             android:layout_marginLeft="@dimen/padding_biger"
             android:layout_marginRight="@dimen/padding_biger"
             android:layout_marginTop="@dimen/padding_noraml"
-            app:imageURI="@{Uri.parse(productSort.AppImgPath??@string/text_empty)}"
+            app:imageURI="@{Uri.parse(BuildConfig.IMAGE_URL+productSort.AppImgPath??@string/text_empty)}"
             fresco:failureImage="@drawable/loadimg_error"
             fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:viewAspectRatio="1" />

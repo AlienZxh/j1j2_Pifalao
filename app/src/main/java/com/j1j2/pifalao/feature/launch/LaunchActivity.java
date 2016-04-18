@@ -26,7 +26,6 @@ import javax.inject.Inject;
 
 public class LaunchActivity extends BaseActivity {
 
-
     ActivityLaunchBinding binding;
 
     @Inject
@@ -47,8 +46,8 @@ public class LaunchActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-        launchViewModel.initLoginState();
-//        launchViewModel.getUpdateInfo();
+//        launchViewModel.initLoginState();
+        launchViewModel.getUpdateInfo();
     }
 
     @Override
@@ -109,7 +108,12 @@ public class LaunchActivity extends BaseActivity {
                 .setCancelable(true)
                 .setTitle("提示")
                 .setMessage("新版本可用，是否更新？")
-                .setNegativeButton("暂不更新", null)
+                .setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        launchViewModel.initLoginState();
+                    }
+                })
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

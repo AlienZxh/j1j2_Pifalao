@@ -31,6 +31,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/icon_back"
+                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
                 app:OnClickListener="@{settingActivity}" />

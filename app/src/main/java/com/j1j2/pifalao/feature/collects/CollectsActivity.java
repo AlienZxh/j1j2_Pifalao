@@ -26,7 +26,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-24.
  */
 @RequireBundler
-public class CollectsActivity extends BaseActivity implements View.OnClickListener {
+public class CollectsActivity extends BaseActivity implements View.OnClickListener, CollectsAdapter.OnCollectClickListener {
 
     ActivityCollectsBinding binding;
 
@@ -59,6 +59,7 @@ public class CollectsActivity extends BaseActivity implements View.OnClickListen
     public void setAdapter(List<CollectedProduct> collectedProducts) {
         collectsAdapter = new CollectsAdapter(collectedProducts, multiSelector, isModifyMode);
         binding.productList.setAdapter(collectsAdapter);
+        collectsAdapter.setOnCollectClickListener(this);
     }
 
     @Override
@@ -89,5 +90,10 @@ public class CollectsActivity extends BaseActivity implements View.OnClickListen
             }
             isModifyMode.set(!isModifyMode.get());
         }
+    }
+
+    @Override
+    public void onCollectClick(View view, CollectedProduct collectedProduct, int position) {
+        navigate.navigateToProductDetailActivity(this, null, false, collectedProduct.getMainId());
     }
 }

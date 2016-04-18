@@ -1,12 +1,18 @@
 package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 import com.j1j2.common.view.quantityview.StateQuantityView;
@@ -25,6 +31,7 @@ import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.databinding.FragmentDeliveryhomeProductsBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsModule;
+import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -70,6 +77,10 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     ShopCart shopCart;
 
     boolean isOnBackGround = false;
+
+    ValueAnimator valueAnimator;
+    int[] startLocation = new int[2];
+    int[] endLocation = new int[2];
 
     @Override
     public void onAttach(Activity activity) {
@@ -186,29 +197,109 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
             return;
         if (isOnBackGround)
             return;
-
+        boolean shouldUpdate = false;
+        boolean showAnim = false;
         for (ShopCartItem shopCartItem : deliveryProductsViewModel.getShopCartItems()) {
             if (shopCartItem.getProductMainId() == productSimple.getMainId()) {
                 if (quantity == shopCartItem.getQuantity()) {
                     return;
-                } else {
+                } else if (quantity < shopCartItem.getQuantity()) {
                     shopCartItem.setQuantity(quantity);
+                    shouldUpdate = true;
+                } else if (quantity > shopCartItem.getQuantity()) {
+                    shopCartItem.setQuantity(quantity);
+                    showAnim = true;
+                    shouldUpdate = true;
                 }
                 break;
             }
         }
+        if (shouldUpdate) {
+            deliveryProductsViewModel.updateShopCart(showAnim);
+            view.getLocationOnScreen(startLocation);
+            if (showAnim)
+                showAddShopCartAnim(startLocation);
+        }
+    }
 
-        deliveryProductsViewModel.updateShopCart();
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (valueAnimator != null && valueAnimator.isRunning()) {
+            valueAnimator.cancel();
+            valueAnimator.removeAllUpdateListeners();
+        }
+    }
+
+    //float fromX, float fromY
+    public void showAddShopCartAnim(int[] startLocation) {
+
+        if (valueAnimator != null && valueAnimator.isRunning())
+            return;
+        if (endLocation[0] == 0)
+            binding.shopCartView.getLocationOnScreen(endLocation);
+
+        valueAnimator = ValueAnimator.ofObject(new TypeEvaluator<PointF>() {
+            // fraction = t / duration
+            @Override
+            public PointF evaluate(float fraction, PointF startValue,
+                                   PointF endValue) {
+                float v = (endValue.x - startValue.x);
+                float a = (endValue.y - startValue.y);
+
+                PointF point = new PointF();
+                point.x = v * fraction + startValue.x;
+                point.y = a * fraction * fraction + startValue.y - 500;
+
+                return point;
+            }
+        }, new PointF(startLocation[0], startLocation[1]), new PointF(endLocation[0], endLocation[1]));
+        valueAnimator.setDuration(600);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                PointF point = (PointF) animation.getAnimatedValue();
+                binding.shopCartAdd.setX(point.x);
+                binding.shopCartAdd.setY(point.y);
+            }
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                binding.shopCartAdd.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                binding.shopCartAdd.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        valueAnimator.start();
     }
 
     @Override
     public void onEnableStateChange(StateQuantityView view, ProductSimple productSimple, int position, boolean isEnable) {
         if (shopCart == null)
             return;
-        if (isEnable && shopCart.getShopCartItemBaseUnitNum().get(productSimple.getMainId()) == null)
+        if (isEnable && shopCart.getShopCartItemBaseUnitNum().get(productSimple.getMainId()) == null) {
             deliveryProductsViewModel.addItemToShopCart(productSimple.getProductUnits().get(0), 1, module.getWareHouseModuleId());
-        if (!isEnable && shopCart.getShopCartItemBaseUnitNum().get(productSimple.getMainId()) != null)
+            view.getLocationOnScreen(startLocation);
+            showAddShopCartAnim(startLocation);
+        }
+        if (!isEnable && shopCart.getShopCartItemBaseUnitNum().get(productSimple.getMainId()) != null) {
             deliveryProductsViewModel.removeShopCartItem(productSimple.getProductUnits().get(0).getProductId());
+        }
     }
 
     @Override

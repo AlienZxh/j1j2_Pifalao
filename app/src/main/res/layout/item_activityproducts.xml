@@ -23,7 +23,7 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="200px"
         android:layout_height="272px"
-        android:background="@color/colorWhite"
+        android:background="@drawable/item_products_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:OnClickListener="@{onClick}">

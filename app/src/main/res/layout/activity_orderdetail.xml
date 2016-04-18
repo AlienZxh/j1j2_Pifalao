@@ -44,6 +44,7 @@
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
+                android:background="@drawable/actionbar_btn_bg"
                 android:textSize="@dimen/icon_normal"
                 app:OnClickListener="@{orderDetailViewModel.orderDetailActivity}" />
 
@@ -55,6 +56,7 @@
                 android:text="订单详情"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
+
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.j1j2.common.view.autowidget.AutoNestedScrolling
@@ -101,6 +103,26 @@
                             android:text="@{StringUtils.getOrdersState(orderDetailViewModel.orderDetailObservableField.OrderState)}"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_big" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="订单编号："
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/padding_noraml"
+                            android:text="@{String.valueOf(orderDetailViewModel.orderDetailObservableField.OrderId)}"
+                            android:textColor="@color/colorText333"
+                            android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
                     <View
@@ -146,7 +168,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="自提时间："
+                            android:text="@{orderDetailViewModel.orderDetailObservableField.DeliveryType==Constant.DeliveryType.PICKBYSELF?&quot;自提时间：&quot;:&quot;送货时间：&quot;}"
                             android:textColor="@color/colorText333"
                             android:textSize="@dimen/text_big" />
 
@@ -182,29 +204,6 @@
                             android:textSize="@dimen/text_big" />
                     </com.zhy.autolayout.AutoLinearLayout>
 
-                    <com.zhy.autolayout.AutoLinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingBottom="8px"
-                        android:paddingLeft="@dimen/padding_noraml"
-                        android:paddingTop="8px">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="订单编号："
-                            android:textColor="@color/colorText333"
-                            android:textSize="@dimen/text_big" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@{String.valueOf(orderDetailViewModel.orderDetailObservableField.OrderId)}"
-                            android:textColor="@color/colorText333"
-                            android:textSize="@dimen/text_big" />
-                    </com.zhy.autolayout.AutoLinearLayout>
 
                     <com.zhy.autolayout.AutoLinearLayout
                         android:layout_width="match_parent"
@@ -372,7 +371,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="自提地址："
+                            android:text="@{orderDetailViewModel.orderDetailObservableField.DeliveryType==Constant.DeliveryType.PICKBYSELF?&quot;自提地址：&quot;:&quot;门店地址：&quot;}"
                             android:textColor="@color/colorText999"
                             android:textSize="@dimen/text_big" />
 
@@ -477,13 +476,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="40px"
-                            android:background="@drawable/orange_conner_tag_bg"
+                            android:background="@drawable/green_conner_tag_bg"
                             android:gravity="right"
                             android:paddingLeft="4px"
                             android:paddingRight="4px"
                             android:text="@{&quot;已节省：&quot;+orderDetailViewModel.orderDetailObservableField.SaveAmount+&quot;元&quot;}"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_normal" />
+                            android:textSize="@dimen/text_normal"
+                            android:visibility="@{orderDetailViewModel.orderDetailObservableField.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                         <TextView
                             android:layout_width="wrap_content"

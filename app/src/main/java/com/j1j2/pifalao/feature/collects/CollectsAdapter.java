@@ -34,6 +34,16 @@ public class CollectsAdapter extends RecyclerView.Adapter<CollectsAdapter.Collec
         this.isModifyMode = isModifyMode;
     }
 
+    public interface OnCollectClickListener {
+        void onCollectClick(View view, CollectedProduct collectedProduct, int position);
+    }
+
+    private OnCollectClickListener onCollectClickListener;
+
+    public void setOnCollectClickListener(CollectsAdapter.OnCollectClickListener onCollectClickListener) {
+        this.onCollectClickListener = onCollectClickListener;
+    }
+
     @Override
     public CollectsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -71,7 +81,7 @@ public class CollectsAdapter extends RecyclerView.Adapter<CollectsAdapter.Collec
         }
 
         @Override
-        public void bind(@NonNull CollectedProduct data, final int position) {
+        public void bind(@NonNull final CollectedProduct data, final int position) {
             multiSelector.bindHolder(this, position, getItemId());
             binding.setProductSimple(data);
             binding.setIsModifyMode(isModifyMode);
@@ -79,6 +89,8 @@ public class CollectsAdapter extends RecyclerView.Adapter<CollectsAdapter.Collec
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (onCollectClickListener != null)
+                        onCollectClickListener.onCollectClick(v, data, position);
                     multiSelector.setSelected(position, getItemId(), !multiSelector.isSelected(position, getItemId()));
                     notifyDataSetChanged();
                 }

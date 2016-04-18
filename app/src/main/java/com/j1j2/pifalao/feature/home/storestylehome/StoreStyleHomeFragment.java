@@ -100,7 +100,6 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 int position = parent.getChildAdapterPosition(view);
                 outRect.set(storeStyleHomeAdapter.geItemRect(position));
-
             }
         });
         binding.sortList.setAdapter(storeStyleHomeAdapter);
@@ -110,7 +109,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
                 return storeStyleHomeAdapter.isItemHeader(position) ? manager.getSpanCount() : 1;
             }
         });
-        storeStyleHomeViewModel.getStoreStyleHomeAdapter().setOnSortItemClickListener(this);
+        storeStyleHomeAdapter.setOnSortItemClickListener(this);
     }
 
     @Override

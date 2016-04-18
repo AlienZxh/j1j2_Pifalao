@@ -36,7 +36,7 @@ public class ProductDetailAdapter extends FragmentPagerAdapter {
             case 1:
                 return "产品参数";
             case 2:
-                return "成交记录";
+                return "最近成交";
             default:
                 return super.getPageTitle(position);
 

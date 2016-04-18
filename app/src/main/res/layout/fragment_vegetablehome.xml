@@ -33,6 +33,7 @@
                     android:id="@+id/backBtn"
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="@dimen/actionbar_height"
+                    android:background="@drawable/actionbar_btn_bg"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/icon_back"
@@ -45,7 +46,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="蔬菜类批发"
+                    android:text="@{vegetableHomeViewModel.vegetableHomeFragment.module.ModuleName}"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_actionbar_title" />
 
@@ -54,6 +55,7 @@
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="@dimen/actionbar_height"
                     android:layout_height="match_parent"
+                    android:background="@drawable/actionbar_btn_bg"
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="@string/icon_search"

@@ -34,6 +34,7 @@
                 android:gravity="center"
                 android:padding="@dimen/padding_actionbar_btn"
                 android:text="@string/icon_back"
+                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
                 app:OnClickListener="@{onClick}" />
@@ -79,6 +80,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:text="搜索"
+                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_big"
                 app:OnClickListener="@{onClick}" />

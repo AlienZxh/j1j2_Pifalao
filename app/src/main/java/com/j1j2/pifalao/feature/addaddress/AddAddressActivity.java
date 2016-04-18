@@ -156,6 +156,10 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
                 Toast.makeText(this, "请填写收货人手机号", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (userMobile.length() != 11) {
+                Toast.makeText(this, "请填写正确的手机号", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (TextUtils.isEmpty(addressLoction)) {
                 Toast.makeText(this, "请选择收货人位置", Toast.LENGTH_SHORT).show();
                 return;

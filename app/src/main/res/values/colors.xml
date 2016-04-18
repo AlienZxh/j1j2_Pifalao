@@ -3,6 +3,7 @@
     <color name="colorPrimary">#FF4AB134</color>
 
     <color name="colorTransparentPrimary">#AA4AB134</color>
+    <color name="colorTransparentPrimaryDark">#AA469435</color>
 
     <color name="colorPrimaryDark">#FF469435</color>
     <color name="colorAccent">#FFFF9900</color>
@@ -11,6 +12,8 @@
     <color name="colorTransparentAccent">#99FF6F00</color>
     <color name="colorRed">#FFFF0000</color>
     <color name="colorWhite">#FFFFFFFF</color>
+
+    <color name="colorItemPress">#99CFD8DC</color>
 
     <color name="colorTransparent">#00FFFFFF</color>
 

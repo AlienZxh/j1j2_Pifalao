@@ -20,6 +20,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/item_products_bg"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/padding_small"
         android:paddingTop="@dimen/padding_small">
@@ -43,7 +44,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="68px"
-                android:layout_marginBottom="@dimen/padding_noraml"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding_small"
                 android:maxLines="2"
                 android:text="@{productSimple.Name}"
                 android:textColor="@color/colorText333"

@@ -20,6 +20,9 @@
     <string name="icon_clock">&#xe68e;</string>
 
     <string name="icon_filter">&#xe628;</string>
+    <string name="icon_price_filter">&#xe6f1;</string>
+    <string name="icon_sale_filter">&#xe6f0;</string>
+    <string name="icon_hot_filter">&#xe65e;</string>
 
     <string name="icon_info_fill">&#xe638;</string>
 
@@ -110,12 +113,27 @@
 
     <string name="icon_vip">&#xe6a3;</string>
 
+    <string name="icon_service_disable">&#xe6d5;</string>
+
     <string name="icon_service_vegetable">&#xe6d2;</string>
     <string name="icon_service_shopservice">&#xe6d1;</string>
     <string name="icon_service_delivery">&#xe6d0;</string>
     <string name="icon_service_housekeeping">&#xe6d3;</string>
     <string name="icon_service_vip">&#xe6d4;</string>
-    <string name="icon_service_disable">&#xe6d5;</string>
+    <string name="icon_service_mobile">&#xe6dc;</string>
+
+    <string name="icon_service_hydropower">&#xe6dd;</string>
+    <string name="icon_service_oil">&#xe6e2;</string>
+    <string name="icon_service_express">&#xe6e3;</string>
+    <string name="icon_service_tool">&#xe6e4;</string>
+    <string name="icon_service_trafficfines">&#xe6e5;</string>
+    <string name="icon_service_game">&#xe6e6;</string>
+    <string name="icon_service_finance">&#xe6e7;</string>
+    <string name="icon_service_bus">&#xe6e8;</string>
+    <string name="icon_service_lottery">&#xe6e9;</string>
+    <string name="icon_service_ticket">&#xe6ea;</string>
+    <string name="icon_service_numeral">&#xe6ec;</string>
+
     <string name="icon_service_more">&#xe6cf;</string>
 
     <string name="icon_prompt">&#xe6a8;</string>
@@ -140,5 +158,11 @@
     <string name="icon_pickbyself_tag">&#xe6da;</string>
     <string name="icon_online_tag">&#xe6db;</string>
 
+    <string name="icon_call">&#xe6c8;</string>
+    <string name="icon_navigation">&#xe6c9;</string>
+
+    <string name="icon_round_add_fill">&#xe635;</string>
+
+    <string name="icon_unsubscribe">&#xe6ed;</string>
 
 </resources>

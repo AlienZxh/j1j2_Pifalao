@@ -4,10 +4,13 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="com.j1j2.common.util.StringUtils" />
+
         <variable
             name="coupon"
             type="com.j1j2.data.model.Coupon" />
+
         <variable
             name="isSelect"
             type="boolean" />
@@ -115,10 +118,19 @@
                 android:background="@color/colorWhite"
                 android:gravity="center_vertical"
                 android:text="@{isSelect?@string/icon_round_check_fill:@string/icon_round_checke}"
-                android:textSize="@dimen/icon_normal"
-                android:textColor="@{isSelect?@color/colorAccent:@color/colorGrayDEDEDE}" />
+                android:textColor="@{isSelect?@color/colorAccent:@color/colorGrayDEDEDE}"
+                android:textSize="@dimen/icon_normal" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_small"
+            android:maxLines="1"
+            android:text="@{coupon.ModuleConstraint??&quot;全平台可用&quot;}"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_normal" />
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

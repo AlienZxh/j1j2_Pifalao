@@ -7,6 +7,8 @@
 
         <import type="com.j1j2.common.util.StringUtils" />
 
+        <import type="com.j1j2.pifalao.app.Constant" />
+
         <import type="android.view.View" />
 
         <variable
@@ -41,6 +43,7 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
@@ -151,7 +154,8 @@
                     android:layout_height="wrap_content"
                     android:text="@{&quot;（节省：&quot;+StringUtils.getPriceWiteSymbol(shopCartViewModel.shopCart.AllSave)+&quot;）&quot;}"
                     android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
+                    android:textSize="@dimen/text_normal"
+                    android:visibility="@{module.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
             </com.zhy.autolayout.AutoLinearLayout>
 
             <TextView

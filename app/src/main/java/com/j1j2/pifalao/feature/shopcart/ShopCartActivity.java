@@ -1,8 +1,10 @@
 package com.j1j2.pifalao.feature.shopcart;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.Toast;
@@ -59,6 +61,8 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     Module module;
 
+    AlertDialog deleteItemDialog;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopcart);
@@ -98,8 +102,39 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (deleteItemDialog != null && deleteItemDialog.isShowing())
+            deleteItemDialog.cancel();
+    }
+
+    public void showDeleteDialog(final ShopCartItem shopCart) {
+        deleteItemDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setNegativeButton("取消", null)
+                .setMessage("确认删除该商品吗？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        shopCartViewModel.removeShopCartItem(shopCart.getProductId());
+                    }
+                })
+                .create();
+        deleteItemDialog.show();
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == binding.confirmOrder) {
+            if (shopCartViewModel.getShopCartItems() == null) {
+                Toast.makeText(getApplicationContext(), "请等待购物车加载完成", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (shopCartViewModel.getShopCartItems().size() <= 0) {
+                Toast.makeText(getApplicationContext(), "您还未添加商品", Toast.LENGTH_SHORT).show();
+                return;
+            }
             navigate.navigateToConfirmOrder(this, null, false, moduleId, shopCartViewModel.getShopCartItems());
         }
         if (v == binding.backBtn) {
@@ -114,7 +149,7 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onRemoveBtnClickListener(View view, ShopCartItem shopCart, int position) {
-        shopCartViewModel.removeShopCartItem(shopCart.getProductId());
+        showDeleteDialog(shopCart);
     }
 
     @Override

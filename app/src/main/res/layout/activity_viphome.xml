@@ -22,6 +22,7 @@
             <TextView
                 android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
+                android:background="@drawable/actionbar_btn_bg"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -34,12 +35,13 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="会员特权"
+                android:text="VIP特权"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <WebView
+
+        <com.github.lzyzsd.jsbridge.BridgeWebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

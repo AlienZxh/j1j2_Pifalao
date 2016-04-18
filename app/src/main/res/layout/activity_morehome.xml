@@ -23,6 +23,7 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
@@ -42,9 +43,7 @@
             android:id="@+id/moreList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/padding_noraml"
-            android:paddingTop="@dimen/padding_noraml" />
+            android:background="@color/colorWhite" />
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

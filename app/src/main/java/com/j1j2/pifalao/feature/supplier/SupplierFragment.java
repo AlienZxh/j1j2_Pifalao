@@ -44,7 +44,7 @@ public class SupplierFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setUseWideViewPort(false);
         if (null != city)
-            binding.webview.loadDataWithBaseURL("http://218.244.128.140:9091",
+            binding.webview.loadDataWithBaseURL("http://218.244.128.140:8079",
                     city.getPlatformDescription()
                             .replaceAll("img", "img width=100%"), "text/html",
                     "utf-8", null);

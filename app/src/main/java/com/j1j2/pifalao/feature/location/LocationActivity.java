@@ -69,6 +69,8 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     private boolean isFirst = true;
 
+    BDLocation location;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(LocationActivity.this, R.layout.activity_location);
@@ -166,7 +168,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
-        BDLocation location = event.getLocation();
+        location = event.getLocation();
         if (isLocationSuccess(location)) {
             locationViewModel.onCreate(location);
             moveToMyLocation(location);
@@ -231,7 +233,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     @Override
     public void onInfoClickListener(View view, ServicePoint servicePoint) {
-        navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint);
+        navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint, location);
     }
 
     public class ServicePointOverlayManager extends OverlayManager {

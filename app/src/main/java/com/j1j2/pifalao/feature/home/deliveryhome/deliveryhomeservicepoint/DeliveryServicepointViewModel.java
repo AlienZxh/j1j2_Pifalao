@@ -61,4 +61,8 @@ public class DeliveryServicepointViewModel {
                     }
                 });
     }
+
+    public DeliveryHomeServicepointFragment getDeliveryHomeServicepointFragment() {
+        return deliveryHomeServicepointFragment;
+    }
 }

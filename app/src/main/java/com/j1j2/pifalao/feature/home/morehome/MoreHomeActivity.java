@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.home.morehome;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -40,6 +41,9 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     @Inject
     UserRelativePreference userRelativePreference;
 
+    MoreHomeAdapter moreHomeAdapter;
+    GridLayoutManager gridLayoutManager;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_morehome);
@@ -48,11 +52,16 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initViews() {
         binding.backBtn.setOnClickListener(this);
-        binding.moreList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.moreList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .size(AutoUtils.getPercentHeightSize(10))
-                .colorResId(R.color.colorTransparent).build());
-        MoreHomeAdapter moreHomeAdapter = new MoreHomeAdapter(modules);
+        moreHomeAdapter = new MoreHomeAdapter(modules);
+        gridLayoutManager = new GridLayoutManager(this, 3);
+        binding.moreList.setLayoutManager(gridLayoutManager);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return moreHomeAdapter.isHeader(position) ? gridLayoutManager.getSpanCount() : 1;
+            }
+        });
+
         binding.moreList.setAdapter(moreHomeAdapter);
         moreHomeAdapter.setOnItemClickListener(this);
     }
@@ -71,15 +80,26 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onItemClickListener(View view, Module module, int position) {
-        if (module.getModuleType() == Constant.ModuleType.DELIVERY && module.isSubscribed()) {
-            navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, userRelativePreference.getSelectedServicePoint(null), module);
-            userRelativePreference.setSelectedModule(module);
-        } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE && module.isSubscribed()) {
-            navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
-            userRelativePreference.setSelectedModule(module);
-        } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE && module.isSubscribed()) {
-            navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
-            userRelativePreference.setSelectedModule(module);
+        if (module.isSubscribed()) {
+            if (module.getModuleType() == Constant.ModuleType.DELIVERY && module.isSubscribed()) {
+                navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, userRelativePreference.getSelectedServicePoint(null), module);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE && module.isSubscribed()) {
+                navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE && module.isSubscribed()) {
+                navigate.navigateToMainActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.VIP) {
+                if (MainAplication.get(this).isLogin()) {
+                    navigate.navigateToVipHome(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+                    userRelativePreference.setSelectedModule(module);
+                } else {
+                    navigate.navigateToLogin(this, null, false);
+                }
+            }
+        } else {
+            navigate.navigateToUnsubscribe(this, null, false);
         }
     }
 }

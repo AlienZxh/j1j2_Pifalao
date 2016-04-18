@@ -2,16 +2,20 @@ package com.j1j2.pifalao.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.common.logging.FLog;
+import com.facebook.common.soloader.SoLoaderShim;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
+import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.di.AppComponent;
 import com.j1j2.pifalao.app.di.AppModule;
 import com.j1j2.pifalao.app.di.DaggerAppComponent;
@@ -32,6 +36,10 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import cn.finalteam.galleryfinal.CoreConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
 
 
@@ -68,6 +76,13 @@ public class MainAplication extends Application {
         }
     }
 
+    //修复fresco的bug
+    static {
+        try {
+            SoLoaderShim.loadLibrary("webp");
+        } catch (UnsatisfiedLinkError nle) {
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -81,6 +96,7 @@ public class MainAplication extends Application {
             initLeakCanary();
             initFresco();
             initOkHttpUtil();
+            initGalleryFinal();
         }
     }
 
@@ -132,11 +148,15 @@ public class MainAplication extends Application {
             requestListeners.add(new RequestLoggingListener());
             ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                     .setRequestListeners(requestListeners)
+                    .setBitmapsConfig(Bitmap.Config.RGB_565)
                     .build();
             FLog.setMinimumLoggingLevel(FLog.VERBOSE);
             Fresco.initialize(this, config);
         } else {
-            Fresco.initialize(this);
+            ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                    .setBitmapsConfig(Bitmap.Config.RGB_565)
+                    .build();
+            Fresco.initialize(this, config);
         }
         Logger.d("Fresco初始化完成");
     }
@@ -146,6 +166,31 @@ public class MainAplication extends Application {
         SDKInitializer.initialize(getApplicationContext());
         Logger.d("BaiduMap初始化完成");
     }
+
+    private void initGalleryFinal() {
+        //设置主题
+//ThemeConfig.CYAN
+        ThemeConfig theme = new ThemeConfig.Builder()
+                .setTitleBarBgColor(getResources().getColor(R.color.colorPrimary))
+                .build();
+//配置功能
+        FunctionConfig functionConfig = new FunctionConfig.Builder()
+                .setEnableCamera(true)
+                .setEnableEdit(true)
+                .setEnableCrop(true)
+                .setEnableRotate(true)
+                .setCropSquare(true)
+                .setEnablePreview(true)
+                .build();
+
+        FrescoImageLoader imageloader = new FrescoImageLoader(this);
+        CoreConfig coreConfig = new CoreConfig.Builder(this, imageloader, theme)
+                .setFunctionConfig(functionConfig)
+                .build();
+        GalleryFinal.init(coreConfig);
+        Logger.d("GalleryFinal初始化完成");
+    }
+
 
     public AppComponent getAppComponent() {
         return appComponent;

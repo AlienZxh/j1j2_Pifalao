@@ -10,6 +10,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityOrderproductsBinding;
 import com.j1j2.pifalao.feature.orderproducts.di.OrderProductsModule;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -55,6 +56,8 @@ public class OrderProductsActivity extends BaseActivity implements OrderProductL
 
     @Inject
     ShopCart shopCart;
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     @Override
     protected void initBinding() {
@@ -84,12 +87,13 @@ public class OrderProductsActivity extends BaseActivity implements OrderProductL
                 orderProductSimples.add(orderProductSimple);
             }
         }
+        //_________________________________________________
+
     }
 
     @Override
     protected void initViews() {
-
-        OrderProductListAdapter productListAdapter = new OrderProductListAdapter(orderProductSimples, shopCart);
+        OrderProductListAdapter productListAdapter = new OrderProductListAdapter(orderProductSimples, shopCart, userRelativePreference.getSelectedModule(null).getModuleType());
         binding.productList.setAdapter(productListAdapter);
         productListAdapter.setOnItemClickListener(this);
     }

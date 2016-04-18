@@ -24,6 +24,7 @@ import com.j1j2.pifalao.databinding.FragmentVegetablehomeBinding;
 import com.j1j2.pifalao.feature.home.vegetablehome.di.VegetableHomeModule;
 import com.j1j2.pifalao.feature.main.MainActivity;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
+import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
