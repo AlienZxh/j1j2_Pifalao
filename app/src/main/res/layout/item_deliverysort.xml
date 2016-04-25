@@ -23,9 +23,7 @@
             name="sortName"
             type="String" />
 
-        <variable
-            name="isSelect"
-            type="boolean" />
+
 
     </data>
 
@@ -51,7 +49,7 @@
             android:text="@{sortName}"
             android:textColor="@drawable/text_click_orange_colors"
             android:textSize="@dimen/text_big"
-            app:typeface="@{isSelect?Typeface.DEFAULT_BOLD : Typeface.DEFAULT}" />
+           />
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

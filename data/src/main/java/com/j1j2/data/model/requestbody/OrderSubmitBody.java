@@ -8,7 +8,7 @@ public class OrderSubmitBody {
     private int FreightID;// 选择的运费方式
 
     private int ServicePointId;// 用户选择的自提或者关联的服务点
-    private int AddressId;// 用户选择的地址的主键编号
+    private String AddressId;// 用户选择的地址的主键编号
 
     private String CouponCode;
     private double CalculateDistance;// 终端计算的用户与相关服务点见的路径距离
@@ -33,11 +33,11 @@ public class OrderSubmitBody {
         ServicePointId = servicePointId;
     }
 
-    public int getAddressId() {
+    public String getAddressId() {
         return AddressId;
     }
 
-    public void setAddressId(int addressId) {
+    public void setAddressId(String addressId) {
         AddressId = addressId;
     }
 

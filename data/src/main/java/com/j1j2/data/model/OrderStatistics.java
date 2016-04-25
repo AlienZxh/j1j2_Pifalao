@@ -17,12 +17,16 @@ public class OrderStatistics {
      * Invalid : 4
      * InvalidUnReadCount : 0
      * AllStateCount : 8
+     * DeliveryOrderCount
+     * DeliveryUnReadCount
      */
 
     private int SubmitOrderCount;
     private int SubmitUnReadCount;
     private int ExcutingOrderCount;
     private int ExcuteingUnReadCount;
+    private int DeliveryOrderCount;
+    private int DeliveryUnReadCount;
     private int ClientWaitForRecevie;
     private int ClientWaitForRecevieUnReadCount;
     private int WaitForRate;
@@ -35,87 +39,103 @@ public class OrderStatistics {
         return SubmitOrderCount;
     }
 
-    public void setSubmitOrderCount(int SubmitOrderCount) {
-        this.SubmitOrderCount = SubmitOrderCount;
+    public void setSubmitOrderCount(int submitOrderCount) {
+        SubmitOrderCount = submitOrderCount;
     }
 
     public int getSubmitUnReadCount() {
         return SubmitUnReadCount;
     }
 
-    public void setSubmitUnReadCount(int SubmitUnReadCount) {
-        this.SubmitUnReadCount = SubmitUnReadCount;
+    public void setSubmitUnReadCount(int submitUnReadCount) {
+        SubmitUnReadCount = submitUnReadCount;
     }
 
     public int getExcutingOrderCount() {
         return ExcutingOrderCount;
     }
 
-    public void setExcutingOrderCount(int ExcutingOrderCount) {
-        this.ExcutingOrderCount = ExcutingOrderCount;
+    public void setExcutingOrderCount(int excutingOrderCount) {
+        ExcutingOrderCount = excutingOrderCount;
     }
 
     public int getExcuteingUnReadCount() {
         return ExcuteingUnReadCount;
     }
 
-    public void setExcuteingUnReadCount(int ExcuteingUnReadCount) {
-        this.ExcuteingUnReadCount = ExcuteingUnReadCount;
+    public void setExcuteingUnReadCount(int excuteingUnReadCount) {
+        ExcuteingUnReadCount = excuteingUnReadCount;
+    }
+
+    public int getDeliveryOrderCount() {
+        return DeliveryOrderCount;
+    }
+
+    public void setDeliveryOrderCount(int deliveryOrderCount) {
+        DeliveryOrderCount = deliveryOrderCount;
+    }
+
+    public int getDeliveryUnReadCount() {
+        return DeliveryUnReadCount;
+    }
+
+    public void setDeliveryUnReadCount(int deliveryUnReadCount) {
+        DeliveryUnReadCount = deliveryUnReadCount;
     }
 
     public int getClientWaitForRecevie() {
         return ClientWaitForRecevie;
     }
 
-    public void setClientWaitForRecevie(int ClientWaitForRecevie) {
-        this.ClientWaitForRecevie = ClientWaitForRecevie;
+    public void setClientWaitForRecevie(int clientWaitForRecevie) {
+        ClientWaitForRecevie = clientWaitForRecevie;
     }
 
     public int getClientWaitForRecevieUnReadCount() {
         return ClientWaitForRecevieUnReadCount;
     }
 
-    public void setClientWaitForRecevieUnReadCount(int ClientWaitForRecevieUnReadCount) {
-        this.ClientWaitForRecevieUnReadCount = ClientWaitForRecevieUnReadCount;
+    public void setClientWaitForRecevieUnReadCount(int clientWaitForRecevieUnReadCount) {
+        ClientWaitForRecevieUnReadCount = clientWaitForRecevieUnReadCount;
     }
 
     public int getWaitForRate() {
         return WaitForRate;
     }
 
-    public void setWaitForRate(int WaitForRate) {
-        this.WaitForRate = WaitForRate;
+    public void setWaitForRate(int waitForRate) {
+        WaitForRate = waitForRate;
     }
 
     public int getWaitForRateUnReadCount() {
         return WaitForRateUnReadCount;
     }
 
-    public void setWaitForRateUnReadCount(int WaitForRateUnReadCount) {
-        this.WaitForRateUnReadCount = WaitForRateUnReadCount;
+    public void setWaitForRateUnReadCount(int waitForRateUnReadCount) {
+        WaitForRateUnReadCount = waitForRateUnReadCount;
     }
 
     public int getInvalid() {
         return Invalid;
     }
 
-    public void setInvalid(int Invalid) {
-        this.Invalid = Invalid;
+    public void setInvalid(int invalid) {
+        Invalid = invalid;
     }
 
     public int getInvalidUnReadCount() {
         return InvalidUnReadCount;
     }
 
-    public void setInvalidUnReadCount(int InvalidUnReadCount) {
-        this.InvalidUnReadCount = InvalidUnReadCount;
+    public void setInvalidUnReadCount(int invalidUnReadCount) {
+        InvalidUnReadCount = invalidUnReadCount;
     }
 
     public int getAllStateCount() {
         return AllStateCount;
     }
 
-    public void setAllStateCount(int AllStateCount) {
-        this.AllStateCount = AllStateCount;
+    public void setAllStateCount(int allStateCount) {
+        AllStateCount = allStateCount;
     }
 }

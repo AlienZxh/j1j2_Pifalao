@@ -3,6 +3,9 @@ package com.j1j2.pifalao.app.di;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.feature.city.di.CityComponent;
 import com.j1j2.pifalao.feature.city.di.CityModule;
+import com.j1j2.pifalao.feature.findpsw.FindPSWActivity;
+import com.j1j2.pifalao.feature.findpsw.di.FindPSWComponent;
+import com.j1j2.pifalao.feature.findpsw.di.FindPSWModule;
 import com.j1j2.pifalao.feature.guide.di.GuideComponent;
 import com.j1j2.pifalao.feature.guide.di.GuideModule;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsComponent;
@@ -98,4 +101,6 @@ public interface AppComponent {
     DeliveryProductsComponent plus(DeliveryProductsModule deliveryProductsModule);
 
     MoreHomeComponent plus(MoreHomeModule moreHomeModule);
+
+    FindPSWComponent plus(FindPSWModule findPSWModule);
 }

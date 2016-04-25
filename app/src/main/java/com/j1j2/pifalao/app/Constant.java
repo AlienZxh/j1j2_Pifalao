@@ -111,6 +111,7 @@ public class Constant {
     public interface OrderType {
         public static final int ORDERTYPE_ALL = 0;//全部
         public static final int ORDERTYPE_SUBMIT = 1;//已下单
+        public static final int ORDERTYPE_DELIVERY = 8;//配送中
         public static final int ORDERTYPE_EXECUTING = 4;//处理中
         public static final int ORDERTYPE_CLIENTWAITFORRECEVIE = 16;//待收货
         public static final int ORDERTYPE_WAITFORRATE = 32;//待评价

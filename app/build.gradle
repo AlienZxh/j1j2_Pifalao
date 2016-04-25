@@ -70,13 +70,13 @@ android {
         }
         debug {
             signingConfig signingConfigs.debug
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
-
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
+            //9087
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9087/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9087\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
             buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }

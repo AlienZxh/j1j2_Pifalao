@@ -2,7 +2,6 @@ package com.j1j2.pifalao.feature.vipupdate.steptwo;
 
 import android.databinding.DataBindingUtil;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
@@ -30,6 +29,7 @@ public class VipUpdateStepTwoActivity extends BaseActivity implements View.OnCli
     @Inject
     User user;
 
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vipupdatesteptwo);
@@ -53,7 +53,7 @@ public class VipUpdateStepTwoActivity extends BaseActivity implements View.OnCli
             onBackPressed();
         if (v == binding.confirm) {
             if (binding.codeEdit.getText().toString().length() <= 0) {
-                Toast.makeText(this, "激活码不能为空", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("激活码不能为空");
                 return;
             }
             vipUpdateStepTwoViewModel.vipUpdate(binding.codeEdit.getText().toString());

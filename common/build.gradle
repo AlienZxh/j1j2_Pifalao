@@ -36,9 +36,7 @@ dependencies {
     compile commonDependencies.animators
     compile commonDependencies.superrecyclerview
     compile commonDependencies.circular
-//    compile commonDependencies.smarttablayout
     compile commonDependencies.tagview
-//    compile commonDependencies.snappingstepper
     compile commonDependencies.dialogplus
     compile commonDependencies.zxing
     compile commonDependencies.nineold

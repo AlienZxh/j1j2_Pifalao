@@ -133,8 +133,8 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     }
 
     @Override
-    public void onDetailClickListener(View view, OrderSimple orderSimple, int position) {
-        navigate.navigateToOrderDetail(this, null, false, orderSimple, orderSimple.getOrderId());
+    public void onDetailClickListener(View view, OrderSimple orderSimple, int position, int selectpage) {
+        navigate.navigateToOrderDetail(this, null, false, orderSimple, orderSimple.getOrderId(), selectpage);
     }
 
     @Override

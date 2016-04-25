@@ -4,19 +4,15 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.common.view.itemdecoration.CustomGridItemDecoration;
-import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.model.Module;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.event.FinishLocationActivityEvent;
 import com.j1j2.pifalao.app.event.HistoryKeyChangeEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivitySearchBinding;
-import com.j1j2.pifalao.databinding.ActivityServicesBinding;
 import com.j1j2.pifalao.feature.search.di.SearchModule;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -48,6 +44,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Inject
     UserRelativePreference userRelativePreference;
+
     List<String> historys;
 
     @Override
@@ -88,6 +85,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         MainAplication.get(this).getAppComponent().plus(new SearchModule(this)).inject(this);
     }
 
+
     @Override
     public void onClick(View v) {
         if (v == binding.backBtn)
@@ -95,11 +93,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         if (v == binding.searchBtn) {
             String newHistoryKey = binding.searchview.getText().toString();
             if (TextUtils.isEmpty(newHistoryKey)) {
-                Toast.makeText(this, "关键字不能为空", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("关键字不能为空");
                 return;
             }
-            navigate.navigateToProductsActivityFromSearch(this, null, false, newHistoryKey, module);
             changeHistoryKey(newHistoryKey);
+            navigate.navigateToProductsActivityFromSearch(this, null, false, newHistoryKey, module);
         }
 
     }
@@ -111,6 +109,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void changeHistoryKey(String key) {
+        for (String string : historys) {
+            if (string.equals(key))
+                return;
+        }
         if (historys.size() < 20)
             historys.add(key);
         else {

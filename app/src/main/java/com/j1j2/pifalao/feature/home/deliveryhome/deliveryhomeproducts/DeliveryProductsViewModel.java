@@ -1,7 +1,5 @@
 package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts;
 
-import android.widget.Toast;
-
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.model.PagerManager;
@@ -13,10 +11,10 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
-import com.j1j2.pifalao.feature.vegetablesort.VegetableSortFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,10 +29,18 @@ public class DeliveryProductsViewModel {
     private ShopCartApi shopCartApi;
     private List<ShopCartItem> shopCartItems;
 
+    DeliveryProductsAdapter deliveryProductsAdapter;
+
+    private int pageIndex = 1;
+    private int pageSize = 20;
+    private int pageCount = 0;
+
     public DeliveryProductsViewModel(DeliveryHomeProductsFragment deliveryHomeProductsFragment, ProductApi productApi, ShopCartApi shopCartApi) {
         this.deliveryHomeProductsFragment = deliveryHomeProductsFragment;
         this.productApi = productApi;
         this.shopCartApi = shopCartApi;
+        deliveryProductsAdapter = new DeliveryProductsAdapter(new ArrayList<ProductSimple>());
+
     }
 
     public void queryShopcart(int moduled) {
@@ -69,14 +75,13 @@ public class DeliveryProductsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-//                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                        deliveryHomeProductsFragment.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
+                        deliveryHomeProductsFragment.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -86,21 +91,22 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void removeShopCartItem(int productId) {
-        shopCartApi.removeShopCartItem(productId)
+    public void removeShopCartItem(final ProductUnit unit) {
+        shopCartApi.removeShopCartItem(unit.getProductId())
                 .compose(deliveryHomeProductsFragment.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String str) {
-                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), str, Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().post(new ShopCartChangeEvent());
+                        deliveryHomeProductsFragment.toastor.showSingletonToast(str);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
+                        deliveryHomeProductsFragment.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -119,13 +125,13 @@ public class DeliveryProductsViewModel {
                     @Override
                     public void onWebReturnSucess(String str) {
                         if (!showAnim)
-                            Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), str, Toast.LENGTH_SHORT).show();
-                        EventBus.getDefault().post(new ShopCartChangeEvent());
+                            deliveryHomeProductsFragment.toastor.showSingletonToast(str);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(deliveryHomeProductsFragment.getContext().getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        EventBus.getDefault().post(new ShopCartChangeEvent());
+                        deliveryHomeProductsFragment.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -158,15 +164,29 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void queryProductyBySortId(int productSortId) {
-        productApi.queryProductyBySortId("" + productSortId, "" + 1, "" + 200, "" + false, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_DEFAULT)
+
+    public void queryProductyBySortId(boolean isRefresh, int productSortId) {
+        if (isRefresh) {
+            pageIndex = 1;
+            deliveryHomeProductsFragment.setLoadMoreBegin();
+        }
+        productApi.queryProductyBySortId("" + productSortId, "" + pageIndex, "" + pageSize, "" + false, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_DEFAULT)
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
-                        deliveryHomeProductsFragment.initProducts(productSimplePagerManager.getList());
+                        pageCount = productSimplePagerManager.getPageCount();
+                        if (pageIndex == 1) {
+                            deliveryProductsAdapter.initData(productSimplePagerManager.getList());
+                            deliveryHomeProductsFragment.setAdapter(deliveryProductsAdapter);
+                        } else if (pageIndex <= pageCount) {
+                            deliveryProductsAdapter.addAll(productSimplePagerManager.getList());
+                        } else {
+                            deliveryHomeProductsFragment.setLoadMoreComplete();
+                        }
+                        pageIndex++;
                     }
 
                     @Override
@@ -181,15 +201,28 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void querySellsProducts(int productSortId) {
-        productApi.queryProductyBySortId("" + productSortId, "" + 1, "" + 200, "" + true, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_SELLS)
+    public void querySellsProducts(boolean isRefresh, int productSortId) {
+        if (isRefresh) {
+            pageIndex = 1;
+            deliveryHomeProductsFragment.setLoadMoreBegin();
+        }
+        productApi.queryProductyBySortId("" + productSortId, "" + pageIndex, "" + pageSize, "" + true, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_SELLS)
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
-                        deliveryHomeProductsFragment.initProducts(productSimplePagerManager.getList());
+                        pageCount = productSimplePagerManager.getPageCount();
+                        if (pageIndex == 1) {
+                            deliveryProductsAdapter.initData(productSimplePagerManager.getList());
+                            deliveryHomeProductsFragment.setAdapter(deliveryProductsAdapter);
+                        } else if (pageIndex <= pageCount) {
+                            deliveryProductsAdapter.addAll(productSimplePagerManager.getList());
+                        } else {
+                            deliveryHomeProductsFragment.setLoadMoreComplete();
+                        }
+                        pageIndex++;
                     }
 
                     @Override
@@ -205,15 +238,28 @@ public class DeliveryProductsViewModel {
     }
 
 
-    public void queryActivityProducts(int moduleId) {
-        productApi.queryActivityProducts(1, 200, moduleId, 1, "", "")
+    public void queryActivityProducts(boolean isRefresh, int moduleId) {
+        if (isRefresh) {
+            pageIndex = 1;
+            deliveryHomeProductsFragment.setLoadMoreBegin();
+        }
+        productApi.queryActivityProducts(pageIndex, pageSize, moduleId, 1, "", "")
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
-                        deliveryHomeProductsFragment.initProducts(productSimplePagerManager.getList());
+                        pageCount = productSimplePagerManager.getPageCount();
+                        if (pageIndex == 1) {
+                            deliveryProductsAdapter.initData(productSimplePagerManager.getList());
+                            deliveryHomeProductsFragment.setAdapter(deliveryProductsAdapter);
+                        } else if (pageIndex <= pageCount) {
+                            deliveryProductsAdapter.addAll(productSimplePagerManager.getList());
+                        } else {
+                            deliveryHomeProductsFragment.setLoadMoreComplete();
+                        }
+                        pageIndex++;
                     }
 
                     @Override
@@ -235,5 +281,9 @@ public class DeliveryProductsViewModel {
 
     public List<ShopCartItem> getShopCartItems() {
         return shopCartItems;
+    }
+
+    public DeliveryProductsAdapter getDeliveryProductsAdapter() {
+        return deliveryProductsAdapter;
     }
 }

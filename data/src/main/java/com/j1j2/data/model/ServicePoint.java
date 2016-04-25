@@ -3,8 +3,6 @@ package com.j1j2.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Comparator;
-
 /**
  * Created by alienzxh on 16-3-12.
  */
@@ -30,6 +28,7 @@ public class ServicePoint implements Parcelable {
      * Instroduce :
      * PickUpSelfSupport : true
      * HomeDeliverySupport : true
+     * ServiceAreas
      */
 
     private int ServicePointId;
@@ -51,6 +50,9 @@ public class ServicePoint implements Parcelable {
     private String Instroduce;
     private boolean PickUpSelfSupport;
     private boolean HomeDeliverySupport;
+    private String ServiceAreas;
+
+
     //________________________________________
     private transient double distance;
 
@@ -62,6 +64,7 @@ public class ServicePoint implements Parcelable {
         this.distance = distance;
     }
     //______________________________________
+
 
     public int getServicePointId() {
         return ServicePointId;
@@ -215,6 +218,14 @@ public class ServicePoint implements Parcelable {
         HomeDeliverySupport = homeDeliverySupport;
     }
 
+    public String getServiceAreas() {
+        return ServiceAreas;
+    }
+
+    public void setServiceAreas(String serviceAreas) {
+        ServiceAreas = serviceAreas;
+    }
+
 
     @Override
     public int describeContents() {
@@ -242,6 +253,7 @@ public class ServicePoint implements Parcelable {
         dest.writeString(this.Instroduce);
         dest.writeByte(PickUpSelfSupport ? (byte) 1 : (byte) 0);
         dest.writeByte(HomeDeliverySupport ? (byte) 1 : (byte) 0);
+        dest.writeString(this.ServiceAreas);
         dest.writeDouble(this.distance);
     }
 
@@ -268,6 +280,7 @@ public class ServicePoint implements Parcelable {
         this.Instroduce = in.readString();
         this.PickUpSelfSupport = in.readByte() != 0;
         this.HomeDeliverySupport = in.readByte() != 0;
+        this.ServiceAreas = in.readString();
         this.distance = in.readDouble();
     }
 

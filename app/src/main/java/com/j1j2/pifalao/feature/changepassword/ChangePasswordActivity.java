@@ -1,8 +1,9 @@
 package com.j1j2.pifalao.feature.changepassword;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.view.View;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -30,6 +31,8 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     @Inject
     UserLoginPreference userLoginPreference;
 
+    InputMethodManager imm;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_changepassword);
@@ -38,7 +41,7 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initViews() {
-
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     @Override
@@ -49,25 +52,32 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        if (binding.oldPSWEdit.hasFocus())
+            imm.hideSoftInputFromWindow(binding.oldPSWEdit.getWindowToken(), 0);
+        if (binding.confirmPSWEdit.hasFocus())
+            imm.hideSoftInputFromWindow(binding.confirmPSWEdit.getWindowToken(), 0);
+        if (binding.newPSWEdit.hasFocus())
+            imm.hideSoftInputFromWindow(binding.newPSWEdit.getWindowToken(), 0);
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.confirmBtn) {
             if (binding.oldPSWEdit.getText().toString().length() <= 0) {
-                Toast.makeText(this, "请输入原密码", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请输入原密码");
                 return;
             } else if (binding.newPSWEdit.getText().toString().length() <= 0) {
-                Toast.makeText(this, "请输入新密码", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请输入新密码");
                 return;
             } else if (binding.confirmPSWEdit.getText().toString().length() <= 0) {
-                Toast.makeText(this, "请确认新密码", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请确认新密码");
                 return;
             } else if (binding.newPSWEdit.getText().toString().length() < 6 || binding.confirmPSWEdit.getText().toString().length() < 6) {
-                Toast.makeText(this, "新密码需要不小于６位", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("新密码需要不小于６位");
                 return;
             } else if (binding.newPSWEdit.getText().toString().length() != binding.confirmPSWEdit.getText().toString().length()) {
-                Toast.makeText(this, "新密码与确认新密码不一致", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("新密码与确认新密码不一致");
                 return;
             }
+
             changePasswordViewModel.changePassword(binding.oldPSWEdit.getText().toString(), binding.confirmPSWEdit.getText().toString());
         }
     }

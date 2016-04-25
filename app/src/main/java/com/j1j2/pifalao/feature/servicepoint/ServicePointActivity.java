@@ -6,7 +6,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
@@ -48,6 +47,7 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
     @Inject
     UserRelativePreference userRelativePreference;
 
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(ServicePointActivity.this, R.layout.activity_servicepoint);
@@ -76,12 +76,12 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
                 startActivity(intent);
             } else {
-                Toast.makeText(this, "没有拨打电话权限", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("没有拨打电话权限");
             }
         }
         if (v == binding.navigationBtn) {
             if (location == null) {
-                Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("定位失败");
                 return;
             }
             NaviParaOption naviParaOption = new NaviParaOption()
@@ -94,6 +94,8 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
         if (v == binding.inBtn) {
             EventBus.getDefault().post(new FinishLocationActivityEvent());
             userRelativePreference.setSelectedServicePoint(servicePoint);
+            userRelativePreference.setShowDeliveryArea(true);
+            userRelativePreference.setShowLocation(true);
             navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePoint);
         }
         if (v == binding.backBtn) {

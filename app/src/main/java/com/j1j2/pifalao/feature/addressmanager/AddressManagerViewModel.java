@@ -1,6 +1,5 @@
 package com.j1j2.pifalao.feature.addressmanager;
 
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.model.Address;
@@ -49,7 +48,7 @@ public class AddressManagerViewModel {
                 });
     }
 
-    public void setDefaultAddress(int addressId) {
+    public void setDefaultAddress(final int addressId) {
         userAddressApi.setUserDefaultAddress(addressId)
                 .compose(addressManagerActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -58,11 +57,13 @@ public class AddressManagerViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         queryAddress();
+//                        addressManagerAdapter.itemMoveTop(addressId);
                     }
+
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(addressManagerActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        addressManagerActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -85,7 +86,7 @@ public class AddressManagerViewModel {
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(addressManagerActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        addressManagerActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

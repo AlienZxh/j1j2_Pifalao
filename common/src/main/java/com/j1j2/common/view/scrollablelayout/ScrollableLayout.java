@@ -35,10 +35,12 @@ import android.view.ViewConfiguration;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
+import com.zhy.autolayout.AutoLinearLayout;
+
 /**
  * Created by cpoopc(303727604@qq.com) on 2015-02-10.
  */
-public class ScrollableLayout extends LinearLayout {
+public class ScrollableLayout extends AutoLinearLayout {
 
     private final String tag = "cp:scrollableLayout";
     private float mDownX;

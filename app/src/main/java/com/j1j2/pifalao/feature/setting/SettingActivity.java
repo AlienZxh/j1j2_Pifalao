@@ -1,7 +1,6 @@
 package com.j1j2.pifalao.feature.setting;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -9,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -48,7 +46,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
                 startActivity(intent);
             } else {
-                Toast.makeText(this, "没有拨打电话权限", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("没有拨打电话权限");
             }
         }
         if (v == binding.aboutUs)

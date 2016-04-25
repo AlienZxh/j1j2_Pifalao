@@ -14,11 +14,13 @@ import com.j1j2.pifalao.R;
  * Created by alienzxh on 16-4-12.
  */
 public class StoreStyleHomeTopCycleAdapter extends RecyclingPagerAdapter {
-    private int[] imgId = {R.drawable.storestylehometop_top_img_1,
-            R.drawable.storestylehometop_top_img_2,
-            R.drawable.storestylehometop_top_img_3,
-            R.drawable.storestylehometop_top_img_4};
+    private int[] imgId;
+    private float ratio;
 
+    public StoreStyleHomeTopCycleAdapter(int[] imgId, float ratio) {
+        this.imgId = imgId;
+        this.ratio = ratio;
+    }
 
     private int getPosition(int position) {
         return position;
@@ -35,6 +37,7 @@ public class StoreStyleHomeTopCycleAdapter extends RecyclingPagerAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        holder.draweeView.setAspectRatio(ratio);
         holder.draweeView.setImageURI(Uri.parse("res://com.j1j2.pifalao/" + imgId[position]));
         return view;
     }

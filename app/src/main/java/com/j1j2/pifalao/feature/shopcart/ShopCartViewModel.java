@@ -1,11 +1,9 @@
 package com.j1j2.pifalao.feature.shopcart;
 
 import android.databinding.ObservableField;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ShopCartApi;
-import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
@@ -88,13 +86,14 @@ public class ShopCartViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String str) {
-                        Toast.makeText(shopCartActivity, str, Toast.LENGTH_SHORT).show();
+
+                        shopCartActivity.toastor.showSingletonToast(str);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(shopCartActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        shopCartActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -112,13 +111,13 @@ public class ShopCartViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String str) {
-                        Toast.makeText(shopCartActivity, str, Toast.LENGTH_SHORT).show();
+                        shopCartActivity.toastor.showSingletonToast(str);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(shopCartActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        shopCartActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_small"
-                android:text="@{module.ModuleType==Constant.ModuleType.VEGETABLE?&quot;距离21点订单截止还剩：&quot;:&quot;距离仓库发货还剩：&quot;}"
+                android:text="@{module.ModuleType==Constant.ModuleType.VEGETABLE?&quot;距离21点下单截止还剩：&quot;:&quot;距离仓库发货还剩：&quot;}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 

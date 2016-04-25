@@ -38,6 +38,12 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initViews() {
         orderManagerViewModel.queryOfflineOrders();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         orderManagerViewModel.queryOrderStatistics();
     }
 
@@ -49,6 +55,8 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_SUBMIT);
         } else if (v == binding.ExcutingOrder) {
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_EXECUTING);
+        } else if (v == binding.DeliveryOrder) {
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_DELIVERY);
         } else if (v == binding.ClientWaitForRecevieOrder) {
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_CLIENTWAITFORRECEVIE);
         } else if (v == binding.WaitForRateOrder) {

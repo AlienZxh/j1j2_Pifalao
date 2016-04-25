@@ -1,6 +1,5 @@
 package com.j1j2.pifalao.feature.changepassword;
 
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.WebReturn;
@@ -34,13 +33,13 @@ public class ChangePasswordViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(changePasswordActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        changePasswordActivity.toastor.showSingletonToast(s);
                         changePasswordActivity.finishChange(newPSW);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(changePasswordActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        changePasswordActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

@@ -26,6 +26,7 @@
             android:layout_height="@dimen/content_height_normal"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+
             android:paddingLeft="@dimen/padding_noraml">
 
             <TextView
@@ -69,6 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
+                android:onClick="navigateToServicepointShow"
                 android:orientation="vertical">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -80,13 +82,13 @@
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="0.8"  />
+                    fresco:viewAspectRatio="1" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="批发佬服务点"
+                    android:text="批发佬便利店"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
             </com.zhy.autolayout.AutoLinearLayout>
@@ -100,6 +102,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
+                android:onClick="navigateToServicepointShow"
                 android:orientation="vertical">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -111,13 +114,13 @@
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="0.8"  />
+                    fresco:viewAspectRatio="1" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="批发佬服务点"
+                    android:text="批发佬便利店"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 
@@ -145,6 +148,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
+                android:onClick="navigateToStorShow"
                 android:orientation="vertical">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -156,13 +160,13 @@
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="0.8"  />
+                    fresco:viewAspectRatio="1" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="批发佬服务点"
+                    android:text="批发佬仓库"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
             </com.zhy.autolayout.AutoLinearLayout>
@@ -176,6 +180,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
+                android:onClick="navigateToStorShow"
                 android:orientation="vertical">
 
                 <com.facebook.drawee.view.SimpleDraweeView
@@ -187,13 +192,13 @@
                     fresco:roundedCornerRadius="5dp"
                     fresco:roundingBorderColor="@color/colorGrayDEDEDE"
                     fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="0.8" />
+                    fresco:viewAspectRatio="1" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="批发佬服务点"
+                    android:text="批发佬仓库"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 

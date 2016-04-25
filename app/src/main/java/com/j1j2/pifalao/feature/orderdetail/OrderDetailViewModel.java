@@ -1,7 +1,6 @@
 package com.j1j2.pifalao.feature.orderdetail;
 
 import android.databinding.ObservableField;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.UserOrderApi;
@@ -47,8 +46,8 @@ public class OrderDetailViewModel {
                     public void onWebReturnSucess(OrderSimple orderSimple) {
                         orderDetailObservableField.set(orderSimple);
                         orderProductsAdapter = new OrderProductsAdapter(orderSimple.getProductDetails());
-                        orderDetailActivity.setOrderProductListAdapter(orderProductsAdapter);
-                        queryServiceoint(orderSimple.getServicePointId());
+
+                        queryServicePoint(orderSimple.getServicePointId());
                     }
 
                     @Override
@@ -64,7 +63,7 @@ public class OrderDetailViewModel {
 
     }
 
-    public void queryServiceoint(int servicepointId) {
+    public void queryServicePoint(int servicepointId) {
         servicePointApi.queryServicePointById(servicepointId)
                 .compose(orderDetailActivity.<WebReturn<ServicePoint>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -73,6 +72,7 @@ public class OrderDetailViewModel {
                     @Override
                     public void onWebReturnSucess(ServicePoint mServicePoint) {
                         servicePointObservableField.set(mServicePoint);
+                        orderDetailActivity.initFragment();
                     }
 
                     @Override
@@ -96,14 +96,15 @@ public class OrderDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(orderDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+
+                        orderDetailActivity.toastor.showSingletonToast(s);
                         EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
                         orderDetailActivity.finish();
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(orderDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        orderDetailActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

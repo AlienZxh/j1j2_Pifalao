@@ -36,14 +36,28 @@
             fresco:placeholderImage="@drawable/loadimg_loading"
             fresco:viewAspectRatio="1" />
 
-        <TextView
+        <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="36px"
-            android:gravity="center_vertical"
-            android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice+&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_normal"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="36px"
+                android:gravity="center_vertical"
+                android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_normal"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="36px"
+                android:gravity="center_vertical"
+                android:text="@{&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+        </com.zhy.autolayout.AutoLinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

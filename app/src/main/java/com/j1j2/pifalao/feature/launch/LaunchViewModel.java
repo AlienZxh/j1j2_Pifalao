@@ -158,6 +158,7 @@ public class LaunchViewModel {
 
                     @Override
                     public void onWebReturnSucess(User user) {
+
                         if (userLoginPreference.getIsAutoLogin(false)) {
                             MainAplication.get(launchActivity).login(user);
                             EventBus.getDefault().postSticky(new LogStateEvent(true));
@@ -165,6 +166,7 @@ public class LaunchViewModel {
                             MainAplication.get(launchActivity).loginOut();
                             EventBus.getDefault().postSticky(new LogStateEvent(false));
                         }
+                        Logger.d("launch IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
                     }
 
                     @Override

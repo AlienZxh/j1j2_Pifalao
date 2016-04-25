@@ -11,6 +11,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemAddressmanagerBinding;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +23,28 @@ public class AddressManagerAdapter extends RecyclerView.Adapter<AddressManagerAd
     public AddressManagerAdapter(List<Address> addressList) {
         this.addressList = addressList;
     }
+
+
+//    public void itemMoveTop(int addressId) {
+//        int i = 0;
+//        for (Address address : addressList) {
+//            if (address.isDefaultAddress()) {
+//                address.setIsDefaultAddress(false);
+//                notifyItemChanged(i);
+//            }
+//            i++;
+//        }
+//        i = 0;
+//        for (Address address : addressList) {
+//            if (address.getAddressId() == addressId) {
+//                address.setIsDefaultAddress(true);
+//                notifyItemChanged(i);
+//                Collections.swap(addressList, i, 0);
+//                notifyItemMoved(i, 0);
+//            }
+//            i++;
+//        }
+//    }
 
     @Override
     public AddressManagerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

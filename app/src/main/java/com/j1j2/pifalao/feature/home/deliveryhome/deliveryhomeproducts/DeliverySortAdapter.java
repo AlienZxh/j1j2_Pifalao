@@ -13,6 +13,7 @@ import com.j1j2.data.model.SecondarySort;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemDeliverysortBinding;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -81,7 +82,6 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
         public void bind(@NonNull final ProductSort data, final int position) {
 
             singleSelector.bindHolder(this, position, getItemId());
-            binding.setIsSelect(singleSelector.isSelected(position, getItemId()));
             binding.setPosition(position);
             if (position == 0)
                 binding.setSortName("销量排行");
@@ -93,7 +93,7 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
                 @Override
                 public void onClick(View v) {
                     singleSelector.setSelected(position, getItemId(), true);
-                    notifyDataSetChanged();
+//                    notifyDataSetChanged();
                     if (onSortClickListener != null) {
                         onSortClickListener.onSortClick(v, secondarySort.getParentProductSort(), data, position);
                     }

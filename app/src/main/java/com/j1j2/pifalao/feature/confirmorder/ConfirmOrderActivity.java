@@ -7,7 +7,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
@@ -28,11 +27,11 @@ import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityConfirmorderBinding;
 import com.j1j2.pifalao.databinding.ViewDeliverytimePickerBinding;
 import com.j1j2.pifalao.feature.confirmorder.di.ConfirmOrderModule;
+import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 import com.j1j2.pifalao.feature.orderproducts.OrderProductsActivity;
 import com.j1j2.pifalao.feature.successresult.SuccessResultActivity;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -70,6 +69,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     @Inject
     ShopCart shopCart;
+
 
     DialogPlus timeDialog;
     ViewDeliverytimePickerBinding dialogBinding;
@@ -146,6 +146,8 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             orderSubmitState.FreightValue.set(0);
         } else if (orderSubmitState.FreightTypeDetail.get().getCategoryType() == Constant.CategoryType.FIXED_FREIGHT) {
             orderSubmitState.FreightValue.set(orderSubmitState.FreightTypeDetail.get().getFixed());
+        } else if (orderSubmitState.FreightTypeDetail.get().getCategoryType() == Constant.CategoryType.VIP_FREIGHT) {
+            orderSubmitState.FreightValue.set(orderSubmitState.FreightTypeDetail.get().getFixed());
         } else {
             orderSubmitState.FreightValue.set(0);
         }
@@ -190,11 +192,11 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
         if (v == binding.confirmOrder) {
             if (null == orderSubmitState.PredictSendTime.get()) {
-                Toast.makeText(this, "请选择自提时间", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请选择自提时间");
                 return;
             }
             if (orderSubmitState.FreightTypeDetail.get().getSysDeliveryType() == Constant.DeliveryType.HOMEDELIVERY && null == orderSubmitState.AddressDetail.get()) {
-                Toast.makeText(this, "请选择地址", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请选择地址");
                 return;
             }
             orderSubmitState.OrderMemo = binding.memo.getText().toString();
@@ -253,5 +255,9 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     public void navigateToSuccess(int orderId) {
         navigate.navigateToSuccessResult(this, null, true, SuccessResultActivity.FROM_CONFIRMORDER, orderId);
+    }
+
+    public void navigateToOrderDetail(int orderId) {
+        navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
     }
 }

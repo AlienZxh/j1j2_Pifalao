@@ -71,7 +71,7 @@
                     android:background="@drawable/orange_conner_hollow_tag_bg"
                     android:paddingLeft="6px"
                     android:paddingRight="6px"
-                    android:text="@string/self_product"
+                    android:text="自营"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_normal" />
 

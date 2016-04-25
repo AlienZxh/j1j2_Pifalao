@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SelectableHolder;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
@@ -13,7 +12,6 @@ import com.j1j2.data.model.Coupon;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemCouponselectListBinding;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 

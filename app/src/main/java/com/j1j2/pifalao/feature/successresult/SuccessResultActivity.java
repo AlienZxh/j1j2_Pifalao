@@ -8,6 +8,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
 import com.j1j2.pifalao.databinding.ActivitySuccessresultBinding;
+import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -68,7 +69,7 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
                 toolbarTitle.set("注册成功");
                 message.set("恭喜您注册成功！");
                 binding.cancelBtn.setVisibility(View.GONE);
-                confirmBtnStr.set("进入仓库");
+                confirmBtnStr.set("完　成");
                 break;
         }
     }
@@ -95,7 +96,7 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
         if (v == binding.confirmBtn) {
             switch (activityType) {
                 case FROM_CONFIRMORDER:
-                    navigate.navigateToOrderDetail(this, null, true, null, orderId);
+                    navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
                     break;
                 case FROM_REGISTER:
                     EventBus.getDefault().post(new NavigateToHomeEvent());

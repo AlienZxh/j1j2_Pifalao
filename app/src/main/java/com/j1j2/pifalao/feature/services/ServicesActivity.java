@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -112,6 +111,9 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     List<Module> modules;
 
+    BDLocation location;
+    boolean isFirst = true;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(ServicesActivity.this, R.layout.activity_services);
@@ -150,6 +152,27 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         binding.setOnClick(this);
         //__________________________________________________________________________________________
 
+    }
+
+    public void showLocationDialog(final ServicePoint servicePoint) {
+        new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setMessage(servicePoint.getName() + "离您更近，是否进行切换？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("切换", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+//                        userRelativePreference.setSelectedServicePoint(servicePoint);
+//                        userRelativePreference.setShowDeliveryArea(true);
+//                        userRelativePreference.setShowLocation(true);
+//                        navigate.navigateToServicesActivity(ServicesActivity.this, null, true, servicePoint);
+
+                        navigate.navigateToLocationActivity(ServicesActivity.this,null,true,userRelativePreference.getSelectedCity(null));
+                    }
+                })
+                .create()
+                .show();
     }
 
     private void showExitDialog() {
@@ -225,7 +248,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         qrBinding.qrcodeImg.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "特权码已刷新", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("特权码已刷新");
                 qrBitMap = QRCodeUtils.createQRCodeWithLogo(str, qrBinding.qrcodeImg.getHeight(), appBitmap);
                 qrBinding.qrcodeImg.setImageBitmap(qrBitMap);
             }
@@ -283,7 +306,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                 }
             }
         } else
-            navigate.navigateToUnsubscribe(this, null, false);
+            navigate.navigateToUnsubscribeModule(this, null, false);
     }
 
     @Override
@@ -310,6 +333,8 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             if (qrDialog.isShowing())
                 qrDialog.dismiss();
         }
+        if (v == binding.servicepointBtn)
+            navigate.navigateToServicePointActivity(this, null, false, servicePoint, location);
     }
 
     @Override
@@ -335,7 +360,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
-        BDLocation location = event.getLocation();
+        location = event.getLocation();
         if (isLocationSuccess(location)) {
             // 地图显示我的位置
             MyLocationData locData = new MyLocationData.Builder()
@@ -353,6 +378,12 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                 PlanNode stNode = PlanNode.withLocation(new LatLng(location.getLatitude(), location.getLongitude()));
                 routePlanSearch.drivingSearch((new DrivingRoutePlanOption())
                         .from(stNode).to(enNode));
+            }
+
+            if (isFirst && userRelativePreference.getShowLocation(true)) {
+                isFirst = false;
+                servicesViewModule.queryServicepointInCity(location, userRelativePreference.getSelectedCity(null), userRelativePreference.getSelectedServicePoint(null));
+                userRelativePreference.setShowLocation(false);
             }
         }
 
@@ -401,7 +432,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
         //获取驾车线路规划结果
         if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(this, "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+            toastor.showSingletonToast("抱歉，未找到结果");
         }
         if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息

@@ -86,7 +86,11 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
         binding.sortList.setLayoutManager(manager);
         storeStyleHomeViewModel.queryProductSort();
 //________________________________________________________
-        StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter();
+        int[] imgId = {R.drawable.storestylehometop_top_img_1,
+                R.drawable.storestylehometop_top_img_2,
+                R.drawable.storestylehometop_top_img_3,
+                R.drawable.storestylehometop_top_img_4};
+        StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter(imgId,2.2f);
         binding.viewPager.setAdapter(storeStyleHomeTopAdapter);
         binding.tab.setViewPager(binding.viewPager);
         binding.viewPager.startAutoScroll(2000);

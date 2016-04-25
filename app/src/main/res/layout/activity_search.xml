@@ -31,10 +31,10 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:padding="@dimen/padding_actionbar_btn"
                 android:text="@string/icon_back"
-                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
                 app:OnClickListener="@{onClick}" />
@@ -78,9 +78,9 @@
                 android:layout_width="130px"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="搜索"
-                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_big"
                 app:OnClickListener="@{onClick}" />
@@ -117,7 +117,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/searchHotList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="300px" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"

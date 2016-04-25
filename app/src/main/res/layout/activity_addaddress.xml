@@ -15,6 +15,8 @@
         android:layout_height="match_parent"
         android:background="@color/colorLayoutBg"
         android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoRelativeLayout
@@ -94,7 +96,7 @@
                     android:background="@color/colorWhite"
                     android:hint="请填写收货人姓名"
                     android:inputType="text"
-                    android:maxLength="15"
+                    android:maxLength="6"
                     android:textColor="@color/colorText333"
                     android:textColorHint="@color/colorTextaaa"
                     android:textSize="26px" />
@@ -344,8 +346,8 @@
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/defaultCheck"
                 android:layout_width="wrap_content"
-                android:checked="true"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:checked="true" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 

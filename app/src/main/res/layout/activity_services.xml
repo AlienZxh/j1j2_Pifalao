@@ -104,12 +104,14 @@
                 android:background="@color/colorGrayEDEDED" />
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/servicepointBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/padding_big"
                 android:layout_marginTop="@dimen/padding_big"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:OnClickListener="@{onClick}">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:layout_width="@dimen/height_services_point_img"

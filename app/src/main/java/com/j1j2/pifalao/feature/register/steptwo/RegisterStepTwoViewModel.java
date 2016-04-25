@@ -1,7 +1,5 @@
 package com.j1j2.pifalao.feature.register.steptwo;
 
-import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.ClientRegisterApi;
 import com.j1j2.data.http.api.UserLoginApi;
@@ -46,13 +44,13 @@ public class RegisterStepTwoViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(registerStepTwoActivity.getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
+                        registerStepTwoActivity.toastor.showSingletonToast("注册成功");
                         login(clientRegisterStepOneBody);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(registerStepTwoActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        registerStepTwoActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

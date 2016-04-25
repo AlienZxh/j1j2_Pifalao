@@ -5,6 +5,7 @@ import com.j1j2.data.model.OfflineOrderSimple;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.OrderStatistics;
 import com.j1j2.data.model.PagerManager;
+import com.j1j2.data.model.SaleOrderStateHistory;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ProductSaleOrderRateBody;
 import com.j1j2.data.model.requestbody.SetOrderReadStateBody;
@@ -44,6 +45,10 @@ public interface UserOrderApi {
 
     @POST("UserOrder/QueryOfflineOrderDetails")
     Observable<WebReturn<List<OfflineOrderProduct>>> queryOfflineOrderDetails(@Query("offlineOrderId") int offlineOrderId);
+
+
+    @POST("UserOrder/QueryOrderStateHistory")
+    Observable<WebReturn<List<SaleOrderStateHistory>>> queryOrderStateHistory(@Query("orderId") int orderId);
     //_____________________________________________________________________________
 
 

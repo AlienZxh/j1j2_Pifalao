@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <TextView
         android:id="@+id/quantityEdit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/state_quantity_edit_bg"
         android:gravity="center"
-        android:inputType="number"
         android:maxLength="4"
         android:text="1"
         android:textColor="#ff333333"
@@ -24,7 +23,7 @@
         android:gravity="center"
         android:text="-"
         android:textColor="#ffff9900"
-        android:textSize="30px" />
+        android:textSize="34px" />
 
     <com.j1j2.common.view.quantityview.SquareTextView
         android:id="@+id/addBtn"
@@ -36,5 +35,5 @@
         android:gravity="center"
         android:text="+"
         android:textColor="#ffff9900"
-        android:textSize="30px" />
+        android:textSize="34px" />
 </com.zhy.autolayout.AutoRelativeLayout>

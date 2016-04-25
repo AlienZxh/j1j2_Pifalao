@@ -7,10 +7,6 @@
         <import type="com.j1j2.common.util.StringUtils" />
 
         <variable
-            name="shopCart"
-            type="com.j1j2.pifalao.app.ShopCart" />
-
-        <variable
             name="deliveryProductsViewModel"
             type="com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.DeliveryProductsViewModel" />
     </data>
@@ -31,48 +27,19 @@
                 android:layout_weight="27"
                 android:background="@color/colorGrayF0F0F0" />
 
-            <android.support.v7.widget.RecyclerView
+
+            <com.malinskiy.superrecyclerview.SuperRecyclerView
                 android:id="@+id/childSortList"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="73"
                 android:background="@color/colorWhite"
-                android:clipToPadding="false"
-                android:paddingBottom="110px" />
+                app:layout_empty="@layout/view_empty"
+                app:layout_moreProgress="@layout/view_progressbar"
+                app:layout_progress="@layout/view_progressbar" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <cn.bingoogolapple.badgeview.BGABadgeTextView
-            android:id="@+id/shopCartView"
-            fontPath="iconfont/iconfont.ttf"
-            android:layout_width="100px"
-            android:layout_height="100px"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/padding_noraml"
-            android:layout_marginRight="@dimen/padding_noraml"
-            android:background="@drawable/services_dragview_bg"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="@string/icon_shopcart"
-            android:textColor="@color/colorWhite"
-            android:textSize="60px"
-            app:OnClickListener="@{deliveryProductsViewModel.deliveryHomeProductsFragment}"
-            app:badge_bgColor="@color/colorRed"
-            app:badge_gravity="rightTop"
-            app:badge_textSize="12sp"
-            app:layout_auto_basewidth="height"
-            app:showNum="@{shopCart.AllUnitNum}" />
-
-        <TextView
-            android:id="@+id/shopCartAdd"
-            fontPath="iconfont/iconfont.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/icon_round_add_fill"
-            android:textColor="@color/colorRed"
-            android:textSize="@dimen/icon_small" />
 
     </com.zhy.autolayout.AutoRelativeLayout>
 

@@ -100,7 +100,6 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
         public void setSelectable(boolean isSelectable) {
             boolean changed = isSelectable != mIsSelectable;
             mIsSelectable = isSelectable;
-
         }
 
         @Override

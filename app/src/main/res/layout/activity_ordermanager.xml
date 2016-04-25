@@ -28,9 +28,9 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
-                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
                 app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}" />
@@ -79,8 +79,7 @@
                 android:layout_weight="1"
                 android:text="实体店消费记录"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -135,16 +134,23 @@
                 android:layout_weight="1"
                 android:text="已下单"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="120px"
+                android:layout_height="45px"
+                android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/padding_noraml"
                 android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.SubmitOrderCount}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.SubmitUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_horizontalMargin="5dp"
+                app:badge_textSize="12sp"
+                app:badge_verticalMargin="0dp"
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.SubmitUnReadCount}" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -190,16 +196,23 @@
                 android:layout_weight="1"
                 android:text="处理中"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="120px"
+                android:layout_height="45px"
+                android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/padding_noraml"
                 android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.ExcutingOrderCount}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.ExcuteingUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_horizontalMargin="5dp"
+                app:badge_textSize="12sp"
+                app:badge_verticalMargin="0dp"
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.ExcuteingUnReadCount}" />
+
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -217,6 +230,67 @@
             android:layout_height="@dimen/height_1px"
             android:background="@color/colorGrayF0F0F0" />
 
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/DeliveryOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{orderManagerViewModel.orderManagerActivity}">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_order_delivery"
+                android:textColor="#ff5856d6"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="配送中"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="120px"
+                android:layout_height="45px"
+                android:gravity="right|center_vertical"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.DeliveryOrderCount}"
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.DeliveryUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_horizontalMargin="5dp"
+                app:badge_textSize="12sp"
+                app:badge_verticalMargin="0dp"
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.DeliveryUnReadCount}" />
+
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/ClientWaitForRecevieOrder"
@@ -244,18 +318,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="到达服务点"
+                android:text="到达便利店"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="120px"
+                android:layout_height="45px"
+                android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/padding_noraml"
                 android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.ClientWaitForRecevie}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.ClientWaitForRecevieUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_horizontalMargin="5dp"
+                app:badge_textSize="12sp"
+                app:badge_verticalMargin="0dp"
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.ClientWaitForRecevieUnReadCount}" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -301,16 +381,23 @@
                 android:layout_weight="1"
                 android:text="待评价"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="120px"
+                android:layout_height="45px"
+                android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/padding_noraml"
                 android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.WaitForRate}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.WaitForRateUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_horizontalMargin="5dp"
+                app:badge_textSize="12sp"
+                app:badge_verticalMargin="0dp"
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.WaitForRateUnReadCount}" />
+
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -356,16 +443,22 @@
                 android:layout_weight="1"
                 android:text="已退订"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="120px"
+                android:layout_height="45px"
+                android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/padding_noraml"
                 android:text="@{&quot;&quot;+orderManagerViewModel.statisticsObservableField.Invalid}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.WaitForRateUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_horizontalMargin="5dp"
+                app:badge_textSize="12sp"
+                app:badge_verticalMargin="0dp"
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.InvalidUnReadCount}" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -411,8 +504,7 @@
                 android:layout_weight="1"
                 android:text="全部订单"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -47,11 +47,12 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_morehome);
+        binding.backBtn.setOnClickListener(this);
     }
 
     @Override
     protected void initViews() {
-        binding.backBtn.setOnClickListener(this);
+
         moreHomeAdapter = new MoreHomeAdapter(modules);
         gridLayoutManager = new GridLayoutManager(this, 3);
         binding.moreList.setLayoutManager(gridLayoutManager);
@@ -75,7 +76,8 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        onBackPressed();
+        if (v == binding.backBtn)
+            onBackPressed();
     }
 
     @Override
@@ -99,7 +101,7 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
                 }
             }
         } else {
-            navigate.navigateToUnsubscribe(this, null, false);
+            navigate.navigateToUnsubscribeModule(this, null, false);
         }
     }
 }

@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.j1j2.common.util.QRCodeUtils;
 import com.j1j2.pifalao.R;
@@ -14,7 +13,6 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityQrcodeBinding;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeModule;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import javax.inject.Inject;
 
@@ -55,7 +53,7 @@ public class QrCodeActivity extends BaseActivity implements View.OnClickListener
         binding.qrcodeImg.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "特权码已刷新", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("特权码已刷新");
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
                 Bitmap qr = QRCodeUtils.createQRCodeWithLogo(qrStr, binding.qrcodeImg.getHeight(), bitmap);
                 binding.qrcodeImg.setImageBitmap(qr);

@@ -1,18 +1,27 @@
 package com.j1j2.pifalao.feature.products;
 
+import android.animation.Animator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.net.Uri;
+import android.support.annotation.Size;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 
+import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
+import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductSort;
@@ -22,14 +31,15 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.LogStateEvent;
+import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.databinding.ActivityProductsBinding;
 import com.j1j2.pifalao.databinding.ViewProductsAddBinding;
 import com.j1j2.pifalao.feature.productdetail.unit.ProductDetailUnitAdapter;
 import com.j1j2.pifalao.feature.products.di.ProductsModule;
-import com.litesuits.common.utils.PackageUtil;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -37,6 +47,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,8 +80,13 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     @Arg
     @Required(false)
     String key;
+
+    @Inject
+    FreightTypePrefrence freightTypePrefrence;
     @Inject
     ProductsViewModel productsViewModel;
+
+    public ObservableField<FreightType> freightTypeObservableField = new ObservableField<>();
 
     SingleSelector singleSelector;
     ViewProductsAddBinding dialogBinding;
@@ -81,6 +97,10 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     ShopCart shopCart;
 
     public ObservableBoolean isLogin = new ObservableBoolean();
+
+    ValueAnimator valueAnimator;
+    int[] endLocation = new int[2];
+    int[] startocation = new int[2];
 
     @Override
     protected void initBinding() {
@@ -99,6 +119,8 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     protected void initViews() {
+        freightTypeObservableField.set(freightTypePrefrence.getDeliveryFreightType(null));
+        //___________________________________________________________________
         singleSelector = new SingleSelector();
         dialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_products_add, null, false);
         addDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
@@ -157,13 +179,76 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
+    protected void onStop() {
+        super.onStop();
+        if (valueAnimator != null && valueAnimator.isRunning()) {
+            valueAnimator.cancel();
+            valueAnimator.removeAllUpdateListeners();
+        }
     }
 
     public void addShopCart(ProductUnit unit, int Quantity) {
         shopCart.addUnitWitQuantity(unit, Quantity);
+    }
+
+    public void showAddShopCartAnim(@Size(2) int[] startLocation) {
+
+        if (valueAnimator != null && valueAnimator.isRunning())
+            return;
+        if (endLocation[0] == 0)
+            dialogBinding.dialogShopcart.getLocationOnScreen(endLocation);
+
+        Logger.d("ShopCartAnim  startLocation " + Arrays.toString(startLocation));
+        Logger.d("ShopCartAnim  endLocation " + Arrays.toString(endLocation));
+
+        valueAnimator = ValueAnimator.ofObject(new TypeEvaluator<PointF>() {
+            // fraction = t / duration
+            @Override
+            public PointF evaluate(float fraction, PointF startValue,
+                                   PointF endValue) {
+                float v = (endValue.x - startValue.x);
+                float a = (endValue.y - startValue.y);
+
+                PointF point = new PointF();
+                point.x = v * fraction + startValue.x;
+                point.y = a * fraction * fraction + startValue.y;
+
+                return point;
+            }
+        }, new PointF(ScreenUtils.dpToPx(20), ScreenUtils.dpToPx(50)), new PointF(ScreenUtils.dpToPx(40), endLocation[1] - startLocation[1]));
+        valueAnimator.setDuration(600);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                PointF point = (PointF) animation.getAnimatedValue();
+
+                dialogBinding.shopCartAdd.setX(point.x);
+                dialogBinding.shopCartAdd.setY(point.y);
+            }
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                dialogBinding.shopCartAdd.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                dialogBinding.shopCartAdd.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        valueAnimator.start();
     }
 
     @Override
@@ -188,6 +273,8 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         }
         if (v == dialogBinding.dialogAdd) {
             productsViewModel.addItemToShopCart(selectedUnit, dialogBinding.dialogQuantityview.getQuantity());
+            dialogBinding.dialogImg.getLocationOnScreen(startocation);
+            showAddShopCartAnim(startocation);
         }
 
     }

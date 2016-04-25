@@ -1,5 +1,7 @@
 package com.j1j2.pifalao.app.di;
 
+import android.content.Context;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -12,6 +14,7 @@ import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
+import com.litesuits.common.assist.Toastor;
 import com.orhanobut.logger.Logger;
 
 import net.orange_box.storebox.StoreBox;
@@ -53,6 +56,12 @@ public class AppModule {
     @Singleton
     Navigate navigate() {
         return new Navigate();
+    }
+
+    @Provides
+    @Singleton
+    Toastor toastor(MainAplication application) {
+        return new Toastor(application.getApplicationContext());
     }
 
     @Provides

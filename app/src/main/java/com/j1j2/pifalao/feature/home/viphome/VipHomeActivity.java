@@ -3,11 +3,7 @@ package com.j1j2.pifalao.feature.home.viphome;
 import android.databinding.DataBindingUtil;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -23,7 +19,6 @@ import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityViphomeBinding;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeModule;
 import com.litesuits.common.assist.Network;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -51,6 +46,7 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_viphome);
         binding.backBtn.setOnClickListener(this);
+        binding.individualBtn.setOnClickListener(this);
     }
 
     @Override
@@ -108,6 +104,9 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        onBackPressed();
+        if (v == binding.backBtn)
+            onBackPressed();
+        if (v == binding.individualBtn)
+            navigate.navigateToIndividualCenter(this, null, false);
     }
 }

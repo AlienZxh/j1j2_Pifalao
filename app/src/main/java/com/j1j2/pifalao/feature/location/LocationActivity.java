@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.location;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -11,6 +12,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -30,6 +32,7 @@ import com.j1j2.pifalao.app.event.FinishLocationActivityEvent;
 import com.j1j2.pifalao.app.event.LocationEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityLocationBinding;
+import com.j1j2.pifalao.databinding.ViewLocationPopBinding;
 import com.j1j2.pifalao.feature.location.di.LocationModule;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
@@ -71,6 +74,10 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     BDLocation location;
 
+    private InfoWindow mInfoWindow;
+    ViewLocationPopBinding popBinding;
+    ObservableField<ServicePoint> servicePointObservableField = new ObservableField<>();
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(LocationActivity.this, R.layout.activity_location);
@@ -95,10 +102,14 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     @Override
     protected void initViews() {
-
+        popBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_location_pop, null, false);
+        popBinding.setOnClick(this);
+        popBinding.setServicepoint(servicePointObservableField);
     }
 
     public void addServicePointOverlay(List<ServicePoint> servicePoints) {
+        mBaiduMap.hideInfoWindow();
+
         if (overlayOptionses.size() > 0) {
             servicepointOverlayManager.removeFromMap();
             overlayOptionses.clear();
@@ -119,6 +130,11 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
             i++;
         }
         servicepointOverlayManager.addToMap();
+
+        servicePointObservableField.set(servicePoints.get(0));
+        mInfoWindow = new InfoWindow(popBinding.getRoot(), new LatLng(servicePoints.get(0).getLat(), servicePoints.get(0).getLng()), -55);
+        mBaiduMap.showInfoWindow(mInfoWindow);
+
         markIcon.recycle();
     }
 
@@ -208,7 +224,19 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        navigate.navigateToCityActivity(this, null, true);
+        if (v == binding.location)
+            navigate.navigateToCityActivity(this, null, true);
+        if (v == popBinding.popInfoIcon)
+            if (servicePointObservableField.get() != null)
+                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, servicePointObservableField.get(), location);
+
+        if (v == popBinding.popLayout)
+            if (servicePointObservableField.get() != null) {
+                userRelativePreference.setSelectedServicePoint(servicePointObservableField.get());
+                userRelativePreference.setShowDeliveryArea(true);
+                userRelativePreference.setShowLocation(true);
+                navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePointObservableField.get());
+            }
     }
 
 
@@ -228,6 +256,8 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     @Override
     public void onItemClickListener(View view, ServicePoint servicePoint) {
         userRelativePreference.setSelectedServicePoint(servicePoint);
+        userRelativePreference.setShowDeliveryArea(true);
+        userRelativePreference.setShowLocation(true);
         navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, servicePoint);
     }
 

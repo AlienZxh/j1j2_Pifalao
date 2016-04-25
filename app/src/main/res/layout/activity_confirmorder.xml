@@ -225,6 +225,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:maxLength="6"
                                 android:text="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.AddressDetail.ReceiverName}"
                                 android:textColor="@color/colorText333"
                                 android:textSize="@dimen/text_big"
@@ -562,6 +563,8 @@
                             android:background="@color/colorWhite"
                             android:gravity="center_vertical"
                             android:hint="选填，用户可填写要求内容"
+                            android:maxLength="30"
+                            android:maxLines="1"
                             android:textColor="@color/colorText333"
                             android:textColorHint="@color/colorTextaaa"
                             android:textSize="@dimen/text_normal" />

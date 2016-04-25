@@ -30,14 +30,14 @@
             <TextView
                 android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
-                android:background="@drawable/actionbar_btn_bg"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
-                app:OnClickListener="@{walletManagerViewModel.walletManagerActivity}"/>
+                app:OnClickListener="@{walletManagerViewModel.walletManagerActivity}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,8 +81,7 @@
                 android:layout_weight="1"
                 android:text="我的余额"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,6 +100,7 @@
             android:background="@color/colorGrayF0F0F0" />
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/pointBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
@@ -108,7 +108,8 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingLeft="@dimen/padding_small"
-            android:paddingTop="@dimen/padding_noraml">
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{walletManagerViewModel.walletManagerActivity}">
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -126,8 +127,7 @@
                 android:layout_weight="1"
                 android:text="我的积分"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -174,8 +174,7 @@
                 android:layout_weight="1"
                 android:text="我的优惠券"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -229,8 +228,7 @@
                 android:layout_weight="1"
                 android:text="我的配送券"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -284,8 +282,7 @@
                 android:layout_weight="1"
                 android:text="我的实物券"
                 android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
+                android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"

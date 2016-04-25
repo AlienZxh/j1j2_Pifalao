@@ -8,15 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviParaOption;
-import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
-import com.baidu.mapapi.search.route.PlanNode;
+import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
@@ -25,6 +22,7 @@ import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.app.event.LocationEvent;
 import com.j1j2.pifalao.databinding.FragmentDeliveryhomeServicepointBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointModule;
+import com.litesuits.common.assist.Toastor;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -39,7 +37,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-30.
  */
 @RequireBundler
-public class DeliveryHomeServicepointFragment extends BaseFragment implements View.OnClickListener {
+public class DeliveryHomeServicepointFragment extends BaseFragment implements View.OnClickListener, ScrollableHelper.ScrollableContainer {
     FragmentDeliveryhomeServicepointBinding binding;
 
     @Arg
@@ -47,6 +45,9 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
 
     @Inject
     DeliveryServicepointViewModel deliveryServicepointViewModel;
+
+    @Inject
+    Toastor toastor;
 
     BDLocation location;
 
@@ -79,11 +80,11 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
                 startActivity(intent);
             } else {
-                Toast.makeText(getContext().getApplicationContext(), "没有拨打电话权限", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("没有拨打电话权限");
             }
         } else if (v == binding.navigationBtn) {
             if (location == null) {
-                Toast.makeText(getContext().getApplicationContext(), "定位失败", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("定位失败");
                 return;
             }
             NaviParaOption naviParaOption = new NaviParaOption()
@@ -102,5 +103,10 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
     public void onLocationEvent(LocationEvent event) {
         location = event.getLocation();
 
+    }
+
+    @Override
+    public View getScrollableView() {
+        return binding.scrollView;
     }
 }

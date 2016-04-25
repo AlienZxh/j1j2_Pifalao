@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
@@ -27,33 +28,18 @@
                 android:textSize="@dimen/icon_normal" />
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="暂未开通"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <TextView
-            fontPath="iconfont/iconfont.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="30px"
-            android:paddingTop="120px"
-            android:text="@string/icon_unsubscribe"
-            android:textColor="@color/colorTextaaa"
-            android:textSize="160px" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="该服务点暂未开通此服务！"
-            android:textColor="@color/colorTextaaa"
-            android:textSize="@dimen/text_big" />
-
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/showList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

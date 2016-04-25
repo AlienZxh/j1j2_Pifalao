@@ -31,6 +31,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,6 +91,7 @@ public class MainAplication extends Application {
         super.onCreate();
         String processName = getProcessName();
         if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
+            initDefendeleak();
             initLogger();
             initBaiduMap();
             initComponent();
@@ -100,6 +103,24 @@ public class MainAplication extends Application {
         }
     }
 
+
+    private void initDefendeleak() {
+        try {
+            Class cls = Class.forName("android.sec.clipboard.ClipboardUIManager");
+            Method m = cls.getDeclaredMethod("getInstance", Context.class);
+            m.setAccessible(true);
+            m.invoke(null, this);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void initOkHttpUtil() {
         if (BuildConfig.DEBUG)

@@ -22,9 +22,9 @@
             <TextView
                 android:id="@+id/backBtn"
                 fontPath="iconfont/iconfont.ttf"
-                android:background="@drawable/actionbar_btn_bg"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
@@ -35,11 +35,27 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="VIP特权"
+                android:text="会员特权"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
+
+            <TextView
+                android:id="@+id/individualBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_mine"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="#e2ffdd" />
 
         <com.github.lzyzsd.jsbridge.BridgeWebView
             android:id="@+id/webview"

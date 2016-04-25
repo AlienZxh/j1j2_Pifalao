@@ -1,17 +1,12 @@
 package com.j1j2.pifalao.feature.location;
 
 import android.content.Context;
-import android.databinding.ObservableInt;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.j1j2.common.view.recyclerviewchoicemode.MultiSelector;
 import com.j1j2.common.view.recyclerviewchoicemode.SelectableHolder;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.data.model.City;

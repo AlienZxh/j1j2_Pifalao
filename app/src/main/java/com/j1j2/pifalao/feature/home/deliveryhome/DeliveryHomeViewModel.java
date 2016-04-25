@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.home.deliveryhome;
 import com.baidu.platform.comapi.map.A;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.model.FreightType;
+import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 

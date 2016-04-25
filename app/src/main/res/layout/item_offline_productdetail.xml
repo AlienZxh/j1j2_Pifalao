@@ -29,6 +29,7 @@
             android:layout_height="@dimen/content_height_biger"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padding_small"
+            app:imageURI="@{Uri.parse(offlineOrderProduct.Image??@string/text_empty)}"
             fresco:placeholderImage="@drawable/loadimg_error"
             fresco:roundedCornerRadius="5dp"
             fresco:roundingBorderColor="@color/colorGrayF0F0F0"

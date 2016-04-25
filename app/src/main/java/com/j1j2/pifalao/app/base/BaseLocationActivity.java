@@ -110,10 +110,10 @@ public abstract class BaseLocationActivity extends BaseActivity {
         @Override
         public void onReceiveLocation(BDLocation location) {
             // Receive Location
+            if (location == null) {
+                return;
+            }
             EventBus.getDefault().postSticky(new LocationEvent(location));
-//            if (location == null) {
-//                return;
-//            }
 //            //        StringBuffer sb = new StringBuffer(256);
 ////        sb.append("time : ");
 ////        sb.append(location.getTime());

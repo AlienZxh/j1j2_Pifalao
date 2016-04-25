@@ -11,7 +11,6 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.AddressListChangeEvent;
-import com.j1j2.pifalao.app.event.AddressSelectEvent;
 import com.j1j2.pifalao.app.event.UserAddressSelectEvent;
 import com.j1j2.pifalao.databinding.ActivityAdressmanagerBinding;
 import com.j1j2.pifalao.feature.addaddress.AddAddressActivity;
@@ -28,6 +27,7 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
 
 /**
  * Created by alienzxh on 16-3-23.
@@ -48,6 +48,7 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initBinding() {
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_adressmanager);
         binding.setAddressManagerViewModel(addressManagerViewModel);
         binding.addressList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -58,11 +59,14 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
                 .build());
         binding.addressList.getRecyclerView().setClipToPadding(false);
         binding.addressList.getRecyclerView().setPadding(0, AutoUtils.getPercentHeightSize(10), 0, AutoUtils.getPercentHeightSize(110));
+        binding.addressList.getRecyclerView().setItemAnimator(new LandingAnimator());
+
     }
 
     public void setAddressAdapter(AddressManagerAdapter addressAdapter) {
         addressAdapter.setOnAddressClickListener(this);
         binding.addressList.setAdapter(addressAdapter);
+
     }
 
     @Override

@@ -1,21 +1,25 @@
 package com.j1j2.pifalao.feature.orderdetail;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.OrderSimple;
-import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityOrderdetailBinding;
+import com.j1j2.pifalao.feature.home.deliveryhome.DeliveryHomeTabAdapter;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailModule;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-import com.zhy.autolayout.utils.AutoUtils;
+import com.j1j2.pifalao.feature.orderdetail.orderdetailparams.OrderDetailParamsFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,7 +32,11 @@ import in.workarounds.bundler.annotations.Required;
  * Created by alienzxh on 16-3-22.
  */
 @RequireBundler
-public class OrderDetailActivity extends BaseActivity implements View.OnClickListener, OrderProductsAdapter.OnItemClickListener {
+public class OrderDetailActivity extends BaseActivity implements View.OnClickListener, OrderDetailParamsFragment.OrderDetailParamsFragmentListener {
+
+    public static final int TIMELINE = 0;
+    public static final int PARAM = 1;
+
     ActivityOrderdetailBinding binding;
 
     @Arg
@@ -38,36 +46,45 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     @Arg
     int orderId;
 
+    @Arg
+    int selectPage;
+
     @Inject
     OrderDetailViewModel orderDetailViewModel;
 
+
     AlertDialog deleteOrderDialog;
+
+    OrderDetailParamsFragment orderDetailParamsFragment;
 
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orderdetail);
         binding.setOrderDetailViewModel(orderDetailViewModel);
-        binding.orderProductList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.orderProductList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.colorGrayF0F0F0)
-                .margin(AutoUtils.getPercentWidthSize(20), 0).build());
-    }
-
-    public void setOrderProductListAdapter(OrderProductsAdapter orderProductListAdapter) {
-        binding.orderProductList.setAdapter(orderProductListAdapter);
-        orderProductListAdapter.setOnItemClickListener(this);
 
     }
 
     @Override
     protected void initViews() {
+        orderDetailParamsFragment = Bundler.orderDetailParamsFragment().create();
+        final List<Fragment> fragments = new ArrayList<>();
+        fragments.add(Bundler.orderDetailTimeLineFragment(orderId).create());
+        fragments.add(orderDetailParamsFragment);
+        String[] titles = {"订单状态", "订单详情"};
+        binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments, titles));
+        binding.tab.setViewPager(binding.viewpager);
+        binding.viewpager.setCurrentItem(selectPage);
+        //________________________________________________________________________
         if (orderSimple != null) {
             orderDetailViewModel.setOrderDetailObservableField(orderSimple);
-            OrderProductsAdapter orderProductsAdapter = new OrderProductsAdapter(orderSimple.getProductDetails());
-            setOrderProductListAdapter(orderProductsAdapter);
-            orderDetailViewModel.queryServiceoint(orderSimple.getServicePointId());
+            orderDetailViewModel.queryServicePoint(orderSimple.getServicePointId());
         } else {
             orderDetailViewModel.queryOrderDetail(orderId);
         }
+    }
+
+    public void initFragment() {
+        orderDetailParamsFragment.initParams(orderDetailViewModel.orderDetailObservableField.get(), orderDetailViewModel.servicePointObservableField.get());
     }
 
     @Override
@@ -105,11 +122,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
-        if (v == binding.catservicepoint || v == binding.servicepoint)
-            if (orderSimple != null)
-                navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
-            else
-                navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getServicePointId());
+        if (v == binding.servicepoint)
+            navigateToCatServicePoint();
         if (v == binding.cancel) {
             showDeleteDialog(orderId);
         }
@@ -119,11 +133,34 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         if (v == binding.comment) {
 
         }
+        if (v == binding.callBtn) {
+            PackageManager pkm = this.getPackageManager();
+            boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+            if (has_permission) {
+                if (orderDetailViewModel.servicePointObservableField.get() != null) {
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + orderDetailViewModel.servicePointObservableField.get().getMobile()));
+                    startActivity(intent);
+                }
+
+            } else {
+                toastor.showSingletonToast("没有拨打电话权限");
+            }
+        }
+
 
     }
 
     @Override
-    public void onItemClickListener(View v, OrderProductDetail orderProductDetail, int position) {
-        navigate.navigateToProductDetailActivity(this, null, false, orderProductDetail.getProductMainId());
+    public void navigateToProductDetailActivity(int mainId) {
+        navigate.navigateToProductDetailActivity(this, null, false, mainId);
+    }
+
+    @Override
+    public void navigateToCatServicePoint() {
+        if (orderSimple != null)
+            navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
+        else
+            navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getServicePointId());
     }
 }

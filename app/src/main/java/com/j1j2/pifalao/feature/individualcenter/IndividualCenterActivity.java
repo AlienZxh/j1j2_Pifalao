@@ -8,6 +8,7 @@ import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -47,13 +48,19 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
     @Override
     protected void initViews() {
         changeFragment(R.id.fragment, Bundler.individualCenterFragment(IndividualCenterFragment.FROM_INDIVIDUALCENTERACTIVITY).create());
-        queryUserUnReadInfo();
+
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         MainAplication.get(this).getUserComponent().plus(new IndividualActivityModule()).inject(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        queryUserUnReadInfo();
     }
 
     public void queryUserUnReadInfo() {
@@ -128,12 +135,17 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Override
     public void navigateToVipUpdate() {
-        navigate.navigateToVipUpdateStepOne(this, null, false);
-
+//        navigate.navigateToVipUpdateStepOne(this, null, false);
+        navigate.navigateToVipHome(this, null, false);
     }
 
     @Override
     public void navigateToSetting() {
         navigate.navigateToSetting(this, null, false);
+    }
+
+    @Override
+    public void navigateToNormalCoupon() {
+        navigate.navigateToCoupons(this, null, false, null, Constant.CouponType.COUPON_NORMAL);
     }
 }

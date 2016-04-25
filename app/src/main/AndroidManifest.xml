@@ -191,6 +191,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".feature.home.deliveryhome.DeliveryHomeActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -234,9 +235,27 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".feature.unsubscribe.UnsubscribeActivity"
+            android:name=".feature.unsubscribe.UnsubscribeModuleActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.unsubscribe.UnsubscribeCityActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.findpsw.FindPSWActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.show.ShowActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+
+        <receiver android:name=".app.service.NetWorkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
 
         <!--autolayout-->
         <meta-data

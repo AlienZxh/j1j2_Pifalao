@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_conner_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70px"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="温馨提示：本店可配送区域"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_biger" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/areasList"
+            android:layout_width="match_parent"
+            android:layout_height="320px"
+            android:background="@color/colorLayoutBg"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingTop="@dimen/padding_noraml" />
+
+        <TextView
+            android:id="@+id/confirm"
+            android:layout_width="match_parent"
+            android:layout_height="70px"
+            android:layout_margin="5dp"
+            android:background="@drawable/item_products_bg"
+            android:gravity="center"
+            android:text="确认"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_biger" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

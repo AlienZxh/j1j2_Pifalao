@@ -160,18 +160,18 @@ public class LocationViewModel {
                 mServicePoint = new LatLng(servicePoint.getLat(), servicePoint.getLng());
                 servicePoint.setDistance(DistanceUtil.getDistance(mPoint, mServicePoint));
             }
+            Collections.sort(mServicePoints, new Comparator<ServicePoint>() {
+                @Override
+                public int compare(ServicePoint lhs, ServicePoint rhs) {
+                    if (lhs.getDistance() - rhs.getDistance() > 0)
+                        return 1;
+                    else if (lhs.getDistance() - rhs.getDistance() == 0)
+                        return 0;
+                    else
+                        return -1;
+                }
+            });
         }
-        Collections.sort(mServicePoints, new Comparator<ServicePoint>() {
-            @Override
-            public int compare(ServicePoint lhs, ServicePoint rhs) {
-                if (lhs.getDistance() - rhs.getDistance() > 0)
-                    return 1;
-                else if (lhs.getDistance() - rhs.getDistance() == 0)
-                    return 0;
-                else
-                    return -1;
-            }
-        });
         servicePoints.clear();
         servicePoints.addAll(mServicePoints);
         locationActivity.addServicePointOverlay(mServicePoints);

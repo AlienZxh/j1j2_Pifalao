@@ -1,7 +1,6 @@
 package com.j1j2.pifalao.feature.products;
 
 import android.databinding.ObservableField;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
@@ -16,7 +15,6 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -190,14 +188,16 @@ public class ProductsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productsActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+
+//                        productsActivity.toastor.showSingletonToast(s);
+
                         productsActivity.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productsActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        productsActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

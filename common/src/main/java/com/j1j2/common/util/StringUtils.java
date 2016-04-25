@@ -1,10 +1,15 @@
 package com.j1j2.common.util;
 
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TypefaceSpan;
 
+import com.j1j2.common.R;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.FreightType;
@@ -67,6 +72,13 @@ public class StringUtils {
         return msp;
     }
 
+    public static CharSequence getRetialPrice(double price) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
+        SpannableString msp = new SpannableString("市场价：￥" + df.format(price));
+        msp.setSpan(new StrikethroughSpan(), 0, msp.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return msp;
+    }
+
     public static CharSequence getRetialPrice(double price, String unit) {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
         SpannableString msp = new SpannableString("市场价：" + df.format(price) + "元/" + unit);
@@ -115,12 +127,36 @@ public class StringUtils {
                 return "已下单";
             case 4:
                 return "处理中";
+            case 8:
+                return "配送中";
             case 16:
                 return "待收货";
             case 32:
                 return "待评价";
             case 64:
                 return "已完成";
+            case 256:
+                return "已退订";
+            default:
+                return "已退订";
+        }
+    }
+
+
+    public static CharSequence getOrdersTimeLineContent(int orderType) {
+        switch (orderType) {
+            case 1:
+                return "请耐心等待门店确认！";
+            case 4:
+                return "您的订单正在拣货中！";
+            case 8:
+                return "订单正在配送途中，请耐心等待！";
+            case 16:
+                return "待收货";
+            case 32:
+                return "待评价";
+            case 64:
+                return "您的订单已配送完成！";
             case 256:
                 return "已退订";
             default:
@@ -187,4 +223,12 @@ public class StringUtils {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
         return "" + df.format(Math.abs(price));
     }
+
+    public static CharSequence getPointStr(int point) {
+        SpannableString msp = new SpannableString("积分：" + point);
+//        msp.setSpan(new ForegroundColorSpan(0xffff9900), 3, msp.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        msp.setSpan(new StyleSpan(Typeface.BOLD), 3, msp.toString().length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return msp;
+    }
+
 }

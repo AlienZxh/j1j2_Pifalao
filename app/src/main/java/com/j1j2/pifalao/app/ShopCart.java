@@ -69,6 +69,59 @@ public class ShopCart extends BaseObservable {
         notifyPropertyChanged(BR.allSave);
     }
 
+
+    public void removeUnit(ProductUnit unit) {
+        int key = 0;
+        int value = 0;
+        key = unit.getProductMainId();
+        value = (shopCartItemBaseUnitNum.get(key) == null ? 0 : shopCartItemBaseUnitNum.get(key));
+
+        int allUnitKey = 0;
+        int allUnitValue = 0;
+        allUnitKey = unit.getProductId();
+        allUnitValue = (shopCartItemAllUnitNum.get(allUnitKey) == null ? 0 : shopCartItemAllUnitNum.get(allUnitKey));
+
+        shopCartItemBaseUnitNum.remove(key);
+        shopCartItemAllUnitNum.remove(allUnitKey);
+        AllUnitNum -= value;
+        AllRetailPrice -= unit.getRetialPrice() * value;
+        AllMemberPrice -= unit.getMemberPrice() * value;
+        AllSave = AllRetailPrice - AllMemberPrice;
+        notifyPropertyChanged(BR.allUnitNum);
+        notifyPropertyChanged(BR.shopCartItemAllUnitNum);
+        notifyPropertyChanged(BR.shopCartItemBaseUnitNum);
+        notifyPropertyChanged(BR.allMemberPrice);
+        notifyPropertyChanged(BR.allRetailPrice);
+        notifyPropertyChanged(BR.allSave);
+    }
+
+    ;
+
+    public void updateUnitWithQuantity(ProductUnit unit, int quantity) {
+        int key = 0;
+        int value = 0;
+        key = unit.getProductMainId();
+        value = (shopCartItemBaseUnitNum.get(key) == null ? 0 : shopCartItemBaseUnitNum.get(key));
+
+        int allUnitKey = 0;
+        int allUnitValue = 0;
+        allUnitKey = unit.getProductId();
+        allUnitValue = (shopCartItemAllUnitNum.get(allUnitKey) == null ? 0 : shopCartItemAllUnitNum.get(allUnitKey));
+
+        shopCartItemBaseUnitNum.put(key, quantity);
+        shopCartItemAllUnitNum.put(allUnitKey, quantity);
+        AllUnitNum += (quantity - value);
+        AllRetailPrice += unit.getRetialPrice() * (quantity - value);
+        AllMemberPrice += unit.getMemberPrice() * (quantity - value);
+        AllSave = AllRetailPrice - AllMemberPrice;
+        notifyPropertyChanged(BR.allUnitNum);
+        notifyPropertyChanged(BR.shopCartItemAllUnitNum);
+        notifyPropertyChanged(BR.shopCartItemBaseUnitNum);
+        notifyPropertyChanged(BR.allMemberPrice);
+        notifyPropertyChanged(BR.allRetailPrice);
+        notifyPropertyChanged(BR.allSave);
+    }
+
     public void addUnitWitQuantity(ProductUnit unit, int quantity) {
         int key = 0;
         int value = 0;

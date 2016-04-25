@@ -1,6 +1,5 @@
 package com.j1j2.pifalao.feature.addaddress;
 
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.UserAddressApi;
@@ -45,7 +44,7 @@ public class AddAddressViewModel {
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(addAddressActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        addAddressActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

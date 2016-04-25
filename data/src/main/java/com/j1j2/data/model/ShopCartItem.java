@@ -26,6 +26,7 @@ public class ShopCartItem implements Parcelable {
      * ActivityId : 0
      * Invalid : false
      * ProductState : 1
+     * BaseUnit
      */
 
     private int ProductId;
@@ -45,6 +46,7 @@ public class ShopCartItem implements Parcelable {
     private int ActivityId;
     private boolean Invalid;
     private int ProductState;
+    private String BaseUnit;
 
     public int getProductId() {
         return ProductId;
@@ -182,28 +184,14 @@ public class ShopCartItem implements Parcelable {
         ProductState = productState;
     }
 
-    @Override
-    public String toString() {
-        return "ShopCartItem{" +
-                "ProductId=" + ProductId +
-                ", ProductMainId=" + ProductMainId +
-                ", ModuleId=" + ModuleId +
-                ", BarCode='" + BarCode + '\'' +
-                ", ProductName='" + ProductName + '\'' +
-                ", RetailPrice=" + RetailPrice +
-                ", ThumbImgPath='" + ThumbImgPath + '\'' +
-                ", MemberPrice=" + MemberPrice +
-                ", Quantity=" + Quantity +
-                ", Unit='" + Unit + '\'' +
-                ", LimitSalesNumber=" + LimitSalesNumber +
-                ", Views=" + Views +
-                ", Sells=" + Sells +
-                ", ScalingFactor=" + ScalingFactor +
-                ", ActivityId=" + ActivityId +
-                ", Invalid=" + Invalid +
-                ", ProductState=" + ProductState +
-                '}';
+    public String getBaseUnit() {
+        return BaseUnit;
     }
+
+    public void setBaseUnit(String baseUnit) {
+        BaseUnit = baseUnit;
+    }
+
 
     @Override
     public int describeContents() {
@@ -229,6 +217,7 @@ public class ShopCartItem implements Parcelable {
         dest.writeInt(this.ActivityId);
         dest.writeByte(Invalid ? (byte) 1 : (byte) 0);
         dest.writeInt(this.ProductState);
+        dest.writeString(this.BaseUnit);
     }
 
     public ShopCartItem() {
@@ -252,6 +241,7 @@ public class ShopCartItem implements Parcelable {
         this.ActivityId = in.readInt();
         this.Invalid = in.readByte() != 0;
         this.ProductState = in.readInt();
+        this.BaseUnit = in.readString();
     }
 
     public static final Parcelable.Creator<ShopCartItem> CREATOR = new Parcelable.Creator<ShopCartItem>() {

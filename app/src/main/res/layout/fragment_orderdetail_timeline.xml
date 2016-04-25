@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="59px"
+            android:layout_marginTop="50px"
+            android:background="@color/colorGrayEDEDED" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/timeLineList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.zhy.autolayout.AutoRelativeLayout>
+</layout>

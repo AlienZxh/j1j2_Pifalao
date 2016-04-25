@@ -332,7 +332,7 @@
                             fontPath="iconfont/iconfont.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/icon_shopservice"
+                            android:text="@string/icon_offline"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/text_biger" />
 

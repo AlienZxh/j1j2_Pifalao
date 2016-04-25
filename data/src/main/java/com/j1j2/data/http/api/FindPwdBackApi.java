@@ -1,5 +1,6 @@
 package com.j1j2.data.http.api;
 
+import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.FindPwdStepOneBody;
 import com.j1j2.data.model.requestbody.FindPwdStepTwoBody;
 import com.j1j2.data.model.requestbody.RestUserPwdBody;
@@ -13,15 +14,18 @@ import rx.Observable;
  * Created by alienzxh on 16-3-10.
  */
 public interface FindPwdBackApi {
+
+    @POST("FindPwdBack/FindPassWordStepTwo")
+    Observable<WebReturn<Integer>> findPassWordStepTwo(@Body FindPwdStepTwoBody findPwdStepTwoBody);
+
+    @POST("FindPwdBack/FindPassWordStepThird")
+    Observable<WebReturn<String>> findPassWordStepThird(@Body RestUserPwdBody restUserPwdBody);
+
+    @POST("FindPwdBack/QuerySmsCode")
+    Observable<WebReturn<String>> querySmsCode(@Query("phone") String phone);
+    //___________________________________________________________________________
     @POST("FindPwdBack/FindPassWordStepOne")
     Observable<String> findPassWordStepOne(@Body FindPwdStepOneBody findPwdStepOneBody);
 
-    @POST("FindPwdBack/FindPassWordStepTwo")
-    Observable<String> findPassWordStepTwo(@Body FindPwdStepTwoBody findPwdStepTwoBody);
 
-    @POST("FindPwdBack/FindPassWordStepThird")
-    Observable<String> findPassWordStepThird(@Body RestUserPwdBody restUserPwdBody);
-
-    @POST("FindPwdBack/QuerySmsCode")
-    Observable<String> querySmsCode(@Query("phone") String phone);
 }

@@ -89,8 +89,9 @@ public class CollectsAdapter extends RecyclerView.Adapter<CollectsAdapter.Collec
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (onCollectClickListener != null)
-                        onCollectClickListener.onCollectClick(v, data, position);
+                    if (!isModifyMode.get())
+                        if (onCollectClickListener != null)
+                            onCollectClickListener.onCollectClick(v, data, position);
                     multiSelector.setSelected(position, getItemId(), !multiSelector.isSelected(position, getItemId()));
                     notifyDataSetChanged();
                 }

@@ -1,17 +1,18 @@
 package com.j1j2.pifalao.feature.productdetail;
 
+import android.animation.Animator;
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableBoolean;
+import android.graphics.PointF;
+import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.Toast;
+import android.view.animation.LinearInterpolator;
 
-import com.j1j2.data.model.Module;
+import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.data.model.ProductDetail;
 import com.j1j2.data.model.ProductImg;
-import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -20,17 +21,19 @@ import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivityProductdetailBinding;
-import com.j1j2.pifalao.feature.main.MainAdapter;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
 import com.j1j2.pifalao.feature.productdetail.price.PoductDetailPriceFragment;
 import com.j1j2.pifalao.feature.productdetail.record.ProductDetailRecordFragment;
 import com.j1j2.pifalao.feature.productdetail.unit.ProductDetailUnitFragment;
+import com.j1j2.pifalao.feature.show.ShowActivity;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,7 +41,6 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
-import in.workarounds.bundler.annotations.Required;
 
 /**
  * Created by alienzxh on 16-3-16.
@@ -54,6 +56,7 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
     @Inject
     ProductDetailViewModel productDetailViewModel;
 
+
     PoductDetailPriceFragment productDetailPriceFragment;
     ProductDetailUnitFragment productDetailUnitFragment;
 
@@ -62,6 +65,10 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
     ProductDetailComponent productDetailComponent;
 
     public int moduleType = -1;
+
+    ValueAnimator valueAnimator;
+    int[] endLocation = new int[2];
+    int[] startocation = new int[2];
 
     @Override
     protected void initBinding() {
@@ -118,6 +125,15 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (valueAnimator != null && valueAnimator.isRunning()) {
+            valueAnimator.cancel();
+            valueAnimator.removeAllUpdateListeners();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         // start auto scroll when onResume
@@ -127,6 +143,67 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
     public void addShopCart(ProductUnit unit, int Quantity) {
         shopCart.addUnitWitQuantity(unit, Quantity);
     }
+
+    public void showAddShopCartAnim(@Size(2) int[] startLocation) {
+
+        if (valueAnimator != null && valueAnimator.isRunning())
+            return;
+        if (endLocation[0] == 0)
+            binding.shopCartBtn.getLocationOnScreen(endLocation);
+
+        Logger.d("ShopCartAnim  startLocation " + Arrays.toString(startLocation));
+        Logger.d("ShopCartAnim  endLocation " + Arrays.toString(endLocation));
+
+        valueAnimator = ValueAnimator.ofObject(new TypeEvaluator<PointF>() {
+            // fraction = t / duration
+            @Override
+            public PointF evaluate(float fraction, PointF startValue,
+                                   PointF endValue) {
+                float v = (endValue.x - startValue.x);
+                float a = (endValue.y - startValue.y);
+
+                PointF point = new PointF();
+                point.x = v * fraction + startValue.x;
+                point.y = a * fraction * fraction + startValue.y;
+
+                return point;
+            }
+        }, new PointF(startLocation[0] + ScreenUtils.dpToPx(180), startLocation[1] + ScreenUtils.dpToPx(180)), new PointF(endLocation[0], endLocation[1]));
+        valueAnimator.setDuration(600);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                PointF point = (PointF) animation.getAnimatedValue();
+
+                binding.shopCartAdd.setX(point.x);
+                binding.shopCartAdd.setY(point.y);
+            }
+        });
+        valueAnimator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                binding.shopCartAdd.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                binding.shopCartAdd.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        valueAnimator.start();
+    }
+
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLogStateChangeEvent(LogStateEvent event) {
@@ -139,6 +216,14 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    public void navigateToServicepointShow(View v) {
+        navigate.navigateToShow(this, null, false, ShowActivity.SERVICEPOINT);
+    }
+
+    public void navigateToStorShow(View v) {
+        navigate.navigateToShow(this, null, false, ShowActivity.STORE);
+    }
+
     @Override
     public void onClick(View v) {
         if (v == binding.backBtn)
@@ -147,8 +232,12 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
             if (v == binding.collectBtn)
                 productDetailViewModel.clooectBtnClick(mainId);
             if (v == binding.addBtn)
-                if (productDetailViewModel.productDetail.get() != null && productDetailViewModel.selectUnit.get() != null && moduleType != -1)
-                    productDetailViewModel.addItemToShopCart(productDetailViewModel.selectUnit.get(), moduleType== Constant.ModuleType.DELIVERY?productDetailPriceFragment.getQuantity() :productDetailUnitFragment.getQuantity(), productDetailViewModel.productDetail.get().getModuleId());
+                if (productDetailViewModel.productDetail.get() != null && productDetailViewModel.selectUnit.get() != null && moduleType != -1) {
+                    productDetailViewModel.addItemToShopCart(productDetailViewModel.selectUnit.get(), moduleType == Constant.ModuleType.DELIVERY ? productDetailPriceFragment.getQuantity() : productDetailUnitFragment.getQuantity(), productDetailViewModel.productDetail.get().getModuleId());
+
+                    binding.viewPager.getLocationOnScreen(startocation);
+                    showAddShopCartAnim(startocation);
+                }
             if (v == binding.shopCartBtn) {
                 if (productDetailViewModel.productDetail.get() != null)
                     navigate.navigateToShopCart(this, null, false, productDetailViewModel.productDetail.get().getModuleId());

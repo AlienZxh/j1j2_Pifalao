@@ -57,6 +57,14 @@ public class  DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProdu
         notifyDataSetChanged();
     }
 
+    public void addAll(Collection<ProductSimple> newProductSimples) {
+        if (null == productSimples)
+            return;
+        int startIndex = productSimples.size();
+        productSimples.addAll(startIndex, newProductSimples);
+        notifyItemRangeInserted(startIndex, newProductSimples.size());
+    }
+
     @Override
     public DeliveryProductsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())

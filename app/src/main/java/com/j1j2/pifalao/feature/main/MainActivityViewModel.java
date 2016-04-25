@@ -1,10 +1,7 @@
 package com.j1j2.pifalao.feature.main;
 
-import android.widget.Toast;
-
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserMessageApi;
-import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.data.model.WebReturn;

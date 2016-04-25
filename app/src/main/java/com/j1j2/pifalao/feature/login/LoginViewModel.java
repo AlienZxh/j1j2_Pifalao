@@ -1,7 +1,6 @@
 package com.j1j2.pifalao.feature.login;
 
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.j1j2.data.http.api.UserLoginApi;
@@ -59,13 +58,13 @@ public class LoginViewModel {
                         userLoginPreference.setUserName(username);
                         userLoginPreference.setPassWord(password);
                         EventBus.getDefault().postSticky(new LogStateEvent(true));
-                        Toast.makeText(loginActivity.getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                        loginActivity.toastor.showSingletonToast("登录成功");
                         loginActivity.finish();
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(loginActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        loginActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

@@ -35,6 +35,8 @@ import com.j1j2.pifalao.feature.offlineorders.di.OfflineOrdersComponent;
 import com.j1j2.pifalao.feature.offlineorders.di.OfflineOrdersModule;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailComponent;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailModule;
+import com.j1j2.pifalao.feature.orderdetail.orderdetailtimeline.di.OrderDetailTimeLineComponent;
+import com.j1j2.pifalao.feature.orderdetail.orderdetailtimeline.di.OrderDetailTimeLineModule;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerComponent;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerModule;
 import com.j1j2.pifalao.feature.orderproducts.di.OrderProductsComponent;
@@ -80,6 +82,8 @@ public interface UserComponent {
     OrdersComponent plus(OrdersModule ordersModule);
 
     OrderDetailComponent plus(OrderDetailModule orderDetailModule);
+
+    OrderDetailTimeLineComponent plus(OrderDetailTimeLineModule orderDetailTimeLineModule);
 
     QRCodeComponent plus(QRCodeModule qrCodeModule);
 

@@ -2,15 +2,17 @@ package com.j1j2.pifalao.feature.register.steptwo;
 
 import android.databinding.DataBindingUtil;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.data.model.requestbody.ClientRegisterStepOneBody;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.RegisterSuccessEvent;
 import com.j1j2.pifalao.databinding.ActivityRegistersteptwoBinding;
 import com.j1j2.pifalao.feature.register.steptwo.di.RegisterStepTwoModule;
 import com.j1j2.pifalao.feature.successresult.SuccessResultActivity;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -58,10 +60,10 @@ public class RegisterStepTwoActivity extends BaseActivity implements View.OnClic
             String pswStr = binding.pswEdit.getText().toString();
             String confirmStr = binding.confirmPswEdit.getText().toString();
             if (pswStr.length() < 6 || confirmStr.length() < 6) {
-                Toast.makeText(getApplicationContext(), "密码至少需要６位数", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("密码至少需要６位数");
                 return;
             } else if (!pswStr.equals(confirmStr)) {
-                Toast.makeText(getApplicationContext(), "两次输入密码不一致", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("两次输入密码不一致");
                 return;
             } else {
                 clientRegisterStepOneBody.setPassWord(pswStr);
@@ -74,5 +76,10 @@ public class RegisterStepTwoActivity extends BaseActivity implements View.OnClic
 
     public void completeRegister() {
         navigate.navigateToSuccessResult(this, null, false, SuccessResultActivity.FROM_REGISTER);
+    }
+
+    @Subscribe
+    public void onRegisterSuccessEvent(RegisterSuccessEvent event) {
+        finish();
     }
 }

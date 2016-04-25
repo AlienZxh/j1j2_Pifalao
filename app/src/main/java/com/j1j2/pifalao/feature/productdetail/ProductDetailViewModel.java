@@ -1,22 +1,18 @@
 package com.j1j2.pifalao.feature.productdetail;
 
-import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserFavoriteApi;
 import com.j1j2.data.model.ProductDetail;
 import com.j1j2.data.model.ProductImg;
-import com.j1j2.data.model.ProductSimple;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.RemoveUserFavoritesBody;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
-import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 
@@ -25,7 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -104,14 +99,14 @@ public class ProductDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+//                        productDetailActivity.toastor.showSingletonToast(s);
                         productDetailActivity.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        productDetailActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -137,13 +132,13 @@ public class ProductDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        productDetailActivity.toastor.showSingletonToast(s);
                         isCollect.set(true);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        productDetailActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -166,13 +161,13 @@ public class ProductDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(productDetailActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        productDetailActivity.toastor.showSingletonToast(s);
                         isCollect.set(false);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(productDetailActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        productDetailActivity.toastor.showSingletonToast(errorMessage);
                         isCollect.set(true);
                     }
 

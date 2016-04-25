@@ -45,8 +45,12 @@ public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChi
     public void onBindViewHolder(VegetableChildSortViewHolder holder, int position) {
         if (position < secondarySort.getChildFoodSorts().size())
             holder.bind(secondarySort.getChildFoodSorts().get(position), position);
-        else
-            holder.bind(secondarySort.getParentProductSort(), position);
+        else {
+            ProductSort productSort = secondarySort.getParentProductSort();
+            productSort.setAppImgPath(secondarySort.getChildFoodSorts().get(0).getAppImgPath());
+            holder.bind(productSort, position);
+        }
+
     }
 
     @Override

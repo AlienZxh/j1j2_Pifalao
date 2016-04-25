@@ -9,6 +9,9 @@
     <string name="icon_round_checke">&#xe609;</string>
     <string name="icon_daeva_user2">&#xe67e;</string>
 
+
+    <string name="icon_offline">&#xe6eb;</string>
+
     <string name="icon_vegetable">&#xe672;</string>
     <string name="icon_shopservice">&#xe66f;</string>
     <string name="icon_delivery">&#xe677;</string>
@@ -81,6 +84,7 @@
 
     <string name="icon_order_offline">&#xe6ee;</string>
     <string name="icon_order_submit">&#xe6b4;</string>
+    <string name="icon_order_delivery">&#xe6c2;</string>
     <string name="icon_order_excuting">&#xe6bb;</string>
     <string name="icon_order_clientwaitforrecevie">&#xe6b4;</string>
     <string name="icon_order_waitforrate">&#xe6b8;</string>
@@ -164,5 +168,12 @@
     <string name="icon_round_add_fill">&#xe635;</string>
 
     <string name="icon_unsubscribe">&#xe6ed;</string>
+
+    <string name="icon_unit_select">&#xe69b;</string>
+
+    <string name="icon_order">&#xe6f3;</string>
+
+    <string name="icon_phone_new">&#xe6c8;</string>
+
 
 </resources>

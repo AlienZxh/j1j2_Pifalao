@@ -1,7 +1,5 @@
 package com.j1j2.pifalao.feature.collects;
 
-import android.widget.Toast;
-
 import com.j1j2.data.http.api.UserFavoriteApi;
 import com.j1j2.data.model.CollectedProduct;
 import com.j1j2.data.model.PagerManager;
@@ -65,13 +63,14 @@ public class CollectsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(collectsActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+
+                        collectsActivity.toastor.showSingletonToast(s);
                         queryCollects();
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(collectsActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        collectsActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

@@ -6,25 +6,25 @@
     <string name="city_is_open">已开通</string>
     <string name="city_is_close">暂未开通</string>
 
-    <string name="location_actionbar_title">选择服务点</string>
-    <string name="servicepoint_actionbar_title">服务点详情</string>
+    <string name="location_actionbar_title">选择便利店</string>
+    <string name="servicepoint_actionbar_title">便利店详情</string>
     <string name="services_actionbar_title">选择服务</string>
-    <string name="store_actionbar_title">超市类批发</string>
+    <string name="store_actionbar_title">仓库批发</string>
     <string name="productdetail_actionbar_title">商品详情</string>
     <string name="search_actionbar_title">搜索</string>
     <string name="login_actionbar_title">登录</string>
     <string name="individualcenter_actionbar_title">个人中心</string>
     <string name="shopcart_actionbar_title">购物车</string>
 
-    <string name="servicepoint_call">联系服务点</string>
-    <string name="servicepoint_in">进入服务点</string>
+    <string name="servicepoint_call">联系便利店</string>
+    <string name="servicepoint_in">进入便利店</string>
 
     <string name="promtiontime_title">距离仓库发货还剩：</string>
     <string name="hour">小时</string>
     <string name="minute">分钟</string>
     <string name="second">秒</string>
 
-    <string name="service_time_title">线下营业时间：</string>
+    <string name="service_time_title">门店营业时间：</string>
 
     <string name="self_product">自营</string>
 

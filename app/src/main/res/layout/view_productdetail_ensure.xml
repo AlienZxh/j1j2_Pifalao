@@ -151,7 +151,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="服务点当面售后，贴心服务"
+                android:text="便利店当面售后，贴心服务"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
         </com.zhy.autolayout.AutoLinearLayout>

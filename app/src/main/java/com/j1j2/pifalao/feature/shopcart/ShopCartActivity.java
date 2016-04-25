@@ -7,18 +7,15 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
-import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
 import com.j1j2.pifalao.app.event.LogStateEvent;
-import com.j1j2.pifalao.app.event.RegisterSuccessEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
@@ -35,8 +32,6 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by alienzxh on 16-3-21.
@@ -128,11 +123,11 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v == binding.confirmOrder) {
             if (shopCartViewModel.getShopCartItems() == null) {
-                Toast.makeText(getApplicationContext(), "请等待购物车加载完成", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast( "请等待购物车加载完成");
                 return;
             }
             if (shopCartViewModel.getShopCartItems().size() <= 0) {
-                Toast.makeText(getApplicationContext(), "您还未添加商品", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast( "您还未添加商品");
                 return;
             }
             navigate.navigateToConfirmOrder(this, null, false, moduleId, shopCartViewModel.getShopCartItems());

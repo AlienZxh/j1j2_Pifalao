@@ -1,6 +1,5 @@
 package com.j1j2.pifalao.feature.vipupdate.steptwo;
 
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.WebReturn;
@@ -32,15 +31,15 @@ public class VipUpdateStepTwoViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(vipUpdateStepTwoActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+
+                        vipUpdateStepTwoActivity.toastor.showSingletonToast(s);
                         EventBus.getDefault().post(new VipUpdateSuccessEvent(code));
                         vipUpdateStepTwoActivity.finishUpdate(code);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(vipUpdateStepTwoActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
-
+                        vipUpdateStepTwoActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

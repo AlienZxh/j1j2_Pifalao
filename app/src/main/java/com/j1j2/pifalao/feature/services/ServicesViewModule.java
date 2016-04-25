@@ -1,10 +1,12 @@
 package com.j1j2.pifalao.feature.services;
 
-import android.widget.Toast;
-
+import com.baidu.location.BDLocation;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserVipApi;
+import com.j1j2.data.model.City;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.WebReturn;
@@ -14,15 +16,17 @@ import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import cn.jpush.android.api.JPushInterface;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -94,6 +98,56 @@ public class ServicesViewModule {
                 });
     }
 
+    public void queryServicepointInCity(final BDLocation location, City city, final ServicePoint selectServicePoint) {
+        if (city == null || selectServicePoint == null)
+            return;
+        servicePointApi.queryServicePointInCity(city.getPCCId())
+                .compose(servicesActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.newThread())
+                .map(new Func1<WebReturn<List<ServicePoint>>, List<ServicePoint>>() {
+                    @Override
+                    public List<ServicePoint> call(WebReturn<List<ServicePoint>> listWebReturn) {
+                        LatLng mypoint = new LatLng(location.getLatitude(), location.getLongitude());
+                        LatLng point;
+                        for (ServicePoint servicepoint : listWebReturn.getDetail()) {
+                            point = new LatLng(servicepoint.getLat(), servicepoint.getLng());
+                            servicepoint.setDistance(DistanceUtil.getDistance(mypoint, point));
+                        }
+                        Collections.sort(listWebReturn.getDetail(), new Comparator<ServicePoint>() {
+                            @Override
+                            public int compare(ServicePoint lhs, ServicePoint rhs) {
+                                if (lhs.getDistance() - rhs.getDistance() > 0)
+                                    return 1;
+                                else if (lhs.getDistance() - rhs.getDistance() == 0)
+                                    return 0;
+                                else
+                                    return -1;
+                            }
+                        });
+                        return listWebReturn.getDetail();
+                    }
+                })
+                .compose(servicesActivity.<List<ServicePoint>>bindToLifecycle())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultSubscriber<List<ServicePoint>>() {
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(List<ServicePoint> servicePoints) {
+                        super.onNext(servicePoints);
+                        if (servicePoints == null || servicePoints.size() <= 0)
+                            return;
+                        if (selectServicePoint.getServicePointId() != servicePoints.get(0).getServicePointId()) {
+                            servicesActivity.showLocationDialog(servicePoints.get(0));
+                        }
+                    }
+                });
+
+    }
 
     public void queryQRCode() {
         if (null != subscription && subscription.isUnsubscribed()) {

@@ -93,7 +93,7 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void initViews() {
-        vegetableHomeViewModel.CountDown(module.getWareHouseModuleId());
+
         //______________________________________________________
         binding.activityProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         binding.activityProducts.addItemDecoration(new VerticalDividerItemDecoration.Builder(getContext())
@@ -139,6 +139,7 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLogStateChangeEvent(LogStateEvent event) {
         if (event.isLogin()) {
+            vegetableHomeViewModel.CountDown(module.getWareHouseModuleId());
             isLogin.set(true);
         } else {
             isLogin.set(false);

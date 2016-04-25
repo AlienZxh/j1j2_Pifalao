@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.pifalao.R;
@@ -36,6 +35,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Inject
     UserLoginPreference userLoginPreference;
 
+
     InputMethodManager imm;
 
     @Override
@@ -50,9 +50,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         binding.autoLoginCeck.setChecked(userLoginPreference.getIsAutoLogin(false));
         binding.username.setText(userLoginPreference.getUsername(""));
         binding.password.setText(userLoginPreference.getPassWord(""));
-        if (userLoginPreference.getIsAutoLogin(false)) {
-            binding.autoLoginCeck.setChecked(true);
-        }
     }
 
     @Override
@@ -63,30 +60,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
+        if (binding.username.hasFocus())
+            imm.hideSoftInputFromWindow(binding.username.getWindowToken(), 0);
+        if (binding.password.hasFocus())
+            imm.hideSoftInputFromWindow(binding.password.getWindowToken(), 0);
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.loginBtn) {
             String username = binding.username.getText().toString();
             String password = binding.password.getText().toString();
             if (EmptyUtils.isEmpty(username)) {
-                Toast.makeText(this, "账号不能为空", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("账号不能为空");
                 return;
             }
             if (EmptyUtils.isEmpty(password)) {
-                Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("密码不能为空");
                 return;
             }
-            if (binding.username.hasFocus())
-                imm.hideSoftInputFromWindow(binding.username.getWindowToken(), 0);
-            if (binding.password.hasFocus())
-                imm.hideSoftInputFromWindow(binding.password.getWindowToken(), 0);
             loginViewModel.login(username, password, binding.autoLoginCeck.isChecked());
         }
         if (v == binding.registerBtn) {
             navigate.navigateToRegisterStepOne(this, null, false);
         }
         if (v == binding.forgetPSW)
-            return;
+            navigate.navigateToFindPSW(this, null, false);
     }
 
     @Override
@@ -97,7 +94,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Subscribe
     public void onRegisterSuccessEvent(RegisterSuccessEvent event) {
         if (event.isLogin()) {
-
             finish();
         } else {
             binding.username.setText(event.getLoginAccount());

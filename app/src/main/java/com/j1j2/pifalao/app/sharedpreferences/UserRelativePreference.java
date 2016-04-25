@@ -24,6 +24,8 @@ public interface UserRelativePreference {
     public static final String KEY_SELECTED_MODULE = "key_selected_module";
     public static final String KEY_HISTORY_KEY = "key_history_key";
     public static final String KEY_USER_IMG = "key_user_img";
+    public static final String KEY_SHOW_DELIVERYAREA = "key_show_deliveryarea";
+    public static final String KEY_SHOW_LOCATION = "key_show_location";
 
     @KeyByString(KEY_ISFIRST)
     boolean getIsFirst(boolean mDefault);
@@ -97,4 +99,23 @@ public interface UserRelativePreference {
     @RemoveMethod
     UserRelativePreference removeUserImg();
 
+    @KeyByString(KEY_SHOW_DELIVERYAREA)
+    boolean getShowDeliveryArea(boolean mDefault);
+
+    @KeyByString(KEY_SHOW_DELIVERYAREA)
+    UserRelativePreference setShowDeliveryArea(boolean showDeliveryArea);
+
+    @KeyByString(KEY_SHOW_DELIVERYAREA)
+    @RemoveMethod
+    UserRelativePreference removeShowDeliveryArea();
+
+    @KeyByString(KEY_SHOW_LOCATION)
+    boolean getShowLocation(boolean mDefault);
+
+    @KeyByString(KEY_SHOW_LOCATION)
+    UserRelativePreference setShowLocation(boolean showLocation);
+
+    @KeyByString(KEY_SHOW_LOCATION)
+    @RemoveMethod
+    UserRelativePreference removeShowLocation();
 }

@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Toast;
 
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout;
@@ -15,15 +14,14 @@ import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.MainTab;
-import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
 import com.j1j2.pifalao.app.event.LogStateEvent;
-import com.j1j2.pifalao.app.event.LoginCookieTimeoutEvent;
 import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
@@ -35,7 +33,6 @@ import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
 import com.j1j2.pifalao.feature.vegetablesort.VegetableSortFragment;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -301,8 +298,8 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     @Override
     public void navigateToVipUpdate() {
-        navigate.navigateToVipUpdateStepOne(this, null, false);
-
+//        navigate.navigateToVipUpdateStepOne(this, null, false);
+        navigate.navigateToVipHome(this, null, false);
     }
 
     @Override
@@ -313,5 +310,10 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     public void navigateToProductDetailActivity(View view, ProductSimple productSimple, int position) {
         navigate.navigateToProductDetailActivity(this, null, false, productSimple.getMainId());
+    }
+
+    @Override
+    public void navigateToNormalCoupon() {
+        navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
     }
 }

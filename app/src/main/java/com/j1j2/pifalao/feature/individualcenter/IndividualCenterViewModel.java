@@ -1,18 +1,20 @@
 package com.j1j2.pifalao.feature.individualcenter;
 
 import android.databinding.ObservableField;
-import android.widget.Toast;
+import android.databinding.ObservableInt;
 
+import com.j1j2.data.http.api.UserCouponApi;
 import com.j1j2.data.http.api.UserLoginApi;
+import com.j1j2.data.model.Coupon;
+import com.j1j2.data.model.Module;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
-import com.orhanobut.logger.Logger;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -24,16 +26,48 @@ public class IndividualCenterViewModel {
 
     private IndividualCenterFragment individualCenterFragment;
     private UserLoginApi userLoginApi;
+    private UserCouponApi userCouponApi;
     private User user;
     private UserLoginPreference userLoginPreference;
     public ObservableField<User> userObservableField;
+    public ObservableInt couponNum = new ObservableInt(0);
 
-    public IndividualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi) {
+    public IndividualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi, UserCouponApi userCouponApi) {
         this.user = user;
         this.individualCenterFragment = individualCenterFragment;
         this.userLoginApi = userLoginApi;
+        this.userCouponApi = userCouponApi;
         this.userObservableField = new ObservableField<>();
         userObservableField.set(user);
+    }
+
+    public void queryAllCoupons(Module module) {
+        userCouponApi.queryUserCoupon(Constant.CouponType.COUPON_NORMAL, "" + (null == module ? "" : module.getWareHouseModuleId()))
+                .compose(individualCenterFragment.<WebReturn<List<Coupon>>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new WebReturnSubscriber<List<Coupon>>() {
+                    @Override
+                    public void onWebReturnSucess(List<Coupon> coupons) {
+                        int i = 0;
+                        for (Coupon coupon : coupons) {
+                            if (!coupon.isExpired() && coupon.getState() == 1) {
+                                i++;
+                            }
+                        }
+                        couponNum.set(i);
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
     }
 
     public void queryUser() {

@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
@@ -75,6 +74,7 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
         binding = DataBindingUtil.setContentView(this, R.layout.activity_addaddress);
         binding.setAddAddressViewModel(addAddressViewModel);
         binding.defaultCheck.setOnCheckedChangeListener(this);
+        isDefault = binding.defaultCheck.isChecked();
     }
 
     @Override
@@ -138,7 +138,7 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
             binding.defaultCheck.setChecked(!binding.defaultCheck.isChecked());
         if (v == binding.addressSelect) {
             if (city == null || district == null) {
-                Toast.makeText(this, "请选择城市、区域", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请选择城市、区域");
                 return;
             }
             navigate.navigateToAddressSelect(this, null, false, city, district);
@@ -149,23 +149,23 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
             addressLoction = binding.addresslocation.getText().toString();
             addressDetail = binding.addressdetail.getText().toString();
             if (TextUtils.isEmpty(userName)) {
-                Toast.makeText(this, "请填写收货人姓名", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请填写收货人姓名");
                 return;
             }
             if (TextUtils.isEmpty(userMobile)) {
-                Toast.makeText(this, "请填写收货人手机号", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请填写收货人手机号");
                 return;
             }
             if (userMobile.length() != 11) {
-                Toast.makeText(this, "请填写正确的手机号", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请填写正确的手机号");
                 return;
             }
             if (TextUtils.isEmpty(addressLoction)) {
-                Toast.makeText(this, "请选择收货人位置", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请选择收货人位置");
                 return;
             }
             if (TextUtils.isEmpty(addressDetail)) {
-                Toast.makeText(this, "请填写收货人详细地址", Toast.LENGTH_SHORT).show();
+                toastor.showSingletonToast("请填写收货人详细地址");
                 return;
             }
             EditorUserRecivingAddressBody editorUserRecivingAddressBody = new EditorUserRecivingAddressBody();

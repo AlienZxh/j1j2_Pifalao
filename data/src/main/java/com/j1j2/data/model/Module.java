@@ -16,6 +16,7 @@ public class Module implements Parcelable {
      * ModuleType
      * OrderAmountMinLimit
      * ModuleServiceScope
+     * Normal
      */
 
     private int WareHouseModuleId;
@@ -25,6 +26,7 @@ public class Module implements Parcelable {
     private int ModuleType;
     private double OrderAmountMinLimit;
     private String ModuleServiceScope;
+    private boolean Normal;
 
     public int getWareHouseModuleId() {
         return WareHouseModuleId;
@@ -82,6 +84,14 @@ public class Module implements Parcelable {
         ModuleServiceScope = moduleServiceScope;
     }
 
+    public boolean isNormal() {
+        return Normal;
+    }
+
+    public void setNormal(boolean normal) {
+        Normal = normal;
+    }
+
 
     @Override
     public int describeContents() {
@@ -97,6 +107,7 @@ public class Module implements Parcelable {
         dest.writeInt(this.ModuleType);
         dest.writeDouble(this.OrderAmountMinLimit);
         dest.writeString(this.ModuleServiceScope);
+        dest.writeByte(Normal ? (byte) 1 : (byte) 0);
     }
 
     public Module() {
@@ -110,6 +121,7 @@ public class Module implements Parcelable {
         this.ModuleType = in.readInt();
         this.OrderAmountMinLimit = in.readDouble();
         this.ModuleServiceScope = in.readString();
+        this.Normal = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {

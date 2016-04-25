@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemOrdersBinding;
+import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 
 
 import java.util.Collection;
@@ -39,7 +41,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         void onReceiveClickListener(View view, OrderSimple orderSimple, int position);
 
-        void onDetailClickListener(View view, OrderSimple orderSimple, int position);
+        void onDetailClickListener(View view, OrderSimple orderSimple, int position, int selectpage);
 
         void onServicePointIconClickListener(View view, OrderSimple orderSimple, int position);
 
@@ -92,27 +94,45 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             binding.orderProductList.setLayoutManager(new GridLayoutManager(context, 4));
             OrderProductAdapter orderProductAdapter = new OrderProductAdapter(data.getProductDetails());
             binding.orderProductList.setAdapter(orderProductAdapter);
+
+            switch (data.getModuleType()) {
+                case Constant.ModuleType.DELIVERY:
+                    binding.orderIcon.setText(context.getText(R.string.icon_delivery));
+                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getModuleType()));
+                    break;
+                case Constant.ModuleType.VEGETABLE:
+                    binding.orderIcon.setText(context.getText(R.string.icon_vegetable));
+                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getModuleType()));
+                    break;
+                case Constant.ModuleType.SHOPSERVICE:
+                    binding.orderIcon.setText(context.getText(R.string.icon_shopservice));
+                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getModuleType()));
+                    break;
+            }
+
+
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onOrdersClickListener == null)
                         return;
-                    if (v == binding.cancel) {
-                        onOrdersClickListener.onCancelPointIconClickListener(v, data, position);
-                    }
-                    if (v == binding.comment) {
-                        onOrdersClickListener.onCommentPointIconClickListener(v, data, position);
-                    }
+//                    if (v == binding.cancel) {
+//                        onOrdersClickListener.onCancelPointIconClickListener(v, data, position);
+//                    }
+//                    if (v == binding.comment) {
+//                        onOrdersClickListener.onCommentPointIconClickListener(v, data, position);
+//                    }
+//
+//                    if (v == binding.servicepoint) {
+//                        onOrdersClickListener.onServicePointIconClickListener(v, data, position);
+//                    }
                     if (v == binding.detail) {
-                        onOrdersClickListener.onDetailClickListener(v, data, position);
+                        onOrdersClickListener.onDetailClickListener(v, data, position, OrderDetailActivity.TIMELINE);
                     }
-                    if (v == binding.servicepoint) {
-                        onOrdersClickListener.onServicePointIconClickListener(v, data, position);
+                    if (v == binding.orderProduct) {
+                        onOrdersClickListener.onDetailClickListener(v, data, position, OrderDetailActivity.PARAM);
                     }
-                    if(v==binding.orderProduct){
-                        onOrdersClickListener.onOrderProductClickListener(v, data, position);
-                    }
-                    if(v==binding.receive){
+                    if (v == binding.receive) {
                         onOrdersClickListener.onReceiveClickListener(v, data, position);
                     }
                 }

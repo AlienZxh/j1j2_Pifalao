@@ -16,10 +16,12 @@ import in.workarounds.bundler.Bundler;
  */
 public class DeliveryHomeTabAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList;
+    private String[] titles;
 
-    public DeliveryHomeTabAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public DeliveryHomeTabAdapter(FragmentManager fm, List<Fragment> fragmentList, String[] titles) {
         super(fm);
         this.fragmentList = fragmentList;
+        this.titles = titles;
     }
 
     @Override
@@ -36,9 +38,9 @@ public class DeliveryHomeTabAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "商品";
+                return titles[0];
             case 1:
-                return "商家";
+                return titles[1];
         }
         return super.getPageTitle(position);
     }

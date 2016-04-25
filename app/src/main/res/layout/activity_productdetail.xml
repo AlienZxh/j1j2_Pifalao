@@ -324,6 +324,15 @@
 
         </com.zhy.autolayout.AutoRelativeLayout>
 
+        <TextView
+            android:id="@+id/shopCartAdd"
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/icon_round_add_fill"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/icon_small"
+            android:visibility="gone" />
     </com.zhy.autolayout.AutoRelativeLayout>
 
 </layout>

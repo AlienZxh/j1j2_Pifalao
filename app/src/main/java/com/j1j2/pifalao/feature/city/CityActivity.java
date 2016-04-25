@@ -72,6 +72,7 @@ public class CityActivity extends BaseActivity implements CityAdapter.OnItemClic
         if (city.isOpenState()) {
             userRelativePreference.setSelectedCity(city);
             navigate.navigateToLocationActivity(CityActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, city);
-        }
+        } else
+            navigate.navigateToUnsubscribeCity(CityActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
     }
 }

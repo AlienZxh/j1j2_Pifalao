@@ -31,7 +31,7 @@ public class OffllineOrderProductAdapter extends RecyclerView.Adapter<OrderProdu
 
     @Override
     public void onBindViewHolder(OrderProductViewHolder holder, int position) {
-        holder.bind(null, position);
+        holder.bind(offlineOrderProducts.get(position).getImage(), position);
     }
 
     @Override

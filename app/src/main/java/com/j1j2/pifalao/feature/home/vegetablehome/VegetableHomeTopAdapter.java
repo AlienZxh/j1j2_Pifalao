@@ -42,6 +42,7 @@ public class VegetableHomeTopAdapter extends RecyclingPagerAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+        holder.draweeView.setAspectRatio(2.25f);
         holder.draweeView.setImageURI(Uri.parse(BuildConfig.IMAGE_URL + bannerActivities.get(position).getBannerAppImg()));
         return view;
     }

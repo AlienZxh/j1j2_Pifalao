@@ -1,6 +1,5 @@
 package com.j1j2.pifalao.feature.orders;
 
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.UserOrderApi;
 import com.j1j2.data.model.OrderSimple;
@@ -85,14 +84,14 @@ public class OrdersViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(ordersActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        ordersActivity.toastor.showSingletonToast(s);
                         EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
 
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(ordersActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        ordersActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -110,14 +109,14 @@ public class OrdersViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        Toast.makeText(ordersActivity.getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+                        ordersActivity.toastor.showSingletonToast(s);
                         EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_CLIENTWAITFORRECEVIE, Constant.OrderType.ORDERTYPE_WAITFORRATE));
 
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(ordersActivity.getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        ordersActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override

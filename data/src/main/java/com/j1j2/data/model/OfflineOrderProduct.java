@@ -25,45 +25,46 @@ public class OfflineOrderProduct implements Parcelable {
     private double RetailPrice;
     private double Quantity;
     private double ItemSum;
+    private String Image;
 
     public String getProductName() {
         return ProductName;
     }
 
-    public void setProductName(String ProductName) {
-        this.ProductName = ProductName;
+    public void setProductName(String productName) {
+        ProductName = productName;
     }
 
     public String getSpec() {
         return Spec;
     }
 
-    public void setSpec(String Spec) {
-        this.Spec = Spec;
+    public void setSpec(String spec) {
+        Spec = spec;
     }
 
     public String getUnit() {
         return Unit;
     }
 
-    public void setUnit(String Unit) {
-        this.Unit = Unit;
+    public void setUnit(String unit) {
+        Unit = unit;
     }
 
     public double getMemberPrice() {
         return MemberPrice;
     }
 
-    public void setMemberPrice(double MemberPrice) {
-        this.MemberPrice = MemberPrice;
+    public void setMemberPrice(double memberPrice) {
+        MemberPrice = memberPrice;
     }
 
     public double getRetailPrice() {
         return RetailPrice;
     }
 
-    public void setRetailPrice(double RetailPrice) {
-        this.RetailPrice = RetailPrice;
+    public void setRetailPrice(double retailPrice) {
+        RetailPrice = retailPrice;
     }
 
     public double getQuantity() {
@@ -78,8 +79,16 @@ public class OfflineOrderProduct implements Parcelable {
         return ItemSum;
     }
 
-    public void setItemSum(double ItemSum) {
-        this.ItemSum = ItemSum;
+    public void setItemSum(double itemSum) {
+        ItemSum = itemSum;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 
 
@@ -97,6 +106,7 @@ public class OfflineOrderProduct implements Parcelable {
         dest.writeDouble(this.RetailPrice);
         dest.writeDouble(this.Quantity);
         dest.writeDouble(this.ItemSum);
+        dest.writeString(this.Image);
     }
 
     public OfflineOrderProduct() {
@@ -110,6 +120,7 @@ public class OfflineOrderProduct implements Parcelable {
         this.RetailPrice = in.readDouble();
         this.Quantity = in.readDouble();
         this.ItemSum = in.readDouble();
+        this.Image = in.readString();
     }
 
     public static final Parcelable.Creator<OfflineOrderProduct> CREATOR = new Parcelable.Creator<OfflineOrderProduct>() {

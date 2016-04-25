@@ -3,14 +3,13 @@ package com.j1j2.pifalao.feature.individualcenter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableInt;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
@@ -18,26 +17,19 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.app.event.VipUpdateSuccessEvent;
-import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
-import com.j1j2.pifalao.feature.main.MainActivity;
-import com.litesuits.common.io.FilenameUtils;
-import com.orhanobut.logger.Logger;
+import com.litesuits.common.assist.Toastor;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.toolsfinal.io.FileUtils;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
@@ -73,6 +65,9 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         void navigateToVipUpdate();
 
         void navigateToSetting();
+
+        void navigateToNormalCoupon();
+
     }
 
     private IndividualCenterFragmentListener listener;
@@ -88,6 +83,9 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     @Inject
     UserRelativePreference userRelativePreference;
 
+    @Inject
+    Toastor toastor;
+
     @Arg
     int fragmentType;
 
@@ -95,6 +93,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     UnReadInfoManager unReadInfoManager;
 
     AlertDialog chooseImgDialog;
+
 
     private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
@@ -105,7 +104,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
 
         @Override
         public void onHanlderFailure(int requestCode, String errorMsg) {
-            Toast.makeText(IndividualCenterFragment.this.getContext().getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            toastor.showSingletonToast(errorMsg);
         }
     };
 
@@ -125,6 +124,8 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
 
     @Override
     protected void initViews() {
+        individualCenterViewModel.queryAllCoupons(userRelativePreference.getSelectedModule(null));
+        //___________________________________________
         individualCenterViewModel.queryUser();
         //___________________________________________________________
         if (userRelativePreference.getUserImg(null) != null) {
@@ -137,7 +138,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         chooseImgDialog = new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setTitle("请选择")
-                .setItems(new CharSequence[]{"拍摄照片", "本地图片"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"　　拍摄照片", "　　本地图片"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0)
@@ -163,17 +164,19 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         individualCenterViewModel.queryUser();
     }
 
-
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
+        if (mOnHanlderResultCallback != null) {
+            mOnHanlderResultCallback = null;
+        }
         if (chooseImgDialog != null && chooseImgDialog.isShowing())
-            chooseImgDialog.cancel();
+            chooseImgDialog.dismiss();
     }
 
     @Override
     public void onClick(View v) {
-        if (v == binding.orderManager) {
+        if (v == binding.orderManager || v == binding.coustomBtn) {
             listener.navigateToOrderManager();
         }
         if (v == binding.qrCode) {
@@ -185,7 +188,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         if (v == binding.walletManager) {
             listener.navigateToWalletManager();
         }
-        if (v == binding.massageManager) {
+        if (v == binding.massageManager || v == binding.saveBtn) {
             listener.navigateToMessages();
         }
         if (v == binding.collectManager) {
@@ -204,5 +207,8 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
             getActivity().onBackPressed();
         if (v == binding.userImg)
             chooseImgDialog.show();
+        if (v == binding.normalCoupon)
+            listener.navigateToNormalCoupon();
+
     }
 }

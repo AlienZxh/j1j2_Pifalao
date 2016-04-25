@@ -1,16 +1,12 @@
 package com.j1j2.common.view.quantityview;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.j1j2.common.R;
 import com.zhy.autolayout.AutoLinearLayout;
@@ -18,7 +14,7 @@ import com.zhy.autolayout.AutoLinearLayout;
 /**
  * Created by alienzxh on 16-4-9.
  */
-public class StateQuantityView extends AutoLinearLayout implements TextWatcher, View.OnTouchListener {
+public class StateQuantityView extends AutoLinearLayout implements View.OnTouchListener {
 
     public interface OnQuantityChangeListener {
         void onQuantityChange(StateQuantityView view, int value);
@@ -28,18 +24,17 @@ public class StateQuantityView extends AutoLinearLayout implements TextWatcher, 
         boolean canEnable();
     }
 
-
     private OnQuantityChangeListener onQuantityChangeListener;
 
     private TextView minusBtn;
     private TextView addBtn;
-    private EditText quantityEdit;
-    private int quantity = 1;
+    private TextView quantityEdit;
 
     private int clickId = 0;
 
     GestureDetector gestureDetector;
 
+    private int quantity = 0;
     private boolean isEnable = false;
 
     public StateQuantityView(Context context) {
@@ -57,21 +52,27 @@ public class StateQuantityView extends AutoLinearLayout implements TextWatcher, 
             public boolean onSingleTapUp(MotionEvent e) {
                 if (clickId == R.id.minusBtn) {
                     quantity--;
-                    if (quantity < 1) {
+                    if (quantity <= 0) {
                         setEnable(false);
                     }
                 }
                 if (clickId == R.id.addBtn) {
+                    quantity++;
                     if (!isEnable) {
                         if (onQuantityChangeListener != null)
                             if (onQuantityChangeListener.canEnable())
                                 setEnable(true);
-                    } else {
-                        quantity++;
                     }
-
+                }
+                if (quantity < 0) {
+                    quantity = 0;
+                } else if (quantity > 9999) {
+                    quantity = 9999;
                 }
                 quantityEdit.setText("" + quantity);
+                if (onQuantityChangeListener != null) {
+                    onQuantityChangeListener.onQuantityChange(StateQuantityView.this, quantity);
+                }
                 return super.onSingleTapUp(e);
             }
         });
@@ -82,11 +83,10 @@ public class StateQuantityView extends AutoLinearLayout implements TextWatcher, 
         LayoutInflater.from(getContext()).inflate(R.layout.view_state_quantity, this, true);
         minusBtn = (TextView) findViewById(R.id.minusBtn);
         addBtn = (TextView) findViewById(R.id.addBtn);
-        quantityEdit = (EditText) findViewById(R.id.quantityEdit);
+        quantityEdit = (TextView) findViewById(R.id.quantityEdit);
 
         minusBtn.setOnTouchListener(this);
         addBtn.setOnTouchListener(this);
-        quantityEdit.addTextChangedListener(this);
 
         setEnable(false);
     }
@@ -99,58 +99,32 @@ public class StateQuantityView extends AutoLinearLayout implements TextWatcher, 
     }
 
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        if (null == s.toString() || s.length() <= 0) {
-            quantity = 1;
-            quantityEdit.setText("" + quantity);
-            return;
-        } else if (Integer.valueOf(s.toString()) <= 0) {
-            quantity = 1;
-            quantityEdit.setText("" + quantity);
-            return;
-        } else if (Integer.valueOf(s.toString()) > 9999) {
-            quantity = 9999;
-            quantityEdit.setText("" + quantity);
-            return;
-        } else {
-            quantity = Integer.valueOf(s.toString());
-        }
-        if (onQuantityChangeListener != null) {
-            onQuantityChangeListener.onQuantityChange(this, quantity);
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
-
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        if (quantity <= 0)
-            setEnable(false);
-        else
-            setEnable(true);
-        if (this.quantity == quantity)
+    public void setQuantity(int mQuantity) {
+        if (mQuantity <= 0) {
+            if (isEnable)
+                setEnable(false);
+        } else {
+            if (!isEnable)
+                setEnable(true);
+        }
+
+        if (this.quantity == mQuantity)
             return;
-        else if (quantity <= 0) {
-            quantity = 1;
-        } else if (quantity > 9999) {
+        else if (mQuantity <= 0) {
+            quantity = 0;
+        } else if (mQuantity > 9999) {
             quantity = 9999;
         } else {
-            this.quantity = quantity;
+            this.quantity = mQuantity;
         }
         quantityEdit.setText("" + quantity);
+        if (onQuantityChangeListener != null) {
+            onQuantityChangeListener.onQuantityChange(this, quantity);
+        }
     }
 
 

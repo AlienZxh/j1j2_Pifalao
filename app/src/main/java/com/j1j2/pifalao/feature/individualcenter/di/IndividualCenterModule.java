@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.individualcenter.di;
 
+import com.j1j2.data.http.api.UserCouponApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.app.ActivityScope;
@@ -30,8 +31,14 @@ public class IndividualCenterModule {
 
     @Provides
     @ActivityScope
-    IndividualCenterViewModel individualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi) {
-        return new IndividualCenterViewModel(user, individualCenterFragment, userLoginApi);
+    UserCouponApi userCouponApi(Retrofit retrofit) {
+        return retrofit.create(UserCouponApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    IndividualCenterViewModel individualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi, UserCouponApi userCouponApi) {
+        return new IndividualCenterViewModel(user, individualCenterFragment, userLoginApi, userCouponApi);
     }
 
     @Provides

@@ -11,14 +11,20 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ProgressBar;
 
+import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.NetWorkEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
 import com.j1j2.pifalao.feature.launch.di.LaunchModule;
+import com.litesuits.common.assist.Network;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -38,6 +44,7 @@ public class LaunchActivity extends BaseActivity {
     UserRelativePreference userRelativePreference;
 
     private AlertDialog downloadDialog;
+    ProgressBar progressBar;
 
     @Override
     protected void initBinding() {
@@ -53,8 +60,7 @@ public class LaunchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        EventBus.getDefault().postSticky(new NetWorkEvent(Network.isConnected(this), Network.getNetworkType(this)));
     }
 
     @Override
@@ -131,10 +137,15 @@ public class LaunchActivity extends BaseActivity {
     }
 
     public void showDownloadDialog() {
+        View progressBarView = getLayoutInflater().inflate(R.layout.view_update_load, null, false);
+        progressBar = (ProgressBar) progressBarView.findViewById(R.id.progressbar);
+        progressBar.setIndeterminate(false);
+        progressBar.setMax(100);
         downloadDialog = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle("下载中")
                 .setMessage("已下载0%")
+                .setView(progressBarView, 0, ScreenUtils.dpToPx(20), 0, 0)
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -149,6 +160,7 @@ public class LaunchActivity extends BaseActivity {
     public void setDownloadProgress(float progress, long total) {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
         downloadDialog.setMessage("   共" + df.format(total / 1000000) + "M,已下载：" + progress + "%");
+        progressBar.setProgress((int) progress);
     }
 
     public void installAPK(File apkfile) {
@@ -174,6 +186,7 @@ public class LaunchActivity extends BaseActivity {
     }
 
     public void navigateTo() {
+//        navigate.navigateToGuide(this, ActivityOptionsCompat.makeScaleUpAnimation(binding.logo, 0, 0, 0, 0), true);
         if (userRelativePreference.getIsFirst(true)) {
             navigate.navigateToGuide(this, ActivityOptionsCompat.makeScaleUpAnimation(binding.logo, 0, 0, 0, 0), true);
         } else {

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View.OnClickListener" />
+
+        <variable
+            name="area"
+            type="String" />
+
+        <variable
+            name="onClickListener"
+            type="OnClickListener" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="@drawable/item_delivery_areas_bg"
+            android:gravity="center"
+            android:text="@{area}"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_big"
+            app:OnClickListener="@{onClickListener}"/>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

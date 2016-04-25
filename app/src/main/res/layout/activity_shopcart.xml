@@ -162,10 +162,10 @@
                 android:id="@+id/confirmOrder"
                 android:layout_width="220px"
                 android:layout_height="match_parent"
-                android:background="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?@drawable/disable_btn_bg:@drawable/orange_btn_selector}"
-                android:enabled="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?false:true}"
+                android:background="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit||!module.Normal?@drawable/disable_btn_bg:@drawable/orange_btn_selector}"
+                android:enabled="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit||!module.Normal?false:true}"
                 android:gravity="center"
-                android:text="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?(&quot;满&quot;+module.OrderAmountMinLimit+&quot;元\n才能下单&quot;):&quot;去结算&quot;}"
+                android:text="@{!module.Normal?&quot;打烊了&quot;:(shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?(&quot;满&quot;+module.OrderAmountMinLimit+&quot;元\n才能下单&quot;):&quot;去结算&quot;)}"
                 android:textColor="@color/colorWhite"
                 android:textSize="30px"
                 app:OnClickListener="@{shopCartViewModel.ShopCartActivity}" />

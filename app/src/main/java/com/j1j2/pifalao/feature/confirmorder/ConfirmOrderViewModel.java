@@ -1,7 +1,6 @@
 package com.j1j2.pifalao.feature.confirmorder;
 
 import android.databinding.ObservableField;
-import android.widget.Toast;
 
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ShopCartApi;
@@ -66,7 +65,9 @@ public class ConfirmOrderViewModel {
         orderSubmitBody.setFreightID(orderSubmitState.FreightTypeDetail.get().getId());
 
         orderSubmitBody.setServicePointId(orderSubmitState.ServicePointDetail.get() == null ? 0 : orderSubmitState.ServicePointDetail.get().getServicePointId());
-        orderSubmitBody.setAddressId(orderSubmitState.AddressDetail.get() == null ? 0 : orderSubmitState.AddressDetail.get().getAddressId());
+
+        if (orderSubmitState.AddressDetail.get() != null)
+            orderSubmitBody.setAddressId("" + orderSubmitState.AddressDetail.get().getAddressId());
 
         orderSubmitBody.setCouponCode(orderSubmitState.Coupon.get() == null ? "" : orderSubmitState.Coupon.get().getCouponCode());
 
@@ -82,12 +83,13 @@ public class ConfirmOrderViewModel {
                         confirmOrderActivity.clearShopCart();
                         EventBus.getDefault().post(new ConfirmOrderSuccessEvent());
                         EventBus.getDefault().post(new ShopCartChangeEvent());
-                        confirmOrderActivity.navigateToSuccess(orderId);
+//                        confirmOrderActivity.navigateToSuccess(orderId);
+                        confirmOrderActivity.navigateToOrderDetail(orderId);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-                        Toast.makeText(confirmOrderActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                        confirmOrderActivity.toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
