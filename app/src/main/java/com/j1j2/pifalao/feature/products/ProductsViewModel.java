@@ -43,7 +43,6 @@ public class ProductsViewModel {
     private CountDownApi countDownApi;
     private PagerManager<ProductSimple> productSimples;
 
-
     private String key;
 
     private int orderBy = 0;//2:按价格  1:销量   3:人气  0:默认

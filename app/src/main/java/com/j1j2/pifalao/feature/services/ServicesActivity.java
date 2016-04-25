@@ -167,7 +167,6 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 //                        userRelativePreference.setShowDeliveryArea(true);
 //                        userRelativePreference.setShowLocation(true);
 //                        navigate.navigateToServicesActivity(ServicesActivity.this, null, true, servicePoint);
-
                         navigate.navigateToLocationActivity(ServicesActivity.this,null,true,userRelativePreference.getSelectedCity(null));
                     }
                 })

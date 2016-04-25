@@ -31,12 +31,12 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
-                app:OnClickListener="@{loginViewModel.loginActivity}"/>
+                app:OnClickListener="@{loginViewModel.loginActivity}" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -131,11 +131,11 @@
                 android:id="@+id/autoLoginCeck"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:checked="true"
                 android:gravity="center_vertical"
                 android:text="自动登录"
                 android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_normal"
-                app:OnClickListener="@{loginViewModel.loginActivity}" />
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:id="@+id/forgetPSW"

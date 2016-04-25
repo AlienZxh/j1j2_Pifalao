@@ -22,8 +22,7 @@
             android:layout_height="320px"
             android:background="@color/colorLayoutBg"
             android:clipToPadding="false"
-            android:paddingBottom="@dimen/padding_noraml"
-            android:paddingTop="@dimen/padding_noraml" />
+            android:paddingBottom="@dimen/padding_noraml" />
 
         <TextView
             android:id="@+id/confirm"

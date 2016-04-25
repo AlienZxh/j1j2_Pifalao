@@ -24,7 +24,7 @@ allprojects {
 
     ext {
         androidApplicationId = 'com.j1j2.pifalao'
-        androidVersionCode = 56
+        androidVersionCode = 57
         androidVersionName = "5.0.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }

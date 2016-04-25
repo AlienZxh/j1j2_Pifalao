@@ -14,6 +14,7 @@ import com.j1j2.pifalao.app.event.RegisterSuccessEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.databinding.ActivityLoginBinding;
 import com.j1j2.pifalao.feature.login.di.LoginModule;
+import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -35,7 +36,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Inject
     UserLoginPreference userLoginPreference;
 
-
     InputMethodManager imm;
 
     @Override
@@ -47,9 +47,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void initViews() {
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        binding.autoLoginCeck.setChecked(userLoginPreference.getIsAutoLogin(false));
+
         binding.username.setText(userLoginPreference.getUsername(""));
         binding.password.setText(userLoginPreference.getPassWord(""));
+        userLoginPreference.setIsAutoLogin(true);
+        binding.autoLoginCeck.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -77,6 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 toastor.showSingletonToast("密码不能为空");
                 return;
             }
+            Logger.d("login IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
             loginViewModel.login(username, password, binding.autoLoginCeck.isChecked());
         }
         if (v == binding.registerBtn) {

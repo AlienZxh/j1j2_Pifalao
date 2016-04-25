@@ -87,6 +87,31 @@ public class OrderDetailViewModel {
                 });
     }
 
+    public void receiveOrder(int orderId) {
+        userOrderApi.confrimReceive(orderId)
+                .compose(orderDetailActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+                        orderDetailActivity.toastor.showSingletonToast(s);
+                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_DELIVERY, Constant.OrderType.ORDERTYPE_WAITFORRATE));
+
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        orderDetailActivity.toastor.showSingletonToast(errorMessage);
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
 
     public void cancleOrder(int orderId) {
         userOrderApi.cancleOrder(orderId)

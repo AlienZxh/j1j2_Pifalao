@@ -16,18 +16,6 @@ public class NetWorkReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         EventBus.getDefault().postSticky(new NetWorkEvent(Network.isConnected(context), Network.getNetworkType(context)));
-
-//            switch (Network.getNetworkType(context)) {
-//                case Net2G:
-//                case Net3G:
-//                    EventBus.getDefault().postSticky(new NetWorkEvent("", false));
-//                    EventBus.getDefault().post(new NetWorkEvent("处于2G/3G网络，建议切换到4G/WIFI网络。", true));
-//                    break;
-//                default:
-//                    EventBus.getDefault().postSticky(new NetWorkEvent("", false));
-//                    break;
-//            }
-
     }
 
 

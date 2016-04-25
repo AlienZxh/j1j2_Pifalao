@@ -128,7 +128,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             showDeleteDialog(orderId);
         }
         if (v == binding.receive) {
-
+            orderDetailViewModel.receiveOrder(orderId);
         }
         if (v == binding.comment) {
 
