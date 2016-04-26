@@ -90,6 +90,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_deliveryhome);
         binding.setServicePoint(servicePoint);
         binding.setDeliveryHomeViewModel(deliveryHomeViewModel);
+
     }
 
     @Override

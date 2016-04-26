@@ -15,7 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--ignorewarnings
+#-ignorewarnings
 -optimizationpasses 7  #指定代码的压缩级别 0 - 7
 -dontusemixedcaseclassnames  #是否使用大小写混合
 -dontskipnonpubliclibraryclasses  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
@@ -84,6 +84,8 @@
 -keepattributes *Annotation*  #假如项目中有用到注解，应加入这行配置
 
 -keepattributes Exceptions  #过滤异常
+
+-keepattributes InnerClasses　#过滤内部类
 
 -keep class **.R$* { *; }  #保持R文件不被混淆，否则，你的反射是获取不到资源id的
 
@@ -170,7 +172,7 @@
 
 ##---------------Begin: proguard configuration for StoreBox  ----------
 -keep class net.orange_box.storebox.** { *; }
--dontwarn  net.orange_box.storebox.**
+-dontwarn net.jodah.typetools.TypeResolver
 ##---------------End: proguard configuration for StoreBox  ----------
 
 ##---------------Begin: proguard configuration for dialogplus  ----------

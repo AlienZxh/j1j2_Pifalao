@@ -116,7 +116,7 @@ dependencies {
     releaseCompile appReleaseDependencies.leakcanary
     //图片加载
     compile appDependencies.fresco
-    compile appDependencies.webpsupport
+//    compile appDependencies.webpsupport
     //rxlifecycle
     compile appDependencies.rxlifecycle
     compile appDependencies.rxlifecycleComponents

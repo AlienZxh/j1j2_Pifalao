@@ -170,12 +170,14 @@ public class MainAplication extends Application {
             ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                     .setRequestListeners(requestListeners)
                     .setBitmapsConfig(Bitmap.Config.RGB_565)
+                    .setDownsampleEnabled(true)
                     .build();
             FLog.setMinimumLoggingLevel(FLog.VERBOSE);
             Fresco.initialize(this, config);
         } else {
             ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                     .setBitmapsConfig(Bitmap.Config.RGB_565)
+                    .setDownsampleEnabled(true)
                     .build();
             Fresco.initialize(this, config);
         }
