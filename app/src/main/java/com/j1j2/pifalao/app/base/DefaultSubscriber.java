@@ -18,11 +18,12 @@ package com.j1j2.pifalao.app.base;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.Arrays;
+
 /**
  * Default subscriber base class to be used whenever you want default error handling.
  */
 public class DefaultSubscriber<T> extends rx.Subscriber<T> {
-
 
 
     @Override
@@ -32,7 +33,7 @@ public class DefaultSubscriber<T> extends rx.Subscriber<T> {
 
     @Override
     public void onError(Throwable e) {
-        Logger.e(" some error " + e.toString());
+        Logger.e(" some error " + e.toString() + " StackTrace " + Arrays.toString(e.getStackTrace()));
     }
 
     @Override

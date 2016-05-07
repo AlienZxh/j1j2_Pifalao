@@ -1,6 +1,6 @@
 package com.j1j2.pifalao.app.event;
 
-import com.litesuits.common.assist.Network;
+import com.j1j2.common.util.Network;
 
 /**
  * Created by alienzxh on 16-4-21.

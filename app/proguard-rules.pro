@@ -15,7 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
-#-ignorewarnings
+-ignorewarnings
 -optimizationpasses 7  #指定代码的压缩级别 0 - 7
 -dontusemixedcaseclassnames  #是否使用大小写混合
 -dontskipnonpubliclibraryclasses  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
@@ -161,11 +161,6 @@
  -keep class rx.** { *; }
 ##---------------End: proguard configuration for rxjava  ----------
 
-##---------------Begin: proguard configuration for fresco  ----------
- -dontwarn com.facebook.**
- -keep class com.facebook.** { *; }
-##---------------End: proguard configuration for fresco  ----------
-
 ##---------------Begin: proguard configuration for SuperRecyclerView  ----------
 -dontwarn com.malinskiy.superrecyclerview.SwipeDismissRecyclerViewTouchListener*
 ##---------------End: proguard configuration for SuperRecyclerView  ----------
@@ -232,17 +227,24 @@
 -keep class cn.finalteam.galleryfinal.widget.zoonview.*{*;}
 ##---------------End: proguard configuration for finalteam:galleryfinal  ----------
 
-##---------------Begin: proguard configuration for finalteam:fresco  ----------
-# Keep our interfaces so they can be used by other ProGuard rules.
-# See http://sourceforge.net/p/proguard/bugs/466/
--keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
-# Do not strip any method/class that is annotated with @DoNotStrip
--keep @com.facebook.common.internal.DoNotStrip class *
--keepclassmembers class * {
-    @com.facebook.common.internal.DoNotStrip *;
+##---------------Begin: proguard configuration for Glide  ----------
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
 }
-# Keep native methods
--keepclassmembers class * {
-    native <methods>;
-}
-##---------------End: proguard configuration for finalteam:fresco  ----------
+##---------------End: proguard configuration for Glide  ----------
+
+##---------------Begin: proguard configuration for shapeimageview  ----------
+-keep class com.github.siyamed.** { *; }
+-dontwarn com.github.siyamed.**
+##---------------End: proguard configuration for shapeimageview  ----------
+
+##---------------Begin: proguard configuration for alipay  ----------
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}
+##---------------Begin: proguard configuration for alipay  ----------

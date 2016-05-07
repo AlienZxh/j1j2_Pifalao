@@ -28,7 +28,7 @@ import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.databinding.FragmentDeliveryhomeProductsBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsModule;
-import com.litesuits.common.assist.Toastor;
+import com.j1j2.common.util.Toastor;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -213,11 +213,22 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         queryProducts(true, parentSort, childSort, position);
     }
 
+    public void showLoad() {
+        binding.childSortList.showProgress();
+    }
+
+    public void hideLoad() {
+        binding.childSortList.hideProgress();
+        binding.childSortList.showRecycler();
+    }
+
     public void queryProducts(boolean isRefresh, ProductSort parentSort, ProductSort childSort, int position) {
         if (position == 0) {
             deliveryProductsViewModel.querySellsProducts(isRefresh, parentSort.getSortId());
         } else if (position == 1) {
-            deliveryProductsViewModel.queryActivityProducts(isRefresh, module.getWareHouseModuleId());
+            deliveryProductsViewModel.queryActivityProducts(isRefresh, module.getWareHouseModuleId(), position);
+        } else if (position == 2) {
+            deliveryProductsViewModel.queryActivityProducts(isRefresh, module.getWareHouseModuleId(), position);
         } else
             deliveryProductsViewModel.queryProductyBySortId(isRefresh, childSort.getSortId());
     }
@@ -327,7 +338,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
     @Override
     public View getScrollableView() {
-        return binding.parentSortList;
+        return null;
     }
 
 

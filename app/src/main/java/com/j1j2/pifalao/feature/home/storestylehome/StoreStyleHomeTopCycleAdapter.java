@@ -1,12 +1,12 @@
 package com.j1j2.pifalao.feature.home.storestylehome;
 
-import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
 import com.j1j2.common.view.viewpager.autoscrollviewpager.RecyclingPagerAdapter;
 import com.j1j2.pifalao.R;
 
@@ -15,11 +15,9 @@ import com.j1j2.pifalao.R;
  */
 public class StoreStyleHomeTopCycleAdapter extends RecyclingPagerAdapter {
     private int[] imgId;
-    private float ratio;
 
-    public StoreStyleHomeTopCycleAdapter(int[] imgId, float ratio) {
+    public StoreStyleHomeTopCycleAdapter(int[] imgId) {
         this.imgId = imgId;
-        this.ratio = ratio;
     }
 
     private int getPosition(int position) {
@@ -32,18 +30,21 @@ public class StoreStyleHomeTopCycleAdapter extends RecyclingPagerAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = LayoutInflater.from(container.getContext()).inflate(R.layout.view_bannerimg, container, false);
-            holder.draweeView = (SimpleDraweeView) view.findViewById(R.id.draw);
+            holder.draweeView = (ImageView) view.findViewById(R.id.draw);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.draweeView.setAspectRatio(ratio);
-        holder.draweeView.setImageURI(Uri.parse("res://com.j1j2.pifalao/" + imgId[position]));
+        Glide.with(container.getContext())
+                .load(imgId[position])
+                .centerCrop()
+                .into(holder.draweeView);
+
         return view;
     }
 
     private static class ViewHolder {
-        SimpleDraweeView draweeView;
+        ImageView draweeView;
     }
 
     @Override

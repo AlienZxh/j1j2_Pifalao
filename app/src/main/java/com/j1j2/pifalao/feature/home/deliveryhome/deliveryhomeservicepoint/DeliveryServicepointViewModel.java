@@ -43,7 +43,8 @@ public class DeliveryServicepointViewModel {
                     public void onWebReturnSucess(List<Module> modules) {
                         StringBuilder stringBuilder = new StringBuilder();
                         for (Module module : modules) {
-                            stringBuilder.append(module.getModuleName() + "、");
+                            if (module.isSubscribed())
+                                stringBuilder.append(module.getModuleName() + "、");
                         }
                         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                         stringBuilder.append("等");

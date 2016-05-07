@@ -26,6 +26,7 @@ import com.j1j2.pifalao.app.event.UserAddressSelectEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityConfirmorderBinding;
 import com.j1j2.pifalao.databinding.ViewDeliverytimePickerBinding;
+import com.j1j2.pifalao.databinding.ViewOrderpaytypeBinding;
 import com.j1j2.pifalao.feature.confirmorder.di.ConfirmOrderModule;
 import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 import com.j1j2.pifalao.feature.orderproducts.OrderProductsActivity;
@@ -72,7 +73,10 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
 
     DialogPlus timeDialog;
-    ViewDeliverytimePickerBinding dialogBinding;
+    ViewDeliverytimePickerBinding timeDialogBinding;
+
+    DialogPlus payDialog;
+    ViewOrderpaytypeBinding payDialogBinding;
 
     public OrderSubmitState orderSubmitState;
 
@@ -90,17 +94,38 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        //_______________________________________________________________________________
+        payDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_orderpaytype, null, false);
+        payDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
+                .setCancelable(true)
+                .setInAnimation(R.anim.slide_in_bottom)
+                .setOutAnimation(R.anim.slide_out_bottom)
+                .setContentHolder(new ViewHolder(payDialogBinding.getRoot()))
+                .setContentBackgroundResource(R.color.colorWhite)
+                .create();
+        payDialogBinding.orderpaytypeCancel.setOnClickListener(this);
+        payDialogBinding.orderpaytypeConFirm.setOnClickListener(this);
+        List<String> payItems = new ArrayList<>();
+        payItems.add("在线支付");
+        if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
+            payItems.add("货到付款");
+        }
+        payDialogBinding.orderpaytype.setItems(payItems);
+        payDialogBinding.orderpaytype.setClipToPadding(false);
+        payDialogBinding.orderpaytype.setSeletion(0);
+        binding.orderpaytypeText.setText(payDialogBinding.orderpaytype.getSeletedItem());
+        orderSubmitState.OrderPayType = Constant.OrderPayType.ONLINEPAYMENT;
         //___________________________________________________________
-        dialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_deliverytime_picker, null, false);
+        timeDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_deliverytime_picker, null, false);
         timeDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
                 .setCancelable(true)
                 .setInAnimation(R.anim.slide_in_bottom)
                 .setOutAnimation(R.anim.slide_out_bottom)
-                .setContentHolder(new ViewHolder(dialogBinding.getRoot()))
+                .setContentHolder(new ViewHolder(timeDialogBinding.getRoot()))
                 .setContentBackgroundResource(R.color.colorWhite)
                 .create();
-        dialogBinding.timeickerCancel.setOnClickListener(this);
-        dialogBinding.timeickerConFirm.setOnClickListener(this);
+        timeDialogBinding.timeickerCancel.setOnClickListener(this);
+        timeDialogBinding.timeickerConFirm.setOnClickListener(this);
         //__________________________________________________________
         confirmOrderViewModel.CountDown(moduleId);
         //___________________________________
@@ -134,8 +159,9 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             items.add("立即配送");
             items.add("电话预约");
         }
-        dialogBinding.timePicker.setItems(items);
-        dialogBinding.timePicker.setClipToPadding(false);
+        timeDialogBinding.timePicker.setItems(items);
+        timeDialogBinding.timePicker.setClipToPadding(false);
+        timeDialogBinding.timePicker.setSeletion(0);
         orderSubmitState.PredictSendTime.set(items.get(0));
     }
 
@@ -187,11 +213,15 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         orderSubmitState.AddressDetail.set(address);
     }
 
+    public void setConfirmBtnEnable(boolean isEnable) {
+        binding.confirmOrder.setEnabled(isEnable);
+    }
+
     @Override
     public void onClick(View v) {
 
         if (v == binding.confirmOrder) {
-            if (null == orderSubmitState.PredictSendTime.get()) {
+            if (null == orderSubmitState.PredictSendTime.get() || orderSubmitState.PredictSendTime.get().length() <= 0) {
                 toastor.showSingletonToast("请选择自提时间");
                 return;
             }
@@ -199,25 +229,39 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
                 toastor.showSingletonToast("请选择地址");
                 return;
             }
+            setConfirmBtnEnable(false);
             orderSubmitState.OrderMemo = binding.memo.getText().toString();
+            toastor.showSingleLongToast("订单提交中，请稍后...");
             confirmOrderViewModel.commitOrder(orderSubmitState);
         }
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.timPickerBtn)
             showTimePicker();
-        if (v == dialogBinding.timeickerCancel)
+        if (v == binding.orderpaytypeBtn)
+            payDialog.show();
+        if (v == payDialogBinding.orderpaytypeCancel)
+            payDialog.dismiss();
+        if (v == payDialogBinding.orderpaytypeConFirm) {
+            binding.orderpaytypeText.setText(payDialogBinding.orderpaytype.getSeletedItem());
+            if (payDialogBinding.orderpaytype.getSeletedItem().equals("在线支付"))
+                orderSubmitState.OrderPayType = Constant.OrderPayType.ONLINEPAYMENT;
+            else
+                orderSubmitState.OrderPayType = Constant.OrderPayType.CASHONDELIVERY;
+            payDialog.dismiss();
+        }
+        if (v == timeDialogBinding.timeickerCancel)
             timeDialog.dismiss();
-        if (v == dialogBinding.timeickerConFirm) {
-            orderSubmitState.PredictSendTime.set(dialogBinding.timePicker.getSeletedItem());
+        if (v == timeDialogBinding.timeickerConFirm) {
+            orderSubmitState.PredictSendTime.set(timeDialogBinding.timePicker.getSeletedItem());
             timeDialog.dismiss();
         }
         if (v == binding.productList) {
             navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_CONFIRMORDER, moduleId, shopCartItems, null);
         }
         if (v == binding.couponBtn) {
-            if (null != coupons && coupons.size() > 0)
-                navigate.navigateToCouponSelect(this, null, false, moduleId, coupons, orderSubmitState.Coupon.get());
+//            if (null != coupons && coupons.size() > 0)
+            navigate.navigateToCouponSelect(this, null, false, moduleId, coupons, orderSubmitState.Coupon.get());
         }
         if (v == binding.addressLayout) {
             navigate.navigateToAddressManager(this, null, false, true);

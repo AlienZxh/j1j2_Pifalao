@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -28,13 +27,10 @@
         android:orientation="vertical"
         app:OnClickListener="@{onClick}">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
-            fresco:failureImage="@drawable/loadimg_error"
-            fresco:placeholderImage="@drawable/loadimg_loading"
-            fresco:viewAspectRatio="1" />
+        <ImageView
+            android:layout_width="200px"
+            android:layout_height="200px"
+            app:displayImgWithoutCache="@{Uri.parse(productSimple.MainImg??@string/text_empty)}" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="wrap_content"

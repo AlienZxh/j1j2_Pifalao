@@ -44,7 +44,6 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     @Arg
     boolean isSelect;
 
-    AlertDialog deleteAddressDialog;
 
     @Override
     protected void initBinding() {
@@ -101,13 +100,6 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (deleteAddressDialog != null && deleteAddressDialog.isShowing())
-            deleteAddressDialog.cancel();
-    }
-
-    @Override
     public void onDefaultBtnClickListener(View v, Address address, int position) {
         addressManagerViewModel.setDefaultAddress(address.getAddressId());
     }
@@ -123,7 +115,9 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     }
 
     public void showDeleteDialog(final int addressId, final int position) {
-        deleteAddressDialog = new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setNegativeButton("取消", null)
@@ -136,7 +130,7 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
                     }
                 })
                 .create();
-        deleteAddressDialog.show();
+        messageDialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

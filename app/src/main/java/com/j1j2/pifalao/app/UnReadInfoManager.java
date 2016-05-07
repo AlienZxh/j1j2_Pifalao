@@ -11,29 +11,51 @@ import com.j1j2.pifalao.BR;
  */
 public class UnReadInfoManager extends BaseObservable {
     private boolean hasUnRead;
-    private UnReadInfo unReadInfo;
+    private int unReadOrderCount;
+    private int unReadPushMessageCount;
+    private int userFavoritesCount;
 
-    public UnReadInfoManager() {
+    private static UnReadInfoManager unReadInfoManager = null;
+
+    public static UnReadInfoManager getInstance() {
+        if (unReadInfoManager == null) {
+            unReadInfoManager = new UnReadInfoManager();
+        }
+        return unReadInfoManager;
+    }
+
+
+    private UnReadInfoManager() {
         hasUnRead = false;
-        UnReadInfo unReadInfo = new UnReadInfo();
+        unReadOrderCount = 0;
+        unReadPushMessageCount = 0;
+        userFavoritesCount = 0;
     }
 
     public void setUnReadInfo(UnReadInfo unReadInfo) {
-        this.unReadInfo = unReadInfo;
-        if (unReadInfo.getUnReadOrderCount() + unReadInfo.getUnReadPushMessageCount() > 0) {
+        unReadOrderCount = unReadInfo.getUnReadOrderCount();
+        unReadPushMessageCount = unReadInfo.getUnReadPushMessageCount();
+        userFavoritesCount = unReadInfo.getUserFavoritesCount();
+        if (unReadOrderCount + unReadPushMessageCount > 0) {
             hasUnRead = true;
         } else {
             hasUnRead = false;
         }
         notifyPropertyChanged(BR.hasUnRead);
-        notifyPropertyChanged(BR.unReadInfo);
+        notifyPropertyChanged(BR.unReadInfoManager);
+        notifyPropertyChanged(BR.unReadOrderCount);
+        notifyPropertyChanged(BR.userFavoritesCount);
     }
 
-    public void clear(){
+    public void clear() {
         hasUnRead = false;
-        UnReadInfo unReadInfo = new UnReadInfo();
+        unReadOrderCount = 0;
+        unReadPushMessageCount = 0;
+        userFavoritesCount = 0;
         notifyPropertyChanged(BR.hasUnRead);
-        notifyPropertyChanged(BR.unReadInfo);
+        notifyPropertyChanged(BR.unReadInfoManager);
+        notifyPropertyChanged(BR.unReadOrderCount);
+        notifyPropertyChanged(BR.userFavoritesCount);
     }
 
     @Bindable
@@ -42,7 +64,17 @@ public class UnReadInfoManager extends BaseObservable {
     }
 
     @Bindable
-    public UnReadInfo getUnReadInfo() {
-        return unReadInfo;
+    public int getUnReadOrderCount() {
+        return unReadOrderCount;
+    }
+
+    @Bindable
+    public int getUnReadPushMessageCount() {
+        return unReadPushMessageCount;
+    }
+
+    @Bindable
+    public int getUserFavoritesCount() {
+        return userFavoritesCount;
     }
 }

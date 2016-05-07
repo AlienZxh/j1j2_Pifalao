@@ -54,7 +54,7 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-9.
  */
 @RequireBundler
-public class LocationActivity extends BaseMapActivity implements View.OnClickListener, LocationServicePointAdapter.OnItemClickListener, LocationDistrictAdapter.OnDistrictItemClickListener {
+public class LocationActivity extends BaseMapActivity implements View.OnClickListener, LocationServicePointAdapter.OnItemClickListener, LocationDistrictAdapter.OnDistrictItemClickListener, BaiduMap.OnMapLoadedCallback {
 
     ActivityLocationBinding binding;
 
@@ -70,13 +70,13 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     private OverlayManager servicepointOverlayManager = null;
     private List<OverlayOptions> overlayOptionses = null;
 
-    private boolean isFirst = true;
-
     BDLocation location;
+    boolean loadList = false;
+
 
     private InfoWindow mInfoWindow;
     ViewLocationPopBinding popBinding;
-    ObservableField<ServicePoint> servicePointObservableField = new ObservableField<>();
+    ServicePoint servicePoint = null;
 
     @Override
     protected void initBinding() {
@@ -86,7 +86,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         binding.districtList.setAdapter(locationViewModel.getLocationDistrictAdapter());
         binding.servicepointList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this).sizeResId(R.dimen.height_1px).margin(AutoUtils.getPercentWidthSize(30), 0)
-                .colorResId(R.color.colorGrayF0F0F0).build());
+                .colorResId(R.color.colorGrayF0F0F0).showLastDivider().build());
         binding.servicepointList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.servicepointList.setAdapter(locationViewModel.getLocationServicePointAdapter());
         locationViewModel.getLocationDistrictAdapter().setOnDistrictItemClickListener(this);
@@ -104,11 +104,13 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     protected void initViews() {
         popBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_location_pop, null, false);
         popBinding.setOnClick(this);
-        popBinding.setServicepoint(servicePointObservableField);
+
     }
 
     public void addServicePointOverlay(List<ServicePoint> servicePoints) {
         mBaiduMap.hideInfoWindow();
+        if (servicePoints.size() <= 0)
+            return;
 
         if (overlayOptionses.size() > 0) {
             servicepointOverlayManager.removeFromMap();
@@ -130,9 +132,10 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
             i++;
         }
         servicepointOverlayManager.addToMap();
-
-        servicePointObservableField.set(servicePoints.get(0));
-        mInfoWindow = new InfoWindow(popBinding.getRoot(), new LatLng(servicePoints.get(0).getLat(), servicePoints.get(0).getLng()), -55);
+        servicePoint = servicePoints.get(0);
+        popBinding.name.setText(servicePoint.getName());
+        popBinding.address.setText(servicePoint.getAddressDetail());
+        mInfoWindow = new InfoWindow(popBinding.getRoot(), new LatLng(servicePoint.getLat(), servicePoint.getLng()), -55);
         mBaiduMap.showInfoWindow(mInfoWindow);
 
         markIcon.recycle();
@@ -154,10 +157,13 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         return mBaiduMap.getProjection().fromScreenLocation(southwestPoint);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void showLoad() {
+        binding.servicepointList.showProgress();
+    }
 
+    public void hideLoad() {
+        binding.servicepointList.hideProgress();
+        binding.servicepointList.showRecycler();
     }
 
 
@@ -178,7 +184,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         mBaiduMap.setMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
-
+        mBaiduMap.setOnMapLoadedCallback(this);
     }
 
 
@@ -186,35 +192,35 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     public void onLocationEvent(LocationEvent event) {
         location = event.getLocation();
         if (isLocationSuccess(location)) {
+            if (mBaiduMap != null) {
+                // 地图显示我的位置
+                MyLocationData locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())// 定位精度
+                        .direction(100)// GPS定位时方向角度,顺时针0-360
+                        .latitude(location.getLatitude())// 百度纬度坐标
+                        .longitude(location.getLongitude())// 百度经度坐标
+                        .speed(location.getSpeed())// GPS定位时速度
+                        .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
+                        .build();
+                mBaiduMap.setMyLocationData(locData);
+            }
+        }
+        if (loadList) {
             locationViewModel.onCreate(location);
-            moveToMyLocation(location);
-        } else {
-            locationViewModel.onLocationErrorCreate();
+            if (isLocationSuccess(location)) {
+                LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 14.0f);
+                mBaiduMap.setMapStatus(u);
+            }
+            loadList = false;
         }
 
     }
 
-    public void moveToMyLocation(BDLocation location) {
-        if (location == null)
-            return;
-        // 地图显示我的位置
-        MyLocationData locData = new MyLocationData.Builder()
-                .accuracy(location.getRadius())// 定位精度
-                .direction(100)// GPS定位时方向角度,顺时针0-360
-                .latitude(location.getLatitude())// 百度纬度坐标
-                .longitude(location.getLongitude())// 百度经度坐标
-                .speed(location.getSpeed())// GPS定位时速度
-                .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
-                .build();
-        if (mBaiduMap == null)
-            return;
-        if (isFirst) {
-            isFirst = false;
-            mBaiduMap.setMyLocationData(locData);
-            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 14.0f);
-            mBaiduMap.setMapStatus(u);
-        }
+    @Override
+    public void onMapLoaded() {
+        loadList = true;
+        mLocationClient.requestLocation();
     }
 
     @Override
@@ -227,15 +233,15 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         if (v == binding.location)
             navigate.navigateToCityActivity(this, null, true);
         if (v == popBinding.popInfoIcon)
-            if (servicePointObservableField.get() != null)
-                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, servicePointObservableField.get(), location);
+            if (servicePoint != null)
+                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, servicePoint, location);
 
         if (v == popBinding.popLayout)
-            if (servicePointObservableField.get() != null) {
-                userRelativePreference.setSelectedServicePoint(servicePointObservableField.get());
+            if (servicePoint != null) {
+                userRelativePreference.setSelectedServicePoint(servicePoint);
                 userRelativePreference.setShowDeliveryArea(true);
                 userRelativePreference.setShowLocation(true);
-                navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePointObservableField.get());
+                navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePoint);
             }
     }
 
@@ -244,12 +250,11 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     public void onDistrictItemClickListener(View view, City city, int position) {
         if (position == 0) {
             LocationEvent locationEvent = EventBus.getDefault().getStickyEvent(LocationEvent.class);
-            if (locationEvent != null)
-                locationViewModel.queryNearByServicePoint(locationEvent.getLocation());
+            locationViewModel.queryNearByServicePoint(locationEvent.getLocation());
+
         } else {
             LocationEvent locationEvent = EventBus.getDefault().getStickyEvent(LocationEvent.class);
-            if (locationEvent != null)
-                locationViewModel.queryInDistrict(locationEvent.getLocation(), city);
+            locationViewModel.queryInDistrict(locationEvent.getLocation(), city);
         }
     }
 

@@ -111,11 +111,23 @@ public class Constant {
     public interface OrderType {
         public static final int ORDERTYPE_ALL = 0;//全部
         public static final int ORDERTYPE_SUBMIT = 1;//已下单
+        public static final int ORDERTYPE_UNPAY = 2;//待支付
         public static final int ORDERTYPE_DELIVERY = 8;//配送中
         public static final int ORDERTYPE_EXECUTING = 4;//处理中
         public static final int ORDERTYPE_CLIENTWAITFORRECEVIE = 16;//待收货
         public static final int ORDERTYPE_WAITFORRATE = 32;//待评价
         public static final int ORDERTYPE_COMPLETE = 64;//已完成
         public static final int ORDERTYPE_INVALID = 256;//已退订
+    }
+
+    public interface OrderPayType {
+        public static final int CASHONDELIVERY = 1;//全部
+        public static final int ONLINEPAYMENT = 2;//已下单
+    }
+
+    public interface OnlinePayType {
+        public static final int BANLANCEPAY = 1;//余额
+        public static final int ALIPAY = 2;//支付宝
+        public static final int WEIXINPAY = 3;//微信
     }
 }

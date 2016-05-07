@@ -1,21 +1,14 @@
 package com.j1j2.common.util;
 
-import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.StrikethroughSpan;
-import android.text.style.StyleSpan;
-import android.text.style.TypefaceSpan;
 
-import com.j1j2.common.R;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.ProductUnit;
-import com.j1j2.data.model.ShopCartItem;
 
 import java.util.List;
 
@@ -42,7 +35,12 @@ public class StringUtils {
 
     public static CharSequence getServicePointDistance(double d) {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
-        return ("距离：≈" + df.format(d)) + "米";
+        if (d < 30000) {
+            return ("距离：≈" + df.format(d)) + "米";
+        } else if (d == 0) {
+            return "距离：定位失败";
+        } else
+            return "距离：距离过远";
     }
 
     public static CharSequence getStrWithBracket(String str) {
@@ -152,17 +150,18 @@ public class StringUtils {
             case 8:
                 return "订单正在配送途中，请耐心等待！";
             case 16:
-                return "待收货";
+                return "您的订单已配送到服务点，请及时收取！";
             case 32:
-                return "待评价";
+                return "订单配送完成，请您对此次服务做出评价。";
             case 64:
-                return "您的订单已配送完成！";
+                return "您的订单已配送完成！祝您购物愉快！";
             case 256:
-                return "已退订";
+                return "订单取消成功！交易已关闭。";
             default:
-                return "已退订";
+                return "订单取消成功！交易已关闭。";
         }
     }
+
 
     public static double getCouponValue(Coupon coupon, double freight) {
         double value = 0.0;
@@ -231,4 +230,35 @@ public class StringUtils {
         return msp;
     }
 
+    public static CharSequence getShowStr(int showType, int position) {
+        String str = "";
+        if (showType == 0) {
+            str = "批发佬服务点实拍照片展示";
+        } else {
+            str = "批发佬仓库实拍照片展示";
+        }
+        switch (position) {
+            case 0:
+                return str + "（一）";
+            case 1:
+                return str + "（二）";
+            case 2:
+                return str + "（三）";
+            case 3:
+                return str + "（四）";
+            case 4:
+                return str + "（五）";
+            case 5:
+                return str + "（六）";
+            case 6:
+                return str + "（七）";
+            case 7:
+                return str + "（八）";
+            case 8:
+                return str + "（九）";
+            case 9:
+                return str + "（十）";
+        }
+        return str;
+    }
 }

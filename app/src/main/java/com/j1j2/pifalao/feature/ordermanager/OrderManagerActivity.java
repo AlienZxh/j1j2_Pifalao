@@ -53,6 +53,8 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
             onBackPressed();
         if (v == binding.SubmitOrder) {
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_SUBMIT);
+        } else if (v == binding.UnPayOrder) {
+            navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_UNPAY);
         } else if (v == binding.ExcutingOrder) {
             navigate.navigateToOrders(this, null, false, Constant.OrderType.ORDERTYPE_EXECUTING);
         } else if (v == binding.DeliveryOrder) {

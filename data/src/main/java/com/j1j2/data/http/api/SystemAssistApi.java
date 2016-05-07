@@ -1,6 +1,7 @@
 package com.j1j2.data.http.api;
 
 import com.j1j2.data.model.PromtionTime;
+import com.j1j2.data.model.SystemNotice;
 import com.j1j2.data.model.WebReturn;
 
 import retrofit2.http.POST;
@@ -17,12 +18,13 @@ public interface SystemAssistApi {
     @POST("SystemAssist/QueryPromtionTime")
     WebReturn<PromtionTime> queryPromtionTimeSync();
 
+
+    @POST("SystemAssist/QuerySystemNotice")
+    Observable<WebReturn<SystemNotice>> querySystemNotice();
+
     //_______________________________________________________________________________________
     @POST("SystemAssist/QuerySystemCurrentTime")
     Observable<String> querySystemCurrentTime();
-
-    @POST("SystemAssist/QuerySystemNotice")
-    Observable<String> querySystemNotice();
 
 
     @POST("SystemAssist/QueryLotterRecorsScroll")

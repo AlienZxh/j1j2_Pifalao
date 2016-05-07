@@ -1,11 +1,13 @@
 package com.j1j2.pifalao.feature.setting;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
@@ -34,20 +36,40 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         binding.versionName.setText(getLocalVersionName(this));
     }
 
+
+    private void showCallDialog() {
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setNegativeButton("取消", null)
+                .setMessage("确认拨打： 400-808-7172？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PackageManager pkm = getPackageManager();
+                        boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                                == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+                        if (has_permission) {
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
+                            startActivity(intent);
+                        } else {
+                            toastor.showSingletonToast("没有拨打电话权限");
+                        }
+                    }
+                })
+                .create();
+        messageDialog.show();
+    }
+
+
     @Override
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.serviceCall) {
-            PackageManager pkm = this.getPackageManager();
-            boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-            if (has_permission) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
-                startActivity(intent);
-            } else {
-                toastor.showSingletonToast("没有拨打电话权限");
-            }
+            showCallDialog();
         }
         if (v == binding.aboutUs)
             navigate.navigateToAboutUs(this, null, false);
@@ -60,13 +82,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void showVersionDialog() {
-        new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setMessage("已是最新版本")
                 .setPositiveButton("确定", null)
-                .create()
-                .show();
+                .create();
+        messageDialog.show();
     }
 
     public static String getLocalVersionName(Context ctx) {

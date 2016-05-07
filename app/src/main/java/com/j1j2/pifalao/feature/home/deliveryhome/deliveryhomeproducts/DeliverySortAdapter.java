@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.SecondarySort;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemDeliverysortBinding;
 import com.orhanobut.logger.Logger;
@@ -54,23 +56,27 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
             holder.bind(secondarySort.getParentProductSort(), position);
         } else if (position == 1) {
             holder.bind(secondarySort.getParentProductSort(), position);
+        } else if (position == 2) {
+            holder.bind(secondarySort.getParentProductSort(), position);
         } else
-            holder.bind(secondarySort.getChildFoodSorts().get(position - 2), position);
+            holder.bind(secondarySort.getChildFoodSorts().get(position - 3), position);
 
     }
 
     @Override
     public int getItemCount() {
-        return null == secondarySort.getChildFoodSorts() ? 0 : (secondarySort.getChildFoodSorts().size() + 2);
+        return null == secondarySort.getChildFoodSorts() ? 0 : (secondarySort.getChildFoodSorts().size() + 3);
     }
 
     public class DeliverySortViewHolder extends AutoBindingViewHolder<ItemDeliverysortBinding, ProductSort> implements SelectableHolder {
         private SingleSelector singleSelector;
         private boolean mIsSelectable = false;
+        private Context context;
 
         public DeliverySortViewHolder(View itemView, SingleSelector singleSelector) {
             super(itemView);
             this.singleSelector = singleSelector;
+            this.context = itemView.getContext();
         }
 
         @Override
@@ -83,17 +89,25 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
 
             singleSelector.bindHolder(this, position, getItemId());
             binding.setPosition(position);
-            if (position == 0)
+
+            if (position == 0) {
                 binding.setSortName("销量排行");
-            else if (position == 1)
+                binding.icon.setText(context.getText(R.string.icon_hot_fill));
+                binding.icon.setTextColor(0xffff9900);
+            } else if (position == 1) {
                 binding.setSortName("折扣促销");
-            else
+                binding.icon.setText(context.getText(R.string.icon_discount));
+                binding.icon.setTextColor(0xff4ab134);
+            } else if (position == 2) {
+                binding.setSortName("新品推荐");
+                binding.icon.setText(context.getText(R.string.icon_new));
+                binding.icon.setTextColor(0xffff0000);
+            } else
                 binding.setSortName(data.getSortName());
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     singleSelector.setSelected(position, getItemId(), true);
-//                    notifyDataSetChanged();
                     if (onSortClickListener != null) {
                         onSortClickListener.onSortClick(v, secondarySort.getParentProductSort(), data, position);
                     }

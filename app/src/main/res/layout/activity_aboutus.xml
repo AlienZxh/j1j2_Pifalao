@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorLayoutBg"
+        android:background="@color/colorWhite"
         android:fitsSystemWindows="true"
         android:orientation="vertical">
 
@@ -20,9 +21,9 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
-                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal" />
 
@@ -36,12 +37,106 @@
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <TextView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_noraml"
-            android:text="　　批发佬（www.pifalao.com）定位于一个专为会员用户服务的一站式网购批发超市。我们致力于创新建设一条直接面向家庭用户的完全透明、高效率、零商品附加利润的O2O供应链通道，并把关商品质量和优质实体店售后，全面打通“供应商（厂家）→（分布式）仓储配送中心→（社区化）便利店→（家庭）用户”这四个最优主体之间流通的所有环节，最终实现基于移动互联网入口的C to B全业务、低成本、高时效的综合性服务平台。"
-            android:textColor="@color/colorText333"
-            android:textSize="@dimen/text_big" />
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　批发佬创新打造“互联网+超级便利店”模式，以保姆化服务加盟连锁现有传统社区门店，全新打造一个能为用户提供一站式低价、便利、全服务的超级服务点网络，并逐步建立上游供应链和下游用户流量群的平台化扩展，实现全信息化消费升级和C2B的大数据运用。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　1、采用“批发佬”云POS系统，实行会员制定价，连锁共享会员客户，全面提升单店竞争力。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　2、	融入“互联网+”网购批发商城，解决便利店受场地制约、陈列品种有限等问题。配备“批发佬”网购下单平板电脑，通过互联网直通仓库，增加现有门店虚拟经营空间、拓展商品种类，正品、低价、次日送达的用户购物需求实现小门店开大卖场的突破。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　3、“	门店快送”直连云POS系统，省去所有门槛轻轻松松开网店，满足用户10分钟送货上门的极致体验，同时也直接升级现有纯门面引流的“坐商”经营模式，扩展更多利润开源。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　4、提供各种营销方案，包括开业、促销、定价策略等，不断增强加盟店与顾客之间的互动，单店加盟后销售额在原有基础上可提升40％-60％。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　5、提供移动支付功能，迎合80、90新一代消费习惯，拉近年轻消费者的距离，增加销售额。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　6、公司自营开锁、管道疏通、搬家等家政服务，为门店会员提供超低价、可信任的扩展服务支撑，同时也可增加收入来源。"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16px"
+                    android:layout_marginLeft="16px"
+                    android:layout_marginRight="16px"
+                    android:layout_marginTop="10px"
+                    android:lineSpacingExtra="3dp"
+                    android:text="　　7、实现智能化管理、可视化监控、配套化支撑，真正做到可脱手或半脱手经营，扶持全民当老板的社会创业梦想！"
+                    android:textColor="@color/colorText333"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+        </ScrollView>
     </com.zhy.autolayout.AutoLinearLayout>
+
 </layout>

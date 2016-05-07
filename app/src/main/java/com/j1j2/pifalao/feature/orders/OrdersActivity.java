@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
@@ -42,8 +43,6 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Inject
     OrdersViewModel ordersViewModel;
 
-    AlertDialog deleteOrderDialog;
-
 
     @Override
     protected void initBinding() {
@@ -73,15 +72,11 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
         MainAplication.get(this).getUserComponent().plus(new OrdersModule(this)).inject(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (deleteOrderDialog != null && deleteOrderDialog.isShowing())
-            deleteOrderDialog.cancel();
-    }
 
     public void showDeleteDialog(final int orderId) {
-        deleteOrderDialog = new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setNegativeButton("取消", null)
@@ -93,7 +88,7 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
                     }
                 })
                 .create();
-        deleteOrderDialog.show();
+        messageDialog.show();
     }
 
 
@@ -129,7 +124,7 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     @Override
     public void onReceiveClickListener(View view, OrderSimple orderSimple, int position) {
-        ordersViewModel.receiveOrder(orderSimple.getOrderId());
+        ordersViewModel.receiveOrder(orderSimple);
     }
 
     @Override
@@ -157,9 +152,18 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
         navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_ORDERS, orderSimple.getModuleId(), null, orderSimple.getProductDetails());
     }
 
+    public void navigateToOrderRate(OrderSimple orderSimple) {
+        navigate.navigateToOrderRate(this, null, false, orderSimple);
+    }
+
     @Subscribe
     public void onOrderStateChangeEvent(OrderStateChangeEvent event) {
-        orderType = event.getNewOrderState();
-        ordersViewModel.queryOrders(true, orderType);
+        if (!event.isOnlyOrderDetail()) {
+            orderType = event.getNewOrderState();
+            ordersViewModel.queryOrders(true, orderType);
+        } else {
+            finish();
+        }
+        toastor.showSingletonToast(event.getNewOrderState());
     }
 }

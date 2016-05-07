@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -20,7 +21,7 @@ import com.j1j2.pifalao.app.event.VipUpdateSuccessEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
-import com.litesuits.common.assist.Toastor;
+import com.j1j2.common.util.Toastor;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -92,14 +93,17 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     @Inject
     UnReadInfoManager unReadInfoManager;
 
-    AlertDialog chooseImgDialog;
-
 
     private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             userRelativePreference.setUserImg(resultList.get(0).getPhotoPath());
-            binding.userImg.setImageURI(Uri.parse("file://" + resultList.get(0).getPhotoPath()));
+
+            Glide.with(IndividualCenterFragment.this)
+                    .load(Uri.parse("file://" + userRelativePreference.getUserImg(null)))
+                    .asBitmap()
+                    .placeholder(R.drawable.user_head_img)
+                    .into(binding.userImg);
         }
 
         @Override
@@ -128,14 +132,16 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         //___________________________________________
         individualCenterViewModel.queryUser();
         //___________________________________________________________
-        if (userRelativePreference.getUserImg(null) != null) {
-            binding.userImg.setImageURI(Uri.parse("file://" + userRelativePreference.getUserImg(null)));
-        }
+        Glide.with(IndividualCenterFragment.this)
+                .load(Uri.parse("file://" + userRelativePreference.getUserImg(null)))
+                .asBitmap()
+                .placeholder(R.drawable.user_head_img)
+                .into(binding.userImg);
         //__________________________________________________
         if (fragmentType != FROM_INDIVIDUALCENTERACTIVITY)
             binding.backBtn.setVisibility(View.GONE);
         //_______________________________________________________________
-        chooseImgDialog = new AlertDialog.Builder(getContext())
+        messageDialog = new AlertDialog.Builder(getContext())
                 .setCancelable(true)
                 .setTitle("请选择")
                 .setItems(new CharSequence[]{"　　拍摄照片", "　　本地图片"}, new DialogInterface.OnClickListener() {
@@ -170,8 +176,6 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         if (mOnHanlderResultCallback != null) {
             mOnHanlderResultCallback = null;
         }
-        if (chooseImgDialog != null && chooseImgDialog.isShowing())
-            chooseImgDialog.dismiss();
     }
 
     @Override
@@ -206,7 +210,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         if (v == binding.backBtn)
             getActivity().onBackPressed();
         if (v == binding.userImg)
-            chooseImgDialog.show();
+            messageDialog.show();
         if (v == binding.normalCoupon)
             listener.navigateToNormalCoupon();
 

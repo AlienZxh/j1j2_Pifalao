@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -235,7 +234,7 @@
             <!--android:layout_marginRight="@dimen/padding_small"-->
             <!--android:background="@drawable/orange_conner_btn_selector"-->
             <!--android:gravity="center"-->
-            <!--android:text="查看便利店"-->
+            <!--android:text="查看服务点"-->
             <!--android:textColor="@color/colorWhite"-->
             <!--android:textSize="@dimen/text_normal"-->
             <!--android:visibility="gone"-->

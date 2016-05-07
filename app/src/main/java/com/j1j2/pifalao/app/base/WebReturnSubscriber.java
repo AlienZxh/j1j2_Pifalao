@@ -5,7 +5,7 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.LoginCookieTimeoutEvent;
-import com.litesuits.common.assist.Network;
+import com.j1j2.common.util.Network;
 
 import org.greenrobot.eventbus.EventBus;
 

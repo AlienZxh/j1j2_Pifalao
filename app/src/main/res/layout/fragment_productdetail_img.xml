@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -29,48 +28,53 @@
             android:layout_height="@dimen/padding_noraml"
             android:background="@color/colorWhite" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>0)?View.VISIBLE : View.GONE}"
-            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>0)?productImgs.get(0).ImgUrl:@string/text_empty)}"
-            fresco:viewAspectRatio="1.0" />
+            app:displayImgAsBitmap="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>0)?productImgs.get(0).ImgUrl:@string/text_empty)}"
+            app:siBorderWidth="0dp"
+            app:siSquare="true" />
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_noraml"
             android:background="@color/colorWhite" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>1)?View.VISIBLE : View.GONE}"
-            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>1)?productImgs.get(1).ImgUrl:@string/text_empty)}"
-            fresco:viewAspectRatio="1.0" />
+            app:displayImgAsBitmap="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>1)?productImgs.get(1).ImgUrl:@string/text_empty)}"
+            app:siBorderWidth="0dp"
+            app:siSquare="true" />
+
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_noraml"
             android:background="@color/colorWhite" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>2)?View.VISIBLE : View.GONE}"
-            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>2)?productImgs.get(2).ImgUrl:@string/text_empty)}"
-            fresco:viewAspectRatio="1.0" />
+            app:displayImgAsBitmap="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>2)?productImgs.get(2).ImgUrl:@string/text_empty)}"
+            app:siBorderWidth="0dp"
+            app:siSquare="true" />
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/padding_noraml"
             android:background="@color/colorWhite" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{(null!=productImgs&amp;&amp;productImgs.size()>3)?View.VISIBLE : View.GONE}"
-            app:imageURI="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>3)?productImgs.get(3).ImgUrl:@string/text_empty)}"
-            fresco:viewAspectRatio="1.0" />
+            app:displayImgAsBitmap="@{Uri.parse((null!=productImgs&amp;&amp;productImgs.size()>3)?productImgs.get(3).ImgUrl:@string/text_empty)}"
+            app:siBorderWidth="0dp"
+            app:siSquare="true" />
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

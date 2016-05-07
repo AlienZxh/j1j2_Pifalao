@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -32,15 +31,14 @@
         app:layout_auto_baseheight="padding"
         app:layout_auto_basewidth="padding">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:imageURI="@{Uri.parse(city.OpenState?(BuildConfig.IMAGE_URL+city.OpenImgPath):(BuildConfig.IMAGE_URL+city.ClosedImgPath))}"
-            fresco:failureImage="@drawable/loadimg_error"
-            fresco:placeholderImage="@drawable/loadimg_loading"
-            fresco:viewAspectRatio="1"
-             />
+            app:displayImg="@{Uri.parse(city.OpenState?(BuildConfig.IMAGE_URL+city.OpenImgPath):(BuildConfig.IMAGE_URL+city.ClosedImgPath))}"
+            app:siBorderColor="@color/colorTransparent"
+            app:siBorderWidth="0dp"
+            app:siSquare="true" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -1,20 +1,24 @@
 package com.j1j2.pifalao.app.base;
 
 import android.databinding.BindingAdapter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.DrawableRes;
+import android.widget.ImageView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.j1j2.common.util.ScreenUtils;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.github.siyamed.shapeimageview.CircularImageView;
+import com.github.siyamed.shapeimageview.RoundedImageView;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeRelativeLayout;
+import com.j1j2.pifalao.R;
 
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by alienzxh on 16-3-26.
@@ -46,15 +50,95 @@ public class CustomBinding {
             linearLayout.hiddenBadge();
     }
 
+    @BindingAdapter({"bind:showCircle"})
+    public static void showCircle(BGABadgeTextView textView, boolean hasUnRead) {
+        if (hasUnRead)
+            textView.showCirclePointBadge();
+        else
+            textView.hiddenBadge();
+    }
+
     @BindingAdapter({"bind:displayImg"})
-    public static void displayImg(SimpleDraweeView mDraweeView, Uri uri) {
-        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(uri)
-                .setResizeOptions(new ResizeOptions(ScreenUtils.dpToPx(60), ScreenUtils.dpToPx(60)))
-                .build();
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setOldController(mDraweeView.getController())
-                .setImageRequest(request)
-                .build();
-        mDraweeView.setController(controller);
+    public static void displayImg(ImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .error(R.drawable.loadimg_error)
+                .placeholder(R.drawable.loadimg_loading)
+                .into(view);
+    }
+
+    @BindingAdapter({"bind:displayImgWithoutCache"})
+    public static void displayImgWithoutCache(ImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .error(R.drawable.loadimg_error)
+                .placeholder(R.drawable.loadimg_loading)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view);
+    }
+
+    @BindingAdapter({"bind:displayImgAsBitmap"})
+    public static void displayImgAsBitmap(RoundedImageView view, @DrawableRes int resId) {
+        Glide.with(view.getContext())
+                .load(resId)
+                .asBitmap()
+                .error(R.drawable.loadimg_error)
+                .placeholder(R.drawable.loadimg_loading)
+                .into(view);
+    }
+
+    @BindingAdapter({"bind:displayImgAsBitmap"})
+    public static void displayImgAsBitmap(RoundedImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .asBitmap()
+                .error(R.drawable.loadimg_error)
+                .placeholder(R.drawable.loadimg_loading)
+                .into(view);
+    }
+
+    @BindingAdapter({"bind:displayImgServicepoint"})
+    public static void displayImgServicepoint(RoundedImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .asBitmap()
+                .placeholder(R.drawable.servicepoint_default)
+                .into(view);
+    }
+
+    @BindingAdapter({"bind:displayImgServicepoint"})
+    public static void displayImgServicepoint(CircularImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .asBitmap()
+                .placeholder(R.drawable.servicepoint_default)
+                .into(view);
+    }
+
+    @BindingAdapter({"bind:displayImgTransfrom"})
+    public static void displayImgTransfrom(final ImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .asBitmap()
+                .dontAnimate()
+                .transform(new CropCircleTransformation(view.getContext()))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        view.setImageBitmap(resource);
+                    }
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        super.onLoadFailed(e, errorDrawable);
+                        Glide.with(view.getContext())
+                                .load(R.drawable.servicepoint_default)
+                                .asBitmap()
+                                .dontAnimate()
+                                .transform(new CropCircleTransformation(view.getContext()))
+                                .into(view);
+                    }
+                });
     }
 }

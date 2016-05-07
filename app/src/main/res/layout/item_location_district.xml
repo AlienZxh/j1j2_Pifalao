@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             android:text="@{district}"
             android:textColor="@drawable/text_click_colors"
-            android:textSize="@dimen/text_big"
-            app:typeface="@{position==0?Typeface.DEFAULT_BOLD : Typeface.DEFAULT}" />
+            android:textSize="@dimen/text_big" />
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

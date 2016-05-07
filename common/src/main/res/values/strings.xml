@@ -9,6 +9,7 @@
     <string name="icon_round_checke">&#xe609;</string>
     <string name="icon_daeva_user2">&#xe67e;</string>
 
+    <string name="icon_new">&#xe6f5;</string>
 
     <string name="icon_offline">&#xe6eb;</string>
 
@@ -41,6 +42,7 @@
     <string name="icon_sort_fill">&#xe695;</string>
     <string name="icon_sort">&#xe696;</string>
 
+    <string name="icon_user">&#xe679;</string>
 
     <string name="icon_search">&#xe60c;</string>
 

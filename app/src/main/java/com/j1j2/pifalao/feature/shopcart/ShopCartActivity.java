@@ -56,8 +56,6 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     Module module;
 
-    AlertDialog deleteItemDialog;
-
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopcart);
@@ -65,6 +63,8 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
         module = userRelativePreference.getSelectedModule(null);
         binding.setModule(module);
+
+
     }
 
     @Override
@@ -96,15 +96,10 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
         MainAplication.get(this).getUserComponent().plus(new ShopCartModule(this, moduleId)).inject(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (deleteItemDialog != null && deleteItemDialog.isShowing())
-            deleteItemDialog.cancel();
-    }
-
     public void showDeleteDialog(final ShopCartItem shopCart) {
-        deleteItemDialog = new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setNegativeButton("取消", null)
@@ -116,18 +111,19 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
                     }
                 })
                 .create();
-        deleteItemDialog.show();
+        messageDialog.show();
+
     }
 
     @Override
     public void onClick(View v) {
         if (v == binding.confirmOrder) {
             if (shopCartViewModel.getShopCartItems() == null) {
-                toastor.showSingletonToast( "请等待购物车加载完成");
+                toastor.showSingletonToast("请等待购物车加载完成");
                 return;
             }
             if (shopCartViewModel.getShopCartItems().size() <= 0) {
-                toastor.showSingletonToast( "您还未添加商品");
+                toastor.showSingletonToast("您还未添加商品");
                 return;
             }
             navigate.navigateToConfirmOrder(this, null, false, moduleId, shopCartViewModel.getShopCartItems());

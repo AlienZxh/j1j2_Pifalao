@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".feature.servicepoint.ServicePointActivity">
 
@@ -34,9 +33,9 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
-                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
                 app:onClickListener="@{servicePointViewModel.servicePointActivity}" />
@@ -61,16 +60,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+
+                <com.github.siyamed.shapeimageview.RoundedImageView
                     android:layout_width="@dimen/width_servicepoint_img"
                     android:layout_height="@dimen/height_servicepoint_img"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
-                    app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+servicePointViewModel.servicePoint.getServicePointImg()))}"
-                    fresco:failureImage="@drawable/servicepoint_default"
-                    fresco:roundedCornerRadius="5dp"
-                    fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-                    fresco:roundingBorderWidth="1px" />
+                    app:displayImgServicepoint="@{Uri.parse((BuildConfig.IMAGE_URL+servicePointViewModel.servicePoint.getServicePointImg()))}"
+                    app:siBorderColor="@color/colorGrayDEDEDE"
+                    app:siBorderWidth="1px"
+                    app:siRadius="5dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -176,13 +175,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="14px"
                             android:gravity="center_vertical"
-                            android:text="便利店地址："
+                            android:text="服务点地址："
                             android:textColor="@color/colorText999"
                             android:textSize="@dimen/text_big" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:paddingRight="120px"
                             android:text="@{servicePointViewModel.servicePoint.getAddressDetail()}"
                             android:textColor="@color/colorText2a2a2a"
                             android:textSize="@dimen/text_biger" />

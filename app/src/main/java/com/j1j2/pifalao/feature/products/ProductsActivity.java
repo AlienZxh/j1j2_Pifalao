@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 
+import com.bumptech.glide.Glide;
 import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.data.model.FreightType;
@@ -275,6 +276,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
             productsViewModel.addItemToShopCart(selectedUnit, dialogBinding.dialogQuantityview.getQuantity());
             dialogBinding.dialogImg.getLocationOnScreen(startocation);
             showAddShopCartAnim(startocation);
+
         }
 
     }
@@ -334,7 +336,12 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     private void initDialogView(ProductSimple productSimple) {
-        dialogBinding.dialogImg.setImageURI(Uri.parse(productSimple.getMainImg() == null ? "" : productSimple.getMainImg()));
+        Glide.with(this)
+                .load(Uri.parse(productSimple.getMainImg() == null ? "" : productSimple.getMainImg()))
+                .asBitmap()
+                .error(R.drawable.loadimg_error)
+                .placeholder(R.drawable.loadimg_loading)
+                .into(dialogBinding.dialogImg);
         dialogBinding.dialogName.setText(productSimple.getName());
         dialogBinding.dialogRealPrice.setText("市场价：￥" + productSimple.getProductUnits().get(0).getRetialPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
         dialogBinding.dialogRealPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);

@@ -82,7 +82,7 @@ public abstract class BaseLocationActivity extends BaseActivity {
         }
     }
 
-    protected boolean isLocationSuccess(BDLocation location) {
+    public boolean isLocationSuccess(BDLocation location) {
         if (null == location)
             return false;
         switch (location.getLocType()) {

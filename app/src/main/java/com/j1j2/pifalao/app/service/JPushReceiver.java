@@ -5,9 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.j1j2.data.model.JPushExtra;
+import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
+import com.j1j2.pifalao.app.provider.GsonProvider;
 import com.j1j2.pifalao.feature.launch.LaunchActivity;
 import com.j1j2.pifalao.feature.services.ServicesActivity;
+import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.Logger;
+
+import org.greenrobot.eventbus.EventBus;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -29,7 +35,10 @@ public class JPushReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent
                 .getAction())) {
-
+            BackGroundService.updateUnRead(context);
+            String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            JPushExtra jPushExtra = GsonProvider.provideGson().fromJson(extras, JPushExtra.class);
+            EventBus.getDefault().post(new OrderStateChangeEvent(true, 0, jPushExtra.getOrderState()));
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent
                 .getAction())) {

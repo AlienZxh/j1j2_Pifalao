@@ -415,12 +415,14 @@
                         android:background="@color/colorGrayDEDEDE" />
 
                     <com.zhy.autolayout.AutoLinearLayout
+                        android:id="@+id/orderpaytype_btn"
                         android:layout_width="match_parent"
                         android:layout_height="84px"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:paddingBottom="16px"
-                        android:paddingTop="16px">
+                        android:paddingTop="16px"
+                        app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -430,6 +432,7 @@
                             android:textSize="@dimen/text_normal" />
 
                         <TextView
+                            android:id="@+id/orderpaytype_text"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

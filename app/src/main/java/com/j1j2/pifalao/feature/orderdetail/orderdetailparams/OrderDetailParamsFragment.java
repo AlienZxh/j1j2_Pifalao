@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.orderdetail.orderdetailparams;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class OrderDetailParamsFragment extends BaseFragment implements View.OnCl
 
     FragmentOrderdetailParamsBinding binding;
 
+    public ObservableField<OrderSimple> orderSimpleObservableField = new ObservableField<>();
 
     @Override
     public void onAttach(Activity activity) {
@@ -57,7 +59,7 @@ public class OrderDetailParamsFragment extends BaseFragment implements View.OnCl
 
     @Override
     protected void initViews() {
-
+        binding.setOrderSimple(orderSimpleObservableField);
         binding.setOnClick(this);
         binding.orderProductList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.orderProductList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).colorResId(R.color.colorGrayF0F0F0)
@@ -79,9 +81,10 @@ public class OrderDetailParamsFragment extends BaseFragment implements View.OnCl
                 binding.orderIcon.setTextColor(Constant.moduleColors.get(orderSimple.getModuleType()));
                 break;
         }
-        //______________________________________________________________________
-        binding.setOrderSimple(orderSimple);
-        binding.setServicePoint(servicePoint);
+        //___________________________________________________________________________
+        if (binding.getServicePoint() == null)
+            binding.setServicePoint(servicePoint);
+        orderSimpleObservableField.set(orderSimple);
 
         OrderProductsAdapter orderProductListAdapter = new OrderProductsAdapter(orderSimple.getProductDetails());
         binding.orderProductList.setAdapter(orderProductListAdapter);

@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="73"
                 android:background="@color/colorWhite"
-                app:layout_empty="@layout/view_empty"
+                app:layout_empty="@layout/view_delivery_empty"
                 app:layout_moreProgress="@layout/view_progressbar"
                 app:layout_progress="@layout/view_progressbar" />
 

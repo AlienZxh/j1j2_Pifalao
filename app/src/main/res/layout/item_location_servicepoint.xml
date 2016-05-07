@@ -25,6 +25,10 @@
         <variable
             name="position"
             type="int" />
+
+        <variable
+            name="showNear"
+            type="boolean" />
     </data>
 
     <com.zhy.autolayout.AutoRelativeLayout
@@ -77,7 +81,7 @@
                     android:layout_marginLeft="@dimen/padding_small"
                     android:text="最近"
                     android:textSize="@dimen/text_normal"
-                    android:visibility="@{position==0?View.VISIBLE : View.GONE}"
+                    android:visibility="@{(position==0&amp;&amp;showNear&amp;&amp;servicepoint.distance&lt;30000&amp;&amp;servicepoint.distance&gt;0)?View.VISIBLE : View.GONE}"
                     app:tagBorderRadius="4"
                     app:tagCircleRadius="4"
                     app:tagColor="@color/colorAccent"

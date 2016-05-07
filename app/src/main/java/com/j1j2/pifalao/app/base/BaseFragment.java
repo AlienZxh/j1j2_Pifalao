@@ -2,6 +2,7 @@ package com.j1j2.pifalao.app.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,11 @@ public abstract class BaseFragment extends RxFragment {
     protected abstract void initViews();
 
 
-
     protected void setupActivityComponent() {
 
     }
+
+    protected AlertDialog messageDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public abstract class BaseFragment extends RxFragment {
     @Override
     public void onStop() {
         super.onStop();
-
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
     }
 
     @Override

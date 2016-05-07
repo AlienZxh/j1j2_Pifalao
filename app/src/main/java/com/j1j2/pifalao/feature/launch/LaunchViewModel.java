@@ -51,11 +51,7 @@ public class LaunchViewModel {
     private static final String savePath = Environment
             .getExternalStorageDirectory() + "/Download/";
     private static final String saveFileName = "pifalao.apk";
-    private RequestCall downloadAPKCall = OkHttpUtils//
-            .get()//
-            .url(BuildConfig.APK_URL)//
-            .tag("downloadAPK")//
-            .build();
+    private RequestCall downloadAPKCall;
 
     public LaunchViewModel(UserLoginApi userLoginApi, LaunchActivity launchActivity, UserLoginPreference userLoginPreference) {
         this.userLoginApi = userLoginApi;
@@ -88,6 +84,7 @@ public class LaunchViewModel {
 
             @Override
             public void onError(Call call, Exception e) {
+                launchActivity.toastor.showSingleLongToast("apk下载失败");
                 launchActivity.hideDownloadDialog();
             }
 
@@ -124,6 +121,11 @@ public class LaunchViewModel {
                     @Override
                     public void onResponse(UpdateInfo updateInfo) {
                         if (isUpdate(updateInfo, launchActivity.getVersionCode())) {
+                            downloadAPKCall = OkHttpUtils//
+                                    .get()//
+                                    .url(updateInfo.getSoftUrl())//
+                                    .tag("downloadAPK")//
+                                    .build();
                             if (updateInfo.isCompulsory()) {
                                 launchActivity.showCompulsoryUpdateDialog();
                             } else {

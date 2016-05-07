@@ -11,7 +11,7 @@
 
     <color name="colorTransparentAccent">#99FF6F00</color>
     <color name="colorRed">#FFFF0000</color>
-    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorWhite">#ffffffff</color>
 
     <color name="colorItemPress">#99CFD8DC</color>
 

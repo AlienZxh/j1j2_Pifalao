@@ -29,12 +29,6 @@ public class LocationDistrictAdapter extends RecyclerView.Adapter<LocationDistri
 
     private SingleSelector singleSelector = new SingleSelector();
 
-    public void clearAll() {
-        if (null == cities)
-            return;
-        if (cities.size() > 0)
-            this.cities.clear();
-    }
 
     @Override
     public LocationDistrictViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

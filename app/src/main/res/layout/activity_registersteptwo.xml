@@ -28,9 +28,9 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_back"
-                android:background="@drawable/actionbar_btn_bg"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
                 app:OnClickListener="@{registerStepTwoViewModel.registerStepTwoActivity}" />
@@ -284,7 +284,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/content_height_normal"
             android:layout_marginTop="@dimen/padding_noraml"
-            android:text="注册视为同意《批发老服务协议》"
+            android:text="注册视为同意《批发佬服务协议》"
             android:textColor="@color/colorText999"
             android:textSize="@dimen/text_normal" />
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".feature.services.ServicesActivity">
 
@@ -18,15 +17,19 @@
             type="com.j1j2.data.model.ServicePoint" />
 
         <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+
+        <variable
             name="onClick"
             type="OnClickListener" />
     </data>
 
     <com.zhy.autolayout.AutoFrameLayout
+        android:id="@+id/rootlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
-
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -78,7 +81,7 @@
                     android:textSize="@dimen/text_actionbar_title" />
 
 
-                <TextView
+                <cn.bingoogolapple.badgeview.BGABadgeTextView
                     android:id="@+id/loginBtn"
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="@dimen/actionbar_height"
@@ -89,7 +92,12 @@
                     android:text="@string/icon_mine"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/icon_normal"
-                    app:OnClickListener="@{onClick}" />
+                    app:OnClickListener="@{onClick}"
+                    app:badge_bgColor="@color/colorRed"
+                    app:badge_gravity="rightTop"
+                    app:badge_horizontalMargin="8dp"
+                    app:badge_verticalMargin="8dp"
+                    app:showCircle="@{unReadInfoManager.hasUnRead}" />
 
             </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -113,15 +121,13 @@
                 android:orientation="horizontal"
                 app:OnClickListener="@{onClick}">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.github.siyamed.shapeimageview.CircularImageView
                     android:layout_width="@dimen/height_services_point_img"
                     android:layout_height="@dimen/height_services_point_img"
                     android:layout_gravity="center_vertical"
-                    app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
-                    fresco:failureImage="@drawable/servicepoint_default"
-                    fresco:roundAsCircle="true"
-                    fresco:roundingBorderColor="@color/colorGrayCCCCCC"
-                    fresco:roundingBorderWidth="1px" />
+                    app:displayImgServicepoint="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
+                    app:siBorderColor="@color/colorGrayCCCCCC"
+                    app:siBorderWidth="1px" />
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
@@ -184,28 +190,20 @@
 
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.zhy.autolayout.AutoRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="570px"
-            android:layout_marginTop="100px">
-
-            <TextView
-                android:id="@id/dragView"
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="100px"
-                android:layout_height="100px"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="110px"
-                android:layout_marginRight="@dimen/padding_noraml"
-                android:background="@drawable/services_dragview_bg"
-                android:gravity="center"
-                android:text="@string/icon_qr_code"
-                android:textColor="@color/colorWhite"
-                android:textSize="70px"
-                app:OnClickListener="@{onClick}"
-                app:layout_auto_basewidth="height" />
-        </com.zhy.autolayout.AutoRelativeLayout>
+        <TextView
+            android:id="@id/dragView"
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="660px"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:background="@drawable/services_dragview_bg"
+            android:gravity="center"
+            android:text="@string/icon_qr_code"
+            android:textColor="@color/colorWhite"
+            android:textSize="70px"
+            app:OnClickListener="@{onClick}"
+            app:layout_auto_basewidth="height" />
     </com.zhy.autolayout.AutoFrameLayout>
 </layout>

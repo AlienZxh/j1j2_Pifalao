@@ -42,7 +42,13 @@ dependencies {
     compile commonDependencies.nineold
     compile commonDependencies.badgeview
     compile commonDependencies.jsbridge
+    //图片加载
+    compile commonDependencies.glide
     compile commonDependencies.galleryfinal
+    compile commonDependencies.shapeimageview
+    compile commonDependencies.properRatingBar
+    compile commonDependencies.glidetransformations
+    compile commonDependencies.highlight
 
     testCompile commonTestDependencies.junit
 }

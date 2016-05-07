@@ -2,17 +2,9 @@ package com.j1j2.pifalao.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.facebook.common.logging.FLog;
-import com.facebook.common.soloader.SoLoaderShim;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.listener.RequestListener;
-import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
@@ -33,8 +25,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -43,6 +33,7 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.OkHttpClient;
 
 
 /**
@@ -56,6 +47,8 @@ public class MainAplication extends Application {
 
     @Inject
     UserLoginPreference userLoginPreference;
+    @Inject
+    OkHttpClient okHttpClient;
 
     public static RefWatcher getRefWatcher(Context context) {
         return get(context).refWatcher;
@@ -78,14 +71,6 @@ public class MainAplication extends Application {
         }
     }
 
-    //修复fresco的bug
-    static {
-        try {
-            SoLoaderShim.loadLibrary("webp");
-        } catch (UnsatisfiedLinkError nle) {
-        }
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -93,11 +78,11 @@ public class MainAplication extends Application {
         if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
             initDefendeleak();
             initLogger();
+//            initAndroidDevMetrics();
             initBaiduMap();
             initComponent();
             initJPush();
             initLeakCanary();
-            initFresco();
             initOkHttpUtil();
             initGalleryFinal();
         }
@@ -124,7 +109,7 @@ public class MainAplication extends Application {
 
     private void initOkHttpUtil() {
         if (BuildConfig.DEBUG)
-            OkHttpUtils.getInstance().debug("pifalao");
+            OkHttpUtils.getInstance(okHttpClient).debug("pifalao");
         Logger.d("OkHttpUtil初始化完成");
     }
 
@@ -138,6 +123,13 @@ public class MainAplication extends Application {
         Logger.d("Logger初始化完成");
 
     }
+
+//    private void initAndroidDevMetrics(){
+//        if (BuildConfig.DEBUG) {
+//            AndroidDevMetrics.initWith(this);
+//        }
+//        Logger.d("AndroidDevMetrics初始化完成");
+//    }
 
     private void initJPush() {
         if (BuildConfig.DEBUG)
@@ -163,27 +155,6 @@ public class MainAplication extends Application {
         Logger.d("LeakCanary初始化完成");
     }
 
-    private void initFresco() {
-        if (BuildConfig.DEBUG) {
-            Set<RequestListener> requestListeners = new HashSet<>();
-            requestListeners.add(new RequestLoggingListener());
-            ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-                    .setRequestListeners(requestListeners)
-                    .setBitmapsConfig(Bitmap.Config.RGB_565)
-                    .setDownsampleEnabled(true)
-                    .build();
-            FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-            Fresco.initialize(this, config);
-        } else {
-            ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-                    .setBitmapsConfig(Bitmap.Config.RGB_565)
-                    .setDownsampleEnabled(true)
-                    .build();
-            Fresco.initialize(this, config);
-        }
-        Logger.d("Fresco初始化完成");
-    }
-
 
     private void initBaiduMap() {
         SDKInitializer.initialize(getApplicationContext());
@@ -206,9 +177,10 @@ public class MainAplication extends Application {
                 .setEnablePreview(true)
                 .build();
 
-        FrescoImageLoader imageloader = new FrescoImageLoader(this);
+        GlideImageLoader imageloader = new GlideImageLoader();
         CoreConfig coreConfig = new CoreConfig.Builder(this, imageloader, theme)
                 .setFunctionConfig(functionConfig)
+                .setPauseOnScrollListener(new GlidePauseOnScrollListener(false, true))
                 .build();
         GalleryFinal.init(coreConfig);
         Logger.d("GalleryFinal初始化完成");
@@ -237,6 +209,7 @@ public class MainAplication extends Application {
         return null != userLoginPreference.getLoginCookie(null) && null != userComponent;
     }
 
+
     public void login(User user) {
         createUserComponent(user);
         userLoginPreference.setUserInfo(user);
@@ -244,7 +217,8 @@ public class MainAplication extends Application {
 
     public void loginOut() {
         releaseUserComponent();
-        userLoginPreference.setIsAutoLogin(false)
+        userLoginPreference
+                .setIsAutoLogin(false)
                 .removeLoginCookie()
                 .removeUserInfo();
     }

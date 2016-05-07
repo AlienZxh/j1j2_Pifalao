@@ -1,6 +1,6 @@
 package com.j1j2.pifalao.app.di;
 
-import android.content.Context;
+import android.os.Environment;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -8,24 +8,32 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
+import com.j1j2.common.util.Toastor;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
+import com.j1j2.pifalao.app.provider.GsonProvider;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
-import com.litesuits.common.assist.Toastor;
 import com.orhanobut.logger.Logger;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.cookie.CookieJarImpl;
+import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
 
 import net.orange_box.storebox.StoreBox;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Singleton;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Cache;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
@@ -67,20 +75,7 @@ public class AppModule {
     @Provides
     @Singleton
     Gson gson() {
-        return new GsonBuilder()
-                .serializeNulls()
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return f.getAnnotation(Expose.class) != null;
-                    }
-
-                    @Override
-                    public boolean shouldSkipClass(Class<?> clazz) {
-                        return false;
-                    }
-                })
-                .create();
+        return GsonProvider.provideGson();
     }
 
     @Provides
@@ -101,9 +96,11 @@ public class AppModule {
         return StoreBox.create(application.getApplicationContext(), FreightTypePrefrence.class);
     }
 
+
     @Provides
     @Singleton
-    HttpLoggingInterceptor httpLoggingInterceptor() {
+    OkHttpClient okHttpClient(final UserLoginPreference userLoginPreference, final Gson gson) {
+
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
@@ -111,39 +108,40 @@ public class AppModule {
             }
         });
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        return logging;
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.cookieJar(new CookieJar() {
+            @Override
+            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                if (url.toString().equals(BuildConfig.API_URL + "UserLogin/Login")) {
+                    userLoginPreference.setLoginCookie(gson.toJson(cookies));
+                }
+            }
+
+            @Override
+            public List<Cookie> loadForRequest(HttpUrl url) {
+                if (url.toString().equals(BuildConfig.API_URL + "UserLogin/Login")) {
+                    return new ArrayList<Cookie>();
+                } else {
+                    return userLoginPreference.getLoginCookie(null) == null ?
+                            new ArrayList<Cookie>() :
+                            gson.<List<Cookie>>fromJson(userLoginPreference
+                                    .getLoginCookie(null), new TypeToken<List<Cookie>>() {
+                            }.getType());
+                }
+            }
+        });
+        builder.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+        if (BuildConfig.DEBUG)
+            return builder.addInterceptor(logging).build();
+        else
+            return builder.build();
     }
 
-    @Provides
-    @Singleton
-    OkHttpClient okHttpClient(HttpLoggingInterceptor loggingInterceptor, final UserLoginPreference userLoginPreference, final Gson gson) {
-        return new OkHttpClient
-                .Builder()
-                .addInterceptor(loggingInterceptor)
-                .cookieJar(new CookieJar() {
-                    @Override
-                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-                        if (url.toString().equals(BuildConfig.API_URL + "UserLogin/Login")) {
-                            userLoginPreference.setLoginCookie(gson.toJson(cookies));
-                        }
-                    }
-
-                    @Override
-                    public List<Cookie> loadForRequest(HttpUrl url) {
-                        if (url.toString().equals(BuildConfig.API_URL + "UserLogin/Login")) {
-                            return new ArrayList<Cookie>();
-                        } else {
-                            return userLoginPreference.getLoginCookie(null) == null ?
-                                    new ArrayList<Cookie>() :
-                                    gson.<List<Cookie>>fromJson(userLoginPreference
-                                            .getLoginCookie(null), new TypeToken<List<Cookie>>() {
-                                    }.getType());
-                        }
-                    }
-                })
-                .build();
-
-    }
 
     @Provides
     @Singleton

@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".feature.login.LoginActivity">
 
+    <data>
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+    </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
@@ -39,7 +45,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
 
-            <TextView
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
                 android:id="@+id/individualBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
@@ -49,7 +55,12 @@
                 android:gravity="center"
                 android:text="@string/icon_mine"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <View

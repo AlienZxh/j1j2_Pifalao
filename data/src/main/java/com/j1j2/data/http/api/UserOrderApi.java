@@ -49,6 +49,9 @@ public interface UserOrderApi {
 
     @POST("UserOrder/QueryOrderStateHistory")
     Observable<WebReturn<List<SaleOrderStateHistory>>> queryOrderStateHistory(@Query("orderId") int orderId);
+
+    @POST("UserOrder/OrderRate")
+    Observable<WebReturn<String>> orderRate(@Body ProductSaleOrderRateBody productSaleOrderRateBody);
     //_____________________________________________________________________________
 
 
@@ -56,8 +59,7 @@ public interface UserOrderApi {
     Observable<String> queryOrderProudctDetails(@Query("orderIdStr") String orderIdStr);
 
 
-    @POST("UserOrder/OrderRate")
-    Observable<String> orderRate(@Body ProductSaleOrderRateBody productSaleOrderRateBody);
+
 
     @POST("UserOrder/QueryOrderRate")
     Observable<String> queryOrderRate(@Query("orderId") int orderId);

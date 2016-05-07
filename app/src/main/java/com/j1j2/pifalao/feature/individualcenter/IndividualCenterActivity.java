@@ -1,21 +1,14 @@
 package com.j1j2.pifalao.feature.individualcenter;
 
 import android.databinding.DataBindingUtil;
-import android.view.View;
 
-import com.j1j2.data.http.api.UserMessageApi;
-import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.UnReadInfo;
-import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
-import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.LogStateEvent;
+import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.databinding.ActivityIndividualcenterBinding;
-import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityModule;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -24,8 +17,6 @@ import javax.inject.Inject;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.RequireBundler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-3-25.
@@ -35,8 +26,6 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     ActivityIndividualcenterBinding binding;
 
-    @Inject
-    UserMessageApi userMessageApi;
     @Inject
     UnReadInfoManager unReadInfoManager;
 
@@ -48,45 +37,14 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
     @Override
     protected void initViews() {
         changeFragment(R.id.fragment, Bundler.individualCenterFragment(IndividualCenterFragment.FROM_INDIVIDUALCENTERACTIVITY).create());
-
-    }
-
-    @Override
-    protected void setupActivityComponent() {
-        super.setupActivityComponent();
-        MainAplication.get(this).getUserComponent().plus(new IndividualActivityModule()).inject(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        queryUserUnReadInfo();
+        BackGroundService.updateUnRead(this);
     }
 
-    public void queryUserUnReadInfo() {
-        userMessageApi.queryUserUnReadInfo()
-                .compose(this.<WebReturn<UnReadInfo>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<UnReadInfo>() {
-                    @Override
-                    public void onWebReturnSucess(UnReadInfo unReadInfo) {
-                        if (null == unReadInfo)
-                            return;
-                        unReadInfoManager.setUnReadInfo(unReadInfo);
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
-    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLogStateChangeEvent(LogStateEvent event) {
@@ -96,7 +54,6 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
             navigate.navigateToLogin(this, null, true);
         }
     }
-
 
     @Override
     public void navigateToOrderManager() {

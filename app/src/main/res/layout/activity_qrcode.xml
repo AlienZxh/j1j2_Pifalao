@@ -67,7 +67,7 @@
                 android:layout_height="72px"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:text="请在批发佬便利店结账时出示给收银员扫描"
+                android:text="请在批发佬服务点结账时出示给收银员扫描"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_big" />
         </com.zhy.autolayout.AutoRelativeLayout>

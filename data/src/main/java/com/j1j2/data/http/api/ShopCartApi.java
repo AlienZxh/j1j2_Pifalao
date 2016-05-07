@@ -2,7 +2,9 @@ package com.j1j2.data.http.api;
 
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.SubmitOrderReturn;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.data.model.requestbody.OrderOnlinePayBody;
 import com.j1j2.data.model.requestbody.OrderSubmitBody;
 
 import java.util.List;
@@ -30,11 +32,14 @@ public interface ShopCartApi {
     @POST("ShopCart/UpdateShopCart")
     Observable<WebReturn<String>> updateShopCart(@Body List<ShopCartItem> shopCartItems);//参数待完善
 
-    @POST("ShopCart/SubmitOrder")
-    Observable<WebReturn<Integer>> submitOrder(@Body OrderSubmitBody orderSubmitBody);
+    @POST("ShopCart/SubmitOrderV6")
+    Observable<WebReturn<SubmitOrderReturn>> submitOrder(@Body OrderSubmitBody orderSubmitBody);
 
     @POST("ShopCart/QueryValidFreight")
     Observable<WebReturn<List<FreightType>>> queryValidFreight(@Query("moduleId") int moduleId);
+
+    @POST("ShopCart/DoPayOrder")
+    Observable<String> doPayOrder(@Body OrderOnlinePayBody orderOnlinePayBody);
     //______________________________________________________________________________________________
 
     @POST("ShopCart/QueryUserServicePoint")

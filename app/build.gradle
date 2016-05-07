@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.frogermcs.androiddevmetrics'
 
 dexcount {
     format = "list"
@@ -59,6 +60,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
@@ -71,6 +73,7 @@ android {
         debug {
             signingConfig signingConfigs.debug
             minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
@@ -114,9 +117,6 @@ dependencies {
     //内存泄露检测
     debugCompile appDebugDependencies.leakcanary
     releaseCompile appReleaseDependencies.leakcanary
-    //图片加载
-    compile appDependencies.fresco
-//    compile appDependencies.webpsupport
     //rxlifecycle
     compile appDependencies.rxlifecycle
     compile appDependencies.rxlifecycleComponents
@@ -124,6 +124,7 @@ dependencies {
 
     compile appDependencies.eventbus
     compile appDependencies.okhttputils
+
     //单元测试
     testCompile appTestDependencies.junit
     //UI测试

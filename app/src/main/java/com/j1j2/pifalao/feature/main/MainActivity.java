@@ -31,6 +31,7 @@ import com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeFragment;
 import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
+import com.j1j2.pifalao.feature.show.ShowActivity;
 import com.j1j2.pifalao.feature.vegetablesort.VegetableSortFragment;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -81,7 +82,6 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
     }
 
     @Override
@@ -104,7 +104,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         fragments = new ArrayList<>();
         fragments.add(Bundler.storeStyleHomeFragment(module).create());
         fragments.add(Bundler.supplierFragment(userRelativePreference.getSelectedCity(null)).create());
-        fragments.add(new Fragment());
+        fragments.add(Bundler.emptyFragment().create());
         fragments.add(Bundler.individualCenterFragment(IndividualCenterFragment.FROM_MAINACTIVITY).create());
         String[] titles = new String[]{"首页", "供应商", "购物车", "我的"};
         String[] icons = new String[]{getResources().getString(R.string.icon_home), getResources().getString(R.string.icon_supplier), getResources().getString(R.string.icon_shopcart), getResources().getString(R.string.icon_mine)};
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         fragments = new ArrayList<>();
         fragments.add(Bundler.vegetableHomeFragment(module).create());
         fragments.add(Bundler.vegetableSortFragment(module).create());
-        fragments.add(new Fragment());
+        fragments.add(Bundler.emptyFragment().create());
         fragments.add(Bundler.individualCenterFragment(IndividualCenterFragment.FROM_MAINACTIVITY).create());
         String[] titles = new String[]{"首页", "分类", "购物车", "我的"};
         String[] icons = new String[]{getResources().getString(R.string.icon_home), getResources().getString(R.string.icon_sort), getResources().getString(R.string.icon_shopcart), getResources().getString(R.string.icon_mine)};
@@ -315,5 +315,10 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     public void navigateToNormalCoupon() {
         navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
+    }
+
+    @Override
+    public void navigateToShowStore() {
+        navigate.navigateToShow(this, null, false, ShowActivity.STORE);
     }
 }

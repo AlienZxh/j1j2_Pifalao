@@ -80,6 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 return;
             }
             Logger.d("login IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
+            toastor.showSingleLongToast("登录中，请稍后...");
             loginViewModel.login(username, password, binding.autoLoginCeck.isChecked());
         }
         if (v == binding.registerBtn) {

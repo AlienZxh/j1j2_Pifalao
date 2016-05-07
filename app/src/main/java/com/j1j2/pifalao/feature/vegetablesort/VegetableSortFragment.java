@@ -88,6 +88,11 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
         VegetableChildSortAdapter vegetableChildSortAdapter = new VegetableChildSortAdapter(secondarySort);
         binding.childSortList.setAdapter(vegetableChildSortAdapter);
         vegetableChildSortAdapter.setOnChildSortClickListener(this);
+        binding.childSortList.showRecycler();
+    }
+
+    public void showload(){
+        binding.childSortList.showProgress();
     }
 
     @Override

@@ -26,6 +26,7 @@ public class VegetableSortViewModel {
     }
 
     public void queryProductSort(int moduleId) {
+        vegetableSortFragment.showload();
         productApi.queryProductSort("", moduleId)
                 .compose(vegetableSortFragment.<WebReturn<List<SecondarySort>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())

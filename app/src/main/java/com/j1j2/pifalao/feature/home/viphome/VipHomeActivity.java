@@ -9,16 +9,17 @@ import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.j1j2.common.util.Network;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityViphomeBinding;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeModule;
-import com.litesuits.common.assist.Network;
 
 import java.util.List;
 
@@ -41,10 +42,13 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
     UserRelativePreference userRelativePreference;
     @Inject
     Gson gson;
+    @Inject
+    UnReadInfoManager unReadInfoManager;
 
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_viphome);
+        binding.setUnReadInfoManager(unReadInfoManager);
         binding.backBtn.setOnClickListener(this);
         binding.individualBtn.setOnClickListener(this);
     }
@@ -55,10 +59,10 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
         List<Cookie> cookies = gson.<List<Cookie>>fromJson(userLoginPreference
                 .getLoginCookie(null), new TypeToken<List<Cookie>>() {
         }.getType());
-
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
         cookieManager.setCookie(BuildConfig.IMAGE_URL + "/VIPPrivilege/Index", cookies.get(0).toString());
+
 
         WebSettings webSettings = binding.webview.getSettings();
         if (Network.isAvailable(this)) {
@@ -91,12 +95,13 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
         MainAplication.get(this).getUserComponent().plus(new VipHomeModule()).inject(this);
     }
 
+
+
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
         if (binding.webview.canGoBack()) {
             binding.webview.goBack();
-
         } else {
             finish();
         }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,7 +8,7 @@
 
         <variable
             name="array"
-            type="String[]" />
+            type="int[]" />
 
     </data>
 
@@ -73,22 +72,22 @@
                 android:onClick="navigateToServicepointShow"
                 android:orientation="vertical">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.github.siyamed.shapeimageview.RoundedImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
-                    app:imageURI="@{Uri.parse(array[0]??&quot;&quot;)}"
-                    fresco:roundedCornerRadius="5dp"
-                    fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-                    fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1" />
+                    app:displayImgAsBitmap="@{array[0]}"
+                    app:siBorderColor="@color/colorGrayDEDEDE"
+                    app:siBorderWidth="1px"
+                    app:siRadius="5dp"
+                    app:siSquare="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="批发佬便利店"
+                    android:text="批发佬服务点"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
             </com.zhy.autolayout.AutoLinearLayout>
@@ -105,22 +104,22 @@
                 android:onClick="navigateToServicepointShow"
                 android:orientation="vertical">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.github.siyamed.shapeimageview.RoundedImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
-                    app:imageURI="@{Uri.parse(array[1]??&quot;&quot;)}"
-                    fresco:roundedCornerRadius="5dp"
-                    fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-                    fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1" />
+                    app:displayImgAsBitmap="@{array[1]}"
+                    app:siBorderColor="@color/colorGrayDEDEDE"
+                    app:siBorderWidth="1px"
+                    app:siRadius="5dp"
+                    app:siSquare="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="44px"
                     android:gravity="center"
-                    android:text="批发佬便利店"
+                    android:text="批发佬服务点"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 
@@ -151,16 +150,16 @@
                 android:onClick="navigateToStorShow"
                 android:orientation="vertical">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.github.siyamed.shapeimageview.RoundedImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
-                    app:imageURI="@{Uri.parse(array[2]??&quot;&quot;)}"
-                    fresco:roundedCornerRadius="5dp"
-                    fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-                    fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1" />
+                    app:displayImgAsBitmap="@{array[2]}"
+                    app:siBorderColor="@color/colorGrayDEDEDE"
+                    app:siBorderWidth="1px"
+                    app:siRadius="5dp"
+                    app:siSquare="true" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -183,16 +182,17 @@
                 android:onClick="navigateToStorShow"
                 android:orientation="vertical">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+
+                <com.github.siyamed.shapeimageview.RoundedImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/padding_noraml"
-                    app:imageURI="@{Uri.parse(array[3]??&quot;&quot;)}"
-                    fresco:roundedCornerRadius="5dp"
-                    fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-                    fresco:roundingBorderWidth="1px"
-                    fresco:viewAspectRatio="1" />
+                    app:displayImgAsBitmap="@{array[3]}"
+                    app:siBorderColor="@color/colorGrayDEDEDE"
+                    app:siBorderWidth="1px"
+                    app:siRadius="5dp"
+                    app:siSquare="true" />
 
                 <TextView
                     android:layout_width="match_parent"

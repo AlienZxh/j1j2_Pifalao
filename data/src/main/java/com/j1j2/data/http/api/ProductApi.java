@@ -11,6 +11,8 @@ import com.j1j2.data.model.WebReturn;
 
 import java.util.List;
 
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -49,6 +51,8 @@ public interface ProductApi {
     @POST("Product/QueryProductBuyRecords")
     Observable<WebReturn<PagerManager<ProductBuyRecord>>> queryProductBuyRecords(@Query("productId") int productId, @Query("pageIndex") int pageIndex, @Query("pageSize") int pageSize);
 
+    @POST("Product/UpdateProductViews")
+    Observable<WebReturn<String>> updateProductViews(@Query("productId") int productId);
     //__________________________________________________________________________________________
 
 
@@ -58,8 +62,6 @@ public interface ProductApi {
     @POST("Product/QueryProductRemains")
     Observable<String> queryProductRemains(@Query("productId") int productId);
 
-    @POST("Product/UpdateProductViews")
-    Observable<String> updateProductViews(@Query("productId") int productId);
 
     @POST("Product/QueryProductCount")
     Observable<String> queryProductCount();

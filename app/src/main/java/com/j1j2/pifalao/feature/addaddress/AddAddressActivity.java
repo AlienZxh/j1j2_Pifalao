@@ -36,7 +36,7 @@ import in.workarounds.bundler.annotations.Required;
  * Created by alienzxh on 16-3-31.
  */
 @RequireBundler
-public class AddAddressActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+public class AddAddressActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     public static final int ADD_NEW_ADDRESS = 1;
     public static final int EDIT_ADDRESS = 2;
@@ -63,9 +63,9 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
     double lng;
     String userName;
     String userMobile;
-    String city;
-    String district;
-    String addressLoction;
+//    String city;
+//    String district;
+//    String addressLoction;
     String addressDetail;
     boolean isDefault = false;
 
@@ -79,7 +79,7 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void initViews() {
-        initCitys();
+//        initCitys();
     }
 
     public void initDatas() {
@@ -88,9 +88,9 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
             userName = address.getReceiverName();
             binding.userphone.setText(address.getReceiverTel());
             userMobile = address.getReceiverTel();
-            binding.addresscity.setSelection(citySpinnerAdapter.getPosition(address.getAddressSegementF()));
-            binding.addressdistrict.setSelection(districtSpinnerAdapter.getPosition(address.getAddressSegementS()));
-            setAddressLoction(address.getAddressSegementT(), address.getLat(), address.getLng());
+//            binding.addresscity.setSelection(citySpinnerAdapter.getPosition(address.getAddressSegementF()));
+//            binding.addressdistrict.setSelection(districtSpinnerAdapter.getPosition(address.getAddressSegementS()));
+//            setAddressLoction(address.getAddressSegementT(), address.getLat(), address.getLng());
             binding.addressdetail.setText(address.getAddress());
             addressDetail = address.getAddress();
             binding.defaultCheck.setChecked(address.isDefaultAddress());
@@ -98,29 +98,29 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
         }
     }
 
-    public void initCitys() {
-        List<String> cityStrings = new ArrayList<>();
-        cityStrings.add("长沙");
-        citySpinnerAdapter = new AddressSpinnerAdapter(cityStrings);
-        binding.addresscity.setAdapter(citySpinnerAdapter);
-        binding.addresscity.setOnItemSelectedListener(this);
-        addAddressViewModel.queryDistrict(userRelativePreference.getSelectedCity(null).getPCCId());
-        if (cityStrings.size() > 0)
-            city = cityStrings.get(0);
-    }
+//    public void initCitys() {
+//        List<String> cityStrings = new ArrayList<>();
+//        cityStrings.add("长沙");
+//        citySpinnerAdapter = new AddressSpinnerAdapter(cityStrings);
+//        binding.addresscity.setAdapter(citySpinnerAdapter);
+//        binding.addresscity.setOnItemSelectedListener(this);
+//        addAddressViewModel.queryDistrict(userRelativePreference.getSelectedCity(null).getPCCId());
+//        if (cityStrings.size() > 0)
+//            city = cityStrings.get(0);
+//    }
 
-    public void initDistrict(List<City> cities) {
-        List<String> districtStrings = new ArrayList<>();
-        for (City city : cities) {
-            districtStrings.add(city.getPCCName());
-        }
-        districtSpinnerAdapter = new AddressSpinnerAdapter(districtStrings);
-        binding.addressdistrict.setAdapter(districtSpinnerAdapter);
-        binding.addressdistrict.setOnItemSelectedListener(this);
-        if (districtStrings.size() > 0)
-            district = districtStrings.get(0);
-        initDatas();
-    }
+//    public void initDistrict(List<City> cities) {
+//        List<String> districtStrings = new ArrayList<>();
+//        for (City city : cities) {
+//            districtStrings.add(city.getPCCName());
+//        }
+//        districtSpinnerAdapter = new AddressSpinnerAdapter(districtStrings);
+//        binding.addressdistrict.setAdapter(districtSpinnerAdapter);
+//        binding.addressdistrict.setOnItemSelectedListener(this);
+//        if (districtStrings.size() > 0)
+//            district = districtStrings.get(0);
+//        initDatas();
+//    }
 
     @Override
     protected void setupActivityComponent() {
@@ -136,17 +136,17 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
             onBackPressed();
         if (v == binding.defaultBtn)
             binding.defaultCheck.setChecked(!binding.defaultCheck.isChecked());
-        if (v == binding.addressSelect) {
-            if (city == null || district == null) {
-                toastor.showSingletonToast("请选择城市、区域");
-                return;
-            }
-            navigate.navigateToAddressSelect(this, null, false, city, district);
-        }
+//        if (v == binding.addressSelect) {
+//            if (city == null || district == null) {
+//                toastor.showSingletonToast("请选择城市、区域");
+//                return;
+//            }
+//            navigate.navigateToAddressSelect(this, null, false, city, district);
+//        }
         if (v == binding.addAddress) {
             userName = binding.username.getText().toString();
             userMobile = binding.userphone.getText().toString();
-            addressLoction = binding.addresslocation.getText().toString();
+//            addressLoction = binding.addresslocation.getText().toString();
             addressDetail = binding.addressdetail.getText().toString();
             if (TextUtils.isEmpty(userName)) {
                 toastor.showSingletonToast("请填写收货人姓名");
@@ -160,18 +160,18 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
                 toastor.showSingletonToast("请填写正确的手机号");
                 return;
             }
-            if (TextUtils.isEmpty(addressLoction)) {
-                toastor.showSingletonToast("请选择收货人位置");
-                return;
-            }
+//            if (TextUtils.isEmpty(addressLoction)) {
+//                toastor.showSingletonToast("请选择收货人位置");
+//                return;
+//            }
             if (TextUtils.isEmpty(addressDetail)) {
                 toastor.showSingletonToast("请填写收货人详细地址");
                 return;
             }
             EditorUserRecivingAddressBody editorUserRecivingAddressBody = new EditorUserRecivingAddressBody();
-            editorUserRecivingAddressBody.setAddressSegementF(city);
-            editorUserRecivingAddressBody.setAddressSegementS(district);
-            editorUserRecivingAddressBody.setAddressSegementT(addressLoction);
+//            editorUserRecivingAddressBody.setAddressSegementF(city);
+//            editorUserRecivingAddressBody.setAddressSegementS(district);
+//            editorUserRecivingAddressBody.setAddressSegementT(addressLoction);
             editorUserRecivingAddressBody.setAddress(addressDetail);
             editorUserRecivingAddressBody.setReceiverName(userName);
             editorUserRecivingAddressBody.setReceiverTel(userMobile);
@@ -186,44 +186,44 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent == binding.addresscity) {
-            city = (String) parent.getAdapter().getItem(position);
-        }
-        if (parent == binding.addressdistrict) {
-            district = (String) parent.getAdapter().getItem(position);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        if (parent == binding.addresscity) {
+//            city = (String) parent.getAdapter().getItem(position);
+//        }
+//        if (parent == binding.addressdistrict) {
+//            district = (String) parent.getAdapter().getItem(position);
+//        }
+//    }
+//
+//    @Override
+//    public void onNothingSelected(AdapterView<?> parent) {
+//
+//    }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         isDefault = isChecked;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAddressSelectEvent(AddressSelectEvent event) {
-        if (event.getAddressType() == AddressSelectEvent.POIINFO) {
-            PoiInfo poiInfo = event.getPoiInfo();
-            setAddressLoction(poiInfo.name, poiInfo.location.latitude, poiInfo.location.longitude);
-        }
-        if (event.getAddressType() == AddressSelectEvent.DETAILINFO) {
-            PoiDetailResult poiInfo = event.getPoiDetailResult();
-            setAddressLoction(poiInfo.getName(), poiInfo.getLocation().latitude, poiInfo.getLocation().longitude);
-        }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onAddressSelectEvent(AddressSelectEvent event) {
+//        if (event.getAddressType() == AddressSelectEvent.POIINFO) {
+//            PoiInfo poiInfo = event.getPoiInfo();
+//            setAddressLoction(poiInfo.name, poiInfo.location.latitude, poiInfo.location.longitude);
+//        }
+//        if (event.getAddressType() == AddressSelectEvent.DETAILINFO) {
+//            PoiDetailResult poiInfo = event.getPoiDetailResult();
+//            setAddressLoction(poiInfo.getName(), poiInfo.getLocation().latitude, poiInfo.getLocation().longitude);
+//        }
+//
+//    }
 
-    }
-
-    public void setAddressLoction(String mAddressLoction, double mlat, double mlng) {
-        binding.addresslocation.setText(mAddressLoction);
-        binding.addresslocation.setTextColor(0xff333333);
-        addressLoction = mAddressLoction;
-        lat = mlat;
-        lng = mlng;
-    }
+//    public void setAddressLoction(String mAddressLoction, double mlat, double mlng) {
+//        binding.addresslocation.setText(mAddressLoction);
+//        binding.addresslocation.setTextColor(0xff333333);
+//        addressLoction = mAddressLoction;
+//        lat = mlat;
+//        lng = mlng;
+//    }
 }

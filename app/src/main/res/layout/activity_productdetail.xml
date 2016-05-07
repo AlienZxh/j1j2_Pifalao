@@ -40,7 +40,7 @@
 
                 <com.zhy.autolayout.AutoRelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="700px">
+                    android:layout_height="680px">
 
                     <com.j1j2.common.view.viewpager.autoscrollviewpager.AutoScrollViewPager
                         android:id="@+id/viewPager"
@@ -331,7 +331,7 @@
             android:layout_height="wrap_content"
             android:text="@string/icon_round_add_fill"
             android:textColor="@color/colorRed"
-            android:textSize="@dimen/icon_small"
+            android:textSize="60px"
             android:visibility="gone" />
     </com.zhy.autolayout.AutoRelativeLayout>
 

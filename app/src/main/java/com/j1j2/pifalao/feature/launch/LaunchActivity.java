@@ -22,7 +22,7 @@ import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
 import com.j1j2.pifalao.feature.launch.di.LaunchModule;
-import com.litesuits.common.assist.Network;
+import com.j1j2.common.util.Network;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,7 +43,7 @@ public class LaunchActivity extends BaseActivity {
     @Inject
     UserRelativePreference userRelativePreference;
 
-    private AlertDialog downloadDialog;
+
     ProgressBar progressBar;
 
     @Override
@@ -67,7 +67,6 @@ public class LaunchActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         launchViewModel.cancelDownloadAPK();
-
     }
 
     @SuppressLint("InlinedApi")
@@ -89,7 +88,9 @@ public class LaunchActivity extends BaseActivity {
     }
 
     public void showCompulsoryUpdateDialog() {
-        new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setMessage("新版本可用，是否更新？")
@@ -105,12 +106,14 @@ public class LaunchActivity extends BaseActivity {
                         launchViewModel.downloadAPK();
                     }
                 })
-                .create()
-                .show();
+                .create();
+        messageDialog.show();
     }
 
     public void showUpdateDialog() {
-        new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setMessage("新版本可用，是否更新？")
@@ -126,22 +129,24 @@ public class LaunchActivity extends BaseActivity {
                         launchViewModel.downloadAPK();
                     }
                 })
-                .create()
-                .show();
+                .create();
+        messageDialog.show();
     }
 
     public void hideDownloadDialog() {
-        if (null == downloadDialog || !downloadDialog.isShowing())
+        if (null == messageDialog || !messageDialog.isShowing())
             return;
-        downloadDialog.hide();
+        messageDialog.hide();
     }
 
     public void showDownloadDialog() {
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
         View progressBarView = getLayoutInflater().inflate(R.layout.view_update_load, null, false);
         progressBar = (ProgressBar) progressBarView.findViewById(R.id.progressbar);
         progressBar.setIndeterminate(false);
         progressBar.setMax(100);
-        downloadDialog = new AlertDialog.Builder(this)
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(false)
                 .setTitle("下载中")
                 .setMessage("已下载0%")
@@ -154,12 +159,12 @@ public class LaunchActivity extends BaseActivity {
                     }
                 })
                 .create();
-        downloadDialog.show();
+        messageDialog.show();
     }
 
     public void setDownloadProgress(float progress, long total) {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
-        downloadDialog.setMessage("   共" + df.format(total / 1000000) + "M,已下载：" + progress + "%");
+        messageDialog.setMessage("   共" + df.format(total / 1000000) + "M,已下载：" + progress + "%");
         progressBar.setProgress((int) progress);
     }
 

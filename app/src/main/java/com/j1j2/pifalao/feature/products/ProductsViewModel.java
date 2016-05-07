@@ -187,9 +187,7 @@ public class ProductsViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-
-//                        productsActivity.toastor.showSingletonToast(s);
-
+                        productsActivity.toastor.showSingletonToast("商品添加成功");
                         productsActivity.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }

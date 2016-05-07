@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ProductSort;
 import com.j1j2.pifalao.R;
@@ -40,6 +38,8 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
         void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
 
         void navigateToSearchActivity(View v);
+
+        void navigateToShowStore();
     }
 
     private StoreStyleHomeFragmentListener listener;
@@ -54,11 +54,13 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
 
     GridLayoutManager manager;
 
+    StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.listener = (MainActivity) activity;
+
     }
 
     @Override
@@ -90,7 +92,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
                 R.drawable.storestylehometop_top_img_2,
                 R.drawable.storestylehometop_top_img_3,
                 R.drawable.storestylehometop_top_img_4};
-        StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter(imgId,2.2f);
+        storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter(imgId);
         binding.viewPager.setAdapter(storeStyleHomeTopAdapter);
         binding.tab.setViewPager(binding.viewPager);
         binding.viewPager.startAutoScroll(2000);
@@ -134,5 +136,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
             getActivity().onBackPressed();
         if (v == binding.searchBtn)
             listener.navigateToSearchActivity(v);
+        if (v == binding.showStore)
+            listener.navigateToShowStore();
     }
 }

@@ -82,9 +82,9 @@ public class ProductDetailUnitAdapter extends RecyclerView.Adapter<ProductDetail
             if (position == 0) {
                 singleSelector.setSelected(0, getItemId(), true);
             }
-            binding.setIsShowBaseUnit(moduleType == Constant.ModuleType.SHOPSERVICE);
+//            binding.setIsShowBaseUnit(moduleType == Constant.ModuleType.SHOPSERVICE);
+//            binding.setBaseUnit(baseUnit);
             binding.setProductUnit(data);
-            binding.setBaseUnit(baseUnit);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

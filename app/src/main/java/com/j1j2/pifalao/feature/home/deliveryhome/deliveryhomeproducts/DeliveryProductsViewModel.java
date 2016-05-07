@@ -169,6 +169,7 @@ public class DeliveryProductsViewModel {
         if (isRefresh) {
             pageIndex = 1;
             deliveryHomeProductsFragment.setLoadMoreBegin();
+            deliveryHomeProductsFragment.showLoad();
         }
         productApi.queryProductyBySortId("" + productSortId, "" + pageIndex, "" + pageSize, "" + false, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_DEFAULT)
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
@@ -177,6 +178,7 @@ public class DeliveryProductsViewModel {
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+
                         pageCount = productSimplePagerManager.getPageCount();
                         if (pageIndex == 1) {
                             deliveryProductsAdapter.initData(productSimplePagerManager.getList());
@@ -187,6 +189,7 @@ public class DeliveryProductsViewModel {
                             deliveryHomeProductsFragment.setLoadMoreComplete();
                         }
                         pageIndex++;
+                        deliveryHomeProductsFragment.hideLoad();
                     }
 
                     @Override
@@ -205,6 +208,7 @@ public class DeliveryProductsViewModel {
         if (isRefresh) {
             pageIndex = 1;
             deliveryHomeProductsFragment.setLoadMoreBegin();
+            deliveryHomeProductsFragment.showLoad();
         }
         productApi.queryProductyBySortId("" + productSortId, "" + pageIndex, "" + pageSize, "" + true, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_SELLS)
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
@@ -213,6 +217,7 @@ public class DeliveryProductsViewModel {
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+
                         pageCount = productSimplePagerManager.getPageCount();
                         if (pageIndex == 1) {
                             deliveryProductsAdapter.initData(productSimplePagerManager.getList());
@@ -223,6 +228,7 @@ public class DeliveryProductsViewModel {
                             deliveryHomeProductsFragment.setLoadMoreComplete();
                         }
                         pageIndex++;
+                        deliveryHomeProductsFragment.hideLoad();
                     }
 
                     @Override
@@ -237,19 +243,21 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-
-    public void queryActivityProducts(boolean isRefresh, int moduleId) {
+    //state:  1: 促销　２：新品
+    public void queryActivityProducts(boolean isRefresh, int moduleId, int state) {
         if (isRefresh) {
             pageIndex = 1;
             deliveryHomeProductsFragment.setLoadMoreBegin();
+            deliveryHomeProductsFragment.showLoad();
         }
-        productApi.queryActivityProducts(pageIndex, pageSize, moduleId, 1, "", "")
+        productApi.queryActivityProducts(pageIndex, pageSize, moduleId, state, "", "")
                 .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
                     @Override
                     public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+
                         pageCount = productSimplePagerManager.getPageCount();
                         if (pageIndex == 1) {
                             deliveryProductsAdapter.initData(productSimplePagerManager.getList());
@@ -260,6 +268,7 @@ public class DeliveryProductsViewModel {
                             deliveryHomeProductsFragment.setLoadMoreComplete();
                         }
                         pageIndex++;
+                        deliveryHomeProductsFragment.hideLoad();
                     }
 
                     @Override

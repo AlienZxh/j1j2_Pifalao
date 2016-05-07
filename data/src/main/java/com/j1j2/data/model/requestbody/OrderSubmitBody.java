@@ -17,6 +17,8 @@ public class OrderSubmitBody {
     private String PredictSendTime;// 订单预计配送时间
     private int ModuleId;//服务模块
 
+    private int OrderPayType;//支付方式
+
     public int getFreightID() {
         return FreightID;
     }
@@ -87,5 +89,13 @@ public class OrderSubmitBody {
 
     public void setModuleId(int moduleId) {
         ModuleId = moduleId;
+    }
+
+    public int getOrderPayType() {
+        return OrderPayType;
+    }
+
+    public void setOrderPayType(int orderPayType) {
+        OrderPayType = orderPayType;
     }
 }

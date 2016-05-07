@@ -95,8 +95,8 @@ public class OrderDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        orderDetailActivity.toastor.showSingletonToast(s);
-                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_DELIVERY, Constant.OrderType.ORDERTYPE_WAITFORRATE));
+                        orderDetailActivity.toastor.showSingletonToast("确认收货成功");
+                        EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_DELIVERY, Constant.OrderType.ORDERTYPE_WAITFORRATE));
 
                     }
 
@@ -123,7 +123,7 @@ public class OrderDetailViewModel {
                     public void onWebReturnSucess(String s) {
 
                         orderDetailActivity.toastor.showSingletonToast(s);
-                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
+                        EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
                         orderDetailActivity.finish();
                     }
 

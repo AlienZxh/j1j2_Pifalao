@@ -109,57 +109,57 @@
 
             <TextView
                 android:id="@+id/cancel"
-                android:layout_width="130px"
-                android:layout_height="62px"
+                android:layout_width="200px"
+                android:layout_height="70px"
                 android:layout_marginLeft="@dimen/padding_small"
                 android:layout_marginRight="@dimen/padding_small"
                 android:background="@drawable/gray_conner_btn_selector"
                 android:gravity="center"
                 android:text="取消订单"
                 android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/text_big"
                 android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==1?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{orderDetailViewModel.orderDetailActivity}" />
 
             <TextView
                 android:id="@+id/servicepoint"
-                android:layout_width="130px"
-                android:layout_height="62px"
+                android:layout_width="200px"
+                android:layout_height="70px"
                 android:layout_marginLeft="@dimen/padding_small"
                 android:layout_marginRight="@dimen/padding_small"
                 android:background="@drawable/green_conner_btn_selector"
                 android:gravity="center"
-                android:text="查看便利店"
+                android:text="查看服务点"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/text_big"
                 app:OnClickListener="@{orderDetailViewModel.orderDetailActivity}" />
 
             <TextView
                 android:id="@+id/receive"
-                android:layout_width="130px"
-                android:layout_height="62px"
+                android:layout_width="200px"
+                android:layout_height="70px"
                 android:layout_marginLeft="@dimen/padding_small"
                 android:layout_marginRight="@dimen/padding_small"
                 android:background="@drawable/orange_conner_btn_selector"
                 android:gravity="center"
                 android:text="确认收货"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/text_big"
                 android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==16||(orderDetailViewModel.orderDetailObservableField.OrderState==8&amp;&amp;orderDetailViewModel.orderDetailObservableField.ModuleType==Constant.ModuleType.DELIVERY)?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{orderDetailViewModel.orderDetailActivity}" />
 
 
             <TextView
                 android:id="@+id/comment"
-                android:layout_width="130px"
-                android:layout_height="62px"
+                android:layout_width="200px"
+                android:layout_height="70px"
                 android:layout_marginLeft="@dimen/padding_small"
                 android:layout_marginRight="@dimen/padding_small"
                 android:background="@drawable/blue_conner_btn_selector"
                 android:gravity="center"
                 android:text="评价"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_normal"
+                android:textSize="@dimen/text_big"
                 android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==32?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{orderDetailViewModel.orderDetailActivity}" />
 

@@ -41,8 +41,8 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
                 R.drawable.guide_img_2,
                 R.drawable.guide_img_3,
                 R.drawable.guide_img_4};
-        StoreStyleHomeTopCycleAdapter storeStyleHomeTopAdapter = new StoreStyleHomeTopCycleAdapter(imgId, 0.58f);
-        binding.guideViewPager.setAdapter(storeStyleHomeTopAdapter);
+        GuideAdapter guideAdapter = new GuideAdapter(imgId, 0.58f);
+        binding.guideViewPager.setAdapter(guideAdapter);
 
         binding.tab.setViewPager(binding.guideViewPager);
         binding.tab.setOnPageChangeListener(this);

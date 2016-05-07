@@ -85,7 +85,7 @@ public class OrdersViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         ordersActivity.toastor.showSingletonToast(s);
-                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
+                        EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_SUBMIT, Constant.OrderType.ORDERTYPE_INVALID));
 
                     }
 
@@ -101,8 +101,8 @@ public class OrdersViewModel {
                 });
     }
 
-    public void receiveOrder(int orderId) {
-        userOrderApi.confrimReceive(orderId)
+    public void receiveOrder(final OrderSimple orderSimple) {
+        userOrderApi.confrimReceive(orderSimple.getOrderId())
                 .compose(ordersActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -110,8 +110,8 @@ public class OrdersViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         ordersActivity.toastor.showSingletonToast(s);
-                        EventBus.getDefault().post(new OrderStateChangeEvent(Constant.OrderType.ORDERTYPE_CLIENTWAITFORRECEVIE, Constant.OrderType.ORDERTYPE_WAITFORRATE));
-
+                        EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_CLIENTWAITFORRECEVIE, Constant.OrderType.ORDERTYPE_WAITFORRATE));
+                        ordersActivity.navigateToOrderRate(orderSimple);
                     }
 
                     @Override

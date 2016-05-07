@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <import type="android.net.Uri" />
+
         <import type="com.j1j2.pifalao.BuildConfig" />
 
         <variable
@@ -22,21 +22,19 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_servies_bg"
+        android:background="@drawable/item_products_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:OnClickListener="@{onClick}">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="180px"
             android:layout_marginLeft="@dimen/padding_biger"
             android:layout_marginRight="@dimen/padding_biger"
             android:layout_marginTop="@dimen/padding_noraml"
-            app:imageURI="@{Uri.parse(BuildConfig.IMAGE_URL+productSort.AppImgPath??@string/text_empty)}"
-            fresco:failureImage="@drawable/loadimg_error"
-            fresco:placeholderImage="@drawable/loadimg_loading"
-            fresco:viewAspectRatio="1" />
+            app:displayImgWithoutCache="@{Uri.parse(BuildConfig.IMAGE_URL+productSort.AppImgPath??@string/text_empty)}" />
 
         <TextView
             android:layout_width="wrap_content"

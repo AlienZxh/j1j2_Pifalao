@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="查看便利店"
+                android:text="查看服务点"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
@@ -122,7 +122,7 @@
                     android:paddingLeft="30px"
                     android:paddingRight="30px"
                     android:singleLine="true"
-                    android:text="@{&quot;便利店地址：&quot;+catServicePointViewModel.servicePointObservableField.AddressDetail}"
+                    android:text="@{&quot;服务点地址：&quot;+catServicePointViewModel.servicePointObservableField.AddressDetail}"
                     android:textColor="@color/colorText999"
                     android:textSize="@dimen/text_normal" />
 

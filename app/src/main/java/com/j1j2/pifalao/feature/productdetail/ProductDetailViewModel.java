@@ -40,10 +40,10 @@ public class ProductDetailViewModel {
 
     public ObservableField<ProductUnit> selectUnit = new ObservableField<>();
 
-    public String[] array = {"res://com.j1j2.pifalao/" + R.drawable.view_productdetail_show_servicepoint_img1,
-            "res://com.j1j2.pifalao/" + R.drawable.view_productdetail_show_servicepoint_img2,
-            "res://com.j1j2.pifalao/" + R.drawable.view_productdetail_show_storehouse_img1,
-            "res://com.j1j2.pifalao/" + R.drawable.view_productdetail_show_storehouse_img2};
+    public int[] array = {R.drawable.view_productdetail_show_servicepoint_img1,
+            R.drawable.view_productdetail_show_servicepoint_img2,
+            R.drawable.view_productdetail_show_storehouse_img1,
+            R.drawable.view_productdetail_show_storehouse_img2};
 
 
     public ProductDetailViewModel(ProductDetailActivity productDetailActivity, ProductApi productApi, ShopCartApi shopCartApi, UserFavoriteApi userFavoriteApi) {
@@ -51,6 +51,30 @@ public class ProductDetailViewModel {
         this.productApi = productApi;
         this.shopCartApi = shopCartApi;
         this.userFavoriteApi = userFavoriteApi;
+
+    }
+
+    public void updateProductViews(int productId) {
+        productApi.updateProductViews(productId)
+                .compose(productDetailActivity.<WebReturn<String>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<String>() {
+                    @Override
+                    public void onWebReturnSucess(String s) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
     }
 
     public void queryProductDetail(int mainId) {
@@ -77,6 +101,8 @@ public class ProductDetailViewModel {
                         if (mProductDetail.getModuleType() != Constant.ModuleType.DELIVERY)
                             productDetailActivity.initUnitsSelect(mProductDetail);
                         productDetailActivity.initBottomViewPager(sizeProductImgs, mProductDetail.getProductUnits().get(0).getProductId(), mProductDetail);
+                        if (mProductDetail.getProductUnits() != null && mProductDetail.getProductUnits().size() > 0)
+                            updateProductViews(mProductDetail.getProductUnits().get(0).getProductId());
                     }
 
                     @Override
@@ -99,7 +125,7 @@ public class ProductDetailViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-//                        productDetailActivity.toastor.showSingletonToast(s);
+                        productDetailActivity.toastor.showSingletonToast(s);
                         productDetailActivity.addShopCart(unit, quantity);
                         EventBus.getDefault().post(new ShopCartChangeEvent());
                     }

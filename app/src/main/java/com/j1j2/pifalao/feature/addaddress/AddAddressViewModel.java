@@ -54,28 +54,28 @@ public class AddAddressViewModel {
                 });
     }
 
-    public void queryDistrict(int cityId) {
-        servicePointApi.queryCityDistric(cityId)
-                .compose(addAddressActivity.<WebReturn<List<City>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<City>>() {
-                    @Override
-                    public void onWebReturnSucess(List<City> cities) {
-                        addAddressActivity.initDistrict(cities);
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
-    }
+//    public void queryDistrict(int cityId) {
+//        servicePointApi.queryCityDistric(cityId)
+//                .compose(addAddressActivity.<WebReturn<List<City>>>bindToLifecycle())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new WebReturnSubscriber<List<City>>() {
+//                    @Override
+//                    public void onWebReturnSucess(List<City> cities) {
+//                        addAddressActivity.initDistrict(cities);
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnFailure(String errorMessage) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnCompleted() {
+//
+//                    }
+//                });
+//    }
 
     public AddAddressActivity getAddAddressActivity() {
         return addAddressActivity;

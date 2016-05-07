@@ -8,16 +8,6 @@
 
         <import type="android.view.View" />
 
-        <import type="com.j1j2.common.util.StringUtils" />
-
-        <import type="android.databinding.ObservableField" />
-
-        <import type="com.j1j2.data.model.ServicePoint" />
-
-        <variable
-            name="servicepoint"
-            type="ObservableField&lt;ServicePoint&gt;" />
-
         <variable
             name="onClick"
             type="OnClickListener" />
@@ -45,11 +35,11 @@
                 android:layout_height="@dimen/content_height_normal">
 
                 <TextView
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:text="@{servicepoint.get.Name}"
                     android:textColor="@color/colorText2a2a2a"
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
@@ -66,11 +56,11 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <TextView
+                android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/content_height_small"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@{servicepoint.get.AddressDetail}"
                 android:textColor="@color/colorText999"
                 android:textSize="@dimen/text_normal" />
 

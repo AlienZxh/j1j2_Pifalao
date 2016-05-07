@@ -16,8 +16,7 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -35,8 +34,8 @@
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="@dimen/actionbar_height"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:background="@drawable/actionbar_btn_bg"
+                    android:gravity="center"
                     android:text="@string/icon_back"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/icon_normal"
@@ -56,8 +55,8 @@
                     fontPath="iconfont/iconfont.ttf"
                     android:layout_width="@dimen/actionbar_height"
                     android:layout_height="match_parent"
-                    android:background="@drawable/actionbar_btn_bg"
                     android:layout_alignParentRight="true"
+                    android:background="@drawable/actionbar_btn_bg"
                     android:gravity="center"
                     android:text="@string/icon_search"
                     android:textColor="@color/colorWhite"
@@ -103,6 +102,12 @@
                             app:stl_indicatorThickness="@dimen/circle_tab_size"
                             app:stl_underlineColor="@color/colorTransparent"
                             app:stl_underlineThickness="0dp" />
+
+                        <TextView
+                            android:id="@+id/showStore"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:OnClickListener="@{onClick}" />
                     </com.zhy.autolayout.AutoRelativeLayout>
 
                     <android.support.v7.widget.RecyclerView

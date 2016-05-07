@@ -35,12 +35,11 @@
         app:OnClickListener="@{onClick}">
 
         <TextView
+            android:id="@+id/icon"
             fontPath="iconfont/iconfont.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{position&lt;=1?View.VISIBLE : View.GONE}"
-            android:textColor="@{position==0?@color/colorAccent:@color/colorPrimary}"
-            android:text="@{position==0?@string/icon_hot_fill:@string/icon_discount}"
+            android:visibility="@{position&lt;=2?View.VISIBLE : View.GONE}"
             android:textSize="@dimen/text_big" />
 
         <TextView

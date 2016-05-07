@@ -16,7 +16,7 @@ import com.j1j2.pifalao.app.di.ActivityComponent;
 import com.j1j2.pifalao.app.di.ActivityModule;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.j1j2.pifalao.app.event.NetWorkEvent;
-import com.litesuits.common.assist.Toastor;
+import com.j1j2.common.util.Toastor;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,7 +40,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     protected Fragment currentFragment;
 
-    private AlertDialog netWorkDialog;
+    protected AlertDialog messageDialog;
 
     protected void initActionBar() {
 
@@ -72,16 +72,16 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (netWorkDialog != null && netWorkDialog.isShowing())
-            netWorkDialog.dismiss();
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         EventBus.getDefault().unregister(this);
     }
+
 
     protected void changeFragment(int resView, Fragment targetFragment) {
         if (targetFragment.equals(currentFragment)) {
@@ -125,37 +125,23 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         String message = "";
         boolean showDialog = false;
 
-        if (netWorkEvent.isConnected()) {
-            switch (netWorkEvent.getNetWorkType()) {
-                case Net2G:
-                case Net3G:
-                    if (getClass().getName().equals("com.j1j2.pifalao.feature.services.ServicesActivity")) {
-                        message = "处于2G/3G网络，建议切换到4G/WIFI网络。";
-                        showDialog = true;
-                    }
-                    break;
-                default:
-
-                    break;
-            }
-        } else {
+        if (!netWorkEvent.isConnected()) {
             message = "网络连接失败，请检查网络设置。";
             showDialog = true;
         }
-
-        if (netWorkDialog != null && netWorkDialog.isShowing()) {
-            if (showDialog) {
-                netWorkDialog.setMessage(message);
+        if (!showDialog) {
+            if (messageDialog != null && messageDialog.isShowing()) {
+                messageDialog.dismiss();
                 return;
             } else {
-                netWorkDialog.dismiss();
                 return;
             }
         } else {
-            if (!showDialog)
-                return;
+            if (messageDialog != null && messageDialog.isShowing()) {
+                messageDialog.dismiss();
+            }
         }
-        netWorkDialog = new AlertDialog.Builder(this)
+        messageDialog = new AlertDialog.Builder(this)
                 .setTitle("提示")
                 .setMessage(message)
                 .setNegativeButton("取消", null)
@@ -166,6 +152,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                         startActivity(intent);
                     }
                 }).create();
-        netWorkDialog.show();
+        messageDialog.show();
     }
 }

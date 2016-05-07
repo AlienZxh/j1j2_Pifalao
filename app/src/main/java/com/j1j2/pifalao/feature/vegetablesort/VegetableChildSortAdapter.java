@@ -43,6 +43,7 @@ public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChi
 
     @Override
     public void onBindViewHolder(VegetableChildSortViewHolder holder, int position) {
+
         if (position < secondarySort.getChildFoodSorts().size())
             holder.bind(secondarySort.getChildFoodSorts().get(position), position);
         else {
@@ -55,7 +56,7 @@ public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChi
 
     @Override
     public int getItemCount() {
-        return null == secondarySort.getChildFoodSorts() ? 0 : secondarySort.getChildFoodSorts().size() + 1;
+        return null == secondarySort.getChildFoodSorts() || secondarySort.getChildFoodSorts().size() <= 0 ? 0 : secondarySort.getChildFoodSorts().size() + 1;
     }
 
     public class VegetableChildSortViewHolder extends AutoBindingViewHolder<ItemVegetableChildsortBinding, ProductSort> {

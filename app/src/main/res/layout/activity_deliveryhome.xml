@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -14,6 +13,10 @@
         <variable
             name="shopCart"
             type="com.j1j2.pifalao.app.ShopCart" />
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
 
         <variable
             name="servicePoint"
@@ -89,18 +92,23 @@
                     android:textSize="@dimen/text_big" />
             </com.zhy.autolayout.AutoFrameLayout>
 
-            <TextView
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
                 android:id="@+id/individualBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
-                android:background="@drawable/actionbar_btn_bg"
                 android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
                 android:text="@string/icon_mine"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
-                app:OnClickListener="@{deliveryHomeViewModel.deliveryHomeActivity}" />
+                app:OnClickListener="@{deliveryHomeViewModel.deliveryHomeActivity}"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.j1j2.common.view.scrollablelayout.ScrollableLayout
@@ -110,130 +118,139 @@
             android:layout_below="@id/toolbar"
             android:orientation="vertical">
 
-            <com.zhy.autolayout.AutoLinearLayout
+            <com.zhy.autolayout.AutoRelativeLayout
                 android:id="@+id/head"
                 android:layout_width="match_parent"
-                android:layout_height="240px"
-                android:background="@drawable/delivery_home_top_img"
-                android:orientation="horizontal">
+                android:layout_height="240px">
 
-                <com.zhy.autolayout.AutoRelativeLayout
-                    android:layout_width="220px"
-                    android:layout_height="match_parent">
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:layout_width="140px"
-                        android:layout_height="140px"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        app:imageURI="@{Uri.parse((BuildConfig.IMAGE_URL+servicePoint.getServicePointImg()))}"
-                        fresco:failureImage="@drawable/servicepoint_default"
-                        fresco:roundAsCircle="true"
-                        fresco:roundingBorderColor="@color/colorGrayCCCCCC"
-                        fresco:roundingBorderWidth="1px" />
-
-                </com.zhy.autolayout.AutoRelativeLayout>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/deliveryhome_top_img" />
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/padding_biger"
-                    android:paddingLeft="@dimen/padding_big"
-                    android:paddingTop="@dimen/padding_biger">
+                    android:layout_height="240px"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="30px"
-                        android:paddingTop="6px"
-                        android:text="@{servicePoint.Name}"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="30px"
-                        android:textStyle="bold" />
+                    <com.zhy.autolayout.AutoRelativeLayout
+                        android:layout_width="220px"
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="16px"
-                        android:text="@{&quot;配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freightType)}"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/text_normal" />
+                        <ImageView
+                            android:id="@+id/shopImg"
+                            android:layout_width="140px"
+                            android:layout_height="140px"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            app:displayImgTransfrom="@{Uri.parse((BuildConfig.IMAGE_URL+servicePoint.getServicePointImg()))}"
+                            app:siBorderColor="@color/colorGrayCCCCCC"
+                            app:siBorderWidth="1px" />
+
+                    </com.zhy.autolayout.AutoRelativeLayout>
 
                     <com.zhy.autolayout.AutoLinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/padding_biger"
+                        android:paddingLeft="@dimen/padding_big"
+                        android:paddingTop="@dimen/padding_biger">
 
                         <TextView
-                            fontPath="iconfont/iconfont.ttf"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/icon_shop"
+                            android:paddingBottom="30px"
+                            android:paddingTop="6px"
+                            android:text="@{servicePoint.Name}"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_biger" />
+                            android:textSize="30px"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="36px"
-                            android:gravity="center"
-                            android:paddingLeft="6px"
-                            android:paddingRight="6px"
-                            android:text="暂未开通"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_normal"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="36px"
-                            android:gravity="center"
-                            android:paddingLeft="6px"
-                            android:paddingRight="6px"
-                            android:text="@{deliveryHomeViewModel.deliveryHomeActivity.module.OrderAmountMinLimit+&quot;元起送&quot;}"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="16px"
+                            android:text="@{&quot;配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freightType)}"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_normal" />
 
-                        <View
-                            android:layout_width="2px"
-                            android:layout_height="36px"
-                            android:layout_marginLeft="6px"
-                            android:layout_marginRight="6px"
-                            android:background="@color/colorWhite" />
-
-                        <TextView
+                        <com.zhy.autolayout.AutoLinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="36px"
-                            android:gravity="center"
-                            android:paddingLeft="6px"
-                            android:paddingRight="6px"
-                            android:text="30分钟送达"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_normal"
-                            android:visibility="gone" />
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
 
-                        <View
-                            android:layout_width="2px"
-                            android:layout_height="36px"
-                            android:layout_marginLeft="6px"
-                            android:layout_marginRight="6px"
-                            android:background="@color/colorWhite"
-                            android:visibility="gone" />
+                            <TextView
+                                fontPath="iconfont/iconfont.ttf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/icon_shop"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/text_biger" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="36px"
-                            android:gravity="center"
-                            android:paddingLeft="6px"
-                            android:paddingRight="6px"
-                            android:text="@{&quot;配送费￥&quot;+freightType.Fixed}"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_normal" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36px"
+                                android:gravity="center"
+                                android:paddingLeft="6px"
+                                android:paddingRight="6px"
+                                android:text="暂未开通"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/text_normal"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36px"
+                                android:gravity="center"
+                                android:paddingLeft="6px"
+                                android:paddingRight="6px"
+                                android:text="@{deliveryHomeViewModel.deliveryHomeActivity.module.OrderAmountMinLimit+&quot;元起送&quot;}"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/text_normal" />
+
+                            <View
+                                android:layout_width="2px"
+                                android:layout_height="36px"
+                                android:layout_marginLeft="6px"
+                                android:layout_marginRight="6px"
+                                android:background="@color/colorWhite" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36px"
+                                android:gravity="center"
+                                android:paddingLeft="6px"
+                                android:paddingRight="6px"
+                                android:text="30分钟送达"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/text_normal"
+                                android:visibility="gone" />
+
+                            <View
+                                android:layout_width="2px"
+                                android:layout_height="36px"
+                                android:layout_marginLeft="6px"
+                                android:layout_marginRight="6px"
+                                android:background="@color/colorWhite"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="36px"
+                                android:gravity="center"
+                                android:paddingLeft="6px"
+                                android:paddingRight="6px"
+                                android:text="@{&quot;配送费￥&quot;+freightType.Fixed}"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/text_normal" />
+                        </com.zhy.autolayout.AutoLinearLayout>
+
                     </com.zhy.autolayout.AutoLinearLayout>
 
                 </com.zhy.autolayout.AutoLinearLayout>
-
-            </com.zhy.autolayout.AutoLinearLayout>
+            </com.zhy.autolayout.AutoRelativeLayout>
 
             <com.j1j2.common.view.smarttablayout.SmartTabLayout
                 android:id="@+id/tab"

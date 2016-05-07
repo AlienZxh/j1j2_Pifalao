@@ -21,6 +21,7 @@ import java.util.List;
 public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationServicePointAdapter.LocationServicePointViewHolder> {
 
     private List<ServicePoint> servicePoints;
+    private boolean shownear;
 
     public LocationServicePointAdapter(List<ServicePoint> servicePoints) {
         this.servicePoints = servicePoints;
@@ -36,6 +37,10 @@ public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationSe
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setShownear(boolean shownear) {
+        this.shownear = shownear;
     }
 
     @Override
@@ -70,13 +75,13 @@ public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationSe
         public void bind(@NonNull final ServicePoint data, int position) {
             binding.setServicepoint(data);
             binding.setPosition(position);
+            binding.setShowNear(shownear);
             if (position == 0) {
                 binding.tag.setTagTopPadding(AutoUtils.getPercentHeightSize(5));
-                binding.tag.setTagBottomPadding( AutoUtils.getPercentHeightSize(5));
+                binding.tag.setTagBottomPadding(AutoUtils.getPercentHeightSize(5));
                 binding.tag.setTagLeftPadding(AutoUtils.getPercentWidthSize(8));
                 binding.tag.setTagRightPadding(AutoUtils.getPercentWidthSize(8));
             }
-
             binding.setOnItemClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

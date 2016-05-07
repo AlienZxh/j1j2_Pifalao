@@ -11,12 +11,17 @@ import android.view.View;
 
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityOrderdetailBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.DeliveryHomeTabAdapter;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailModule;
 import com.j1j2.pifalao.feature.orderdetail.orderdetailparams.OrderDetailParamsFragment;
+import com.j1j2.pifalao.feature.orderdetail.orderdetailtimeline.OrderDetailTimeLineFragment;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +58,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     OrderDetailViewModel orderDetailViewModel;
 
 
-    AlertDialog deleteOrderDialog;
-
     OrderDetailParamsFragment orderDetailParamsFragment;
+    OrderDetailTimeLineFragment orderDetailTimeLineFragment;
 
     @Override
     protected void initBinding() {
@@ -67,8 +71,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void initViews() {
         orderDetailParamsFragment = Bundler.orderDetailParamsFragment().create();
+        orderDetailTimeLineFragment = Bundler.orderDetailTimeLineFragment(orderId).create();
         final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(Bundler.orderDetailTimeLineFragment(orderId).create());
+        fragments.add(orderDetailTimeLineFragment);
         fragments.add(orderDetailParamsFragment);
         String[] titles = {"订单状态", "订单详情"};
         binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments, titles));
@@ -94,15 +99,11 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         MainAplication.get(this).getUserComponent().plus(new OrderDetailModule(this)).inject(this);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (deleteOrderDialog != null && deleteOrderDialog.isShowing())
-            deleteOrderDialog.cancel();
-    }
 
     public void showDeleteDialog(final int orderId) {
-        deleteOrderDialog = new AlertDialog.Builder(this)
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
                 .setNegativeButton("取消", null)
@@ -114,9 +115,43 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 })
                 .create();
-        deleteOrderDialog.show();
+        messageDialog.show();
     }
 
+    @Subscribe
+    public void onOrderStateChangeEvent(OrderStateChangeEvent event) {
+        orderDetailViewModel.queryOrderDetail(orderId);
+        orderDetailTimeLineFragment.queryOrderStateHistory();
+        if (event.getNewOrderState() == Constant.OrderType.ORDERTYPE_WAITFORRATE) {
+            navigate.navigateToOrderRate(this, null, false, orderDetailViewModel.orderDetailObservableField.get());
+        }
+    }
+
+    private void showCallDialog() {
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setNegativeButton("取消", null)
+                .setMessage("确认拨打： " + orderDetailViewModel.servicePointObservableField.get().getMobile() + "？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PackageManager pkm = getPackageManager();
+                        boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                                == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+                        if (has_permission) {
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + orderDetailViewModel.servicePointObservableField.get().getMobile()));
+                            startActivity(intent);
+                        } else {
+                            toastor.showSingletonToast("没有拨打电话权限");
+                        }
+                    }
+                })
+                .create();
+        messageDialog.show();
+    }
 
     @Override
     public void onClick(View v) {
@@ -131,21 +166,10 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             orderDetailViewModel.receiveOrder(orderId);
         }
         if (v == binding.comment) {
-
+            navigate.navigateToOrderRate(this, null, false, orderDetailViewModel.orderDetailObservableField.get());
         }
         if (v == binding.callBtn) {
-            PackageManager pkm = this.getPackageManager();
-            boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-            if (has_permission) {
-                if (orderDetailViewModel.servicePointObservableField.get() != null) {
-                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + orderDetailViewModel.servicePointObservableField.get().getMobile()));
-                    startActivity(intent);
-                }
-
-            } else {
-                toastor.showSingletonToast("没有拨打电话权限");
-            }
+            showCallDialog();
         }
 
 

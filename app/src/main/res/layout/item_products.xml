@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -181,15 +180,13 @@
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.github.siyamed.shapeimageview.RoundedImageView
             android:layout_width="@dimen/height_products_img_size"
             android:layout_height="@dimen/height_products_img_size"
-            app:imageURI="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
-            fresco:failureImage="@drawable/loadimg_error"
-            fresco:placeholderImage="@drawable/loadimg_loading"
-            fresco:roundedCornerRadius="5dp"
-            fresco:roundingBorderColor="@color/colorGrayF0F0F0"
-            fresco:roundingBorderWidth="1px" />
+            app:displayImgAsBitmap="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            app:siBorderColor="@color/colorGrayDEDEDE"
+            app:siBorderWidth="1px"
+            app:siRadius="4dp" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="152px"

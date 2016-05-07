@@ -50,6 +50,8 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
         MainAplication.get(this).getUserComponent().plus(new ChangePasswordModule(this)).inject(this);
     }
 
+
+
     @Override
     public void onClick(View v) {
         if (binding.oldPSWEdit.hasFocus())
@@ -73,7 +75,7 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
             } else if (binding.newPSWEdit.getText().toString().length() < 6 || binding.confirmPSWEdit.getText().toString().length() < 6) {
                 toastor.showSingletonToast("新密码需要不小于６位");
                 return;
-            } else if (binding.newPSWEdit.getText().toString().length() != binding.confirmPSWEdit.getText().toString().length()) {
+            } else if (!binding.newPSWEdit.getText().toString().equals(binding.confirmPSWEdit.getText().toString())) {
                 toastor.showSingletonToast("新密码与确认新密码不一致");
                 return;
             }

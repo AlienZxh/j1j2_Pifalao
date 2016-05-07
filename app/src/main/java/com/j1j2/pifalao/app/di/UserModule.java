@@ -34,6 +34,6 @@ public class UserModule {
     @Provides
     @UserScope
     UnReadInfoManager unReadInfoManager() {
-        return new UnReadInfoManager();
+        return UnReadInfoManager.getInstance();
     }
 }

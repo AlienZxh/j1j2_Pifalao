@@ -76,7 +76,6 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".feature.services.ServicesActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -250,12 +249,24 @@
             android:name=".feature.show.ShowActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.orderrate.OrderRateActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.onlineorderpay.OnlineOrderPayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <receiver android:name=".app.service.NetWorkReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".app.service.BackGroundService"
+            android:exported="false" />
 
         <!--autolayout-->
         <meta-data

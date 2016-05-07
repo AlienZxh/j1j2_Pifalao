@@ -242,12 +242,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToOrderDetail(Activity context, ActivityOptionsCompat options, boolean isFinish, OrderSimple orderSimple, int orderId,int selectPage) {
+    public void navigateToOrderDetail(Activity context, ActivityOptionsCompat options, boolean isFinish, OrderSimple orderSimple, int orderId, int selectPage) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.orderDetailActivity(orderId,selectPage).orderSimple(orderSimple).start(context);
+            Bundler.orderDetailActivity(orderId, selectPage).orderSimple(orderSimple).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.orderDetailActivity(orderId,selectPage).orderSimple(orderSimple).intent(context),
+            ActivityCompat.startActivity(context, Bundler.orderDetailActivity(orderId, selectPage).orderSimple(orderSimple).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -658,12 +658,38 @@ public class Navigate {
         }
     }
 
-    public void navigateToShow(Activity context, ActivityOptionsCompat options, boolean isFinish,int activityType) {
+    public void navigateToShow(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
             Bundler.showActivity(activityType).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             ActivityCompat.startActivity(context, Bundler.showActivity(activityType).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOrderRate(Activity context, ActivityOptionsCompat options, boolean isFinish, OrderSimple orderSimple) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.orderRateActivity(orderSimple).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.orderRateActivity(orderSimple).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOnlineOrderPay(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.onlineOrderPayActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.onlineOrderPayActivity().intent(context),
                     options.toBundle());
         }
         if (isFinish) {

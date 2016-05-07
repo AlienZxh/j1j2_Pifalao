@@ -4,11 +4,13 @@ import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.j1j2.data.http.api.ServicePointApi;
+import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.SystemNotice;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
 import com.j1j2.pifalao.app.Constant;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
@@ -39,21 +42,21 @@ public class ServicesViewModule {
     ServicePoint servicePoint;
 
     ServicePointApi servicePointApi;
-
     UserVipApi userVipApi;
-
     UserLoginApi userLoginApi;
+    SystemAssistApi systemAssistApi;
 
     ServicesActivity servicesActivity;
     private Subscription subscription;
     private ServicesAdapter servicesAdapter;
 
-    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi) {
+    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi) {
         this.servicePointApi = servicePointApi;
         this.servicesActivity = servicesActivity;
         this.servicePoint = servicePoint;
         this.userVipApi = userVipApi;
         this.userLoginApi = userLoginApi;
+        this.systemAssistApi = systemAssistApi;
         this.modules = new ArrayList<>();
         this.servicesAdapter = new ServicesAdapter(modules);
     }
@@ -196,6 +199,30 @@ public class ServicesViewModule {
                     @Override
                     public void onWebReturnSucess(String s) {
 
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+    public void querySystemNotice() {
+        systemAssistApi.querySystemNotice()
+                .compose(servicesActivity.<WebReturn<SystemNotice>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<SystemNotice>() {
+                    @Override
+                    public void onWebReturnSucess(SystemNotice systemNotice) {
+                        if (systemNotice.isState())
+                            servicesActivity.showSystemNotice(systemNotice);
                     }
 
                     @Override

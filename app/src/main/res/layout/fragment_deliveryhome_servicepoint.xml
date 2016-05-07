@@ -47,13 +47,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="14px"
                         android:gravity="center_vertical"
-                        android:text="便利店地址："
+                        android:text="服务点地址："
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingRight="120px"
                         android:text="@{deliveryServicepointViewModel.servicePoint.getAddressDetail()}"
                         android:textColor="@color/colorText2a2a2a"
                         android:textSize="@dimen/text_biger" />

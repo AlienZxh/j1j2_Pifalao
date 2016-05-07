@@ -11,6 +11,7 @@ import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.DeliveryServiceTime;
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.SubmitOrderReturn;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.OrderSubmitBody;
@@ -18,6 +19,7 @@ import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
+import com.j1j2.pifalao.app.service.BackGroundService;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -62,6 +64,7 @@ public class ConfirmOrderViewModel {
     public void commitOrder(OrderSubmitState orderSubmitState) {
         OrderSubmitBody orderSubmitBody = new OrderSubmitBody();
         orderSubmitBody.setModuleId(orderSubmitState.ModuleId);
+        orderSubmitBody.setOrderPayType(orderSubmitState.OrderPayType);
         orderSubmitBody.setFreightID(orderSubmitState.FreightTypeDetail.get().getId());
 
         orderSubmitBody.setServicePointId(orderSubmitState.ServicePointDetail.get() == null ? 0 : orderSubmitState.ServicePointDetail.get().getServicePointId());
@@ -74,22 +77,25 @@ public class ConfirmOrderViewModel {
         orderSubmitBody.setPredictSendTime(orderSubmitState.PredictSendTime.get());
         orderSubmitBody.setOrderMemo(orderSubmitState.OrderMemo);
         shopCartApi.submitOrder(orderSubmitBody)
-                .compose(confirmOrderActivity.<WebReturn<Integer>>bindToLifecycle())
+                .compose(confirmOrderActivity.<WebReturn<SubmitOrderReturn>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<Integer>() {
+                .subscribe(new WebReturnSubscriber<SubmitOrderReturn>() {
                     @Override
-                    public void onWebReturnSucess(Integer orderId) {
+                    public void onWebReturnSucess(SubmitOrderReturn submitOrderReturn) {
+                        confirmOrderActivity.toastor.getSingletonToast("订单提交成功");
+                        BackGroundService.updateUnRead(confirmOrderActivity);
                         confirmOrderActivity.clearShopCart();
                         EventBus.getDefault().post(new ConfirmOrderSuccessEvent());
                         EventBus.getDefault().post(new ShopCartChangeEvent());
 //                        confirmOrderActivity.navigateToSuccess(orderId);
-                        confirmOrderActivity.navigateToOrderDetail(orderId);
+                        confirmOrderActivity.navigateToOrderDetail(submitOrderReturn.getOrderId());
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
                         confirmOrderActivity.toastor.showSingletonToast(errorMessage);
+                        confirmOrderActivity.setConfirmBtnEnable(true);
                     }
 
                     @Override

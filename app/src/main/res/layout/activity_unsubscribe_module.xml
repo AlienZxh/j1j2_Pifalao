@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+    </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
@@ -35,7 +42,7 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
 
-            <TextView
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
                 android:id="@+id/individualBtn"
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
@@ -45,7 +52,12 @@
                 android:gravity="center"
                 android:text="@string/icon_mine"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}"/>
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <TextView
@@ -63,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="该便利店暂未开通此服务！"
+            android:text="该服务点暂未开通此服务！"
             android:textColor="@color/colorTextaaa"
             android:textSize="@dimen/text_big" />
 

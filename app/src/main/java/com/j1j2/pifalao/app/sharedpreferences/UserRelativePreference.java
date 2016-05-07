@@ -26,6 +26,7 @@ public interface UserRelativePreference {
     public static final String KEY_USER_IMG = "key_user_img";
     public static final String KEY_SHOW_DELIVERYAREA = "key_show_deliveryarea";
     public static final String KEY_SHOW_LOCATION = "key_show_location";
+    public static final String KEY_SHOW_HIGHLIGHT = "key_show_highlight";
 
     @KeyByString(KEY_ISFIRST)
     boolean getIsFirst(boolean mDefault);
@@ -118,4 +119,14 @@ public interface UserRelativePreference {
     @KeyByString(KEY_SHOW_LOCATION)
     @RemoveMethod
     UserRelativePreference removeShowLocation();
+
+    @KeyByString(KEY_SHOW_HIGHLIGHT)
+    boolean getShowHighLight(boolean mDefault);
+
+    @KeyByString(KEY_SHOW_HIGHLIGHT)
+    UserRelativePreference setShowHighLight(boolean showHighLight);
+
+    @KeyByString(KEY_SHOW_HIGHLIGHT)
+    @RemoveMethod
+    UserRelativePreference removeShowHighLight();
 }

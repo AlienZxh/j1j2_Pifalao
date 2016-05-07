@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
 import com.j1j2.common.view.scrollablelayout.ScrollableLayout;
 import com.j1j2.data.model.FreightType;
@@ -23,8 +22,10 @@ import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.LogStateEvent;
+import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityDeliveryhomeBinding;
@@ -34,10 +35,8 @@ import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.Deliv
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
 import com.nineoldandroids.view.ViewHelper;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ListHolder;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.orhanobut.logger.Logger;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -85,6 +84,8 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     DialogPlus areasDialog;
     ViewDeliveryAreasBinding areasDialogBinding;
 
+    UnReadInfoManager unReadInfoManager = null;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_deliveryhome);
@@ -95,6 +96,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
+        //___________________________________________________
         areasDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_delivery_areas, null, false);
         areasDialogBinding.areasList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         areasDialogBinding.areasList.setAdapter(new DeliveryAreasAdapter(Arrays.asList(servicePoint.getServiceAreas() != null ? servicePoint.getServiceAreas().split("\\;") : new String[]{})));
@@ -107,8 +109,6 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
                 .setContentBackgroundResource(R.color.colorTransparent)
                 .setGravity(Gravity.CENTER)
                 .create();
-
-
         areasDialogBinding.confirm.setOnClickListener(this);
         //____________________________________________________________________
         binding.scrollableLayout.setOnScrollListener(this);
@@ -174,11 +174,15 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
         if (event.isLogin()) {
             shopCart = MainAplication.get(this).getUserComponent().shopCart();
             binding.setShopCart(shopCart);
+            unReadInfoManager = MainAplication.get(this).getUserComponent().unReadInfoManager();
+            binding.setUnReadInfoManager(unReadInfoManager);
+            BackGroundService.updateUnRead(this);
         } else {
             if (shopCart != null)
                 shopCart.clear();
         }
     }
+
 
     @Override
     public void OnAreaItemClick() {
@@ -284,6 +288,6 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onScroll(int currentY, int maxY) {
         ViewHelper.setTranslationY(binding.head, (float) (currentY * 0.5));
-
+        Logger.d("onScroll currentY " + currentY + " maxY " + maxY);
     }
 }

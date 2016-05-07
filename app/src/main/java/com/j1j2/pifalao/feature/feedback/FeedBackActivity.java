@@ -21,6 +21,7 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_feedback);
         binding.backBtn.setOnClickListener(this);
+        binding.commitBtn.setOnClickListener(this);
     }
 
     @Override
@@ -32,5 +33,17 @@ public class FeedBackActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
+        if (v == binding.commitBtn) {
+            if (binding.adviceTitleEdit.getText().toString().length() <= 0) {
+                toastor.showSingletonToast("标题不能为空");
+                return;
+            }
+            if (binding.adviceContentEdit.getText().toString().length() <= 0) {
+                toastor.showSingletonToast("内容不能为空");
+                return;
+            }
+            toastor.showSingletonToast("提交成功，您的宝贵意见是我们的改进的方向");
+            finish();
+        }
     }
 }

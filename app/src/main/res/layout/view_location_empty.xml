@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30px"
-        android:text="本区域暂无便利店"
+        android:text="本区域暂无服务点"
         android:textColor="@color/colorGrayDEDEDE"
         android:textSize="30px" />
 </com.zhy.autolayout.AutoLinearLayout>

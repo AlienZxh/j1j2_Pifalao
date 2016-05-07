@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.j1j2.pifalao.app.event.NetWorkEvent;
-import com.litesuits.common.assist.Network;
+import com.j1j2.common.util.Network;
 
 import org.greenrobot.eventbus.EventBus;
 

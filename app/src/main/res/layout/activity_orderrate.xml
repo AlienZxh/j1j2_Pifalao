@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="orderSimple"
+            type="com.j1j2.data.model.OrderSimple" />
+    </data>
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="订单评价"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成交时间："
+                android:textColor="@color/colorText999"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderSimple.OrderSubmitTimeStr}"
+                android:textColor="@color/colorText999"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:text="订单商品"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:background="@color/colorGrayEDEDED" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/orderList"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_biger"
+            android:layout_marginBottom="@dimen/padding_noraml"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_noraml" />
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="商品评价"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <io.techery.properratingbar.ProperRatingBar
+                android:id="@+id/foodTaste"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                app:prb_clickable="true"
+                app:prb_defaultRating="5"
+                app:prb_tickNormalDrawable="@drawable/ic_star_normal"
+                app:prb_tickSelectedDrawable="@drawable/ic_star_selected"
+                app:prb_tickSpacing="5dp"
+                app:prb_totalTicks="5" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="@drawable/content_conner_bg"
+            android:gravity="top"
+            android:hint="写点评价吧，对其他人帮助很大哦~"
+            android:maxLines="5"
+            android:padding="10px"
+            android:textColor="@color/colorText333"
+            android:textColorHint="@color/colorGrayCCCCCC"
+            android:textSize="@dimen/text_big" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_biger"
+            android:text="服务评价"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:background="@color/colorGrayEDEDED" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="服务态度"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <io.techery.properratingbar.ProperRatingBar
+                android:id="@+id/serviceAttitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                app:prb_clickable="true"
+                app:prb_defaultRating="5"
+                app:prb_tickNormalDrawable="@drawable/ic_star_normal"
+                app:prb_tickSelectedDrawable="@drawable/ic_star_selected"
+                app:prb_tickSpacing="5dp"
+                app:prb_totalTicks="5" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="物流速度"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <io.techery.properratingbar.ProperRatingBar
+                android:id="@+id/deliverSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                app:prb_clickable="true"
+                app:prb_defaultRating="5"
+                app:prb_tickNormalDrawable="@drawable/ic_star_normal"
+                app:prb_tickSelectedDrawable="@drawable/ic_star_selected"
+                app:prb_tickSpacing="5dp"
+                app:prb_totalTicks="5" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <TextView
+            android:id="@+id/rateBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_marginLeft="@dimen/padding_biger"
+            android:layout_marginRight="@dimen/padding_biger"
+            android:layout_marginTop="@dimen/padding_biger"
+            android:background="@drawable/orange_conner_btn_selector"
+            android:gravity="center"
+            android:text="提交评价"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -11,7 +11,7 @@ import com.j1j2.data.model.City;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentSupplierBinding;
-import com.litesuits.common.assist.Network;
+import com.j1j2.common.util.Network;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;

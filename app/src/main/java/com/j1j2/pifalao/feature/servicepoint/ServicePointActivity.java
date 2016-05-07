@@ -1,10 +1,12 @@
 package com.j1j2.pifalao.feature.servicepoint;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.baidu.location.BDLocation;
@@ -66,18 +68,36 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
         MainAplication.get(this).getAppComponent().plus(new ServicePointModule(this, servicePoint)).inject(this);
     }
 
+    private void showCallDialog() {
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setNegativeButton("取消", null)
+                .setMessage("确认拨打： " + servicePoint.getMobile() + "？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PackageManager pkm = getPackageManager();
+                        boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                                == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+                        if (has_permission) {
+                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+                            startActivity(intent);
+                        } else {
+                            toastor.showSingletonToast("没有拨打电话权限");
+                        }
+                    }
+                })
+                .create();
+        messageDialog.show();
+    }
+
     @Override
     public void onClick(View v) {
         if (v == binding.callBtn) {
-            PackageManager pkm = this.getPackageManager();
-            boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-            if (has_permission) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
-                startActivity(intent);
-            } else {
-                toastor.showSingletonToast("没有拨打电话权限");
-            }
+            showCallDialog();
         }
         if (v == binding.navigationBtn) {
             if (location == null) {

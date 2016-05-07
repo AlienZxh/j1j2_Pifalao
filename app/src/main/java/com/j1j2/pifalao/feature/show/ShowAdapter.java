@@ -19,9 +19,11 @@ import java.util.List;
 public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ShowViewHolder> {
 
     private String[] urls;
+    private int showType;
 
-    public ShowAdapter(String[] urls) {
+    public ShowAdapter(String[] urls, int showType) {
         this.urls = urls;
+        this.showType = showType;
     }
 
     @Override
@@ -54,6 +56,13 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ShowViewHolder
 
         @Override
         public void bind(@NonNull String data, int position) {
+
+            binding.setShowType(showType);
+            if (showType == 1)
+                binding.setPosition(position - 1);
+            else
+                binding.setPosition(position);
+
             binding.setUrl(BuildConfig.IMAGE_URL + data);
         }
     }

@@ -7,6 +7,8 @@ import android.view.View;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityShowBinding;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
@@ -53,10 +55,16 @@ public class ShowActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initViews() {
-        binding.title.setText(activityType == SERVICEPOINT ? "批发佬便利店展示" : "批发佬仓库展示");
+        binding.title.setText(activityType == SERVICEPOINT ? "批发佬服务点展示" : "批发佬仓库展示");
 
         binding.showList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.showList.setAdapter(new ShowAdapter(activityType == SERVICEPOINT ? servicepoints : stores));
+        binding.showList.setAdapter(new ShowAdapter(activityType == SERVICEPOINT ? servicepoints : stores, activityType));
+        binding.showList.setClipToPadding(false);
+        binding.showList.setPadding(AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentHeightSize(20));
+        binding.showList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .colorResId(R.color.colorTransparent)
+                .size(AutoUtils.getPercentHeightSize(20))
+                .build());
     }
 
     @Override

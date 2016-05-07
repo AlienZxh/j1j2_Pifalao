@@ -41,6 +41,8 @@ import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerComponent;
 import com.j1j2.pifalao.feature.ordermanager.di.OrderManagerModule;
 import com.j1j2.pifalao.feature.orderproducts.di.OrderProductsComponent;
 import com.j1j2.pifalao.feature.orderproducts.di.OrderProductsModule;
+import com.j1j2.pifalao.feature.orderrate.di.OrderRateComponent;
+import com.j1j2.pifalao.feature.orderrate.di.OrderRateModule;
 import com.j1j2.pifalao.feature.orders.di.OrdersComponent;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeComponent;
@@ -114,4 +116,6 @@ public interface UserComponent {
     VipHomeComponent plus(VipHomeModule vipHomeModule);
 
     OfflineOrdersComponent plus(OfflineOrdersModule offlineOrdersModule);
+    
+    OrderRateComponent plus(OrderRateModule orderRateModule);
 }

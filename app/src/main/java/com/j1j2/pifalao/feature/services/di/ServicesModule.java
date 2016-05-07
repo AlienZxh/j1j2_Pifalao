@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.services.di;
 
 import com.j1j2.data.http.api.ServicePointApi;
+import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.ServicePoint;
@@ -59,7 +60,13 @@ public class ServicesModule {
 
     @Provides
     @ActivityScope
-    ServicesViewModule servicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi) {
-        return new ServicesViewModule(servicesActivity, servicePointApi, servicePoint, userVipApi, userLoginApi);
+    SystemAssistApi systemAssistApi(Retrofit retrofit) {
+        return retrofit.create(SystemAssistApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ServicesViewModule servicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi,SystemAssistApi systemAssistApi) {
+        return new ServicesViewModule(servicesActivity, servicePointApi, servicePoint, userVipApi, userLoginApi,systemAssistApi);
     }
 }

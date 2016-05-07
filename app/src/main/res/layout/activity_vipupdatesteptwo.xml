@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44px"
                 android:paddingLeft="@dimen/padding_noraml"
-                android:text="1、VIP会员可在批发佬便利店进行激活；"
+                android:text="1、VIP会员可在批发佬服务点进行激活；"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 

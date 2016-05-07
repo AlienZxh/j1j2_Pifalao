@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -87,7 +86,7 @@
                     android:paddingBottom="28px"
                     android:paddingTop="28px">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
+                    <com.github.siyamed.shapeimageview.RoundedImageView
                         android:id="@+id/userImg"
                         android:layout_width="154px"
                         android:layout_height="154px"
@@ -95,10 +94,9 @@
                         android:layout_marginRight="@dimen/padding_noraml"
                         app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}"
                         app:layout_auto_basewidth="height"
-                        fresco:placeholderImage="@drawable/user_head_img"
-                        fresco:roundedCornerRadius="5dp"
-                        fresco:roundingBorderColor="@color/colorGrayDEDEDE"
-                        fresco:roundingBorderWidth="1px" />
+                        app:siBorderColor="@color/colorGrayDEDEDE"
+                        app:siBorderWidth="1px"
+                        app:siRadius="5dp" />
 
                     <com.zhy.autolayout.AutoLinearLayout
                         android:layout_width="match_parent"
@@ -144,8 +142,6 @@
                                 android:textSize="@dimen/text_normal"
                                 app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}" />
                         </com.zhy.autolayout.AutoLinearLayout>
-
-
                     </com.zhy.autolayout.AutoLinearLayout>
                 </com.zhy.autolayout.AutoLinearLayout>
 
@@ -319,7 +315,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="便利店扫描支付，享受更多会员福利！"
+                                android:text="服务点扫描支付，享受更多会员福利！"
                                 android:textColor="@color/colorTextaaa"
                                 android:textSize="@dimen/text_normal" />
                         </com.zhy.autolayout.AutoLinearLayout>
@@ -401,7 +397,7 @@
                         app:badge_bgColor="@color/colorRed"
                         app:badge_gravity="rightCenter"
                         app:badge_textSize="12sp"
-                        app:showNum="@{unReadInfoManager.unReadInfo.UnReadOrderCount}" />
+                        app:showNum="@{unReadInfoManager.unReadOrderCount}" />
 
                     <TextView
                         fontPath="iconfont/iconfont.ttf"
@@ -563,7 +559,7 @@
                         app:badge_bgColor="@color/colorRed"
                         app:badge_gravity="rightCenter"
                         app:badge_textSize="12sp"
-                        app:showNum="@{unReadInfoManager.unReadInfo.UnReadPushMessageCount}" />
+                        app:showNum="@{unReadInfoManager.unReadPushMessageCount}" />
 
                     <TextView
                         fontPath="iconfont/iconfont.ttf"
@@ -616,7 +612,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="@dimen/padding_noraml"
-                        android:text="@{&quot;&quot;+unReadInfoManager.unReadInfo.UserFavoritesCount}"
+                        android:text="@{&quot;&quot;+unReadInfoManager.userFavoritesCount}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
 

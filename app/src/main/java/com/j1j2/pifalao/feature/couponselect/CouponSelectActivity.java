@@ -73,6 +73,8 @@ public class CouponSelectActivity extends BaseActivity implements View.OnClickLi
 
         setAdapter(coupons);
 
+        if (coupons == null || coupons.size() <= 0)
+            binding.selectBtn.setVisibility(View.GONE);
     }
 
     public void setAdapter(List<Coupon> couponList) {

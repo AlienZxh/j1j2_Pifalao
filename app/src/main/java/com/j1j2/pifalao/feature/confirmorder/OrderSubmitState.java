@@ -17,6 +17,8 @@ public class OrderSubmitState {
 
     public final int ModuleId;//服务模块
 
+    public  int OrderPayType;
+
     public ObservableField<FreightType> FreightTypeDetail;// 选择的运费方式  2:自提  5：送货上门 通过接口查询
 
     public ObservableField<Address> AddressDetail;// 用户选择的地址的主键编号
