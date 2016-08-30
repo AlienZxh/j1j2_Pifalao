@@ -20,6 +20,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  */
 @RequireBundler
 public class ProductDetailParamsFragment extends BaseFragment {
+
+    @Override
+    protected String getFragmentName() {
+        return "ProductDetailParamsFragment";
+    }
+
     FragmentProductdetailParamsBinding binding;
 
     @Arg

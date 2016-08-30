@@ -120,42 +120,6 @@
                     android:background="@drawable/dash_divider"
                     android:layerType="software" />
 
-
-                <com.zhy.autolayout.AutoLinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
-                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
-                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
-                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="14px"
-                        android:gravity="center_vertical"
-                        android:text="可提供的服务："
-                        android:textColor="@color/colorText999"
-                        android:textSize="@dimen/text_big" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{servicePointViewModel.moduletr}"
-                        android:textColor="@color/colorText2a2a2a"
-                        android:textSize="@dimen/text_biger" />
-
-                </com.zhy.autolayout.AutoLinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
-                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
-                    android:background="@drawable/dash_divider"
-                    android:layerType="software" />
-
                 <com.zhy.autolayout.AutoRelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,6 +168,43 @@
                         android:textSize="@dimen/icon_normal"
                         app:onClickListener="@{servicePointViewModel.servicePointActivity}" />
                 </com.zhy.autolayout.AutoRelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="可提供的服务："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{servicePointViewModel.moduletr}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
 
                 <View
                     android:layout_width="match_parent"

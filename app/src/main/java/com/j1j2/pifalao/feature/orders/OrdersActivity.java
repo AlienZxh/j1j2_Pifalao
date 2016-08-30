@@ -47,6 +47,7 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orders);
+        binding.setOrderType(orderType);
         binding.setOrdersViewModel(ordersViewModel);
         binding.orderList.getRecyclerView().setClipToPadding(false);
         binding.orderList.getRecyclerView().setPadding(0, AutoUtils.getPercentHeightSize(10), 0, AutoUtils.getPercentHeightSize(10));
@@ -145,6 +146,11 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     public void onCommentPointIconClickListener(View view, OrderSimple orderSimple, int position) {
 
+    }
+
+    @Override
+    public void onOrderPayClickListener(View view, OrderSimple orderSimple, int position) {
+        navigate.navigateToOnlineOrderPay(this, null, false, orderSimple.getOrderId(), orderSimple.getOrderNO(), false);
     }
 
     @Override

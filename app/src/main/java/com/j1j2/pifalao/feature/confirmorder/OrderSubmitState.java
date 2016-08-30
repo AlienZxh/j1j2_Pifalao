@@ -17,7 +17,7 @@ public class OrderSubmitState {
 
     public final int ModuleId;//服务模块
 
-    public  int OrderPayType;
+    public ObservableInt OrderPayType;
 
     public ObservableField<FreightType> FreightTypeDetail;// 选择的运费方式  2:自提  5：送货上门 通过接口查询
 
@@ -32,10 +32,10 @@ public class OrderSubmitState {
 
     public String OrderMemo;// 订单其它备注
 
-    public OrderSubmitState(int moduleId,ServicePoint servicePoint) {
+    public OrderSubmitState(int moduleId, ServicePoint servicePoint) {
         ModuleId = moduleId;
         this.FreightTypeDetail = new ObservableField<>();
-
+        this.OrderPayType = new ObservableInt();
         this.ServicePointDetail = new ObservableField<>(servicePoint);
         this.AddressDetail = new ObservableField<>();
 

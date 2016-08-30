@@ -15,6 +15,7 @@ import com.j1j2.data.model.SubmitOrderReturn;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.OrderSubmitBody;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ConfirmOrderSuccessEvent;
@@ -61,10 +62,10 @@ public class ConfirmOrderViewModel {
         this.shopCartItems = shopCartItems;
     }
 
-    public void commitOrder(OrderSubmitState orderSubmitState) {
+    public void commitOrder(final OrderSubmitState orderSubmitState) {
         OrderSubmitBody orderSubmitBody = new OrderSubmitBody();
         orderSubmitBody.setModuleId(orderSubmitState.ModuleId);
-        orderSubmitBody.setOrderPayType(orderSubmitState.OrderPayType);
+        orderSubmitBody.setOrderPayType(orderSubmitState.OrderPayType.get());
         orderSubmitBody.setFreightID(orderSubmitState.FreightTypeDetail.get().getId());
 
         orderSubmitBody.setServicePointId(orderSubmitState.ServicePointDetail.get() == null ? 0 : orderSubmitState.ServicePointDetail.get().getServicePointId());
@@ -89,7 +90,10 @@ public class ConfirmOrderViewModel {
                         EventBus.getDefault().post(new ConfirmOrderSuccessEvent());
                         EventBus.getDefault().post(new ShopCartChangeEvent());
 //                        confirmOrderActivity.navigateToSuccess(orderId);
-                        confirmOrderActivity.navigateToOrderDetail(submitOrderReturn.getOrderId());
+                        if (orderSubmitState.OrderPayType.get() == Constant.OrderPayType.CASHONDELIVERY)
+                            confirmOrderActivity.navigateToOrderDetail(submitOrderReturn.getOrderId());
+                        else
+                            confirmOrderActivity.navigateToOnlineOrderPay(submitOrderReturn.getOrderId(), submitOrderReturn.getOrderNO());
                     }
 
                     @Override

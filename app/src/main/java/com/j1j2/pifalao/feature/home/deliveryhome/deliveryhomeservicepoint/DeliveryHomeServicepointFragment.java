@@ -40,6 +40,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  */
 @RequireBundler
 public class DeliveryHomeServicepointFragment extends BaseFragment implements View.OnClickListener, ScrollableHelper.ScrollableContainer {
+
+    @Override
+    protected String getFragmentName() {
+        return "DeliveryHomeServicepointFragment";
+    }
+
     FragmentDeliveryhomeServicepointBinding binding;
 
     @Arg
@@ -127,6 +133,6 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
 
     @Override
     public View getScrollableView() {
-        return binding.scrollView;
+        return binding.idStickynavlayoutInnerscrollview;
     }
 }

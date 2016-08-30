@@ -17,6 +17,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseFragment;
+import com.j1j2.pifalao.app.base.LazyFragment;
 import com.j1j2.pifalao.app.event.VipUpdateSuccessEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
@@ -39,11 +40,17 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-18.
  */
 @RequireBundler
-public class IndividualCenterFragment extends BaseFragment implements View.OnClickListener {
+public class IndividualCenterFragment extends LazyFragment implements View.OnClickListener {
+
+
+    @Override
+    protected String getFragmentName() {
+        return "IndividualCenterFragment";
+    }
+
     public static final int FROM_INDIVIDUALCENTERACTIVITY = 0;
 
     public static final int FROM_MAINACTIVITY = 1;
-
 
     private final int REQUEST_CODE_CAMERA = 1000;
     private final int REQUEST_CODE_GALLERY = 1001;
@@ -119,6 +126,12 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     }
 
     @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+        individualCenterViewModel.queryUser();
+    }
+
+    @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_individualcenter, container, false);
         binding.setIndividualCenterViewModel(individualCenterViewModel);
@@ -129,8 +142,6 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     @Override
     protected void initViews() {
         individualCenterViewModel.queryAllCoupons(userRelativePreference.getSelectedModule(null));
-        //___________________________________________
-        individualCenterViewModel.queryUser();
         //___________________________________________________________
         Glide.with(IndividualCenterFragment.this)
                 .load(Uri.parse("file://" + userRelativePreference.getUserImg(null)))
@@ -165,10 +176,10 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     }
 
 
-    @Subscribe
-    public void onVipUpdateSuccessEvent(VipUpdateSuccessEvent event) {
-        individualCenterViewModel.queryUser();
-    }
+//    @Subscribe
+//    public void onVipUpdateSuccessEvent(VipUpdateSuccessEvent event) {
+//        individualCenterViewModel.queryUser();
+//    }
 
     @Override
     public void onDestroy() {
@@ -180,7 +191,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        if (v == binding.orderManager || v == binding.coustomBtn) {
+        if (v == binding.orderManager ) {
             listener.navigateToOrderManager();
         }
         if (v == binding.qrCode) {
@@ -192,7 +203,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         if (v == binding.walletManager) {
             listener.navigateToWalletManager();
         }
-        if (v == binding.massageManager || v == binding.saveBtn) {
+        if (v == binding.massageManager ) {
             listener.navigateToMessages();
         }
         if (v == binding.collectManager) {
@@ -211,8 +222,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
             getActivity().onBackPressed();
         if (v == binding.userImg)
             messageDialog.show();
-        if (v == binding.normalCoupon)
-            listener.navigateToNormalCoupon();
+
 
     }
 }

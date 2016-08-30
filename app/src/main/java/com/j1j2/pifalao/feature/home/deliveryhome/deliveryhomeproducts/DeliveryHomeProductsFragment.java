@@ -51,6 +51,11 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class DeliveryHomeProductsFragment extends BaseFragment implements DeliverySortAdapter.OnSortClickListener, SwipeRefreshLayout.OnRefreshListener, OnMoreListener, DeliveryProductsAdapter.OnProductClickListener, ScrollableHelper.ScrollableContainer {
 
+    @Override
+    protected String getFragmentName() {
+        return "DeliveryHomeProductsFragment";
+    }
+
     public interface DeliveryHomeProductsFragmentListener {
         void navigateToProductDetail(View view, ProductSimple productSimple, int position);
 
@@ -132,11 +137,11 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     protected void initViews() {
         binding.setDeliveryProductsViewModel(deliveryProductsViewModel);
         binding.parentSortList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.childSortList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.childSortList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).colorResId(R.color.colorGrayEDEDED).sizeResId(R.dimen.height_1px).showLastDivider().build());
-        binding.childSortList.getRecyclerView().setClipToPadding(false);
-        binding.childSortList.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(110));
-        binding.childSortList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
+        binding.idStickynavlayoutInnerscrollview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.idStickynavlayoutInnerscrollview.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).colorResId(R.color.colorGrayEDEDED).sizeResId(R.dimen.height_1px).showLastDivider().build());
+        binding.idStickynavlayoutInnerscrollview.getRecyclerView().setClipToPadding(false);
+        binding.idStickynavlayoutInnerscrollview.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(110));
+        binding.idStickynavlayoutInnerscrollview.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
 //        binding.childSortList.setRefreshListener(this);
 
         deliveryProductsViewModel.queryProductSort(module.getWareHouseModuleId());
@@ -163,7 +168,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
 
     public void setAdapter(DeliveryProductsAdapter deliveryProductsAdapter) {
-        binding.childSortList.setAdapter(deliveryProductsAdapter);
+        binding.idStickynavlayoutInnerscrollview.setAdapter(deliveryProductsAdapter);
         deliveryProductsAdapter.setOnProductClickListener(this);
     }
 
@@ -214,12 +219,12 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     }
 
     public void showLoad() {
-        binding.childSortList.showProgress();
+        binding.idStickynavlayoutInnerscrollview.showProgress();
     }
 
     public void hideLoad() {
-        binding.childSortList.hideProgress();
-        binding.childSortList.showRecycler();
+        binding.idStickynavlayoutInnerscrollview.hideProgress();
+        binding.idStickynavlayoutInnerscrollview.showRecycler();
     }
 
     public void queryProducts(boolean isRefresh, ProductSort parentSort, ProductSort childSort, int position) {
@@ -234,12 +239,12 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     }
 
     public void setLoadMoreBegin() {
-        binding.childSortList.setupMoreListener(this, 1);
+        binding.idStickynavlayoutInnerscrollview.setupMoreListener(this, 1);
     }
 
     public void setLoadMoreComplete() {
-        binding.childSortList.hideMoreProgress();
-        binding.childSortList.removeMoreListener();
+        binding.idStickynavlayoutInnerscrollview.hideMoreProgress();
+        binding.idStickynavlayoutInnerscrollview.removeMoreListener();
     }
 
     @Override

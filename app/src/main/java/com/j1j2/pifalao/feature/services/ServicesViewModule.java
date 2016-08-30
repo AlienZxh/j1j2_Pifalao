@@ -1,5 +1,7 @@
 package com.j1j2.pifalao.feature.services;
 
+import android.graphics.Typeface;
+
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -16,6 +18,8 @@ import com.j1j2.data.model.requestbody.LoginBody;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.orhanobut.logger.Logger;
+import com.trello.rxlifecycle.ActivityEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,6 +62,7 @@ public class ServicesViewModule {
         this.userLoginApi = userLoginApi;
         this.systemAssistApi = systemAssistApi;
         this.modules = new ArrayList<>();
+//        Typeface typeface = Typeface.createFromFile(Constant.FilePath.saveFolder + Constant.FilePath.ttfFileName);
         this.servicesAdapter = new ServicesAdapter(modules);
     }
 
@@ -70,6 +75,7 @@ public class ServicesViewModule {
                     @Override
                     public Observable<Module> call(WebReturn<List<Module>> listWebReturn) {
                         servicesActivity.setModules(listWebReturn.getDetail());
+
                         List<Module> moduleList = new ArrayList<Module>();
                         moduleList.addAll(listWebReturn.getDetail());
                         Module module = new Module();
@@ -83,20 +89,17 @@ public class ServicesViewModule {
                 })
                 .compose(servicesActivity.<Module>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnCompleted(new Action0() {
-                    @Override
-                    public void call() {
-                        servicesActivity.stopSearchAnimate();
-                    }
-                })
                 .subscribe(new DefaultSubscriber<Module>() {
 
                     @Override
                     public void onNext(Module module) {
                         super.onNext(module);
                         servicesAdapter.add(module);
-                        if (module.getModuleType() == Constant.ModuleType.MORE)
+                        if (module.getModuleType() == Constant.ModuleType.MORE){
+                            servicesActivity.launchFromUrl();
                             onCompleted();
+                        }
+
                     }
                 });
     }
@@ -158,14 +161,15 @@ public class ServicesViewModule {
             subscription = null;
         }
         subscription = Observable
-                .interval(0, 1, TimeUnit.MINUTES)
-                .compose(servicesActivity.<Long>bindToLifecycle())
+                .interval(0, 60, TimeUnit.SECONDS)
+                .compose(servicesActivity.<Long>bindUntilEvent(ActivityEvent.DESTROY))
                 .flatMap(new Func1<Long, Observable<WebReturn<String>>>() {
                     @Override
                     public Observable<WebReturn<String>> call(Long aLong) {
                         return userVipApi.queryLoginDimensionalCode();
                     }
                 })
+                .compose(servicesActivity.<WebReturn<String>>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<String>() {

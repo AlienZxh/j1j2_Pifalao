@@ -1,7 +1,7 @@
 package com.j1j2.pifalao.app;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -18,6 +18,8 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.PlatformConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.BufferedReader;
@@ -34,12 +36,13 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
+import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 
 /**
  * Created by alienzxh on 16-3-4.
  */
-public class MainAplication extends Application {
+public class MainAplication extends MultiDexApplication {
 
     private RefWatcher refWatcher;
     private AppComponent appComponent;
@@ -81,10 +84,12 @@ public class MainAplication extends Application {
 //            initAndroidDevMetrics();
             initBaiduMap();
             initComponent();
+            initUmeng();
             initJPush();
             initLeakCanary();
             initOkHttpUtil();
             initGalleryFinal();
+
         }
     }
 
@@ -110,6 +115,8 @@ public class MainAplication extends Application {
     private void initOkHttpUtil() {
         if (BuildConfig.DEBUG)
             OkHttpUtils.getInstance(okHttpClient).debug("pifalao");
+        else
+            OkHttpUtils.getInstance(okHttpClient);
         Logger.d("OkHttpUtil初始化完成");
     }
 
@@ -180,12 +187,25 @@ public class MainAplication extends Application {
         GlideImageLoader imageloader = new GlideImageLoader();
         CoreConfig coreConfig = new CoreConfig.Builder(this, imageloader, theme)
                 .setFunctionConfig(functionConfig)
+                .setEditPhotoCacheFolder(new File(Constant.FilePath.editPhotoCacheFolder))
+                .setTakePhotoFolder(new File(Constant.FilePath.takePhotoFolder))
                 .setPauseOnScrollListener(new GlidePauseOnScrollListener(false, true))
                 .build();
         GalleryFinal.init(coreConfig);
         Logger.d("GalleryFinal初始化完成");
     }
 
+    private void initUmeng() {
+        MobclickAgent.openActivityDurationTrack(false);
+        MobclickAgent.setDebugMode(BuildConfig.DEBUG);
+        //_________________________________________
+        PlatformConfig.setWeixin("wxaaf65494c086b0d3", "5acdc3455a4bcbbdd4610177188af355");
+        //微信 appid appsecret
+        PlatformConfig.setSinaWeibo("3170884849","3acdf3a8db1e704b0b9de0418a951e52");
+        //新浪微博 appkey appsecret
+        PlatformConfig.setQQZone("1103829290", "BAgqsmAnuefshU3a");
+        // QQ和Qzone appid appkey
+    }
 
     public AppComponent getAppComponent() {
         return appComponent;

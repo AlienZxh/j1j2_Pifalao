@@ -63,7 +63,7 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
     double lng;
     String userName;
     String userMobile;
-//    String city;
+    //    String city;
 //    String district;
 //    String addressLoction;
     String addressDetail;
@@ -80,6 +80,7 @@ public class AddAddressActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initViews() {
 //        initCitys();
+        initDatas();
     }
 
     public void initDatas() {

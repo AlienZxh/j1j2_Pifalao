@@ -18,12 +18,17 @@
     <color name="colorTransparent">#00FFFFFF</color>
 
     <color name="colorCityTag">#66666666</color>
+    <color name="colorCityOpenTag">#bf4A7534</color>
 
     <color name="colorText2a2a2a">#FF2A2A2A</color>
     <color name="colorText333">#FF333333</color>
+    <color name="colorText444">#FF444444</color>
     <color name="colorText666">#FF666666</color>
     <color name="colorText999">#FF999999</color>
     <color name="colorTextaaa">#FFAAAAAA</color>
+    <color name="colorTextccc">#FFcccccc</color>
+
+    <color name="colorTextbf">#FFbfbfbf</color>
 
     <color name="colorDividerE9E9E9">#FFE9E9E9</color>
     <color name="colorGrayE2E2E2">#FFE2E2E2</color>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text_defaulttab">28sp</dimen>
+    <dimen name="thickness_indicator">12px</dimen>
+    <dimen name="width_indicator">200dp</dimen>
+</resources>

@@ -28,15 +28,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/padding_small"
-        android:paddingTop="@dimen/padding_noraml">
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayE8E8E8" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="106px"
-            android:orientation="horizontal"
-            android:visibility="@{moduleType!=Constant.ModuleType.DELIVERY?View.VISIBLE: View.GONE}">
+            android:layout_marginBottom="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:orientation="horizontal">
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="0dp"
@@ -129,90 +133,18 @@
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="64px"
-            android:layout_marginBottom="@dimen/padding_noraml"
-            android:layout_marginTop="@dimen/padding_noraml"
-            android:gravity="center_vertical"
-            android:visibility="@{moduleType==Constant.ModuleType.DELIVERY?View.VISIBLE: View.GONE}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_noraml"
-                android:text="规格："
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/unitList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="64px"
-            android:layout_marginTop="@dimen/padding_noraml"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/padding_noraml"
-            android:paddingRight="@dimen/padding_noraml"
-            android:visibility="@{moduleType==Constant.ModuleType.DELIVERY?View.VISIBLE: View.GONE}">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="价格："
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="￥"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_big" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{&quot;&quot;+price.get().MemberPrice}"
-                android:textColor="@color/colorAccent"
-                android:textSize="36px" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{&quot;元/&quot;+price.get().Unit}"
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_normal" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <com.j1j2.common.view.quantityview.QuantityView
-                android:id="@+id/quantityview"
-                android:layout_width="240px"
-                android:layout_height="match_parent" />
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginBottom="@dimen/padding_left_time_tag"
-            android:layout_marginTop="@dimen/padding_noraml"
+
             android:background="@drawable/dash_divider"
             android:layerType="software" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="44px"
+            android:layout_marginBottom="@dimen/padding_small"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 

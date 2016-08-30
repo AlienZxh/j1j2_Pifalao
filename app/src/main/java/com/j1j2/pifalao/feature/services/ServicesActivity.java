@@ -1,11 +1,16 @@
 package com.j1j2.pifalao.feature.services;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.Gravity;
@@ -14,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -42,6 +48,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.j1j2.common.util.QRCodeUtils;
 import com.j1j2.common.util.ScreenUtils;
+import com.j1j2.common.util.UrlUtils;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.SystemNotice;
@@ -70,6 +77,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -84,11 +93,11 @@ import zhy.com.highlight.HighLight;
  * Created by alienzxh on 16-3-12.
  */
 @RequireBundler
-public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener, View.OnClickListener, OnDismissListener, OnGetRoutePlanResultListener {
+public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener, View.OnClickListener, OnDismissListener {
 
     ActivityServicesBinding binding;
 
-    @Arg
+    @Inject
     ServicePoint servicePoint;
 
     @Inject
@@ -97,20 +106,11 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     @Inject
     UserRelativePreference userRelativePreference;
 
-    Marker servicepointMark;
     MarkerOptions servicepointMarkOptions;
 
     ViewQrcodeBinding qrBinding;
     DialogPlus qrDialog;
 
-    RoutePlanSearch routePlanSearch = RoutePlanSearch.newInstance();
-    PlanNode enNode;
-    int nodeIndex = -1; // 节点索引,供浏览节点时使用
-    RouteLine route = null;
-    OverlayManager routeOverlay = null;
-
-    CircleOptions circleOverlayOptions = null;
-    Circle circleOverlay = null;
 
     float rememberScreenBrightness = 0.0f;
 
@@ -120,17 +120,18 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     List<Module> modules;
 
     BDLocation location;
-    boolean isFirst = true;
 
     UnReadInfoManager unReadInfoManager = null;
 
     HighLight highLight;
 
+
     @Override
     protected void initBinding() {
+
         binding = DataBindingUtil.setContentView(ServicesActivity.this, R.layout.activity_services);
         binding.setSercivepoint(servicePoint);
-        enNode = PlanNode.withLocation(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
+
     }
 
     @Override
@@ -148,7 +149,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         //______________________________________________________________________________________
         qrBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_qrcode, null, false);
         qrDialog = DialogPlus.newDialog(this).setGravity(Gravity.CENTER)
-                .setCancelable(false)
+                .setCancelable(true)
                 .setInAnimation(android.R.anim.fade_in)
                 .setOutAnimation(android.R.anim.fade_out)
                 .setContentHolder(new ViewHolder(qrBinding.getRoot()))
@@ -161,14 +162,18 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         //_______________________________________________________________________________________
         binding.moduleList.setLayoutManager(new GridLayoutManager(this, 3));
         ScaleInAnimator scaleInAnimator = new ScaleInAnimator();
-        scaleInAnimator.setAddDuration(800);
+        scaleInAnimator.setAddDuration(300);
         binding.moduleList.setItemAnimator(scaleInAnimator);
+
+
         binding.moduleList.setAdapter(servicesViewModule.getServicesAdapter());
         servicesViewModule.getServicesAdapter().setOnItemClickListener(this);
         servicesViewModule.queryServicePointServiceModules();
         binding.setOnClick(this);
         //__________________________________________________________________________________________
         servicesViewModule.querySystemNotice();
+        //_______________________________________________________________
+        navigate.navigateToMemberHomeActivity(this, null, false);
     }
 
     public void showLocationDialog(final ServicePoint servicePoint) {
@@ -185,7 +190,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                         userRelativePreference.setSelectedServicePoint(servicePoint);
                         userRelativePreference.setShowDeliveryArea(true);
                         userRelativePreference.setShowLocation(true);
-                        navigate.navigateToServicesActivity(ServicesActivity.this, null, true, servicePoint);
+                        navigate.navigateToServicesActivity(ServicesActivity.this, null, true);
 //                        navigate.navigateToLocationActivity(ServicesActivity.this, null, true, userRelativePreference.getSelectedCity(null));
                     }
                 })
@@ -193,23 +198,18 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         messageDialog.show();
     }
 
-    private void showExitDialog() {
+    public void showInvalidDialog() {
         if (messageDialog != null && messageDialog.isShowing())
             messageDialog.dismiss();
         messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认退出吗？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
+                .setMessage("无效的商品")
+                .setPositiveButton("知道了", null)
                 .create();
         messageDialog.show();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -218,53 +218,48 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             highLight.remove();
             highLight = null;
         } else
-            showExitDialog();
+            exitBy2Click();
     }
 
     public void setModules(List<Module> modules) {
         this.modules = modules;
+
     }
 
-    public void stopSearchAnimate() {
-        binding.radarImg.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                clearAnimImg();
+    public void launchFromUrl() {
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        if (uri != null) {
+//            Logger.e("moduleId "+uri.getQueryParameter("moduleId"));
+//            Logger.e("productMainId "+uri.getQueryParameter("productMainId"));
+            int moduleId = Integer.parseInt(uri.getQueryParameter("moduleId"));
+            int productMainId = Integer.parseInt(uri.getQueryParameter("productMainId"));
+            Module selectModule = null;
+            int size = modules.size();
+            for (int i = 0; i < size; i++) {
+                if (modules.get(i).getWareHouseModuleId() == moduleId) {
+                    selectModule = modules.get(i);
+                    break;
+                }
             }
-        }, 1800);
-    }
+            if (selectModule == null || !selectModule.isSubscribed()) {
+                showInvalidDialog();
 
-    private void clearAnimImg() {
-//        binding.radarImg.stopRotate(false);
-//        binding.radarImg.setVisibility(View.GONE);
-//        binding.radarBgImg.setVisibility(View.GONE);
-        binding.radarImg.stopRotate(false);
-        if (binding.radarImg != null)
-            binding.imgLayout.removeView(binding.radarImg);
-        if (binding.radarBgImg != null)
-            binding.imgLayout.removeView(binding.radarBgImg);
-        if (isLocationSuccess(location)) {
-//            circleOverlay(location);
-            if (routeOverlay == null) {
-                PlanNode stNode = PlanNode.withLocation(new LatLng(location.getLatitude(), location.getLongitude()));
-                routePlanSearch.drivingSearch((new DrivingRoutePlanOption())
-                        .from(stNode).to(enNode));
+            } else {
+                Intent[] intents = {getModuleIntent(selectModule), Bundler.productDetailActivity(productMainId).intent(this)};
+                startActivities(intents);
             }
 
-            if (isFirst && userRelativePreference.getShowLocation(true)) {
-                isFirst = false;
-                servicesViewModule.queryServicepointInCity(location, userRelativePreference.getSelectedCity(null), userRelativePreference.getSelectedServicePoint(null));
-                userRelativePreference.setShowLocation(false);
-            }
         }
-
     }
+
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
+
         Bundler.inject(this);
-        MainAplication.get(this).getAppComponent().plus(new ServicesModule(this, servicePoint)).inject(this);
+        MainAplication.get(this).getAppComponent().plus(new ServicesModule(this)).inject(this);
     }
 
     @Override
@@ -272,13 +267,14 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         getMapView().showZoomControls(false);
         getMapView().showScaleControl(true);
 
-        LatLng point = new LatLng(28.175983, 113.023015);
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 17.0f);
-        mBaiduMap.setMapStatus(u);
+//        LatLng point = new LatLng(28.175983, 113.023015);
+//        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 17.0f);
+//        mBaiduMap.setMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
 
-        routePlanSearch.setOnGetRoutePlanResultListener(this);
+        showMarker(servicePoint);
+
     }
 
 
@@ -351,17 +347,6 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        clearAnimImg();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        routePlanSearch.destroy();
-    }
 
     @Override
     protected MapView getMapView() {
@@ -371,31 +356,52 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     @Override
     public void onItemClickListener(View view, Module module, int position) {
-
-
         if (module.isSubscribed()) {
             if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
-                navigate.navigateToDeliveryHomeActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint, module);
+                navigate.navigateToDeliveryHomeActivity(this, null, false, servicePoint, module);
                 userRelativePreference.setSelectedModule(module);
             } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
-                navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
+                navigate.navigateToMainActivity(ServicesActivity.this, null, false, module, MainActivity.STORESTYLE);
                 userRelativePreference.setSelectedModule(module);
             } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
-                navigate.navigateToMainActivity(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
+                navigate.navigateToMainActivity(ServicesActivity.this, null, false, module, MainActivity.VEGETABLE);
                 userRelativePreference.setSelectedModule(module);
             } else if (module.getModuleType() == Constant.ModuleType.MORE) {
-                navigate.navigateToMoreModule(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, modules);
+                navigate.navigateToMoreModule(ServicesActivity.this, null, false, modules);
                 userRelativePreference.setSelectedModule(module);
             } else if (module.getModuleType() == Constant.ModuleType.VIP) {
                 if (MainAplication.get(this).isLogin()) {
-                    navigate.navigateToVipHome(ServicesActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+                    navigate.navigateToVipHome(ServicesActivity.this, null, false);
                     userRelativePreference.setSelectedModule(module);
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
+            } else if (module.getModuleType() == Constant.ModuleType.HOUSEKEEPING) {
+                navigate.navigateToHouseKeeping(ServicesActivity.this, null, false);
             }
-        } else
-            navigate.navigateToUnsubscribeModule(this, null, false);
+        } else {
+            if (module.getModuleType() == Constant.ModuleType.DELIVERY)
+                navigate.navigateToUnsubscribeDelivery(this, null, false);
+            else
+                navigate.navigateToUnsubscribeModule(this, null, false);
+
+        }
+    }
+
+    public Intent getModuleIntent(Module module) {
+        if (module.isSubscribed()) {
+            if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
+                return Bundler.deliveryHomeActivity(servicePoint, module).intent(this);
+            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+                return Bundler.mainActivity(module, MainActivity.STORESTYLE).intent(this);
+            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
+                return Bundler.mainActivity(module, MainActivity.VEGETABLE).intent(this);
+            } else if (module.getModuleType() == Constant.ModuleType.MORE) {
+                return Bundler.moreHomeActivity(modules).intent(this);
+            }
+        }
+        return Bundler.unsubscribeModuleActivity().intent(this);
+
     }
 
     @Override
@@ -435,11 +441,13 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     @Subscribe(sticky = true, threadMode = ThreadMode.POSTING)
     public void onLogStateChangeEvent(LogStateEvent event) {
         if (event.isLogin()) {
-            servicesViewModule.updateUserTerminalDetail(JPushInterface.getRegistrationID(this));
+            String jpushId = JPushInterface.getRegistrationID(this);
+            servicesViewModule.updateUserTerminalDetail(jpushId);
             unReadInfoManager = MainAplication.get(this).getUserComponent().unReadInfoManager();
             binding.setUnReadInfoManager(unReadInfoManager);
             BackGroundService.updateUnRead(this);
         }
+
     }
 
 
@@ -467,7 +475,6 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                     .build();
             if (mBaiduMap != null)
                 mBaiduMap.setMyLocationData(locData);
-
         }
 
 
@@ -488,78 +495,43 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         window.setAttributes(windowLp);
     }
 
-//    public void circleOverlay(BDLocation location) {
-//        if (circleOverlay != null) {
-//            circleOverlay.remove();
-//        }
-//        LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-//        circleOverlayOptions = new CircleOptions();
-//        circleOverlayOptions.center(point);
-//        circleOverlayOptions.radius(100);
-//        circleOverlayOptions.fillColor(0x3300ffff);
-//        circleOverlayOptions.stroke(new Stroke(1, 0xff00c8c8));
-//        circleOverlay = (Circle) mBaiduMap.addOverlay(circleOverlayOptions);
-//    }
 
-    @Override
-    public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
-        //获取步行线路规划结果
+    public void showMarker(ServicePoint servicePoint) {
+        BitmapDescriptor markIcon = BitmapDescriptorFactory
+                .fromResource(R.drawable.icon_servicepoint);
+        LatLng point = new LatLng(servicePoint.getLat(), servicePoint.getLng());
+        servicepointMarkOptions = new MarkerOptions()//
+                .position(point)//
+                .icon(markIcon)//
+                .draggable(false)//
+                .animateType(MarkerOptions.MarkerAnimateType.drop);
+        mBaiduMap.addOverlay(servicepointMarkOptions);
+
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 17.0f);
+        mBaiduMap.setMapStatus(u);
+
+        markIcon.recycle();
     }
 
-    @Override
-    public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
-        //获取公交换乘路径规划结果
-    }
 
-    @Override
-    public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
-        //获取驾车线路规划结果
-        if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
-            toastor.showSingletonToast("抱歉，未找到结果");
-        }
-        if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
-            // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
-            // result.getSuggestAddrInfo()
-            return;
-        }
-        if (drivingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
-            if (routeOverlay != null) {
-                routeOverlay.removeFromMap();
-            }
-            nodeIndex = -1;
-            route = drivingRouteResult.getRouteLines().get(0);
-            DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
-            routeOverlay = overlay;
-            mBaiduMap.setOnMarkerClickListener(overlay);
-            overlay.setData(drivingRouteResult.getRouteLines().get(0));
-            overlay.addToMap();
-            overlay.zoomToSpan();
+    private static Boolean isExit = false;
+
+    private void exitBy2Click() {
+        Timer tExit = null;
+        if (!isExit) {
+            isExit = true; // 准备退出
+            toastor.showSingletonToast("再按一次退出程序");
+
+            tExit = new Timer();
+            tExit.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false; // 取消退出
+                }
+            }, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
+        } else {
+            finish();
         }
     }
 
-    @Override
-    public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
-        //自行车
-    }
-
-    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
-
-        public MyDrivingRouteOverlay(BaiduMap baiduMap) {
-            super(baiduMap);
-        }
-
-        @Override
-        public BitmapDescriptor getStartMarker() {
-
-            return null;
-
-        }
-
-        @Override
-        public BitmapDescriptor getTerminalMarker() {
-
-            return BitmapDescriptorFactory.fromResource(R.drawable.icon_servicepoint);
-
-        }
-    }
 }

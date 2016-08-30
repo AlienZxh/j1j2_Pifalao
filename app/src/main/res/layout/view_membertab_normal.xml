@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/BadgeView"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:badge_bgColor="@color/colorAccent"
+    app:badge_gravity="rightTop"
+    app:badge_horizontalMargin="20dp"
+    app:badge_textSize="12sp"
+    tools:ignore="MissingPrefix">
+
+    <com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout
+        android:id="@+id/badgeFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_noraml"
+        android:paddingRight="@dimen/padding_noraml"
+        app:badge_bgColor="@color/colorRed"
+        app:badge_gravity="rightTop"
+        app:badge_horizontalMargin="0dp"
+        app:badge_textSize="12sp">
+
+        <TextView
+            android:id="@+id/icon"
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@drawable/maintab_icon_color"
+            android:textSize="@dimen/icon_hometab" />
+
+        <TextView
+            android:id="@+id/selsectIcon"
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@drawable/maintab_re_icon_color"
+            android:textSize="@dimen/icon_hometab" />
+
+    </com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textColor="@drawable/maintab_text_color"
+        android:textSize="@dimen/text_normal" />
+</com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout>

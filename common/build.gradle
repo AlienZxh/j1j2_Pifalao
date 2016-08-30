@@ -49,6 +49,7 @@ dependencies {
     compile commonDependencies.properRatingBar
     compile commonDependencies.glidetransformations
     compile commonDependencies.highlight
+    compile commonDependencies.multitypeview
 
     testCompile commonTestDependencies.junit
 }

@@ -43,6 +43,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         void onDetailClickListener(View view, OrderSimple orderSimple, int position, int selectpage);
 
+        void onOrderPayClickListener(View view, OrderSimple orderSimple, int position);
+
         void onServicePointIconClickListener(View view, OrderSimple orderSimple, int position);
 
         void onCancelPointIconClickListener(View view, OrderSimple orderSimple, int position);
@@ -126,6 +128,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 //                    if (v == binding.servicepoint) {
 //                        onOrdersClickListener.onServicePointIconClickListener(v, data, position);
 //                    }
+                    if(v==binding.pay){
+                        onOrdersClickListener.onOrderPayClickListener(v, data, position);
+                    }
+
                     if (v == binding.detail) {
                         onOrdersClickListener.onDetailClickListener(v, data, position, OrderDetailActivity.TIMELINE);
                     }

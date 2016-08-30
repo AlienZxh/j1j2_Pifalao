@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <variable
+            name="balanceRecord"
+            type="com.j1j2.data.model.BalanceRecord" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_noraml"
+        android:paddingTop="@dimen/padding_noraml">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/padding_noraml">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{StringUtils.getBalanceRecordStr(balanceRecord)}"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_biger" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                android:text="@{&quot;订单编号：&quot;+balanceRecord.OrderNO}"
+                android:textColor="@color/colorText999"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:gravity="center"
+            android:text="@{balanceRecord.Amount&gt;0?(&quot;+&quot;+balanceRecord.Amount):(&quot;&quot;+balanceRecord.Amount)}"
+            android:textColor="@{balanceRecord.Amount&gt;0?@color/colorRed:@color/colorText999}"
+            android:textSize="40px" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

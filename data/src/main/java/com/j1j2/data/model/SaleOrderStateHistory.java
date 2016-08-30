@@ -5,6 +5,7 @@ package com.j1j2.data.model;
  */
 public class SaleOrderStateHistory {
     private int SaleOrderState;
+    private int OrderPayType;
     private String ExcutedTimeStr;
 
     public int getSaleOrderState() {
@@ -21,5 +22,13 @@ public class SaleOrderStateHistory {
 
     public void setExcutedTimeStr(String excutedTimeStr) {
         ExcutedTimeStr = excutedTimeStr;
+    }
+
+    public int getOrderPayType() {
+        return OrderPayType;
+    }
+
+    public void setOrderPayType(int orderPayType) {
+        OrderPayType = orderPayType;
     }
 }

@@ -2,9 +2,12 @@ package com.j1j2.common.util;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
 
 import com.j1j2.data.model.Address;
+import com.j1j2.data.model.BalanceRecord;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.OrderProductDetail;
@@ -119,10 +122,12 @@ public class StringUtils {
         return limit;
     }
 
-    public static CharSequence getOrdersState(int orderType) {
+    public static CharSequence getOrdersState(int orderType, int orderPayType) {
         switch (orderType) {
             case 1:
                 return "已下单";
+            case 2:
+                return "待支付";
             case 4:
                 return "处理中";
             case 8:
@@ -141,10 +146,15 @@ public class StringUtils {
     }
 
 
-    public static CharSequence getOrdersTimeLineContent(int orderType) {
+    public static CharSequence getOrdersTimeLineContent(int orderType, int orderPayType) {
         switch (orderType) {
             case 1:
-                return "请耐心等待门店确认！";
+                if (orderPayType == 1)
+                    return "请耐心等待门店确认！";
+                else
+                    return "订单支付成功，请耐心等待门店确认！";
+            case 2:
+                return "请及时支付订单，过期订单将取消！";
             case 4:
                 return "您的订单正在拣货中！";
             case 8:
@@ -152,13 +162,16 @@ public class StringUtils {
             case 16:
                 return "您的订单已配送到服务点，请及时收取！";
             case 32:
-                return "订单配送完成，请您对此次服务做出评价。";
+                return "订单配送完成，请您对此次服务做出评价！";
             case 64:
                 return "您的订单已配送完成！祝您购物愉快！";
             case 256:
-                return "订单取消成功！交易已关闭。";
+                if (orderPayType == 1)
+                    return "订单取消成功！交易已关闭。";
+                else
+                    return "订单取消成功！交易已关闭，订单取消所产生的退款将直接退回到您的账户余额，请注意查收！";
             default:
-                return "订单取消成功！交易已关闭。";
+                return "";
         }
     }
 
@@ -260,5 +273,91 @@ public class StringUtils {
                 return str + "（十）";
         }
         return str;
+    }
+
+    public static CharSequence getOnlinePayType(int onlinePayType) {
+        switch (onlinePayType) {
+            case 1:
+                return "在线支付（余额支付）";
+            case 2:
+                return "在线支付（支付宝支付）";
+            case 3:
+                return "在线支付（微信支付）";
+            default:
+                return "在线支付";
+        }
+    }
+
+
+    public static CharSequence getBalanceRecordStr(BalanceRecord balanceRecord) {
+        String str = "";
+        switch (balanceRecord.getRecordType()) {
+            case 1:
+                str = "余额支付（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            case 2:
+                str = "支付宝支付（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            case 3:
+                str = "微信支付（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            case 4:
+                str = "订单退款（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            case 5:
+                str = "使用余额（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            case 6:
+                str = "存入零钱（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            case 7:
+                str = "现金充值（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+            default:
+                str = "其它（" + balanceRecord.getCreateTimeStr() + "）";
+                break;
+        }
+        SpannableString msp = new SpannableString(str);
+        msp.setSpan(new ForegroundColorSpan(0xff999999), str.indexOf("（"), str.indexOf("）") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        msp.setSpan(new RelativeSizeSpan(0.75f), str.indexOf("（"), str.indexOf("）") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return msp;
+    }
+
+    public static CharSequence getOfflineOrderPayType(int payType) {
+        switch (payType) {
+            case 1:
+                return "现金支付";
+            case 2:
+                return "支付宝支付";
+            case 3:
+                return "微信支付";
+            default:
+                return "现金支付";
+        }
+    }
+
+    public static CharSequence getOrdersActionBarTitle(int orderType) {
+        switch (orderType) {
+            case 1:
+                return "已下单订单";
+            case 2:
+                return "待支付订单";
+            case 4:
+                return "处理中订单";
+            case 8:
+                return "配送中订单";
+            case 16:
+                return "待收货订单";
+            case 32:
+                return "待评价订单";
+            case 64:
+                return "已完成订单";
+            case 256:
+                return "已退订订单";
+            case 0:
+            default:
+                return "全部订单";
+
+        }
     }
 }

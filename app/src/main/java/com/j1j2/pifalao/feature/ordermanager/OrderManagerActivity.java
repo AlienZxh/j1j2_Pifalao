@@ -38,7 +38,6 @@ public class OrderManagerActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initViews() {
         orderManagerViewModel.queryOfflineOrders();
-
     }
 
     @Override

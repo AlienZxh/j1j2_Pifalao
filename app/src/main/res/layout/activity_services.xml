@@ -121,13 +121,13 @@
                 android:orientation="horizontal"
                 app:OnClickListener="@{onClick}">
 
-                <com.github.siyamed.shapeimageview.CircularImageView
+                <ImageView
+                    android:id="@+id/shopImg"
                     android:layout_width="@dimen/height_services_point_img"
                     android:layout_height="@dimen/height_services_point_img"
-                    android:layout_gravity="center_vertical"
-                    app:displayImgServicepoint="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}"
-                    app:siBorderColor="@color/colorGrayCCCCCC"
-                    app:siBorderWidth="1px" />
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:displayImgTransfrom="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}" />
 
                 <com.zhy.autolayout.AutoLinearLayout
                     android:layout_width="wrap_content"
@@ -161,32 +161,12 @@
                 android:layout_height="1px"
                 android:background="@color/colorGrayEDEDED" />
 
-            <FrameLayout
-                android:id="@+id/imgLayout"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/moduleList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/radar_bg_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="center"
-                    android:src="@drawable/services_radar_bg_img" />
-
-                <com.j1j2.common.view.rotateimageview.NewRotateImageView
-                    android:id="@+id/radar_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="center"
-                    android:src="@drawable/services_radar_img" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/moduleList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingTop="25px" />
-            </FrameLayout>
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingTop="25px" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 

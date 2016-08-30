@@ -8,6 +8,8 @@
 
         <import type="android.net.Uri" />
 
+        <import type="android.view.View" />
+
         <variable
             name="orderProductDetail"
             type="com.j1j2.data.model.OrderProductDetail" />
@@ -23,22 +25,37 @@
         android:paddingLeft="@dimen/padding_noraml"
         android:paddingTop="@dimen/padding_noraml">
 
-
-        <com.github.siyamed.shapeimageview.RoundedImageView
+        <com.zhy.autolayout.AutoFrameLayout
             android:layout_width="@dimen/content_height_biger"
             android:layout_height="@dimen/content_height_biger"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/padding_small"
-            app:displayImgAsBitmap="@{Uri.parse(orderProductDetail.ThumbImgPath??@string/text_empty)}"
-            app:siBorderColor="@color/colorGrayDEDEDE"
-            app:siBorderWidth="1px"
-            app:siRadius="2dp"
-            app:siSquare="true" />
+            android:layout_marginRight="@dimen/padding_small">
+
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:layout_width="@dimen/content_height_biger"
+                android:layout_height="@dimen/content_height_biger"
+                app:displayImgAsBitmap="@{Uri.parse(orderProductDetail.ThumbImgPath??@string/text_empty)}"
+                app:siBorderColor="@color/colorGrayDEDEDE"
+                app:siBorderWidth="1px"
+                app:siRadius="2dp"
+                app:siSquare="true" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/icon_outofstock"
+                android:textColor="@color/colorRed"
+                android:textSize="60px"
+                android:visibility="@{orderProductDetail.RefundOutOfStock?View.VISIBLE : View.GONE}" />
+        </com.zhy.autolayout.AutoFrameLayout>
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -80,6 +97,16 @@
                     android:text="@{&quot;X&quot;+orderProductDetail.Quantity}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/padding_noraml"
+                    android:padding="5px"
+                    android:text="@{&quot;（实发：&quot;+orderProductDetail.ActualDelivery+&quot;）&quot;}"
+                    android:textColor="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal"
+                    android:visibility="@{orderProductDetail.RefundOutOfStock?View.VISIBLE : View.GONE}" />
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>
 

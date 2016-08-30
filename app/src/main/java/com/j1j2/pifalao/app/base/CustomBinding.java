@@ -39,7 +39,6 @@ public class CustomBinding {
             linearLayout.showTextBadge("" + num);
         else
             linearLayout.hiddenBadge();
-
     }
 
     @BindingAdapter({"bind:showNum"})
@@ -107,14 +106,6 @@ public class CustomBinding {
                 .into(view);
     }
 
-    @BindingAdapter({"bind:displayImgServicepoint"})
-    public static void displayImgServicepoint(CircularImageView view, Uri uri) {
-        Glide.with(view.getContext())
-                .load(uri)
-                .asBitmap()
-                .placeholder(R.drawable.servicepoint_default)
-                .into(view);
-    }
 
     @BindingAdapter({"bind:displayImgTransfrom"})
     public static void displayImgTransfrom(final ImageView view, Uri uri) {

@@ -32,7 +32,7 @@ public class OfflineOrderSimple implements Parcelable {
     private String OrderNO;
     private String SubmitTimeStr;
     private String ShopName;
-    private int PayType;
+    private int PayType;//1:现金   2:支付宝　　３：微信
     private double Amount;
     private double OrderDiscount;
     private double PayAmount;

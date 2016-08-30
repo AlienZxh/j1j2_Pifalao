@@ -5,7 +5,7 @@ package com.j1j2.data.model;
  */
 public class SubmitOrderReturn {
     private int OrderId;
-    private String OrderNo;
+    private String OrderNO;
 
     public int getOrderId() {
         return OrderId;
@@ -15,11 +15,11 @@ public class SubmitOrderReturn {
         OrderId = orderId;
     }
 
-    public String getOrderNo() {
-        return OrderNo;
+    public String getOrderNO() {
+        return OrderNO;
     }
 
-    public void setOrderNo(String orderNo) {
-        OrderNo = orderNo;
+    public void setOrderNO(String orderNO) {
+        OrderNO = orderNO;
     }
 }

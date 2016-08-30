@@ -8,6 +8,8 @@ import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
 import com.j1j2.pifalao.BuildConfig;
+import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.LogStateEvent;
@@ -44,14 +46,18 @@ import rx.schedulers.Schedulers;
  */
 public class LaunchViewModel {
 
+    private boolean isCheckingUpdate = false;
+    private boolean isDownloadingTTF = false;
+    private boolean canNavigate = true;
+
     private UserLoginApi userLoginApi;
     private LaunchActivity launchActivity;
     private UserLoginPreference userLoginPreference;
-    /* 下载包安装路径 */
-    private static final String savePath = Environment
-            .getExternalStorageDirectory() + "/Download/";
-    private static final String saveFileName = "pifalao.apk";
+
+
+    private RequestCall checkUpdateCall;
     private RequestCall downloadAPKCall;
+    private RequestCall downloadTTFCall;
 
     public LaunchViewModel(UserLoginApi userLoginApi, LaunchActivity launchActivity, UserLoginPreference userLoginPreference) {
         this.userLoginApi = userLoginApi;
@@ -59,9 +65,35 @@ public class LaunchViewModel {
         this.userLoginPreference = userLoginPreference;
     }
 
+//    public void downloadTTF() {
+//        isDownloadingTTF = true;
+//        downloadTTFCall = OkHttpUtils
+//                .get()
+//                .url("http://at.alicdn.com/t/font_1465613622_7339592.ttf")
+//                .build();
+//        downloadTTFCall.execute(new FileCallBack(Constant.FilePath.saveFolder, Constant.FilePath.ttfFileName) {
+//            @Override
+//            public void inProgress(float progress, long total) {
+//
+//            }
+//
+//            @Override
+//            public void onError(Call call, Exception e) {
+//                isDownloadingTTF = false;
+//            }
+//
+//            @Override
+//            public void onResponse(File response) {
+//                isDownloadingTTF = false;
+//            }
+//
+//
+//        });
+//    }
+
     public void downloadAPK() {
         launchActivity.showDownloadDialog();
-        downloadAPKCall.execute(new FileCallBack(savePath, saveFileName)//
+        downloadAPKCall.execute(new FileCallBack(Constant.FilePath.saveFolder, Constant.FilePath.apkFileName)//
         {
             int lastProgress = 0;
             int currentPregress = 0;
@@ -97,45 +129,43 @@ public class LaunchViewModel {
         });
     }
 
-    public void cancelDownloadAPK() {
-        if (null != downloadAPKCall)
-            downloadAPKCall.cancel();
-    }
+
 
     public void getUpdateInfo() {
-        OkHttpUtils
+        isCheckingUpdate = true;
+        checkUpdateCall = OkHttpUtils
                 .get()
                 .url(BuildConfig.UPDATE_URL)
-                .build()
-                .execute(new Callback<UpdateInfo>() {
-                    @Override
-                    public UpdateInfo parseNetworkResponse(Response response) throws Exception {
-                        return parseXml(response.body().byteStream());
-                    }
+                .build();
+        checkUpdateCall.execute(new Callback<UpdateInfo>() {
+            @Override
+            public UpdateInfo parseNetworkResponse(Response response) throws Exception {
+                return parseXml(response.body().byteStream());
+            }
 
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        initLoginState();
-                    }
+            @Override
+            public void onError(Call call, Exception e) {
+                initLoginState();
+            }
 
-                    @Override
-                    public void onResponse(UpdateInfo updateInfo) {
-                        if (isUpdate(updateInfo, launchActivity.getVersionCode())) {
-                            downloadAPKCall = OkHttpUtils//
-                                    .get()//
-                                    .url(updateInfo.getSoftUrl())//
-                                    .tag("downloadAPK")//
-                                    .build();
-                            if (updateInfo.isCompulsory()) {
-                                launchActivity.showCompulsoryUpdateDialog();
-                            } else {
-                                launchActivity.showUpdateDialog();
-                            }
-                        } else {
-                            initLoginState();
-                        }
+            @Override
+            public void onResponse(UpdateInfo updateInfo) {
+                if (isUpdate(updateInfo, launchActivity.getVersionCode())) {
+                    downloadAPKCall = OkHttpUtils//
+                            .get()//
+                            .url(updateInfo.getSoftUrl())//
+                            .tag("downloadAPK")//
+                            .build();
+                    if (updateInfo.isCompulsory()) {
+                        launchActivity.showCompulsoryUpdateDialog();
+                    } else {
+                        launchActivity.showUpdateDialog();
                     }
-                });
+                } else {
+                    isCheckingUpdate = false;
+                }
+            }
+        });
     }
 
     public void initLoginState() {
@@ -153,6 +183,13 @@ public class LaunchViewModel {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+
+                        while (isCheckingUpdate || isDownloadingTTF) {
+
+                        }
+
+                        if (!canNavigate)
+                            return;
                         MainAplication.get(launchActivity).loginOut();
                         EventBus.getDefault().postSticky(new LogStateEvent(false));
                         launchActivity.navigateTo();
@@ -160,14 +197,14 @@ public class LaunchViewModel {
 
                     @Override
                     public void onWebReturnSucess(User user) {
-
-                        if (userLoginPreference.getIsAutoLogin(false)) {
+                        if (userLoginPreference.getIsAutoLogin(false) && launchActivity.getResources().getBoolean(R.bool.can_auto_login)) {
                             MainAplication.get(launchActivity).login(user);
                             EventBus.getDefault().postSticky(new LogStateEvent(true));
                         } else {
                             MainAplication.get(launchActivity).loginOut();
                             EventBus.getDefault().postSticky(new LogStateEvent(false));
                         }
+                        Logger.d("launch CanAutoLogin " + launchActivity.getResources().getBoolean(R.bool.can_auto_login));
                         Logger.d("launch IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
                     }
 
@@ -179,6 +216,13 @@ public class LaunchViewModel {
 
                     @Override
                     public void onWebReturnCompleted() {
+
+                        while (isCheckingUpdate || isDownloadingTTF) {
+
+                        }
+
+                        if (!canNavigate)
+                            return;
                         launchActivity.navigateTo();
                     }
                 });
@@ -254,5 +298,41 @@ public class LaunchViewModel {
         return false;
     }
 
+    public void onDestory() {
+        canNavigate = false;
+        isCheckingUpdate = false;
+        isDownloadingTTF = false;
 
+
+        if (null != downloadAPKCall)
+            downloadAPKCall.cancel();
+        if (null != checkUpdateCall)
+            checkUpdateCall.cancel();
+        if (null != downloadTTFCall)
+            downloadTTFCall.cancel();
+    }
+
+    public boolean isCheckingUpdate() {
+        return isCheckingUpdate;
+    }
+
+    public void setCheckingUpdate(boolean checkingUpdate) {
+        isCheckingUpdate = checkingUpdate;
+    }
+
+    public boolean isDownloadingTTF() {
+        return isDownloadingTTF;
+    }
+
+    public void setDownloadingTTF(boolean downloadingTTF) {
+        isDownloadingTTF = downloadingTTF;
+    }
+
+    public boolean isCanNavigate() {
+        return canNavigate;
+    }
+
+    public void setCanNavigate(boolean canNavigate) {
+        this.canNavigate = canNavigate;
+    }
 }

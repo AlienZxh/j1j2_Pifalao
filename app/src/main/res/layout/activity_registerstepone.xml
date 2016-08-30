@@ -135,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_small"
-                    android:text="完成VIP注册"
+                    android:text="完成注册"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 

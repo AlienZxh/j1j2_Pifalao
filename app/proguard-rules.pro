@@ -21,6 +21,7 @@
 -dontskipnonpubliclibraryclasses  #如果应用程序引入的有jar包，并且想混淆jar包里面的class
 -dontpreverify  #混淆时是否做预校验（可去掉加快混淆速度）
 -dontoptimize #不优化输入的类文件
+-dontshrink
 -verbose #混淆时是否记录日志（混淆后生产映射文件 map 类名 -> 转化后类名的映射
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*  #淆采用的算法
 
@@ -248,3 +249,84 @@
 -keep class com.alipay.sdk.app.PayTask{ public *;}
 -keep class com.alipay.sdk.app.AuthTask{ public *;}
 ##---------------Begin: proguard configuration for alipay  ----------
+
+##---------------Begin: proguard configuration for weixin  ----------
+-keep class com.tencent.** { *; }
+-dontwarn com.tencent.**
+##---------------End: proguard configuration for weixin  ----------
+
+
+##---------------Begin: proguard configuration for umengAnalytics  ----------
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+##---------------End: proguard configuration for umengAnalytics  ----------
+
+##---------------Begin: proguard configuration for umengShare  ----------
+#-dontshrink
+#-dontoptimize
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+-keep public class javax.**
+-keep public class android.webkit.**
+-dontwarn android.support.v4.**
+-keep enum com.facebook.**
+#-keepattributes Exceptions,InnerClasses,Signature
+#-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+
+-keep public class com.umeng.socialize.* {*;}
+
+
+-keep class com.facebook.**
+-keep class com.facebook.** { *; }
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+-keep class com.umeng.socialize.handler.**
+-keep class com.umeng.socialize.handler.*
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+
+-dontwarn twitter4j.**
+-keep class twitter4j.** { *; }
+
+-keep class com.tencent.** {*;}
+-dontwarn com.tencent.**
+-keep public class com.umeng.soexample.R$*{
+    public static final int *;
+}
+-keep public class com.umeng.soexample.R$*{
+    public static final int *;
+}
+-keep class com.tencent.open.TDialog$*
+-keep class com.tencent.open.TDialog$* {*;}
+-keep class com.tencent.open.PKDialog
+-keep class com.tencent.open.PKDialog {*;}
+-keep class com.tencent.open.PKDialog$*
+-keep class com.tencent.open.PKDialog$* {*;}
+
+-keep class com.sina.** {*;}
+-dontwarn com.sina.**
+-keep class  com.alipay.share.sdk.** {
+   *;
+}
+-keepnames class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+
+-keep class com.linkedin.** { *; }
+#  -keepattributes Signature
+##---------------End: proguard configuration for umengShare  ----------

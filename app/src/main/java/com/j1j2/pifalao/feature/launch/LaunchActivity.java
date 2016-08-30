@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.j1j2.common.util.Network;
 import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -22,7 +23,6 @@ import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
 import com.j1j2.pifalao.feature.launch.di.LaunchModule;
-import com.j1j2.common.util.Network;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -53,8 +53,8 @@ public class LaunchActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-//        launchViewModel.initLoginState();
         launchViewModel.getUpdateInfo();
+        launchViewModel.initLoginState();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class LaunchActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        launchViewModel.cancelDownloadAPK();
+        launchViewModel.onDestory();
     }
 
     @SuppressLint("InlinedApi")
@@ -120,7 +120,7 @@ public class LaunchActivity extends BaseActivity {
                 .setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        launchViewModel.initLoginState();
+                        launchViewModel.setCheckingUpdate(false);
                     }
                 })
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -154,7 +154,6 @@ public class LaunchActivity extends BaseActivity {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        launchViewModel.cancelDownloadAPK();
                         finish();
                     }
                 })
@@ -196,7 +195,7 @@ public class LaunchActivity extends BaseActivity {
             navigate.navigateToGuide(this, ActivityOptionsCompat.makeScaleUpAnimation(binding.logo, 0, 0, 0, 0), true);
         } else {
             if (null != userRelativePreference.getSelectedCity(null) && null != userRelativePreference.getSelectedServicePoint(null))
-                navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(binding.logo, 0, 0, 0, 0), true, userRelativePreference.getSelectedServicePoint(null));
+                navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(binding.logo, 0, 0, 0, 0), true);
             else if (null != userRelativePreference.getSelectedCity(null) && null == userRelativePreference.getSelectedServicePoint(null))
                 navigate.navigateToLocationActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(binding.logo, 0, 0, 0, 0), true, userRelativePreference.getSelectedCity(null));
             else

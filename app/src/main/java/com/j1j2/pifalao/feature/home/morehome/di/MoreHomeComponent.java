@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.home.morehome.di;
 
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.home.morehome.MoreHomeActivity;
+import com.j1j2.pifalao.feature.home.morehome.MoreHomeFragment;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
 
 import dagger.Subcomponent;
@@ -13,4 +14,6 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {MoreHomeModule.class})
 public interface MoreHomeComponent {
     void inject(MoreHomeActivity moreHomeActivity);
+
+    void inject(MoreHomeFragment moreHomeFragment);
 }

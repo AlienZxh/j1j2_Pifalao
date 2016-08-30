@@ -8,9 +8,12 @@ import android.view.inputmethod.InputMethodManager;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.databinding.ActivityChangepasswordBinding;
 import com.j1j2.pifalao.feature.changepassword.di.ChangePasswordModule;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -51,7 +54,6 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     }
 
 
-
     @Override
     public void onClick(View v) {
         if (binding.oldPSWEdit.hasFocus())
@@ -85,7 +87,9 @@ public class ChangePasswordActivity extends BaseActivity implements View.OnClick
     }
 
     public void finishChange(String newPSW) {
-        userLoginPreference.setPassWord(newPSW);
+        MainAplication.get(this).loginOut();
+        userLoginPreference.removePassWord();
+        EventBus.getDefault().post(new LogStateEvent(false));
         finish();
     }
 }

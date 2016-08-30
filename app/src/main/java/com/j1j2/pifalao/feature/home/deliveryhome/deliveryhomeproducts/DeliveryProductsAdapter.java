@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemDeliveryproductsBinding;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by alienzxh on 16-4-8.
  */
-public class  DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProductsAdapter.DeliveryProductsViewHolder> {
+public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProductsAdapter.DeliveryProductsViewHolder> {
 
     private List<ProductSimple> productSimples;
     private ShopCart shopCart;
@@ -49,17 +52,47 @@ public class  DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProdu
         this.onProductClickListener = onProductClickListener;
     }
 
-    public void initData(Collection<ProductSimple> newProductSimples) {
+    public void initData(List<ProductSimple> newProductSimples) {
         productSimples.clear();
         if (null != productSimples && null != newProductSimples) {
+            Collections.sort(newProductSimples, new Comparator<ProductSimple>() {
+                @Override
+                public int compare(ProductSimple lhs, ProductSimple rhs) {
+                    if (TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                        return 0;
+                    else if (!TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                        return 0;
+                    else if (TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                        return 1;
+                    else if (!TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                        return -1;
+                    else
+                        return 0;
+                }
+            });
             productSimples.addAll(newProductSimples);
         }
         notifyDataSetChanged();
     }
 
-    public void addAll(Collection<ProductSimple> newProductSimples) {
-        if (null == productSimples)
+    public void addAll(List<ProductSimple> newProductSimples) {
+        if (null == productSimples || null == newProductSimples)
             return;
+        Collections.sort(newProductSimples, new Comparator<ProductSimple>() {
+            @Override
+            public int compare(ProductSimple lhs, ProductSimple rhs) {
+                if (TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                    return 0;
+                else if (!TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                    return 0;
+                else if (TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                    return 1;
+                else if (!TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                    return -1;
+                else
+                    return 0;
+            }
+        });
         int startIndex = productSimples.size();
         productSimples.addAll(startIndex, newProductSimples);
         notifyItemRangeInserted(startIndex, newProductSimples.size());

@@ -73,5 +73,7 @@ public class QrCodeActivity extends BaseActivity implements View.OnClickListener
             onBackPressed();
         if (v == binding.refresh)
             qrCodeViewModel.queryQRCode();
+        if (v == binding.balancedetail)
+            navigate.navigateToBalanceDetail(this, null, false);
     }
 }

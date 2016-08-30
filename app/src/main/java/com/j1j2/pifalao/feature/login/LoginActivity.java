@@ -48,9 +48,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     protected void initViews() {
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        binding.username.setText(userLoginPreference.getUsername(""));
-        binding.password.setText(userLoginPreference.getPassWord(""));
-        userLoginPreference.setIsAutoLogin(true);
+        if (getResources().getBoolean(R.bool.can_auto_login)) {
+            userLoginPreference.setIsAutoLogin(true);
+            binding.autoLoginCeck.setChecked(true);
+
+            binding.username.setText(userLoginPreference.getUsername(""));
+            binding.password.setText(userLoginPreference.getPassWord(""));
+        }
+
+
+
+
         binding.autoLoginCeck.setOnCheckedChangeListener(this);
     }
 

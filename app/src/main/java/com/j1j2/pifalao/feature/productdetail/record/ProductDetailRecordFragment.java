@@ -39,6 +39,11 @@ import rx.schedulers.Schedulers;
 @RequireBundler
 public class ProductDetailRecordFragment extends BaseFragment {
 
+    @Override
+    protected String getFragmentName() {
+        return "ProductDetailRecordFragment";
+    }
+
     public interface ProductDetailRecordFragmentListener extends HasComponent<ProductDetailComponent> {
 
     }

@@ -241,7 +241,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
                 userRelativePreference.setSelectedServicePoint(servicePoint);
                 userRelativePreference.setShowDeliveryArea(true);
                 userRelativePreference.setShowLocation(true);
-                navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePoint);
+                navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true);
             }
     }
 
@@ -263,7 +263,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         userRelativePreference.setSelectedServicePoint(servicePoint);
         userRelativePreference.setShowDeliveryArea(true);
         userRelativePreference.setShowLocation(true);
-        navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true, servicePoint);
+        navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true);
     }
 
     @Override

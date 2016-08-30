@@ -28,6 +28,11 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class ProductDetailUnitFragment extends BaseFragment implements ProductDetailUnitAdapter.OnUnitItemClickListener {
 
+    @Override
+    protected String getFragmentName() {
+        return "ProductDetailUnitFragment";
+    }
+
     public interface ProductDetailUnitFragmentListener {
         void setSelectUnit(ProductUnit unit);
     }

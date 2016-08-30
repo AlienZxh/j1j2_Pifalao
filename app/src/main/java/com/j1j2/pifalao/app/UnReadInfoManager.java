@@ -6,6 +6,8 @@ import android.databinding.Bindable;
 import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.pifalao.BR;
 
+import okhttp3.OkHttpClient;
+
 /**
  * Created by alienzxh on 16-3-28.
  */
@@ -15,15 +17,18 @@ public class UnReadInfoManager extends BaseObservable {
     private int unReadPushMessageCount;
     private int userFavoritesCount;
 
-    private static UnReadInfoManager unReadInfoManager = null;
+    private static UnReadInfoManager mInstance = null;
 
     public static UnReadInfoManager getInstance() {
-        if (unReadInfoManager == null) {
-            unReadInfoManager = new UnReadInfoManager();
+        if (mInstance == null) {
+            synchronized (UnReadInfoManager.class) {
+                if (mInstance == null) {
+                    mInstance = new UnReadInfoManager();
+                }
+            }
         }
-        return unReadInfoManager;
+        return mInstance;
     }
-
 
     private UnReadInfoManager() {
         hasUnRead = false;
@@ -42,7 +47,7 @@ public class UnReadInfoManager extends BaseObservable {
             hasUnRead = false;
         }
         notifyPropertyChanged(BR.hasUnRead);
-        notifyPropertyChanged(BR.unReadInfoManager);
+        notifyPropertyChanged(BR.unReadPushMessageCount);
         notifyPropertyChanged(BR.unReadOrderCount);
         notifyPropertyChanged(BR.userFavoritesCount);
     }
@@ -53,7 +58,7 @@ public class UnReadInfoManager extends BaseObservable {
         unReadPushMessageCount = 0;
         userFavoritesCount = 0;
         notifyPropertyChanged(BR.hasUnRead);
-        notifyPropertyChanged(BR.unReadInfoManager);
+        notifyPropertyChanged(BR.unReadPushMessageCount);
         notifyPropertyChanged(BR.unReadOrderCount);
         notifyPropertyChanged(BR.userFavoritesCount);
     }

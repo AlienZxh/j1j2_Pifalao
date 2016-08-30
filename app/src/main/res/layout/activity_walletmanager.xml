@@ -56,6 +56,7 @@
 
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/balanceBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
@@ -63,7 +64,8 @@
             android:orientation="horizontal"
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingLeft="@dimen/padding_small"
-            android:paddingTop="@dimen/padding_noraml">
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{walletManagerViewModel.walletManagerActivity}">
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -90,6 +92,14 @@
                 android:text="@{&quot;&quot;+user.Balance+&quot;元&quot;}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
 
 
         </com.zhy.autolayout.AutoLinearLayout>
@@ -137,6 +147,14 @@
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
 
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 

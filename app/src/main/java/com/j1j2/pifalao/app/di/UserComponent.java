@@ -10,6 +10,9 @@ import com.j1j2.pifalao.feature.addaddress.di.AddAddressComponent;
 import com.j1j2.pifalao.feature.addaddress.di.AddAddressModule;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerComponent;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerModule;
+import com.j1j2.pifalao.feature.balancedetail.BalanceDetailActivity;
+import com.j1j2.pifalao.feature.balancedetail.di.BalanceDetailComponent;
+import com.j1j2.pifalao.feature.balancedetail.di.BalanceDetailModule;
 import com.j1j2.pifalao.feature.catservicepoint.di.CatServicePointComponent;
 import com.j1j2.pifalao.feature.catservicepoint.di.CatServicePointModule;
 import com.j1j2.pifalao.feature.changepassword.di.ChangePasswordComponent;
@@ -33,6 +36,8 @@ import com.j1j2.pifalao.feature.messages.di.MessagesComponent;
 import com.j1j2.pifalao.feature.messages.di.MessagesModule;
 import com.j1j2.pifalao.feature.offlineorders.di.OfflineOrdersComponent;
 import com.j1j2.pifalao.feature.offlineorders.di.OfflineOrdersModule;
+import com.j1j2.pifalao.feature.onlineorderpay.di.OnlineOrderPayComponent;
+import com.j1j2.pifalao.feature.onlineorderpay.di.OnlineOrderPayModule;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailComponent;
 import com.j1j2.pifalao.feature.orderdetail.di.OrderDetailModule;
 import com.j1j2.pifalao.feature.orderdetail.orderdetailtimeline.di.OrderDetailTimeLineComponent;
@@ -116,6 +121,10 @@ public interface UserComponent {
     VipHomeComponent plus(VipHomeModule vipHomeModule);
 
     OfflineOrdersComponent plus(OfflineOrdersModule offlineOrdersModule);
-    
+
     OrderRateComponent plus(OrderRateModule orderRateModule);
+
+    OnlineOrderPayComponent plus(OnlineOrderPayModule onlineOrderPayModule);
+
+    BalanceDetailComponent plus(BalanceDetailModule balanceDetailModule);
 }

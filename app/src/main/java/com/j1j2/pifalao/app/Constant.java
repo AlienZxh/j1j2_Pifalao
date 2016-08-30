@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.app;
 
+import android.os.Environment;
 import android.util.SparseIntArray;
 
 import com.j1j2.pifalao.R;
@@ -8,15 +9,18 @@ import com.j1j2.pifalao.R;
  * Created by alienzxh on 16-4-6.
  */
 public class Constant {
+    public final static String WEIXIN_APP_ID = "wxaaf65494c086b0d3";
 
-//    public interface ModuleId {
-//        public final static int SHOPSERVICE_MODULEID = 23;
-//        public final static int DELIVERY_MODULEID = 25;
-//        public final static int VEGETABLE_MODULEID = 26;
-//        public final static int HOUSEKEEPING_MODULEID = 27;
-//        public final static int VIP_MODULEID = 28;
-//        public final static int MORE_MODULEID = 36;
-//    }
+    public interface FilePath {
+        String saveFolder = Environment
+                .getExternalStorageDirectory() + "/pifalao/";
+
+        String editPhotoCacheFolder = saveFolder + "/EditPhotoCacheFolder/";
+        String takePhotoFolder = saveFolder + "/TakePhotoFolder/";
+
+        String apkFileName = "pifalao.apk";
+        String ttfFileName = "iconfont.ttf";
+    }
 
     public interface ModuleType {
         public final static int MORE = 0;
@@ -37,6 +41,8 @@ public class Constant {
         public final static int FINANCE = 15;
         public final static int LOTTERY = 16;
         public final static int TICKET = 17;
+        public final static int BANQUET = 18;
+        public final static int FRUIT = 19;
     }
 
     public final static SparseIntArray moduleColors = new SparseIntArray() {{
@@ -58,6 +64,8 @@ public class Constant {
         put(ModuleType.FINANCE, 0xff01c8c6);
         put(ModuleType.LOTTERY, 0xff1ba1e2);
         put(ModuleType.TICKET, 0xffff9900);
+        put(ModuleType.BANQUET, 0xff1ba1e2);
+        put(ModuleType.FRUIT, 0xff22ac38);
     }};
 
     public final static SparseIntArray moduleIconId = new SparseIntArray() {{
@@ -79,6 +87,8 @@ public class Constant {
         put(ModuleType.FINANCE, R.string.icon_service_finance);
         put(ModuleType.LOTTERY, R.string.icon_service_lottery);
         put(ModuleType.TICKET, R.string.icon_service_ticket);
+        put(ModuleType.BANQUET, R.string.icon_service_banquet);
+        put(ModuleType.FRUIT, R.string.icon_service_fruit);
     }};
 
     public interface ProductsOrderbyId {

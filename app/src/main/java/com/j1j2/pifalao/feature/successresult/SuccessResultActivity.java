@@ -54,6 +54,7 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
                 toolbarTitle.set("订单提交成功");
                 message.set("您的订单提交成功！");
                 cancelBtnStr.set("返回首页");
+                binding.cancelBtn.setVisibility(View.GONE);
                 confirmBtnStr.set("查看订单");
                 break;
             case FROM_UPDATEVIP:

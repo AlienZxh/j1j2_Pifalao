@@ -33,6 +33,10 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHomeAdapter.OnSortItemClickListener, View.OnClickListener {
 
+    @Override
+    protected String getFragmentName() {
+        return "StoreStyleHomeFragment";
+    }
 
     public interface StoreStyleHomeFragmentListener extends HasComponent<MainComponent> {
         void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);

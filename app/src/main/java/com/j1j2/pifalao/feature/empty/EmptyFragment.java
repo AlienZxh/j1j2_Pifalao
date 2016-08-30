@@ -17,6 +17,13 @@ import in.workarounds.bundler.annotations.RequireBundler;
  */
 @RequireBundler
 public class EmptyFragment extends BaseFragment {
+
+    @Override
+    protected String getFragmentName() {
+        return "EmptyFragment";
+    }
+
+
     FragmentEmptyBinding binding;
 
     @Override

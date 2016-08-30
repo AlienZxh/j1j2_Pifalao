@@ -1,9 +1,11 @@
 package com.j1j2.pifalao.feature.home.vegetablehome;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -44,6 +46,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  */
 @RequireBundler
 public class VegetableHomeFragment extends BaseFragment implements View.OnClickListener, VegetableHotSortAdapter.OnHotSortClickListener, VegetableActivityProductAdapter.OnActivityProductClickListener {
+
+
+    @Override
+    protected String getFragmentName() {
+        return "VegetableHomeFragment";
+    }
 
     public interface VegetableHomeFragmentListener extends HasComponent<MainComponent> {
         void navigateToProductDetailActivity(View view, ProductSimple productSimple, int position);
@@ -127,6 +135,18 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
         VegetableHotSortAdapter vegetableHotSortAdapter = new VegetableHotSortAdapter(productSorts);
         binding.hotSortList.setAdapter(vegetableHotSortAdapter);
         vegetableHotSortAdapter.setOnChildSortClickListener(this);
+    }
+
+    public void showTimeDialog(){
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(getContext())
+                .setCancelable(true)
+                .setTitle("温馨提示")
+                .setMessage("　由于仓库周日休息停配，周五21:00 - 周六21:00期间的全部订单需要周一上午才能送达。")
+                .setPositiveButton("知道了", null)
+                .create();
+        messageDialog.show();
     }
 
     @Override

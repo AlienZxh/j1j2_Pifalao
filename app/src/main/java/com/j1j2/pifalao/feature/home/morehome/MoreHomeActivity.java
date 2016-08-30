@@ -99,9 +99,13 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
-            }
+            } else if (module.getModuleType() == Constant.ModuleType.HOUSEKEEPING) {
+                navigate.navigateToHouseKeeping(MoreHomeActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+            } else if (module.getModuleType() == Constant.ModuleType.MOBILE)
+                navigate.navigateToOfflineModuleHome(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, userRelativePreference.getSelectedServicePoint(null));
+
         } else {
-            navigate.navigateToUnsubscribeModule(this, null, false);
+            navigate.navigateToUnsubscribeModule(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
         }
     }
 }

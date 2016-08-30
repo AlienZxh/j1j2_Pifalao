@@ -27,6 +27,11 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class CouponsFragment extends BaseFragment {
 
+    @Override
+    protected String getFragmentName() {
+        return "CouponsFragment";
+    }
+
     FragmentCouponsBinding binding;
 
     @Arg(serializer = ParcelListSerializer.class)

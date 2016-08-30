@@ -38,6 +38,7 @@ public class OrderSimple implements Parcelable {
      * ReceiveAddressLng : 113.117742
      * CalculateDistance : 0.1
      * OrderMemo
+     * OnlinePayType
      */
     private int ModuleId;
     private int ModuleType;
@@ -64,6 +65,11 @@ public class OrderSimple implements Parcelable {
     private double ReceiveAddressLat;
     private double ReceiveAddressLng;
     private double CalculateDistance;
+    private int OrderPayType;
+    private String OrderNO;
+    private int OnlinePayType;// 1：余额支付  2：支付宝支付  3：微信支付
+    private String PayTimeStr;
+
     /**
      * ProductId : 30879
      * OwnCode :
@@ -282,6 +288,38 @@ public class OrderSimple implements Parcelable {
         CalculateDistance = calculateDistance;
     }
 
+    public int getOrderPayType() {
+        return OrderPayType;
+    }
+
+    public void setOrderPayType(int orderPayType) {
+        OrderPayType = orderPayType;
+    }
+
+    public String getOrderNO() {
+        return OrderNO;
+    }
+
+    public void setOrderNO(String orderNO) {
+        OrderNO = orderNO;
+    }
+
+    public int getOnlinePayType() {
+        return OnlinePayType;
+    }
+
+    public void setOnlinePayType(int onlinePayType) {
+        OnlinePayType = onlinePayType;
+    }
+
+    public String getPayTimeStr() {
+        return PayTimeStr;
+    }
+
+    public void setPayTimeStr(String payTimeStr) {
+        PayTimeStr = payTimeStr;
+    }
+
     public List<OrderProductDetail> getProductDetails() {
         return ProductDetails;
     }
@@ -331,8 +369,12 @@ public class OrderSimple implements Parcelable {
         dest.writeDouble(this.ReceiveAddressLat);
         dest.writeDouble(this.ReceiveAddressLng);
         dest.writeDouble(this.CalculateDistance);
-        dest.writeTypedList(ProductDetails);
-        dest.writeTypedList(Coupons);
+        dest.writeInt(this.OrderPayType);
+        dest.writeString(this.OrderNO);
+        dest.writeInt(this.OnlinePayType);
+        dest.writeString(this.PayTimeStr);
+        dest.writeTypedList(this.ProductDetails);
+        dest.writeTypedList(this.Coupons);
     }
 
     public OrderSimple() {
@@ -364,6 +406,10 @@ public class OrderSimple implements Parcelable {
         this.ReceiveAddressLat = in.readDouble();
         this.ReceiveAddressLng = in.readDouble();
         this.CalculateDistance = in.readDouble();
+        this.OrderPayType = in.readInt();
+        this.OrderNO = in.readString();
+        this.OnlinePayType = in.readInt();
+        this.PayTimeStr = in.readString();
         this.ProductDetails = in.createTypedArrayList(OrderProductDetail.CREATOR);
         this.Coupons = in.createTypedArrayList(Coupon.CREATOR);
     }

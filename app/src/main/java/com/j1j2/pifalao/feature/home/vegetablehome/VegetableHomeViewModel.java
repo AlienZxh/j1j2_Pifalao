@@ -13,6 +13,7 @@ import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.orhanobut.logger.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -73,11 +76,10 @@ public class VegetableHomeViewModel {
         countDownApi.QueryDeliveryCountDownOfModule(moduleId)
                 .compose(vegetableHomeFragment.<WebReturn<UserDeliveryTime>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap(new Func1<WebReturn<UserDeliveryTime>, Observable<Long>>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Action1<WebReturn<UserDeliveryTime>>() {
                     @Override
-                    public Observable<Long> call(WebReturn<UserDeliveryTime> userDeliveryTimeWebReturn) {
-
+                    public void call(WebReturn<UserDeliveryTime> userDeliveryTimeWebReturn) {
                         SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         try {
                             Date endDate = simple.parse(userDeliveryTimeWebReturn.getDetail().getYear()
@@ -89,6 +91,17 @@ public class VegetableHomeViewModel {
                         } catch (ParseException e) {
 
                         }
+                        Logger.d("remian " + remian);
+                        if (remian > 86400000) {
+                            vegetableHomeFragment.showTimeDialog();
+                        }
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(new Func1<WebReturn<UserDeliveryTime>, Observable<Long>>() {
+                    @Override
+                    public Observable<Long> call(WebReturn<UserDeliveryTime> userDeliveryTimeWebReturn) {
+
                         return Observable.interval(1, TimeUnit.SECONDS);
                     }
                 })
@@ -101,7 +114,8 @@ public class VegetableHomeViewModel {
                         remian -= 1000;
                         initDate(remian);
                     }
-                });
+                })
+        ;
 
     }
 

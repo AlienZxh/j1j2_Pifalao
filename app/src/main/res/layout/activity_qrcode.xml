@@ -45,6 +45,19 @@
                 android:text="VIP特权码"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
+
+            <TextView
+                android:id="@+id/balancedetail"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_balancedetail"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{qrCodeViewModel.qrCodeActivity}"/>
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.zhy.autolayout.AutoRelativeLayout

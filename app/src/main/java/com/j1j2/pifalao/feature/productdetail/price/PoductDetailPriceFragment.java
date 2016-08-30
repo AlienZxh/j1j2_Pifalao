@@ -30,7 +30,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-4-17.
  */
 @RequireBundler
-public class PoductDetailPriceFragment extends BaseFragment implements ProductDetailUnitAdapter.OnUnitItemClickListener {
+public class PoductDetailPriceFragment extends BaseFragment {
+
+    @Override
+    protected String getFragmentName() {
+        return "PoductDetailPriceFragment";
+    }
 
     public interface PoductDetailPriceFragmentListener {
         void setSelectUnit(ProductUnit unit);
@@ -69,16 +74,7 @@ public class PoductDetailPriceFragment extends BaseFragment implements ProductDe
     protected void initViews() {
         binding.setModuleType(moduleType);
         binding.setPrice(productUnitObservableField);
-//__________________________________________________________-
-        if (moduleType == Constant.ModuleType.DELIVERY) {
-            singleSelector = new SingleSelector();
-            binding.unitList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-            ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productUnits, singleSelector, baseUnit, moduleType);
-            binding.unitList.setAdapter(productDetailUnitAdapter);
-            productDetailUnitAdapter.setOnUnitItemClickListener(this);
-            if (poductDetailPriceFragmentListener != null)
-                poductDetailPriceFragmentListener.setSelectUnit(productUnits.get(0));
-        }
+
     }
 
     @Override
@@ -87,17 +83,11 @@ public class PoductDetailPriceFragment extends BaseFragment implements ProductDe
         Bundler.inject(this);
     }
 
-    @Override
-    public void OnUnitItemClickListener(View view, ProductUnit unit, int position) {
-        if (poductDetailPriceFragmentListener != null)
-            poductDetailPriceFragmentListener.setSelectUnit(productUnits.get(0));
-    }
+
 
     public void setSelectUnit(ProductUnit unit) {
         productUnitObservableField.set(unit);
     }
 
-    public int getQuantity() {
-        return binding.quantityview.getQuantity();
-    }
+
 }

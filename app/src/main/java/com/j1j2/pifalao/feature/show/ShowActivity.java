@@ -60,7 +60,10 @@ public class ShowActivity extends BaseActivity implements View.OnClickListener {
         binding.showList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.showList.setAdapter(new ShowAdapter(activityType == SERVICEPOINT ? servicepoints : stores, activityType));
         binding.showList.setClipToPadding(false);
-        binding.showList.setPadding(AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentHeightSize(20), AutoUtils.getPercentHeightSize(20));
+        binding.showList.setPadding(AutoUtils.getPercentHeightSize(20),
+                AutoUtils.getPercentHeightSize(20),
+                AutoUtils.getPercentHeightSize(20),
+                AutoUtils.getPercentHeightSize(20));
         binding.showList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .colorResId(R.color.colorTransparent)
                 .size(AutoUtils.getPercentHeightSize(20))

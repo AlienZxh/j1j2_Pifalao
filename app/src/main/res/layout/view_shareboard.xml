@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_servies_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="25px"
+                android:paddingTop="25px">
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
+
+                    <TextView
+                        android:layout_width="110px"
+                        android:layout_height="110px"
+                        android:layout_gravity="center"
+                        android:background="@drawable/service_item_bg"
+                        app:layout_auto_basewidth="height" />
+
+                    <TextView
+                        android:id="@+id/weixinShareBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/icon_share_weixin"
+                        android:textColor="#ff7ed471"
+                        android:textSize="@dimen/height_services_img"
+                        app:layout_auto_basewidth="height" />
+
+
+                </com.zhy.autolayout.AutoFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:text="微信好友"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_servies_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="25px"
+                android:paddingTop="25px">
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
+
+                    <TextView
+                        android:layout_width="110px"
+                        android:layout_height="110px"
+                        android:layout_gravity="center"
+                        android:background="@drawable/service_item_bg"
+                        app:layout_auto_basewidth="height" />
+
+                    <TextView
+                        android:id="@+id/weixinFriendShareBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#ff78d094"
+                        android:text="@string/icon_share_weixin_friend"
+                        android:textSize="@dimen/height_services_img"
+                        app:layout_auto_basewidth="height" />
+
+
+                </com.zhy.autolayout.AutoFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:text="微信朋友圈"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_servies_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="25px"
+                android:paddingTop="25px">
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
+
+                    <TextView
+                        android:layout_width="110px"
+                        android:layout_height="110px"
+                        android:layout_gravity="center"
+                        android:background="@drawable/service_item_bg"
+                        app:layout_auto_basewidth="height" />
+
+                    <TextView
+                        android:id="@+id/sinaShareBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#ffef6968"
+                        android:text="@string/icon_share_sina"
+                        android:textSize="@dimen/height_services_img"
+                        app:layout_auto_basewidth="height" />
+
+
+                </com.zhy.autolayout.AutoFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:text="新浪微博"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_servies_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="25px"
+                android:paddingTop="25px">
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
+
+                    <TextView
+                        android:layout_width="110px"
+                        android:layout_height="110px"
+                        android:layout_gravity="center"
+                        android:background="@drawable/service_item_bg"
+                        app:layout_auto_basewidth="height" />
+
+                    <TextView
+                        android:id="@+id/qqShareBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#ff4d89e9"
+                        android:text="@string/icon_share_qq"
+                        android:textSize="@dimen/height_services_img"
+                        app:layout_auto_basewidth="height" />
+
+
+                </com.zhy.autolayout.AutoFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:text="ＱＱ好友"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_servies_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="25px"
+                android:paddingTop="25px">
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
+
+                    <TextView
+                        android:layout_width="110px"
+                        android:layout_height="110px"
+                        android:layout_gravity="center"
+                        android:background="@drawable/service_item_bg"
+                        app:layout_auto_basewidth="height" />
+
+                    <TextView
+                        android:id="@+id/qqZoneShareBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#fff2c754"
+                        android:text="@string/icon_share_qq_zone"
+                        android:textSize="@dimen/height_services_img"
+                        app:layout_auto_basewidth="height" />
+
+
+                </com.zhy.autolayout.AutoFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:text="ＱＱ空间"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/item_servies_bg"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingBottom="25px"
+                android:paddingTop="25px">
+
+                <com.zhy.autolayout.AutoFrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px">
+
+                    <TextView
+                        android:layout_width="110px"
+                        android:layout_height="110px"
+                        android:layout_gravity="center"
+                        android:background="@drawable/service_item_bg"
+                        app:layout_auto_basewidth="height" />
+
+                    <TextView
+                        android:id="@+id/copyShareBtn"
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#ffcfcfcf"
+                        android:text="@string/icon_share_copy"
+                        android:textSize="@dimen/height_services_img"
+                        app:layout_auto_basewidth="height" />
+
+
+                </com.zhy.autolayout.AutoFrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:text="复制链接"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayEDEDED" />
+
+        <TextView
+            android:id="@+id/cancelShareBtn"
+            android:layout_width="match_parent"
+            android:layout_height="120px"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_biger" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

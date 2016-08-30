@@ -7,4 +7,9 @@
     <item name="loadingView" type="id" />
     <item name="errorView" type="id" />
     <item name="dragView" type="id" />
+    <!---->
+    <item name="id_stickynavlayout_topview" type="id"/>
+    <item name="id_stickynavlayout_viewpager" type="id"/>
+    <item name="id_stickynavlayout_indicator" type="id"/>
+    <item name="id_stickynavlayout_innerscrollview" type="id"/>
 </resources>

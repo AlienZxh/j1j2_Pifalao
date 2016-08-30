@@ -23,7 +23,6 @@ public class StoreStyleHomeViewModel {
 
     private Module module;
 
-
     private StoreStyleHomeFragment storeStyleHomeFragment;
 
     public StoreStyleHomeViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, Module module) {

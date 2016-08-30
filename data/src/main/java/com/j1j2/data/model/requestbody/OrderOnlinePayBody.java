@@ -6,9 +6,10 @@ package com.j1j2.data.model.requestbody;
 public class OrderOnlinePayBody {
     private int OrderId;
     private String OrderNO;
+    private boolean UseBalance;
     private boolean UseAliPay;
     private boolean UseWeiXinPay;
-    private boolean UseBalancePay;
+
 
     public int getOrderId() {
         return OrderId;
@@ -42,11 +43,11 @@ public class OrderOnlinePayBody {
         UseWeiXinPay = useWeiXinPay;
     }
 
-    public boolean isUseBalancePay() {
-        return UseBalancePay;
+    public boolean isUseBalance() {
+        return UseBalance;
     }
 
-    public void setUseBalancePay(boolean useBalancePay) {
-        UseBalancePay = useBalancePay;
+    public void setUseBalance(boolean useBalance) {
+        UseBalance = useBalance;
     }
 }

@@ -25,6 +25,11 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class ProductDetailImgFragment extends BaseFragment {
 
+    @Override
+    protected String getFragmentName() {
+        return "ProductDetailImgFragment";
+    }
+
     FragmentProductdetailImgBinding binding;
 
     @Arg(serializer = ParcelListSerializer.class)

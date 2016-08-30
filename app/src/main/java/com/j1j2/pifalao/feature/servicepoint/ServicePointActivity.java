@@ -116,7 +116,7 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
             userRelativePreference.setSelectedServicePoint(servicePoint);
             userRelativePreference.setShowDeliveryArea(true);
             userRelativePreference.setShowLocation(true);
-            navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true, servicePoint);
+            navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true);
         }
         if (v == binding.backBtn) {
             onBackPressed();

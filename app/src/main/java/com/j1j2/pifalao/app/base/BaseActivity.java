@@ -17,11 +17,15 @@ import com.j1j2.pifalao.app.di.ActivityModule;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.j1j2.pifalao.app.event.NetWorkEvent;
 import com.j1j2.common.util.Toastor;
+import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -31,6 +35,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by alienzxh on 16-3-4.
  */
 public abstract class BaseActivity extends RxAppCompatActivity {
+
+    private String pageName = getClass().getSimpleName();
 
     @Inject
     protected Navigate navigate;
@@ -67,6 +73,22 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         initActionBar();
         initViews();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(getClass().getSimpleName()); //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
+        MobclickAgent.onResume(this);          //统计时长
+        Logger.d("umeng activity " + pageName + " - display - ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getClass().getSimpleName()); // （仅有Activity的应用中SDK自动调用，不需要单独写）保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息。"SplashScreen"为页面名称，可自定义
+        MobclickAgent.onPause(this);
+        Logger.d("umeng activity " + pageName + " - hidden - ");
     }
 
     @Override

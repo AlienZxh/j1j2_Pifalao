@@ -30,11 +30,18 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class OrderDetailParamsFragment extends BaseFragment implements View.OnClickListener, OrderProductsAdapter.OnItemClickListener {
 
+    @Override
+    protected String getFragmentName() {
+        return "OrderDetailParamsFragment";
+    }
+
     public interface OrderDetailParamsFragmentListener {
 
         void navigateToProductDetailActivity(int mainId);
 
         void navigateToCatServicePoint();
+
+
     }
 
     private OrderDetailParamsFragmentListener listener;
@@ -101,5 +108,6 @@ public class OrderDetailParamsFragment extends BaseFragment implements View.OnCl
         if (v == binding.catservicepoint) {
             listener.navigateToCatServicePoint();
         }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.j1j2.data.http.api;
 
 import com.j1j2.data.model.FreightType;
+import com.j1j2.data.model.OnlinePayResult;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.SubmitOrderReturn;
 import com.j1j2.data.model.WebReturn;
@@ -39,7 +40,10 @@ public interface ShopCartApi {
     Observable<WebReturn<List<FreightType>>> queryValidFreight(@Query("moduleId") int moduleId);
 
     @POST("ShopCart/DoPayOrder")
-    Observable<String> doPayOrder(@Body OrderOnlinePayBody orderOnlinePayBody);
+    Observable<WebReturn<OnlinePayResult>> doPayOrder(@Body OrderOnlinePayBody orderOnlinePayBody);
+
+    @POST("ShopCart/QueryPayState")
+    Observable<WebReturn<String>> queryPayState(@Query("orderNO") String orderNo,@Query("payType") int payType);
     //______________________________________________________________________________________________
 
     @POST("ShopCart/QueryUserServicePoint")

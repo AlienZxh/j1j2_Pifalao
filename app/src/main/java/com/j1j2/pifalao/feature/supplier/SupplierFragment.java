@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 
 import com.j1j2.data.model.City;
+import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentSupplierBinding;
@@ -22,6 +23,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  */
 @RequireBundler
 public class SupplierFragment extends BaseFragment {
+
+    @Override
+    protected String getFragmentName() {
+        return "SupplierFragment";
+    }
+
     FragmentSupplierBinding binding;
 
     @Arg
@@ -44,7 +51,7 @@ public class SupplierFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setUseWideViewPort(false);
         if (null != city)
-            binding.webview.loadDataWithBaseURL("http://218.244.128.140:8079",
+            binding.webview.loadDataWithBaseURL(BuildConfig.IMAGE_URL,
                     city.getPlatformDescription()
                             .replaceAll("img", "img width=100%"), "text/html",
                     "utf-8", null);

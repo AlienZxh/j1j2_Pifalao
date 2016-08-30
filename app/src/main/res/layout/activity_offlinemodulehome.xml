@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="module"
+            type="com.j1j2.data.model.Module" />
+
+        <variable
+            name="servicePoint"
+            type="com.j1j2.data.model.ServicePoint" />
+
+        <variable
+            name="servicePointModules"
+            type="String" />
+
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+
+    </data>
+
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:fitsSystemWindows="true">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:OnClickListener="@{onClickListener}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@{module.ModuleName}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/individualBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_mine"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}"
+                app:OnClickListener="@{onClickListener}"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="300px"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/offline_module_home" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/content_height_biger"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/green_conner_hollow_tag"
+                        android:padding="5px"
+                        android:text="店内服务"
+                        android:layout_marginRight="@dimen/padding_noraml"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{servicePoint.getName()}"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/text_biger"
+                        android:textStyle="bold" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/colorGrayDEDEDE" />
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="14px"
+                            android:gravity="center_vertical"
+                            android:text="服务点地址："
+                            android:textColor="@color/colorText999"
+                            android:textSize="@dimen/text_big" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="120px"
+                            android:text="@{servicePoint.getAddressDetail()}"
+                            android:textColor="@color/colorText2a2a2a"
+                            android:textSize="@dimen/text_biger" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="营业时间："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{servicePoint.getServiceTime()}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_top_servicepoint_content"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginTop="@dimen/padding_top_servicepoint_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="14px"
+                        android:gravity="center_vertical"
+                        android:text="可提供的服务："
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{servicePointModules}"
+                        android:textColor="@color/colorText2a2a2a"
+                        android:textSize="@dimen/text_biger" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginLeft="@dimen/padding_left_servicepoint_content"
+                    android:layout_marginRight="@dimen/padding_left_servicepoint_content"
+                    android:background="@drawable/dash_divider"
+                    android:layerType="software" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/bottombar_height" />
+            </com.zhy.autolayout.AutoLinearLayout>
+        </ScrollView>
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottombar_height"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bottom_bar_bg"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/callBtn"
+                android:layout_width="@dimen/width_servicepoint_bottom_btn"
+                android:layout_height="@dimen/content_height_big"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/padding_biger"
+                android:layout_marginStart="@dimen/padding_biger"
+                android:background="@drawable/green_conner_hollow_btn"
+                android:gravity="center"
+                app:onClickListener="@{onClickListener}">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_phone_new"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/icon_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_smaller"
+                    android:gravity="center"
+                    android:text="@string/servicepoint_call"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/inBtn"
+                android:layout_width="@dimen/width_servicepoint_bottom_btn"
+                android:layout_height="@dimen/content_height_big"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/padding_biger"
+                android:layout_marginRight="@dimen/padding_biger"
+                android:background="@drawable/orange_conner_hollow_btn"
+                android:gravity="center"
+                app:onClickListener="@{onClickListener}">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/icon_location"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/icon_small" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_smaller"
+                    android:gravity="center"
+                    android:text="导航去服务点"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+    </com.zhy.autolayout.AutoRelativeLayout>
+</layout>

@@ -40,6 +40,11 @@ import rx.schedulers.Schedulers;
 @RequireBundler
 public class MessagesFragment extends BaseFragment {
 
+    @Override
+    protected String getFragmentName() {
+        return "MessagesFragment";
+    }
+
     public interface MessagesFragmentListener extends HasComponent<MessagesComponent> {
 
     }

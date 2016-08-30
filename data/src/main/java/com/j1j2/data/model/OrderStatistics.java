@@ -19,8 +19,9 @@ public class OrderStatistics {
      * AllStateCount : 8
      * DeliveryOrderCount
      * DeliveryUnReadCount
+     * UnPayOrderCount
      */
-
+    private int UnPayOrderCount;
     private int SubmitOrderCount;
     private int SubmitUnReadCount;
     private int ExcutingOrderCount;
@@ -34,6 +35,14 @@ public class OrderStatistics {
     private int Invalid;
     private int InvalidUnReadCount;
     private int AllStateCount;
+
+    public int getUnPayOrderCount() {
+        return UnPayOrderCount;
+    }
+
+    public void setUnPayOrderCount(int unPayOrderCount) {
+        UnPayOrderCount = unPayOrderCount;
+    }
 
     public int getSubmitOrderCount() {
         return SubmitOrderCount;

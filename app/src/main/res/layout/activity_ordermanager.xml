@@ -123,15 +123,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_small"
                 android:layout_marginRight="@dimen/padding_small"
-                android:text="@string/icon_order_submit"
-                android:textColor="#ffff9500"
+                android:text="@string/icon_order_unpay"
+                android:textColor="#fffd3b44"
                 android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="待付款"
+                android:text="待支付"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_big" />
 
@@ -141,14 +141,15 @@
                 android:layout_height="45px"
                 android:gravity="right|center_vertical"
                 android:paddingRight="@dimen/padding_noraml"
-                android:textColor="@{orderManagerViewModel.statisticsObservableField.SubmitUnReadCount>0?@color/colorTransparent:@color/colorTextaaa}"
+                android:text="@{&quot;&quot;+0}"
+                android:textColor="@{orderManagerViewModel.statisticsObservableField.UnPayOrderCount>0?@color/colorTransparent:@color/colorTextaaa}"
                 android:textSize="@dimen/text_normal"
                 app:badge_bgColor="@color/colorRed"
                 app:badge_gravity="rightCenter"
                 app:badge_horizontalMargin="5dp"
                 app:badge_textSize="12sp"
                 app:badge_verticalMargin="0dp"
-                app:showNum="@{orderManagerViewModel.statisticsObservableField.SubmitUnReadCount}" />
+                app:showNum="@{orderManagerViewModel.statisticsObservableField.UnPayOrderCount}" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"

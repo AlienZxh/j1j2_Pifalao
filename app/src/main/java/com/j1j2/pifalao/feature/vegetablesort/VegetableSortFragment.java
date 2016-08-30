@@ -36,6 +36,11 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class VegetableSortFragment extends BaseFragment implements VegetableParentSortAdapter.OnSortSelectListener, VegetableChildSortAdapter.OnChildSortClickListener, View.OnClickListener {
 
+    @Override
+    protected String getFragmentName() {
+        return "VegetableSortFragment";
+    }
+
     public interface VegetableSortFragmentListener extends HasComponent<MainComponent> {
         void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
 
@@ -91,7 +96,7 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
         binding.childSortList.showRecycler();
     }
 
-    public void showload(){
+    public void showload() {
         binding.childSortList.showProgress();
     }
 

@@ -58,6 +58,8 @@
     <string name="icon_sort_head8">&#xe685;</string>
     <string name="icon_sort_head9">&#xe683;</string>
 
+    <string name="icon_wallet">&#xe69d;</string>
+
     <string name="icon_shoppingbag">&#xe69a;</string>
     <string name="icon_safe">&#xe663;</string>
     <string name="icon_album"> &#xe65a;</string>
@@ -85,6 +87,7 @@
     <string name="icon_accountmanager">&#xe6ba;</string>
 
     <string name="icon_order_offline">&#xe6ee;</string>
+    <string name="icon_order_unpay">&#xe6fc;</string>
     <string name="icon_order_submit">&#xe6b4;</string>
     <string name="icon_order_delivery">&#xe6c2;</string>
     <string name="icon_order_excuting">&#xe6bb;</string>
@@ -139,6 +142,9 @@
     <string name="icon_service_lottery">&#xe6e9;</string>
     <string name="icon_service_ticket">&#xe6ea;</string>
     <string name="icon_service_numeral">&#xe6ec;</string>
+    <string name="icon_service_banquet">&#xe668;</string>
+    <string name="icon_service_fruit">&#xe669;</string>
+
 
     <string name="icon_service_more">&#xe6cf;</string>
 
@@ -177,5 +183,21 @@
 
     <string name="icon_phone_new">&#xe6c8;</string>
 
+    <string name="icon_balancepay">&#xe6fd;</string>
+    <string name="icon_apli">&#xe66d;</string>
+    <string name="icon_weixin">&#xe6d7;</string>
 
+    <string name="icon_balancedetail">&#xe6fe;</string>
+    <string name="icon_outofstock">&#xe6ff;</string>
+
+    <string name="icon_onlinepay">&#xe701;</string>
+    <string name="icon_cashpay">&#xe702;</string>
+
+    <string name="icon_share">&#xe704;</string>
+    <string name="icon_share_weixin">&#xe703;</string>
+    <string name="icon_share_weixin_friend">&#xe708;</string>
+    <string name="icon_share_sina">&#xe706;</string>
+    <string name="icon_share_qq">&#xe70a;</string>
+    <string name="icon_share_qq_zone">&#xe709;</string>
+    <string name="icon_share_copy">&#xe705;</string>
 </resources>

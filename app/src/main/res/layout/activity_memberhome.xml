@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="@dimen/content_height_big"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/actionbar_btn_bg"
+                    android:gravity="center_vertical|right"
+                    android:text="@string/icon_search"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/icon_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/padding_small"
+                    android:gravity="center"
+                    android:text="某某服务点"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_btn" />
+
+                <TextView
+                    fontPath="iconfont/iconfont.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingRight="16px"
+                    android:text="@string/icon_unfold"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/loginBtn"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_search"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/loginBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_mine"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+
+        <com.shizhefei.view.multitype.MultiTypeView
+            android:id="@+id/multiTypeView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

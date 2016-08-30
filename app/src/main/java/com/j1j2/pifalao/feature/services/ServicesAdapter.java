@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.services;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -37,7 +38,6 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
 
 
     @Override
@@ -89,7 +89,9 @@ public class ServicesAdapter extends RecyclerView.Adapter<ServicesAdapter.Servic
 
         @Override
         public void bind(@NonNull final Module data, final int position) {
-            int iconId =Constant.moduleIconId.get(data.getModuleType());
+
+//            binding.icon.setTypeface(typeface);
+            int iconId = Constant.moduleIconId.get(data.getModuleType());
             binding.icon.setText(context.getResources().getString(iconId == 0 ? R.string.icon_service_more : iconId));
             int color = Constant.moduleColors.get(data.getModuleType());
             binding.icon.setTextColor(color == 0 ? 0xffaaaaaa : color);

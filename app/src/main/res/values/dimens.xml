@@ -70,4 +70,9 @@
 
     <dimen name="shopcart_circle_size">105px</dimen>
 
+    <dimen name="text_defaulttab">14sp</dimen>
+    <dimen name="thickness_indicator">6px</dimen>
+    <dimen name="width_indicator">90dp</dimen>
+
+
 </resources>

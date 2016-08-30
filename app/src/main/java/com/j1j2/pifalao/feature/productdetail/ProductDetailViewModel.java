@@ -98,8 +98,7 @@ public class ProductDetailViewModel {
                         productDetailActivity.moduleType = mProductDetail.getModuleType();
                         productDetailActivity.initBanner(sizeProductImgs);
                         productDetailActivity.initPrice(mProductDetail);
-                        if (mProductDetail.getModuleType() != Constant.ModuleType.DELIVERY)
-                            productDetailActivity.initUnitsSelect(mProductDetail);
+                        productDetailActivity.initUnitsSelect(mProductDetail);
                         productDetailActivity.initBottomViewPager(sizeProductImgs, mProductDetail.getProductUnits().get(0).getProductId(), mProductDetail);
                         if (mProductDetail.getProductUnits() != null && mProductDetail.getProductUnits().size() > 0)
                             updateProductViews(mProductDetail.getProductUnits().get(0).getProductId());

@@ -58,7 +58,10 @@ public class BackGroundService extends IntentService {
             if (unReadInfoManager == null) {
                 return;
             }
-            if (updateUnReadCall.getCall() == null || updateUnReadCall.getCall().isCanceled()) {
+            if (updateUnReadCall == null) {
+                updateUnReadCall = OkHttpUtils.post().url(BuildConfig.API_URL + "UserMessage/QueryUserUnReadInfo").tag(UPDATEUNREAD).build();
+            }
+            if (updateUnReadCall.getCall() == null || !updateUnReadCall.getCall().isExecuted() || updateUnReadCall.getCall().isCanceled()) {
                 try {
                     Response response = updateUnReadCall.execute();
                     WebReturn<UnReadInfo> unReadInfoWebReturn = GsonProvider.provideGson().fromJson(response.body().string(), new TypeToken<WebReturn<UnReadInfo>>() {

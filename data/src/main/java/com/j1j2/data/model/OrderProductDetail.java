@@ -40,6 +40,7 @@ public class OrderProductDetail implements Parcelable {
     private int ScalingFactor;
     private String BaseUnit;
     private int ActualDelivery;
+    private boolean IsRefundOutOfStock;
 
     public int getProductId() {
         return ProductId;
@@ -153,26 +154,13 @@ public class OrderProductDetail implements Parcelable {
         this.ActualDelivery = ActualDelivery;
     }
 
-    @Override
-    public String toString() {
-        return "OrderProductDetail{" +
-                "ProductId=" + ProductId +
-                ", ProductMainId=" + ProductMainId +
-                ", OwnCode='" + OwnCode + '\'' +
-                ", BarCode='" + BarCode + '\'' +
-                ", ProductName='" + ProductName + '\'' +
-                ", RetailPrice=" + RetailPrice +
-                ", ProductUnit='" + ProductUnit + '\'' +
-                ", ThumbImgPath='" + ThumbImgPath + '\'' +
-                ", MemberPrice=" + MemberPrice +
-                ", Quantity=" + Quantity +
-                ", AppendQuantity=" + AppendQuantity +
-                ", ScalingFactor=" + ScalingFactor +
-                ", BaseUnit='" + BaseUnit + '\'' +
-                ", ActualDelivery=" + ActualDelivery +
-                '}';
+    public boolean isRefundOutOfStock() {
+        return IsRefundOutOfStock;
     }
 
+    public void setRefundOutOfStock(boolean refundOutOfStock) {
+        IsRefundOutOfStock = refundOutOfStock;
+    }
 
     @Override
     public int describeContents() {
@@ -195,6 +183,7 @@ public class OrderProductDetail implements Parcelable {
         dest.writeInt(this.ScalingFactor);
         dest.writeString(this.BaseUnit);
         dest.writeInt(this.ActualDelivery);
+        dest.writeByte(this.IsRefundOutOfStock ? (byte) 1 : (byte) 0);
     }
 
     public OrderProductDetail() {
@@ -215,9 +204,10 @@ public class OrderProductDetail implements Parcelable {
         this.ScalingFactor = in.readInt();
         this.BaseUnit = in.readString();
         this.ActualDelivery = in.readInt();
+        this.IsRefundOutOfStock = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<OrderProductDetail> CREATOR = new Parcelable.Creator<OrderProductDetail>() {
+    public static final Creator<OrderProductDetail> CREATOR = new Creator<OrderProductDetail>() {
         @Override
         public OrderProductDetail createFromParcel(Parcel source) {
             return new OrderProductDetail(source);

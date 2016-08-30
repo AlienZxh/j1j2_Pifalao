@@ -28,6 +28,20 @@ public class Module implements Parcelable {
     private String ModuleServiceScope;
     private boolean Normal;
 
+    @Override
+    public String toString() {
+        return "Module{" +
+                "WareHouseModuleId=" + WareHouseModuleId +
+                ", ModuleName='" + ModuleName + '\'' +
+                ", Subscribed=" + Subscribed +
+                ", DisplayRank=" + DisplayRank +
+                ", ModuleType=" + ModuleType +
+                ", OrderAmountMinLimit=" + OrderAmountMinLimit +
+                ", ModuleServiceScope='" + ModuleServiceScope + '\'' +
+                ", Normal=" + Normal +
+                '}';
+    }
+
     public int getWareHouseModuleId() {
         return WareHouseModuleId;
     }
@@ -135,4 +149,20 @@ public class Module implements Parcelable {
             return new Module[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Module module = (Module) o;
+
+        return WareHouseModuleId == module.WareHouseModuleId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return WareHouseModuleId;
+    }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.data.http.api.UserOrderApi;
+import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.SaleOrderStateHistory;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
@@ -19,6 +20,7 @@ import com.j1j2.pifalao.feature.orderdetail.orderdetailtimeline.di.OrderDetailTi
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,6 +36,11 @@ import rx.schedulers.Schedulers;
  */
 @RequireBundler
 public class OrderDetailTimeLineFragment extends BaseFragment {
+
+    @Override
+    protected String getFragmentName() {
+        return "OrderDetailTimeLineFragment";
+    }
 
     FragmentOrderdetailTimelineBinding binding;
 
@@ -64,6 +71,7 @@ public class OrderDetailTimeLineFragment extends BaseFragment {
                 .subscribe(new WebReturnSubscriber<List<SaleOrderStateHistory>>() {
                     @Override
                     public void onWebReturnSucess(List<SaleOrderStateHistory> saleOrderStateHistories) {
+                        Collections.reverse(saleOrderStateHistories);
                         OrderDetailTimeLineAdapter orderDetailTimeLineAdapter = new OrderDetailTimeLineAdapter(saleOrderStateHistories);
                         binding.timeLineList.setAdapter(orderDetailTimeLineAdapter);
                     }

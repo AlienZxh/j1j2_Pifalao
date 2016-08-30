@@ -31,14 +31,19 @@ android {
         enabled true
     }
 
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     defaultConfig {
+        multiDexEnabled true
+
         minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
         targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
         applicationId globalConfiguration.getAt("androidApplicationId")
         versionCode globalConfiguration.getAt("androidVersionCode")
         versionName globalConfiguration.getAt("androidVersionName")
         testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
-
     }
 
     signingConfigs {
@@ -60,20 +65,18 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
 
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9087/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9087\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
             buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }
         debug {
             signingConfig signingConfigs.debug
             minifyEnabled false
-            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
@@ -124,7 +127,9 @@ dependencies {
 
     compile appDependencies.eventbus
     compile appDependencies.okhttputils
-
+    compile appDependencies.multidex
+    //umeng
+    compile appDependencies.umengAnalytics
     //单元测试
     testCompile appTestDependencies.junit
     //UI测试

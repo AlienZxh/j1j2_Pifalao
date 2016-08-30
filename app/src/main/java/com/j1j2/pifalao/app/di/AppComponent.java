@@ -15,8 +15,12 @@ import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.De
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointModule;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeComponent;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
+import com.j1j2.pifalao.feature.home.memberhome.di.MemberHomeComponent;
+import com.j1j2.pifalao.feature.home.memberhome.di.MemberHomeModule;
 import com.j1j2.pifalao.feature.home.morehome.di.MoreHomeComponent;
 import com.j1j2.pifalao.feature.home.morehome.di.MoreHomeModule;
+import com.j1j2.pifalao.feature.home.offlinemodulehome.di.OfflineModuleHomeComponent;
+import com.j1j2.pifalao.feature.home.offlinemodulehome.di.OfflineModuleHomeModule;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeComponent;
 import com.j1j2.pifalao.feature.home.storestylehome.di.StoreStyleHomeModule;
 import com.j1j2.pifalao.feature.home.vegetablehome.di.VegetableHomeComponent;
@@ -58,13 +62,13 @@ import dagger.Component;
 public interface AppComponent {
     void inject(MainAplication aplication);
 
+    ActivityComponent plus(ActivityModule activityModule);
+
     LaunchComponent plus(LaunchModule launchModule);
 
     GuideComponent plus(GuideModule guideModule);
 
     UserComponent plus(UserModule userModule);
-
-    ActivityComponent plus(ActivityModule activityModule);
 
     CityComponent plus(CityModule cityModule);
 
@@ -103,4 +107,8 @@ public interface AppComponent {
     MoreHomeComponent plus(MoreHomeModule moreHomeModule);
 
     FindPSWComponent plus(FindPSWModule findPSWModule);
+
+    OfflineModuleHomeComponent plus(OfflineModuleHomeModule offlineModuleHomeModule);
+
+    MemberHomeComponent plus(MemberHomeModule memberHomeModule);
 }

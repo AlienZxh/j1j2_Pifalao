@@ -50,14 +50,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@{StringUtils.getOrdersState(orderSimple.OrderState)}"
+                android:text="@{StringUtils.getOrdersState(orderSimple.OrderState,orderSimple.OrderPayType)}"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_big" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="应付金额："
+                android:text="总金额："
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_big" />
 
@@ -196,6 +196,20 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_normal"
                 android:visibility="@{orderSimple.OrderState==16||(orderSimple.OrderState==8&amp;&amp;orderSimple.ModuleType==Constant.ModuleType.DELIVERY)?View.VISIBLE : View.GONE}"
+                app:OnClickListener="@{onClick}" />
+
+            <TextView
+                android:id="@+id/pay"
+                android:layout_width="130px"
+                android:layout_height="62px"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:background="@drawable/orange_conner_btn_selector"
+                android:gravity="center"
+                android:text="去支付"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal"
+                android:visibility="@{orderSimple.OrderState==2?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
             <!--<TextView-->

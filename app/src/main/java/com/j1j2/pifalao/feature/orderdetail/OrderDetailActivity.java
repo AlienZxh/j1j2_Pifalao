@@ -57,7 +57,6 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     @Inject
     OrderDetailViewModel orderDetailViewModel;
 
-
     OrderDetailParamsFragment orderDetailParamsFragment;
     OrderDetailTimeLineFragment orderDetailTimeLineFragment;
 
@@ -65,7 +64,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orderdetail);
         binding.setOrderDetailViewModel(orderDetailViewModel);
-
+        binding.setOnClick(this);
     }
 
     @Override
@@ -89,8 +88,10 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     }
 
     public void initFragment() {
+        //_________________________________________________________________________________
         orderDetailParamsFragment.initParams(orderDetailViewModel.orderDetailObservableField.get(), orderDetailViewModel.servicePointObservableField.get());
     }
+
 
     @Override
     protected void setupActivityComponent() {
@@ -107,7 +108,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
                 .setCancelable(true)
                 .setTitle("提示")
                 .setNegativeButton("取消", null)
-                .setMessage("确认删除该订单吗？")
+                .setMessage("确认取消该订单吗？")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -120,6 +121,8 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Subscribe
     public void onOrderStateChangeEvent(OrderStateChangeEvent event) {
+        if (event.getNewOrderState() == Constant.OrderType.ORDERTYPE_INVALID)
+            return;
         orderDetailViewModel.queryOrderDetail(orderId);
         orderDetailTimeLineFragment.queryOrderStateHistory();
         if (event.getNewOrderState() == Constant.OrderType.ORDERTYPE_WAITFORRATE) {
@@ -161,6 +164,9 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             navigateToCatServicePoint();
         if (v == binding.cancel) {
             showDeleteDialog(orderId);
+        }
+        if (v == binding.pay) {
+            navigate.navigateToOnlineOrderPay(this, null, false, orderId, orderDetailViewModel.orderDetailObservableField.get().getOrderNO(), true);
         }
         if (v == binding.receive) {
             orderDetailViewModel.receiveOrder(orderId);

@@ -21,6 +21,7 @@ public class OrderDetailTimeLineAdapter extends RecyclerView.Adapter<OrderDetail
 
     private List<SaleOrderStateHistory> saleOrderStateHistories;
 
+
     public OrderDetailTimeLineAdapter(List<SaleOrderStateHistory> saleOrderStateHistories) {
         this.saleOrderStateHistories = saleOrderStateHistories;
     }
@@ -54,7 +55,7 @@ public class OrderDetailTimeLineAdapter extends RecyclerView.Adapter<OrderDetail
 
         @Override
         public void bind(@NonNull SaleOrderStateHistory data, int position) {
-            binding.setIsLast(position == (saleOrderStateHistories.size() - 1));
+            binding.setIsNowState(position == 0);
             binding.setSaleOrderStateHistory(data);
         }
     }

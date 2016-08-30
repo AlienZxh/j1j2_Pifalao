@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="门店快送"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/individualBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_mine"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="30px"
+            android:paddingTop="120px"
+            android:text="@string/icon_unsubscribe"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="300px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="亲～您选择的服务点，还未来得及开通门店快送服务！"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="点击申请我们会火速为您开通！"
+            android:textColor="@color/colorTextaaa"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="已有88人申请"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_normal" />
+
+
+        <EditText
+            android:layout_width="620px"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/content_height_normal"
+            android:background="@drawable/login_input_bg"
+            android:hint="请填写手机号码，开通后便于我们通知您"
+            android:paddingLeft="@dimen/padding_noraml"
+            android:paddingRight="@dimen/padding_noraml"
+            android:textColor="@color/colorText333"
+            android:textColorHint="@color/colorTextaaa"
+            android:textSize="@dimen/text_big" />
+
+        <TextView
+            android:id="@+id/openBtn"
+            android:layout_width="620px"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/content_height_small"
+            android:background="@drawable/orange_conner_btn_selector"
+            android:gravity="center"
+            android:text="申请开通"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

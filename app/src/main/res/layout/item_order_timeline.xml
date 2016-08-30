@@ -13,7 +13,7 @@
             type="SaleOrderStateHistory" />
 
         <variable
-            name="isLast"
+            name="isNowState"
             type="boolean" />
     </data>
 
@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="32px"
                     android:layout_height="32px"
-                    android:background="@{isLast?@drawable/register_step_selected_bg:@drawable/register_step_normal_bg}"
+                    android:background="@{isNowState?@drawable/register_step_selected_bg:@drawable/register_step_normal_bg}"
                     android:gravity="center"
                     app:layout_auto_baseheight="width" />
 
@@ -49,8 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="44px"
                 android:gravity="center_vertical"
-                android:text="@{StringUtils.getOrdersState(saleOrderStateHistory.SaleOrderState)}"
-                android:textColor="@{isLast?@color/colorAccent:@color/colorText333}"
+                android:text="@{StringUtils.getOrdersState(saleOrderStateHistory.SaleOrderState,saleOrderStateHistory.OrderPayType)}"
+                android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
                 android:textSize="@dimen/text_biger" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_marginLeft="@dimen/padding_noraml"
                 android:gravity="center_vertical"
                 android:text="@{saleOrderStateHistory.ExcutedTimeStr==null?&quot;&quot;:(&quot;（&quot;+saleOrderStateHistory.ExcutedTimeStr+&quot;）&quot;)}"
-                android:textColor="@{isLast?@color/colorAccent:@color/colorTextaaa}"
+                android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
                 android:textSize="@dimen/text_big" />
 
         </com.zhy.autolayout.AutoLinearLayout>
@@ -68,8 +68,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="120px"
-            android:text="@{StringUtils.getOrdersTimeLineContent(saleOrderStateHistory.SaleOrderState)}"
-            android:textColor="@{isLast?@color/colorAccent:@color/colorTextaaa}"
+            android:text="@{StringUtils.getOrdersTimeLineContent(saleOrderStateHistory.SaleOrderState,saleOrderStateHistory.OrderPayType)}"
+            android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
             android:textSize="@dimen/text_normal" />
 
     </com.zhy.autolayout.AutoLinearLayout>

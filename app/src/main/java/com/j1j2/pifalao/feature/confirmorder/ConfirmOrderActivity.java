@@ -75,8 +75,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     DialogPlus timeDialog;
     ViewDeliverytimePickerBinding timeDialogBinding;
 
-    DialogPlus payDialog;
-    ViewOrderpaytypeBinding payDialogBinding;
 
     public OrderSubmitState orderSubmitState;
 
@@ -87,6 +85,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_confirmorder);
+        orderSubmitState.OrderPayType.set(Constant.OrderPayType.ONLINEPAYMENT);
         binding.setShopCart(shopCart);
         binding.setConfirmOrderViewModel(confirmOrderViewModel);
         module = userRelativePreference.getSelectedModule(null);
@@ -94,27 +93,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
-        //_______________________________________________________________________________
-        payDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_orderpaytype, null, false);
-        payDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
-                .setCancelable(true)
-                .setInAnimation(R.anim.slide_in_bottom)
-                .setOutAnimation(R.anim.slide_out_bottom)
-                .setContentHolder(new ViewHolder(payDialogBinding.getRoot()))
-                .setContentBackgroundResource(R.color.colorWhite)
-                .create();
-        payDialogBinding.orderpaytypeCancel.setOnClickListener(this);
-        payDialogBinding.orderpaytypeConFirm.setOnClickListener(this);
-        List<String> payItems = new ArrayList<>();
-        payItems.add("在线支付");
-        if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
-            payItems.add("货到付款");
-        }
-        payDialogBinding.orderpaytype.setItems(payItems);
-        payDialogBinding.orderpaytype.setClipToPadding(false);
-        payDialogBinding.orderpaytype.setSeletion(0);
-        binding.orderpaytypeText.setText(payDialogBinding.orderpaytype.getSeletedItem());
-        orderSubmitState.OrderPayType = Constant.OrderPayType.ONLINEPAYMENT;
         //___________________________________________________________
         timeDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_deliverytime_picker, null, false);
         timeDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
@@ -207,6 +185,11 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         }
+        if(coupons.size()<=0)
+            binding.couponText.setTextColor(0xffaaaaaa);
+        else
+            binding.couponText.setTextColor(0xff333333);
+
     }
 
     public void initAddress(Address address) {
@@ -238,18 +221,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             onBackPressed();
         if (v == binding.timPickerBtn)
             showTimePicker();
-        if (v == binding.orderpaytypeBtn)
-            payDialog.show();
-        if (v == payDialogBinding.orderpaytypeCancel)
-            payDialog.dismiss();
-        if (v == payDialogBinding.orderpaytypeConFirm) {
-            binding.orderpaytypeText.setText(payDialogBinding.orderpaytype.getSeletedItem());
-            if (payDialogBinding.orderpaytype.getSeletedItem().equals("在线支付"))
-                orderSubmitState.OrderPayType = Constant.OrderPayType.ONLINEPAYMENT;
-            else
-                orderSubmitState.OrderPayType = Constant.OrderPayType.CASHONDELIVERY;
-            payDialog.dismiss();
-        }
+
         if (v == timeDialogBinding.timeickerCancel)
             timeDialog.dismiss();
         if (v == timeDialogBinding.timeickerConFirm) {
@@ -266,6 +238,10 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         if (v == binding.addressLayout) {
             navigate.navigateToAddressManager(this, null, false, true);
         }
+        if (v == binding.cashpaybtn)
+            orderSubmitState.OrderPayType.set(Constant.OrderPayType.CASHONDELIVERY);
+        if (v == binding.onlinepaybtn)
+            orderSubmitState.OrderPayType.set(Constant.OrderPayType.ONLINEPAYMENT);
 
     }
 
@@ -303,5 +279,9 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     public void navigateToOrderDetail(int orderId) {
         navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+    }
+
+    public void navigateToOnlineOrderPay(int orderId, String orderNO) {
+        navigate.navigateToOnlineOrderPay(this, null, true, orderId, orderNO, false);
     }
 }

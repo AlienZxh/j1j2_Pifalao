@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="48px"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorCityTag"
+            android:background="@{city.OpenState?@color/colorCityOpenTag:@color/colorCityTag}"
             android:gravity="center"
             android:text="@{city.OpenState?@string/city_is_open:@string/city_is_close}"
             android:textColor="@color/colorWhite"

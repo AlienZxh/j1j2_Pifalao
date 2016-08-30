@@ -143,7 +143,4 @@ public class OrderDetailViewModel {
         this.orderDetailObservableField.set(orderSimple);
     }
 
-    public OrderDetailActivity getOrderDetailActivity() {
-        return orderDetailActivity;
-    }
 }

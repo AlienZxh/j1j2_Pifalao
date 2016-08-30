@@ -109,7 +109,7 @@ public class FindPSWViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        findPSWActivity.toastor.showSingleLongToast("密码重置成功，新密码为：" + psw);
+                        findPSWActivity.toastor.showSingleLongToast("密码重置成功");
                         findPSWActivity.finish();
                     }
 

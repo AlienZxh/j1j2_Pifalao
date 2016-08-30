@@ -13,6 +13,8 @@ import com.j1j2.pifalao.databinding.ActivityAccountBinding;
 import com.j1j2.pifalao.feature.account.di.AccountModule;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -47,6 +49,15 @@ public class AccountActivity extends BaseActivity implements View.OnClickListene
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         MainAplication.get(this).getUserComponent().plus(new AccountModule(this)).inject(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onLogStateChangeEvent(LogStateEvent event) {
+        if (event.isLogin()) {
+
+        } else {
+            finish();
+        }
     }
 
     @Override

@@ -94,6 +94,8 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
             onBackPressed();
         if (v == binding.pointBtn)
             navigate.navigateToVipHome(this, null, false);
+        if (v == binding.balanceBtn)
+            navigate.navigateToBalanceDetail(this, null, false);
         if (null != normalCoupons && v == binding.coupon) {
             navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
         }

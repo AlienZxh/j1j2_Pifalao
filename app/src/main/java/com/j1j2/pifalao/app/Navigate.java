@@ -86,12 +86,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToServicesActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint) {
+    public void navigateToServicesActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.servicesActivity(servicePoint).start(context);
+            Bundler.servicesActivity().start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.servicesActivity(servicePoint).intent(context),
+            ActivityCompat.startActivity(context, Bundler.servicesActivity().intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -619,6 +619,20 @@ public class Navigate {
         }
     }
 
+
+    public void navigateToUnsubscribeDelivery(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.unsubscribeDeliveryActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.unsubscribeDeliveryActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
     public void navigateToUnsubscribeModule(Activity context, ActivityOptionsCompat options, boolean isFinish) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
             Bundler.unsubscribeModuleActivity().start(context);
@@ -684,12 +698,77 @@ public class Navigate {
         }
     }
 
-    public void navigateToOnlineOrderPay(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+    public void navigateToOnlineOrderPay(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId, String orderNO, boolean fromrderDetail) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.onlineOrderPayActivity().start(context);
+            Bundler.onlineOrderPayActivity(orderId, orderNO, fromrderDetail).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.onlineOrderPayActivity().intent(context),
+            ActivityCompat.startActivity(context, Bundler.onlineOrderPayActivity(orderId, orderNO, fromrderDetail).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToHouseKeeping(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.houseKeepingActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.houseKeepingActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToOfflineModuleHome(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module, ServicePoint servicePoint) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.offlineModuleHomeActivity(module, servicePoint).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.offlineModuleHomeActivity(module, servicePoint).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToBalanceDetail(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.balanceDetailActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.balanceDetailActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToMemberHomeActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.memberHomeActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.memberHomeActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToFreeConvertibilityActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.freeConvertibilityActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.freeConvertibilityActivity().intent(context),
                     options.toBundle());
         }
         if (isFinish) {

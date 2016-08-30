@@ -4,6 +4,12 @@
 
     <data>
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <variable
+            name="orderType"
+            type="int"/>
+
         <variable
             name="ordersViewModel"
             type="com.j1j2.pifalao.feature.orders.OrdersViewModel" />
@@ -39,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="订单列表"
+                android:text="@{StringUtils.getOrdersActionBarTitle(orderType)}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
