@@ -4,7 +4,7 @@
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <View
@@ -38,175 +38,15 @@
 
         </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.zhy.autolayout.AutoLinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/freeList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_small"
-                android:layout_marginLeft="@dimen/padding_small"
-                android:layout_marginRight="5px"
-                android:layout_marginTop="@dimen/padding_small"
-                android:layout_weight="1"
-                android:background="@color/colorWhite"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_small">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="364px" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_noraml"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="荣耀７　４G手机双卡双待"
-                    android:textColor="@color/colorText999"
-                    android:textSize="@dimen/text_big" />
-
-                <com.zhy.autolayout.AutoLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_noraml">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="199"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="40px"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="批发币"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/text_big" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1520"
-                        android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="人已兑"
-                        android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
-                </com.zhy.autolayout.AutoLinearLayout>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/content_height_big"
-                    android:layout_marginTop="@dimen/padding_noraml"
-                    android:background="@drawable/orange_conner_btn_selector"
-                    android:gravity="center"
-                    android:text="立即兑换"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_biger" />
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_small"
-                android:layout_marginLeft="5px"
-                android:layout_marginRight="@dimen/padding_small"
-                android:layout_marginTop="@dimen/padding_small"
-                android:layout_weight="1"
-                android:background="@color/colorWhite"
-                android:orientation="vertical"
-                android:padding="@dimen/padding_small">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="364px" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_noraml"
-                    android:ellipsize="end"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:text="荣耀７　４G手机双卡双待"
-                    android:textColor="@color/colorText999"
-                    android:textSize="@dimen/text_big" />
-
-                <com.zhy.autolayout.AutoLinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_noraml">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="199"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="40px"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="批发币"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/text_big" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1520"
-                        android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="人已兑"
-                        android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
-                </com.zhy.autolayout.AutoLinearLayout>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/content_height_big"
-                    android:layout_marginTop="@dimen/padding_noraml"
-                    android:background="@drawable/orange_conner_btn_selector"
-                    android:gravity="center"
-                    android:text="立即兑换"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_biger" />
-            </com.zhy.autolayout.AutoLinearLayout>
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-        <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/height_1px"-->
-            <!--android:background="@color/colorDividerE9E9E9" />-->
+            android:clipToPadding="false"
+            android:paddingBottom="15px"
+            android:paddingLeft="5px"
+            android:paddingRight="5px"
+            android:paddingTop="5px" />
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

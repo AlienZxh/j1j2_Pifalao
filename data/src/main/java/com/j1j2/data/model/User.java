@@ -3,7 +3,7 @@ package com.j1j2.data.model;
 /**
  * Created by alienzxh on 16-3-11.
  */
-public class User  {
+public class User {
 
     /**
      * UserId : 760
@@ -42,6 +42,7 @@ public class User  {
     private double UserSaveAmount;
     private int UserLevelId;
     private double Balance;
+    private String Portrait;
 
 
     public void setUserId(int UserId) {
@@ -180,6 +181,14 @@ public class User  {
         return Balance;
     }
 
+    public String getPortrait() {
+        return Portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        Portrait = portrait;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -200,6 +209,7 @@ public class User  {
                 ", UserSaveAmount=" + UserSaveAmount +
                 ", UserLevelId=" + UserLevelId +
                 ", Balance=" + Balance +
+                ", Portrait='" + Portrait + '\'' +
                 '}';
     }
 }

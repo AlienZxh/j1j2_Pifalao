@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.j1j2.common.util.EmptyUtils" />
+
+        <variable
+            name="activityProduct"
+            type="com.j1j2.data.model.ActivityProduct" />
+
+        <variable
+            name="times"
+            type="int" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_messages_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_noraml">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_normal"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/content_height_big"
+                android:gravity="bottom"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangePoint)}"
+                android:textColor="@color/colorAccent"
+                android:textSize="45px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/content_height_big"
+                android:gravity="bottom"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:&quot;积分&quot;}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/content_height_big"
+                android:gravity="bottom"
+                android:paddingBottom="10px"
+                android:text="+"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big"
+                android:visibility="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)||EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/content_height_big"
+                android:gravity="bottom"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangeMoney)}"
+                android:textColor="@color/colorAccent"
+                android:textSize="45px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/content_height_big"
+                android:gravity="bottom"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:&quot;元&quot;}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="只需要"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangePoint)}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:&quot;积分&quot;}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="+"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big"
+                android:visibility="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)||EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?View.GONE : View.VISIBLE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangeMoney)}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:&quot;元&quot;}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5px"
+                android:text="就能获得奖品"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <ProgressBar
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:max="@{activityProduct.Configs.MaxUsers}"
+            android:progress="@{activityProduct.Configs.MaxUsers-activityProduct.Statistics.MaxUserRemain}"
+            android:progressDrawable="@drawable/orange_gradient_progressdrawable" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总需："
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;&quot;+activityProduct.Configs.MaxUsers}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人次"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="剩余："
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;&quot;+activityProduct.Statistics.MaxUserRemain}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="人次"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="@color/colorGrayDEDEDE" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="购买数量"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;（每人限参与&quot;+activityProduct.Configs.TimesLimits+&quot;人次）&quot;}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal"
+                android:visibility="@{activityProduct.Configs.TimesLimits>0?View.VISIBLE:View.GONE}" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1" />
+
+            <com.j1j2.common.view.quantityview.QuantityView
+                android:id="@+id/quantityview"
+                android:layout_width="240px"
+                android:layout_height="@dimen/content_height_normal" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_normal"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="#f3f3f3"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您没有参与本期活动哦！"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big"
+                android:visibility="@{times>0?View.GONE:View.VISIBLE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;本期已参与&quot;+times+&quot;人次&quot;}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big"
+                android:visibility="@{times>0?View.VISIBLE:View.GONE}" />
+
+            <TextView
+                android:id="@+id/catNum"
+                android:layout_width="200px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                android:text="查看号码"
+                android:textColor="#009ff1"
+                android:textSize="@dimen/text_normal"
+                android:visibility="@{times>0?View.VISIBLE:View.GONE}" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

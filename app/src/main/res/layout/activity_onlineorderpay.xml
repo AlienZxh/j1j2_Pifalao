@@ -8,9 +8,6 @@
             name="onClickListener"
             type="android.view.View.OnClickListener" />
 
-        <variable
-            name="orderSimple"
-            type="com.j1j2.data.model.OrderSimple" />
 
         <variable
             name="balance"
@@ -54,11 +51,13 @@
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/timeLayout"
             android:layout_width="match_parent"
             android:layout_height="160px"
             android:background="#ffffffdb"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/payTime"
@@ -101,10 +100,10 @@
                 android:textSize="@dimen/text_big" />
 
             <TextView
+                android:id="@+id/sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_small"
-                android:text="@{&quot;￥&quot;+orderSimple.OrderSum}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_big"
                 android:textStyle="bold" />

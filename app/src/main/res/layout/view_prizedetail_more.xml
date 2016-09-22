@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_1px"
+        android:layout_marginLeft="@dimen/padding_noraml"
+        android:layout_marginRight="@dimen/padding_noraml"
+        android:layout_weight="1"
+        android:background="@color/colorGrayd2d2d2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_noraml"
+        android:layout_marginTop="@dimen/padding_noraml"
+        android:text="上拉查看图文详情"
+        android:textColor="@color/colorText999"
+        android:textSize="@dimen/text_normal" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="@dimen/height_1px"
+        android:layout_marginLeft="@dimen/padding_noraml"
+        android:layout_marginRight="@dimen/padding_noraml"
+        android:layout_weight="1"
+        android:background="@color/colorGrayd2d2d2" />
+
+</com.zhy.autolayout.AutoLinearLayout>

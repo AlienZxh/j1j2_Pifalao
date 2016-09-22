@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="200px"
+        android:layout_height="300px"
+        android:scaleType="fitCenter"
+        android:src="@drawable/unsubscribe_delivery_img" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="您还没有参与活动哦！"
+        android:textColor="@color/colorText999"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/retryBtn"
+        android:layout_width="250px"
+        android:layout_height="@dimen/content_height_big"
+        android:layout_marginTop="50px"
+        android:background="@drawable/orange_conner_btn_selector"
+        android:gravity="center"
+        android:text="立即参与"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_biger" />
+
+</com.zhy.autolayout.AutoLinearLayout>

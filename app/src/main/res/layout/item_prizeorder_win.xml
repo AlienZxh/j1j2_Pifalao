@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.j1j2.pifalao.BuildConfig" />
+        <import type="com.j1j2.data.model.ActivityStateChain" />
+        <import type="com.j1j2.data.model.ActivityProcessState" />
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="android.net.Uri" />
+
+        <import type="com.j1j2.common.util.EmptyUtils" />
+
+        <variable
+            name="activityStateChain"
+            type="ActivityStateChain" />
+
+        <variable
+            name="isNowState"
+            type="boolean" />
+
+        <variable
+            name="state"
+            type="ActivityProcessState" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="44px"
+        android:paddingTop="44px">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="32px"
+                    android:layout_height="32px"
+                    android:background="@{isNowState?@drawable/timeline_spot_selected:@drawable/timeline_spot_normal}"
+                    android:gravity="center"
+                    app:layout_auto_baseheight="width" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="44px"
+                android:gravity="center_vertical"
+                android:text="已中奖"
+                android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_biger" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="44px"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                android:gravity="center_vertical"
+                android:text="@{activityStateChain.ProcessTimeStr==null?&quot;&quot;:(&quot;（&quot;+activityStateChain.ProcessTimeStr+&quot;）&quot;)}"
+                android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="648px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120px"
+            android:layout_marginTop="@dimen/padding_small"
+            android:orientation="horizontal">
+
+            <com.github.siyamed.shapeimageview.RoundedImageView
+                android:id="@+id/img"
+                android:layout_width="120px"
+                android:layout_height="120px"
+                app:displayImgAsBitmap="@{Uri.parse(EmptyUtils.isEmpty(state.ProductInfo.ThumbImg)?@string/text_empty:(BuildConfig.IMAGE_URL+state.ProductInfo.ThumbImg))}"
+                app:layout_auto_basewidth="height"
+                app:siBorderColor="@color/colorGrayDEDEDE"
+                app:siBorderWidth="1px"
+                app:siRadius="2dp" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:paddingRight="@dimen/padding_noraml">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:maxLines="3"
+                    android:text="@{state.ProductInfo.ProductName}"
+                    android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                    android:textSize="@dimen/text_normal" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{EmptyUtils.isEmpty(state.ProductInfo.lotteryNum)?&quot;单号：&quot;:&quot;期号：&quot;}"
+                        android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{EmptyUtils.isEmpty(state.ProductInfo.lotteryNum)?state.OrderNO:state.ProductInfo.lotteryNum}"
+                        android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                        android:textSize="@dimen/text_normal" />
+                </com.zhy.autolayout.AutoLinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -24,12 +24,21 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
         void onQuantityChange(QuantityView view, int value);
     }
 
+    public interface OnMaxQuantityListener {
+        void onMaxQuantity(QuantityView view);
+    }
+
     private OnQuantityChangeListener onQuantityChangeListener;
+
+    private OnMaxQuantityListener onMaxQuantityListener;
 
     private TextView minusBtn;
     private TextView addBtn;
     private EditText quantityEdit;
+
+    private int maxQuantity = 9999;
     private int quantity = 1;
+
 
     private int clickId = 0;
 
@@ -98,9 +107,11 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
             quantity = 1;
             quantityEdit.setText("" + quantity);
             return;
-        } else if (Integer.valueOf(s.toString()) > 9999) {
-            quantity = 9999;
+        } else if (Integer.valueOf(s.toString()) > maxQuantity) {
+            quantity = maxQuantity;
             quantityEdit.setText("" + quantity);
+            if (onMaxQuantityListener != null)
+                onMaxQuantityListener.onMaxQuantity(QuantityView.this);
             return;
         } else {
             quantity = Integer.valueOf(s.toString());
@@ -115,6 +126,14 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
 
     }
 
+    public int getMaxQuantity() {
+        return maxQuantity;
+    }
+
+    public void setMaxQuantity(int maxQuantity) {
+        this.maxQuantity = maxQuantity;
+    }
+
     public int getQuantity() {
         return quantity;
     }
@@ -124,8 +143,10 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
             return;
         if (quantity <= 0) {
             quantity = 1;
-        } else if (quantity > 9999) {
-            quantity = 9999;
+        } else if (quantity > maxQuantity) {
+            quantity = maxQuantity;
+            if (onMaxQuantityListener != null)
+                onMaxQuantityListener.onMaxQuantity(QuantityView.this);
         } else {
             this.quantity = quantity;
         }
@@ -134,5 +155,9 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
 
     public void setOnQuantityChangeListener(OnQuantityChangeListener onQuantityChangeListener) {
         this.onQuantityChangeListener = onQuantityChangeListener;
+    }
+
+    public void setOnMaxQuantityListener(OnMaxQuantityListener onMaxQuantityListener) {
+        this.onMaxQuantityListener = onMaxQuantityListener;
     }
 }

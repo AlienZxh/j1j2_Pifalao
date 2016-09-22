@@ -173,7 +173,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         //__________________________________________________________________________________________
         servicesViewModule.querySystemNotice();
         //_______________________________________________________________
-        navigate.navigateToMemberHomeActivity(this, null, false);
+
     }
 
     public void showLocationDialog(final ServicePoint servicePoint) {
@@ -378,6 +378,10 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                 }
             } else if (module.getModuleType() == Constant.ModuleType.HOUSEKEEPING) {
                 navigate.navigateToHouseKeeping(ServicesActivity.this, null, false);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.MEMBER) {
+                navigate.navigateToMemberHomeActivity(this, null, false);
+                userRelativePreference.setSelectedModule(module);
             }
         } else {
             if (module.getModuleType() == Constant.ModuleType.DELIVERY)
@@ -390,6 +394,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     public Intent getModuleIntent(Module module) {
         if (module.isSubscribed()) {
+            userRelativePreference.setSelectedModule(module);
             if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
                 return Bundler.deliveryHomeActivity(servicePoint, module).intent(this);
             } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
@@ -398,7 +403,8 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                 return Bundler.mainActivity(module, MainActivity.VEGETABLE).intent(this);
             } else if (module.getModuleType() == Constant.ModuleType.MORE) {
                 return Bundler.moreHomeActivity(modules).intent(this);
-            }
+            } else if (module.getModuleType() == Constant.ModuleType.MEMBER)
+                return Bundler.memberHomeActivity().intent(this);
         }
         return Bundler.unsubscribeModuleActivity().intent(this);
 

@@ -37,6 +37,11 @@ public class OfflineOrdersAdapter extends RecyclerView.Adapter<OfflineOrdersAdap
         notifyItemRangeInserted(startIndex, newOfflineOrders.size());
     }
 
+    public void clear() {
+        offlineOrderSimples.clear();
+        notifyDataSetChanged();
+    }
+
     public interface OnOfflineOrderClickListener {
         void onOfflineOrderClick(View v, OfflineOrderSimple offlineOrderSimple, int position);
     }

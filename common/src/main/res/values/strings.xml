@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">common</string>
+
+    <string name="default_format">###,##0.00</string>
+    <string name="default_decimal_separator">\'</string>
+
     <string name="icon_time">&#xe60e;</string>
     <string name="icon_back">&#xe620;</string>
     <string name="icon_unfold">&#xe60f;</string>
@@ -79,6 +83,8 @@
 
     <string name="icon_privilege">&#xe69c;</string>
 
+
+    <string name="icon_activitymanager">&#xe713;</string>
     <string name="icon_ordermanager">&#xe6c1;</string>
     <string name="icon_addressmanager">&#xe6c3;</string>
     <string name="icon_walletmanager">&#xe6b9;</string>
@@ -95,6 +101,12 @@
     <string name="icon_order_waitforrate">&#xe6b8;</string>
     <string name="icon_order_invalid">&#xe6bc;</string>
     <string name="icon_order_all">&#xe6b7;</string>
+
+    <string name="icon_order_unpay_new">&#xe70c;</string>
+    <string name="icon_order_submit_new">&#xe70e;</string>
+    <string name="icon_order_excuting_new">&#xe70d;</string>
+    <string name="icon_order_clientwaitforrecevie_new">&#xe61b;</string>
+    <string name="icon_order_waitforrate_new">&#xe61c;</string>
 
     <string name="icon_edit">&#xe604;</string>
 
@@ -144,6 +156,7 @@
     <string name="icon_service_numeral">&#xe6ec;</string>
     <string name="icon_service_banquet">&#xe668;</string>
     <string name="icon_service_fruit">&#xe669;</string>
+    <string name="icon_service_member">&#xe711;</string>
 
 
     <string name="icon_service_more">&#xe6cf;</string>
@@ -200,4 +213,10 @@
     <string name="icon_share_qq">&#xe70a;</string>
     <string name="icon_share_qq_zone">&#xe709;</string>
     <string name="icon_share_copy">&#xe705;</string>
+
+
+    <string name="icon_ongoing">&#xe715;</string>
+    <string name="icon_complete">&#xe70f;</string>
+    <string name="icon_showorder">&#xe712;</string>
+    <string name="icon_myprize">&#xe714;</string>
 </resources>

@@ -36,7 +36,7 @@ public class LoginViewModel {
     }
 
     public void login(@NonNull final String username, @NonNull final String password, final boolean isAutoLogin) {
-
+        loginActivity.showProgress("登录中");
         LoginBody loginBody = new LoginBody();
         loginBody.setLoginAccount(username);
         loginBody.setPassWord(password);
@@ -58,12 +58,14 @@ public class LoginViewModel {
                         userLoginPreference.setUserName(username);
                         userLoginPreference.setPassWord(password);
                         EventBus.getDefault().postSticky(new LogStateEvent(true));
+                        loginActivity.dismissProgress();
                         loginActivity.toastor.showSingletonToast("登录成功");
                         loginActivity.finish();
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        loginActivity.dismissProgress();
                         loginActivity.toastor.showSingletonToast(errorMessage);
                     }
 

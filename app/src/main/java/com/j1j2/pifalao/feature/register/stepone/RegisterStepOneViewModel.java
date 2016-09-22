@@ -25,30 +25,30 @@ public class RegisterStepOneViewModel {
         this.clientRegisterApi = clientRegisterApi;
     }
 
-    public void validatePhone(final String phone) {
-        clientRegisterApi.validatePhone(phone)
-                .compose(registerStepOneActivity.<WebReturn<String>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<String>() {
-                    @Override
-                    public void onWebReturnSucess(String s) {
-                        registerStepOneActivity.toastor.showSingletonToast(s);
-
-                        querySmsCode(phone);
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-                        registerStepOneActivity.toastor.showSingletonToast(errorMessage);
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
-    }
+//    public void validatePhone(final String phone) {
+//        clientRegisterApi.validatePhone(phone)
+//                .compose(registerStepOneActivity.<WebReturn<String>>bindToLifecycle())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new WebReturnSubscriber<String>() {
+//                    @Override
+//                    public void onWebReturnSucess(String s) {
+//                        registerStepOneActivity.toastor.showSingletonToast(s);
+//
+//                        querySmsCode(phone);
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnFailure(String errorMessage) {
+//                        registerStepOneActivity.toastor.showSingletonToast(errorMessage);
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnCompleted() {
+//
+//                    }
+//                });
+//    }
 
     public void countDown() {
         Observable.interval(1, TimeUnit.SECONDS)
@@ -94,6 +94,7 @@ public class RegisterStepOneViewModel {
 
 
     public void validatePhoneSmsCode(String phone, String smsCode) {
+        registerStepOneActivity.showProgress("数据提交中");
         final ClientRegisterStepOneBody clientRegisterStepOneBody = new ClientRegisterStepOneBody();
         clientRegisterStepOneBody.setPhone(phone);
         clientRegisterStepOneBody.setSMSCode(smsCode);
@@ -106,11 +107,13 @@ public class RegisterStepOneViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
+                        registerStepOneActivity.dismissProgress();
                         registerStepOneActivity.next(clientRegisterStepOneBody);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        registerStepOneActivity.dismissProgress();
                         registerStepOneActivity.toastor.showSingletonToast(errorMessage);
                     }
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/content_height_normal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.4"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_noraml"
+            android:text="参与时间"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_noraml"
+            android:text=""
+            android:textColor="#ff6600"
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.8"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/padding_noraml"
+            android:text="会员账号（门店）"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

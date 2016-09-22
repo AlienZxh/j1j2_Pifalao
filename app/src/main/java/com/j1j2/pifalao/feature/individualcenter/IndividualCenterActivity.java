@@ -102,7 +102,12 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
     }
 
     @Override
-    public void navigateToNormalCoupon() {
-        navigate.navigateToCoupons(this, null, false, null, Constant.CouponType.COUPON_NORMAL);
+    public void navigateToOrders(int orderType) {
+        navigate.navigateToOrders(this, null, false,orderType);
+    }
+
+    @Override
+    public void navigateToParticipationRecord(int activityType) {
+        navigate.navigateToParticipationRecordActivity(this,null,false,activityType);
     }
 }

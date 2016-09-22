@@ -1,5 +1,7 @@
 package com.j1j2.pifalao.feature.onlineorderpay.di;
 
+import com.j1j2.data.http.api.ActivityApi;
+import com.j1j2.data.http.api.ActivityShopCartApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserOrderApi;
@@ -19,6 +21,19 @@ public class OnlineOrderPayModule {
     @ActivityScope
     ShopCartApi shopCartApi(Retrofit retrofit) {
         return retrofit.create(ShopCartApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    ActivityShopCartApi activityShopCartApi(Retrofit retrofit) {
+        return retrofit.create(ActivityShopCartApi.class);
+    }
+
+
+    @Provides
+    @ActivityScope
+    ActivityApi activityApi(Retrofit retrofit) {
+        return retrofit.create(ActivityApi.class);
     }
 
     @Provides

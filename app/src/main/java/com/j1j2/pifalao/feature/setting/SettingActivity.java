@@ -12,8 +12,19 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.ShopCart;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivitySettingBinding;
+import com.j1j2.pifalao.feature.account.di.AccountModule;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import javax.inject.Inject;
 
 import in.workarounds.bundler.annotations.RequireBundler;
 
@@ -24,6 +35,19 @@ import in.workarounds.bundler.annotations.RequireBundler;
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
     ActivitySettingBinding binding;
+
+    @Inject
+    ShopCart shopCart;
+
+    @Inject
+    UnReadInfoManager unReadInfoManager;
+
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        MainAplication.get(this).getUserComponent().plus(new AccountModule(this)).inject(this);
+    }
+
 
     @Override
     protected void initBinding() {
@@ -78,7 +102,25 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
         if (v == binding.versionCheck)
             showVersionDialog();
+        if (v == binding.changePassword) {
+            navigate.navigateToChangePassword(this, null, false);
+        }
+        if (v == binding.logout) {
+            MainAplication.get(this).loginOut();
+            shopCart.clear();
+            unReadInfoManager.clear();
+            EventBus.getDefault().postSticky(new LogStateEvent(false));
+//            finish();
+        }
+    }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onLogStateChangeEvent(LogStateEvent event) {
+        if (event.isLogin()) {
+
+        } else {
+            finish();
+        }
     }
 
     public void showVersionDialog() {

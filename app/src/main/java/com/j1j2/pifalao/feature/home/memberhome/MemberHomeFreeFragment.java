@@ -1,22 +1,47 @@
 package com.j1j2.pifalao.feature.home.memberhome;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.data.model.ActivityProduct;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.LazyFragment;
 import com.j1j2.pifalao.databinding.FragmentMemberhomeFreeBinding;
+import com.j1j2.pifalao.feature.prizedetail.PrizeDetailActivity;
+import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
+import com.zhy.autolayout.utils.AutoUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by alienzxh on 16-8-24.
  */
-public class MemberHomeFreeFragment extends LazyFragment {
+public class MemberHomeFreeFragment extends LazyFragment implements View.OnClickListener, MemberHomeFreeAdapter.MemberHomeFreeAdapterListener {
+
+    public interface MemberHomeFreeFragmentListener {
+        void navigateToPrizeDetail(int activityType, ActivityProduct activityProduct);
+
+        List<ActivityProduct> getFreeActivityProducts();
+    }
+
+    MemberHomeFreeFragmentListener listener;
 
     FragmentMemberhomeFreeBinding binding;
 
+    MemberHomeFreeAdapter adapter;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        listener = (MemberHomeFreeFragmentListener) activity;
+    }
 
     @Override
     protected String getFragmentName() {
@@ -31,6 +56,23 @@ public class MemberHomeFreeFragment extends LazyFragment {
 
     @Override
     protected void initViews() {
+        binding.freeList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        binding.freeList.setAdapter(adapter = new MemberHomeFreeAdapter(listener.getFreeActivityProducts()));
+        adapter.setListener(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void navigateToPrizeDetail(ActivityProduct activityProduct) {
+        listener.navigateToPrizeDetail(PrizeDetailActivity.GIFT, activityProduct);
+    }
+
+    @Override
+    public void navigateToPrizeConfirm(ActivityProduct activityProduct) {
+        listener.navigateToPrizeDetail(PrizeDetailActivity.GIFT, activityProduct);
     }
 }

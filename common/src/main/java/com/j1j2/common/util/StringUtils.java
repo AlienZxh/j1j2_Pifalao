@@ -175,6 +175,59 @@ public class StringUtils {
         }
     }
 
+    public static CharSequence getPrizeOrdersState(int orderType) {
+        switch (orderType) {
+            case 1:
+                return "待付款";
+            case 2:
+                return "已提交";
+            case 4:
+                return "待抽奖";
+            case 8:
+                return "待领奖";
+            case 16:
+                return "待收货";
+            case 32:
+                return "待晒单";
+            case 64:
+                return "已晒单";
+            case 128:
+                return "已完成";
+            case -1:
+                return "已作废";
+            default:
+                return "已作废";
+        }
+
+    }
+
+
+    public static CharSequence getPrizeOrdersTimeLineContent(int orderType) {
+        switch (orderType) {
+            case 1:
+                return "待付款";
+            case 2:
+                return "已提交";
+            case 4:
+                return "待抽奖";
+            case 8:
+                return "请尽快领取您的奖品～";
+            case 16:
+                return "据说好东西都需要稍微等一下～";
+            case 32:
+                return "听说晒单会带来好运呢，写下您的中奖感言吧~";
+            case 64:
+                return "已评论";
+            case 128:
+                return "已完成";
+            case -1:
+                return "已作废";
+            default:
+                return "已作废";
+        }
+
+    }
+
 
     public static double getCouponValue(Coupon coupon, double freight) {
         double value = 0.0;
@@ -338,6 +391,8 @@ public class StringUtils {
 
     public static CharSequence getOrdersActionBarTitle(int orderType) {
         switch (orderType) {
+            case -1:
+                return "批发佬线下订单";
             case 1:
                 return "已下单订单";
             case 2:

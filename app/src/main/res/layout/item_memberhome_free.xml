@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <import type="com.j1j2.pifalao.BuildConfig" />
+
+        <import type="com.j1j2.common.util.EmptyUtils" />
+
+        <variable
+            name="activityProduct"
+            type="com.j1j2.data.model.ActivityProduct" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:padding="5px">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="374px"
+            app:displayImg="@{Uri.parse(EmptyUtils.isEmpty(activityProduct.ImgList)?@string/text_empty:(BuildConfig.IMAGE_URL+activityProduct.ImgList.get(0).S320X320))}"
+            app:layout_auto_basewidth="height" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_small"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@{activityProduct.Name}"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_big" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_normal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?(&quot;&quot;+activityProduct.Configs.CostExchangeMoney):(&quot;&quot;+activityProduct.Configs.CostExchangePoint)}"
+                android:textColor="@color/colorAccent"
+                android:textSize="40px"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingBottom="5px"
+                android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;元&quot;:&quot;积分&quot;}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_big" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingBottom="5px"
+                android:text="@{&quot;&quot;+activityProduct.Statistics.ExchangeSum}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:paddingBottom="5px"
+                android:text="人已兑"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <TextView
+            android:id="@+id/prizeBtnOne"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="@drawable/orange_conner_btn_selector"
+            android:gravity="center"
+            android:text="立即兑换"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

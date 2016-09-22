@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_noraml"
+            android:text="收货信息"
+            android:textColor="@color/colorText666"
+            android:textSize="@dimen/text_normal" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/addressBtn"
+            android:layout_width="match_parent"
+            android:layout_height="140px"
+            android:background="@drawable/item_messages_bg"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/addressIcon"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="140px"
+                android:layout_height="140px"
+                android:gravity="center"
+                android:text="@string/icon_location"
+                android:textColor="@color/colorRed"
+                android:textSize="60px"
+                app:layout_auto_baseheight="width" />
+
+            <View
+                android:layout_width="@dimen/height_1px"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/padding_noraml"
+                android:layout_marginTop="@dimen/padding_noraml"
+                android:background="@color/colorGrayDEDEDE" />
+
+            <TextView
+                android:id="@+id/addressText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/padding_big"
+                android:text="请填写收货人信息..."
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/text_biger" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:gravity="center"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/icon_normal" />
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:text="兑换规则："
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="1、每个用户每天最多兑换2件商品，且不超过1000批发币；"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="2、每个用户每天最多兑换2件商品，且不超过1000批发币；"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_small"
+            android:text="3、每个用户每天最多兑换2件商品，且不超过1000批发币；"
+            android:textColor="@color/colorText999"
+            android:textSize="@dimen/text_normal"
+            android:visibility="gone" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

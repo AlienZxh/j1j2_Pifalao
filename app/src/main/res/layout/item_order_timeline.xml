@@ -39,7 +39,7 @@
                 <TextView
                     android:layout_width="32px"
                     android:layout_height="32px"
-                    android:background="@{isNowState?@drawable/register_step_selected_bg:@drawable/register_step_normal_bg}"
+                    android:background="@{isNowState?@drawable/timeline_spot_selected:@drawable/timeline_spot_normal}"
                     android:gravity="center"
                     app:layout_auto_baseheight="width" />
 

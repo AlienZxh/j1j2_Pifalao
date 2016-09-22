@@ -312,13 +312,19 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         navigate.navigateToProductDetailActivity(this, null, false, productSimple.getMainId());
     }
 
-    @Override
-    public void navigateToNormalCoupon() {
-        navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
-    }
 
     @Override
     public void navigateToShowStore() {
         navigate.navigateToShow(this, null, false, ShowActivity.STORE);
+    }
+
+    @Override
+    public void navigateToOrders(int orderType) {
+        navigate.navigateToOrders(this, null, false,orderType);
+    }
+
+    @Override
+    public void navigateToParticipationRecord(int activityType) {
+        navigate.navigateToParticipationRecordActivity(this,null,false,activityType);
     }
 }

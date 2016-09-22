@@ -10,7 +10,6 @@ import com.j1j2.pifalao.feature.addaddress.di.AddAddressComponent;
 import com.j1j2.pifalao.feature.addaddress.di.AddAddressModule;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerComponent;
 import com.j1j2.pifalao.feature.addressmanager.di.AddressManagerModule;
-import com.j1j2.pifalao.feature.balancedetail.BalanceDetailActivity;
 import com.j1j2.pifalao.feature.balancedetail.di.BalanceDetailComponent;
 import com.j1j2.pifalao.feature.balancedetail.di.BalanceDetailModule;
 import com.j1j2.pifalao.feature.catservicepoint.di.CatServicePointComponent;
@@ -25,7 +24,6 @@ import com.j1j2.pifalao.feature.coupons.di.CouponsComponent;
 import com.j1j2.pifalao.feature.coupons.di.CouponsModule;
 import com.j1j2.pifalao.feature.couponselect.di.CouponSelectComponent;
 import com.j1j2.pifalao.feature.couponselect.di.CouponSelectModule;
-import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeComponent;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeModule;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityComponent;
@@ -50,10 +48,12 @@ import com.j1j2.pifalao.feature.orderrate.di.OrderRateComponent;
 import com.j1j2.pifalao.feature.orderrate.di.OrderRateModule;
 import com.j1j2.pifalao.feature.orders.di.OrdersComponent;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
+import com.j1j2.pifalao.feature.prizeconfirm.di.PrizeConfirmComponent;
+import com.j1j2.pifalao.feature.prizeconfirm.di.PrizeConfirmModule;
+import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailComponent;
+import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailModule;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeComponent;
 import com.j1j2.pifalao.feature.qrcode.di.QRCodeModule;
-import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneComponent;
-import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneModule;
 import com.j1j2.pifalao.feature.shopcart.di.ShopCartComponent;
 import com.j1j2.pifalao.feature.shopcart.di.ShopCartModule;
 import com.j1j2.pifalao.feature.vipupdate.steptwo.di.VipUpdateStepTwoComponent;
@@ -127,4 +127,8 @@ public interface UserComponent {
     OnlineOrderPayComponent plus(OnlineOrderPayModule onlineOrderPayModule);
 
     BalanceDetailComponent plus(BalanceDetailModule balanceDetailModule);
+
+    PrizeConfirmComponent plus(PrizeConfirmModule prizeConfirmModule);
+
+    PrizeDetailComponent plus(PrizeDetailModule prizeDetailModule);
 }

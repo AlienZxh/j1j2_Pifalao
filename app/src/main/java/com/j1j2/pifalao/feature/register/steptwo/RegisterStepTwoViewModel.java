@@ -37,6 +37,7 @@ public class RegisterStepTwoViewModel {
     }
 
     public void clientRegisterStepOne(final ClientRegisterStepOneBody clientRegisterStepOneBody) {
+        registerStepTwoActivity.showProgress("注册中");
         clientRegisterApi.clientRegisterStepOne(clientRegisterStepOneBody)
                 .compose(registerStepTwoActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -44,12 +45,12 @@ public class RegisterStepTwoViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
-                        registerStepTwoActivity.toastor.showSingletonToast("注册成功");
                         login(clientRegisterStepOneBody);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        registerStepTwoActivity.dismissProgress();
                         registerStepTwoActivity.toastor.showSingletonToast(errorMessage);
                     }
 
@@ -73,6 +74,8 @@ public class RegisterStepTwoViewModel {
                 .subscribe(new WebReturnSubscriber<User>() {
                     @Override
                     public void onWebReturnSucess(User user) {
+                        registerStepTwoActivity.dismissProgress();
+                        registerStepTwoActivity.toastor.showSingletonToast("注册成功");
                         MainAplication.get(registerStepTwoActivity).login(user);
                         userLoginPreference.setIsAutoLogin(true);
                         userLoginPreference.setUserName(clientRegisterStepOneBody.getPhone());
@@ -83,6 +86,8 @@ public class RegisterStepTwoViewModel {
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        registerStepTwoActivity.dismissProgress();
+                        registerStepTwoActivity.toastor.showSingletonToast("注册成功");
                         EventBus.getDefault().post(new RegisterSuccessEvent(false, clientRegisterStepOneBody.getPhone(), clientRegisterStepOneBody.getPassWord()));
                     }
 

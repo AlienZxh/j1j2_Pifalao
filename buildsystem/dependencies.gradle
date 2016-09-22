@@ -1,6 +1,6 @@
 ext {
     //Android
-    androidBuildToolsVersion = "23.0.2"
+    androidBuildToolsVersion = "24.0.2"
     androidMinSdkVersion = 15
     androidTargetSdkVersion = 23
     androidCompileSdkVersion = 23
@@ -27,6 +27,7 @@ ext {
     flexibledividerVersion = "1.2.9"
     animatorsVersion = "2.2.1"
     superrecyclerviewVersion = "1.1.3"
+//    easyrecyclerviewVersion = "4.2.0"
 
     circularVersion = "1.2.0"
     tagviewVersion = "1.0.4"
@@ -37,7 +38,7 @@ ext {
     zxingVersion = "3.2.1"
 
     nineoldVersion = "2.4.0"
-    badgeviewVersion = "1.1.0"
+    badgeviewVersion = "1.1.3"
 
     eventbusVersion = "3.0.0"
     okhttputilsVersion = "2.4.1"
@@ -54,6 +55,9 @@ ext {
     multidexVersion = '1.0.1'
 
     multitypeviewVersion = '1.0.1'
+    slantedtextviewVersion = '1.2'
+    marqueeviewVersion = '1.1.0'
+    spotsdialogVersion = '0.7@aar'
 
     //Testing
     jUnitVersion = '4.12'
@@ -90,7 +94,6 @@ ext {
             okhttputils          : "com.zhy:okhttputils:${okhttputilsVersion}",
             multidex             : "com.android.support:multidex:${multidexVersion}",
             umengAnalytics       : "com.umeng.analytics:analytics:${umengAnalyticsVersion}",
-
     ]
 
     appReleaseDependencies = [
@@ -136,8 +139,7 @@ ext {
             cardview            : "com.android.support:cardview-v7:${supportVersion}",
             flexibledivider     : "com.yqritc:recyclerview-flexibledivider:${flexibledividerVersion}",
             animators           : "jp.wasabeef:recyclerview-animators:${animatorsVersion}",
-            superrecyclerview   : "com.malinskiy:superrecyclerview:${superrecyclerviewVersion}",
-            circular            : "com.github.castorflex.smoothprogressbar:library-circular:${circularVersion}",
+            superrecyclerview   : "com.malinskiy:superrecyclerview:${superrecyclerviewVersion}",            circular            : "com.github.castorflex.smoothprogressbar:library-circular:${circularVersion}",
             tagview             : "com.veinhorn.tagview:library:${tagviewVersion}",
             dialogplus          : "com.orhanobut:dialogplus:${dialogplusVersion}",
             zxing               : "com.google.zxing:core:${zxingVersion}",
@@ -151,6 +153,9 @@ ext {
             glidetransformations: "jp.wasabeef:glide-transformations:${glidetransformationsVersion}",
             highlight           : "com.zhy:highlight:${highlightVersion}",
             multitypeview       : "com.shizhefei:MultiTypeView:${multitypeviewVersion}",
+            slantedtextview     : "com.haozhang.libary:android-slanted-textview:${slantedtextviewVersion}",
+            marqueeview         : "com.sunfusheng:marqueeview:${marqueeviewVersion}",
+            spotsdialog         : "com.github.d-max:spots-dialog:${spotsdialogVersion}"
 
     ]
 

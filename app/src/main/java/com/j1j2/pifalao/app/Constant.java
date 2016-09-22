@@ -23,29 +23,30 @@ public class Constant {
     }
 
     public interface ModuleType {
-        public final static int MORE = 0;
-        public final static int DELIVERY = 1;
-        public final static int SHOPSERVICE = 2;
-        public final static int VEGETABLE = 3;
-        public final static int HOUSEKEEPING = 4;
-        public final static int VIP = 5;
-        public final static int MOBILE = 6;
-        public final static int HYDROPOWER = 7;
-        public final static int OIL = 8;
-        public final static int TRAFFICFINES = 9;
-        public final static int GAME = 10;
-        public final static int BUS = 11;
-        public final static int NUMERAL = 12;
-        public final static int EXPRESS = 13;
-        public final static int TOOL = 14;
-        public final static int FINANCE = 15;
-        public final static int LOTTERY = 16;
-        public final static int TICKET = 17;
-        public final static int BANQUET = 18;
-        public final static int FRUIT = 19;
+        int MORE = 0;
+        int DELIVERY = 1;
+        int SHOPSERVICE = 2;
+        int VEGETABLE = 3;
+        int HOUSEKEEPING = 4;
+        int VIP = 5;
+        int MOBILE = 6;
+        int HYDROPOWER = 7;
+        int OIL = 8;
+        int TRAFFICFINES = 9;
+        int GAME = 10;
+        int BUS = 11;
+        int NUMERAL = 12;
+        int EXPRESS = 13;
+        int TOOL = 14;
+        int FINANCE = 15;
+        int LOTTERY = 16;
+        int TICKET = 17;
+        int BANQUET = 18;
+        int FRUIT = 19;
+        int MEMBER = 20;
     }
 
-    public final static SparseIntArray moduleColors = new SparseIntArray() {{
+    public static SparseIntArray moduleColors = new SparseIntArray() {{
         put(ModuleType.MORE, 0xffaaaaaa);
         put(ModuleType.DELIVERY, 0xfff09609);
         put(ModuleType.SHOPSERVICE, 0xff1ba1e2);
@@ -66,9 +67,10 @@ public class Constant {
         put(ModuleType.TICKET, 0xffff9900);
         put(ModuleType.BANQUET, 0xff1ba1e2);
         put(ModuleType.FRUIT, 0xff22ac38);
+        put(ModuleType.MEMBER, 0xff1ba1e2);
     }};
 
-    public final static SparseIntArray moduleIconId = new SparseIntArray() {{
+    public static SparseIntArray moduleIconId = new SparseIntArray() {{
         put(ModuleType.MORE, R.string.icon_service_more);
         put(ModuleType.DELIVERY, R.string.icon_service_delivery);
         put(ModuleType.SHOPSERVICE, R.string.icon_service_shopservice);
@@ -89,55 +91,79 @@ public class Constant {
         put(ModuleType.TICKET, R.string.icon_service_ticket);
         put(ModuleType.BANQUET, R.string.icon_service_banquet);
         put(ModuleType.FRUIT, R.string.icon_service_fruit);
+        put(ModuleType.MEMBER, R.string.icon_service_member);
     }};
 
     public interface ProductsOrderbyId {
-        public final static int PRODUCTS_ORDERBY_DEFAULT = 0;
-        public final static int PRODUCTS_ORDERBY_SELLS = 1;
-        public final static int PRODUCTS_ORDERBY_PRICE = 2;
-        public final static int PRODUCTS_ORDERBY_VIEWS = 3;
+        int PRODUCTS_ORDERBY_DEFAULT = 0;
+        int PRODUCTS_ORDERBY_SELLS = 1;
+        int PRODUCTS_ORDERBY_PRICE = 2;
+        int PRODUCTS_ORDERBY_VIEWS = 3;
     }
 
     public interface CategoryType {
-        public final static int FREE_FREIGHT = 1;
-        public final static int FIXED_FREIGHT = 2;
-        public final static int QVERLIMIT_FREIGHT = 3;
-        public final static int FIXEDRATE_FREIGHT = 4;
-        public final static int VIP_FREIGHT = 5;
+        int FREE_FREIGHT = 1;
+        int FIXED_FREIGHT = 2;
+        int QVERLIMIT_FREIGHT = 3;
+        int FIXEDRATE_FREIGHT = 4;
+        int VIP_FREIGHT = 5;
     }
 
     public interface DeliveryType {
-        public final static int PICKBYSELF = 1;
-        public final static int HOMEDELIVERY = 2;
+        int PICKBYSELF = 1;
+        int HOMEDELIVERY = 2;
     }
 
     public interface CouponType {
-        public static final int COUPON_ALL = 0;
-        public static final int COUPON_DELIVERY = 1;
-        public static final int COUPON_NORMAL = 2;
-        public static final int COUPON_GOODS = 3;
+        int COUPON_ALL = 0;
+        int COUPON_DELIVERY = 1;
+        int COUPON_NORMAL = 2;
+        int COUPON_GOODS = 3;
     }
 
     public interface OrderType {
-        public static final int ORDERTYPE_ALL = 0;//全部
-        public static final int ORDERTYPE_SUBMIT = 1;//已下单
-        public static final int ORDERTYPE_UNPAY = 2;//待支付
-        public static final int ORDERTYPE_DELIVERY = 8;//配送中
-        public static final int ORDERTYPE_EXECUTING = 4;//处理中
-        public static final int ORDERTYPE_CLIENTWAITFORRECEVIE = 16;//待收货
-        public static final int ORDERTYPE_WAITFORRATE = 32;//待评价
-        public static final int ORDERTYPE_COMPLETE = 64;//已完成
-        public static final int ORDERTYPE_INVALID = 256;//已退订
+        int ORDERTYPE_OFFLINE = -1;//已退订
+        int ORDERTYPE_ALL = 0;//全部
+        int ORDERTYPE_SUBMIT = 1;//已下单
+        int ORDERTYPE_UNPAY = 2;//待支付
+        int ORDERTYPE_DELIVERY = 8;//配送中
+        int ORDERTYPE_EXECUTING = 4;//处理中
+        int ORDERTYPE_CLIENTWAITFORRECEVIE = 16;//待收货
+        int ORDERTYPE_WAITFORRATE = 32;//待评价
+        int ORDERTYPE_COMPLETE = 64;//已完成
+        int ORDERTYPE_INVALID = 256;//已退订
     }
 
     public interface OrderPayType {
-        public static final int CASHONDELIVERY = 1;//全部
-        public static final int ONLINEPAYMENT = 2;//已下单
+        int CASHONDELIVERY = 1;//全部
+        int ONLINEPAYMENT = 2;//已下单
     }
 
     public interface OnlinePayType {
-        public static final int BANLANCEPAY = 1;//余额
-        public static final int ALIPAY = 2;//支付宝
-        public static final int WEIXINPAY = 3;//微信
+        int BANLANCEPAY = 1;//余额
+        int ALIPAY = 2;//支付宝
+        int WEIXINPAY = 3;//微信
+    }
+
+    public interface ActivityProductType {
+        int Material = 1;/// 实物 Material=1,
+        int VirtualPhoneCharge = 2;  /// 话费充值虚拟商品 VirtualPhoneCharge=2
+    }
+
+    public interface ActivityOrderState {
+        int UNPAYED = 1;/// 待付款
+        int SUBMIT = 2;/// 已提交
+        int UNRAFFLED = 4;/// 待抽奖
+        int RAFFLED = 8;/// 已揭晓
+        int AWARDED = 16;/// 已领奖
+        int USERRECEIVED =32;// 已收货
+        int SHARED = 64;/// 已评论
+        int COMPLETED = 128;/// 已完成
+        int INVALID = -1;/// 作废、冻结
+    }
+
+    public interface ActivityOrderType {
+        int EXCHANGEORDER = 1;///兑换活动订单
+        int LOTTERYORDER = 2;/// 抽奖活动订单
     }
 }

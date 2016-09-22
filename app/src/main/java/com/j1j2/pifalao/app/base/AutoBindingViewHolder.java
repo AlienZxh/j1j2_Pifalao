@@ -24,7 +24,7 @@ public abstract class AutoBindingViewHolder<D extends ViewDataBinding, T> extend
 
     protected abstract D getBinding(View itemView);
 
-    public abstract void bind(@NonNull final T data, int position);
+    public abstract void bind( final T data, int position);
 
 
 }

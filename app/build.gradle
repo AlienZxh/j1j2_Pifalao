@@ -69,8 +69,8 @@ android {
             zipAlignEnabled true
             shrinkResources true
 
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9087/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9087\""
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
             buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }
@@ -78,8 +78,8 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            zipAlignEnabled true
-            shrinkResources true
+            zipAlignEnabled false
+            shrinkResources false
             //9087
             buildConfigField "String", "API_URL", "\"http://218.244.128.140:9087/v5/\""
             buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9087\""
@@ -128,6 +128,7 @@ dependencies {
     compile appDependencies.eventbus
     compile appDependencies.okhttputils
     compile appDependencies.multidex
+
     //umeng
     compile appDependencies.umengAnalytics
     //单元测试

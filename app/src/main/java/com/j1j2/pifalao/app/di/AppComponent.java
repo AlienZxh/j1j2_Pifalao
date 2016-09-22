@@ -3,14 +3,12 @@ package com.j1j2.pifalao.app.di;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.feature.city.di.CityComponent;
 import com.j1j2.pifalao.feature.city.di.CityModule;
-import com.j1j2.pifalao.feature.findpsw.FindPSWActivity;
 import com.j1j2.pifalao.feature.findpsw.di.FindPSWComponent;
 import com.j1j2.pifalao.feature.findpsw.di.FindPSWModule;
 import com.j1j2.pifalao.feature.guide.di.GuideComponent;
 import com.j1j2.pifalao.feature.guide.di.GuideModule;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsComponent;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsModule;
-import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryHomeServicepointFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointComponent;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.DeliveryServicepointModule;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeComponent;
@@ -33,6 +31,8 @@ import com.j1j2.pifalao.feature.login.di.LoginComponent;
 import com.j1j2.pifalao.feature.login.di.LoginModule;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
+import com.j1j2.pifalao.feature.prize.di.PrizeComponent;
+import com.j1j2.pifalao.feature.prize.di.PrizeModule;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
 import com.j1j2.pifalao.feature.products.di.ProductsComponent;
@@ -47,6 +47,8 @@ import com.j1j2.pifalao.feature.servicepoint.di.ServicePointComponent;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointModule;
 import com.j1j2.pifalao.feature.services.di.ServicesComponent;
 import com.j1j2.pifalao.feature.services.di.ServicesModule;
+import com.j1j2.pifalao.feature.showorders.di.ShowOrdersComponent;
+import com.j1j2.pifalao.feature.showorders.di.ShowOrdersModule;
 import com.j1j2.pifalao.feature.vegetablesort.di.VegetableSortComponent;
 import com.j1j2.pifalao.feature.vegetablesort.di.VegetableSortModule;
 
@@ -111,4 +113,8 @@ public interface AppComponent {
     OfflineModuleHomeComponent plus(OfflineModuleHomeModule offlineModuleHomeModule);
 
     MemberHomeComponent plus(MemberHomeModule memberHomeModule);
+
+    ShowOrdersComponent plus(ShowOrdersModule showOrdersModule);
+
+    PrizeComponent plus(PrizeModule prizeModule);
 }

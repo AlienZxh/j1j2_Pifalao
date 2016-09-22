@@ -27,6 +27,7 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.AbsListView;
@@ -43,7 +44,7 @@ public class ScrollableHelper {
     /**
      * a viewgroup whitch contains ScrollView/ListView/RecycelerView..
      */
-    public interface ScrollableContainer{
+    public interface ScrollableContainer {
         /**
          * @return ScrollView/ListView/RecycelerView..'s instance
          */
@@ -62,10 +63,10 @@ public class ScrollableHelper {
     }
 
     /**
-     *
      * 判断是否滑动到顶部方法,ScrollAbleLayout根据此方法来做一些逻辑判断
      * 目前只实现了AdapterView,ScrollView,RecyclerView
      * 需要支持其他view可以自行补充实现
+     *
      * @return
      */
     public boolean isTop() {
@@ -95,7 +96,7 @@ public class ScrollableHelper {
             if (layoutManager instanceof LinearLayoutManager) {
                 int firstVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
                 View childAt = recyclerView.getChildAt(0);
-                if (childAt == null || (firstVisibleItemPosition == 0 && childAt.getTop() == 0)) {
+                if (childAt == null || (firstVisibleItemPosition == 0 && childAt.getTop() == recyclerView.getPaddingTop() )) {
                     return true;
                 }
             }
@@ -103,27 +104,27 @@ public class ScrollableHelper {
         return false;
     }
 
-    private static boolean isAdapterViewTop(AdapterView adapterView){
-        if(adapterView != null){
+    private static boolean isAdapterViewTop(AdapterView adapterView) {
+        if (adapterView != null) {
             int firstVisiblePosition = adapterView.getFirstVisiblePosition();
             View childAt = adapterView.getChildAt(0);
-            if(childAt == null || (firstVisiblePosition == 0 && childAt.getTop() == 0)){
+            if (childAt == null || (firstVisiblePosition == 0 && childAt.getTop() == 0)) {
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean isScrollViewTop(ScrollView scrollView){
-        if(scrollView != null) {
+    private static boolean isScrollViewTop(ScrollView scrollView) {
+        if (scrollView != null) {
             int scrollViewY = scrollView.getScrollY();
             return scrollViewY <= 0;
         }
         return false;
     }
 
-    private static boolean isWebViewTop(WebView scrollView){
-        if(scrollView != null) {
+    private static boolean isWebViewTop(WebView scrollView) {
+        if (scrollView != null) {
             int scrollViewY = scrollView.getScrollY();
             return scrollViewY <= 0;
         }

@@ -16,9 +16,13 @@ import android.view.View;
 
 import com.alipay.sdk.app.PayTask;
 import com.j1j2.common.util.UrlUtils;
+import com.j1j2.data.http.api.ActivityApi;
+import com.j1j2.data.http.api.ActivityShopCartApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserOrderApi;
+import com.j1j2.data.model.ActivityOrderSimple;
+import com.j1j2.data.model.ActivityProcessState;
 import com.j1j2.data.model.OnlinePayResult;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.PayResult;
@@ -34,6 +38,7 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
+import com.j1j2.pifalao.app.event.PrizeOrderStateChangeEvent;
 import com.j1j2.pifalao.app.event.WeiXinPayReturnEvent;
 import com.j1j2.pifalao.databinding.ActivityOnlineorderpayBinding;
 import com.j1j2.pifalao.feature.onlineorderpay.di.OnlineOrderPayModule;
@@ -80,15 +85,23 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
     String orderNO;
     @Arg
     boolean fromOrderDetail;
+    @Arg
+    boolean isActivityPay;
 
     @Inject
     ShopCartApi shopCartApi;
+    @Inject
+    ActivityShopCartApi activityShopCartApi;
+
     @Inject
     UserOrderApi userOrderApi;
     @Inject
     UserLoginApi userLoginApi;
     @Inject
     Navigate navigate;
+
+    OrderSimple orderSimple;
+    ActivityOrderSimple activityOrderSimple;
 
     ObservableDouble balance = new ObservableDouble(0);
     boolean canUseBalance = false;
@@ -98,16 +111,17 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
     private static final int Ali_SDK_PAY_FLAG = 1;
 
-
     private PayHandler mHandler;
 
     private IWXAPI wxApi;
 
     private static class PayHandler extends Handler {
         private final WeakReference<OnlineOrderPayActivity> mActivity;
+        private boolean isActivityPay;
 
-        public PayHandler(OnlineOrderPayActivity mActivity) {
+        public PayHandler(OnlineOrderPayActivity mActivity, boolean isActivityPay) {
             this.mActivity = new WeakReference<OnlineOrderPayActivity>(mActivity);
+            this.isActivityPay = isActivityPay;
         }
 
         @Override
@@ -116,7 +130,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
             if (activity != null) {
                 switch (msg.what) {
                     case Ali_SDK_PAY_FLAG: {
-                        activity.toastor.showSingleLongToast("支付宝支付结果确认中...");
+
                         PayResult payResult = new PayResult((String) msg.obj);
                         Logger.d("alipay  " + payResult.toString());
                         /**
@@ -129,6 +143,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                         if (!TextUtils.equals(resultStatus, "9000")) {
+                            activity.dismissProgress();
                             // 判断resultStatus 为非"9000"则代表可能支付失败
                             // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                             if (TextUtils.equals(resultStatus, "8000")) {
@@ -156,18 +171,16 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                                         .subscribe(new WebReturnSubscriber<String>() {
                                             @Override
                                             public void onWebReturnSucess(String s) {
+                                                activity.dismissProgress();
                                                 activity.toastor.showSingletonToast("订单支付成功");
                                                 EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
-                                                if (!activity.fromOrderDetail)
-                                                    activity.navigate.navigateToOrderDetail(activity, null, true, null, activity.orderId, OrderDetailActivity.TIMELINE);
-                                                else
-                                                    activity.finish();
+                                                activity.navigateToNext();
                                             }
 
                                             @Override
                                             public void onWebReturnFailure(String errorMessage) {
+                                                activity.dismissProgress();
                                                 activity.toastor.showSingletonToast("订单支付失败");
-
                                             }
 
                                             @Override
@@ -177,8 +190,8 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                                         });
 
                             } else {
+                                activity.dismissProgress();
                                 activity.toastor.showSingletonToast("订单支付失败");
-
                             }
                         }
 
@@ -213,16 +226,17 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         binding.useAli.setChecked(false);
         binding.useWeiXin.setChecked(false);
         //_______________________________________
-        mHandler = new PayHandler(this);
-//        binding.useWeiXinBtn.setBackgroundColor(0xffefefef);
-//        binding.iconWeixin.setTextColor(0xffcccccc);
-//        binding.textWeixin.setTextColor(0xffaaaaaa);
-//        binding.textWeixin.setText("微信支付（暂未开通）");
-        queryOrderSimple(orderId);
+        mHandler = new PayHandler(this, isActivityPay);
+
+        if (isActivityPay)
+            queryActivityOrderSimple(orderNO);
+        else
+            queryOrderSimple(orderId);
     }
 
     public void doPayOrder(OrderOnlinePayBody orderOnlinePayBody) {
-        toastor.showSingleLongToast("数据提交中，请稍后...");
+        showProgress("支付中，请稍后...");
+
         shopCartApi.doPayOrder(orderOnlinePayBody)
                 .compose(this.<WebReturn<OnlinePayResult>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -231,11 +245,9 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onWebReturnSucess(OnlinePayResult onlinePayResult) {
                         if (onlinePayResult.isUseBalance()) {
+                            dismissProgress();
                             EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
-                            if (!fromOrderDetail)
-                                navigate.navigateToSuccessResult(OnlineOrderPayActivity.this, null, true, SuccessResultActivity.FROM_CONFIRMORDER, orderId);
-                            else
-                                finish();
+                            navigateToNext();
                         } else if (onlinePayResult.isUseAliPay()) {
                             doAliPay(onlinePayResult.getAliPayResult());
                         } else if (onlinePayResult.isUseWeiXinPay()) {
@@ -245,6 +257,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        dismissProgress();
                         toastor.showSingletonToast(errorMessage);
 
                     }
@@ -256,6 +269,40 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                 });
     }
 
+    public void doActivityPayOrder(OrderOnlinePayBody orderOnlinePayBody) {
+        showProgress("支付中，请稍后...");
+
+        activityShopCartApi.payAcitityOrder(orderOnlinePayBody)
+                .compose(this.<WebReturn<OnlinePayResult>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<OnlinePayResult>() {
+                    @Override
+                    public void onWebReturnSucess(OnlinePayResult onlinePayResult) {
+                        if (onlinePayResult.isUseBalance()) {
+                            dismissProgress();
+                            EventBus.getDefault().post(new PrizeOrderStateChangeEvent());
+                            navigateToNext();
+                        } else if (onlinePayResult.isUseAliPay()) {
+                            doAliPay(onlinePayResult.getAliPayResult());
+                        } else if (onlinePayResult.isUseWeiXinPay()) {
+                            doWeiXinPay(onlinePayResult.getWeiXinPayResult());
+                        }
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+                        dismissProgress();
+                        toastor.showSingletonToast(errorMessage);
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+                        binding.payBtn.setEnabled(true);
+                    }
+                });
+    }
 
 
     public void doAliPay(final String payRequest) {
@@ -279,23 +326,23 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
     }
 
     public void doWeiXinPay(WeiXinPayResult weiXinPayResult) {
-
+        dismissProgress();
         if (!wxApi.isWXAppInstalled()) {
-            toastor.showSingleLongToast("未安装微信，请安装微信后重试！");
 
+            toastor.showSingleLongToast("未安装微信，请安装微信后重试！");
             return;
         }
 
         boolean isPaySupported = wxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
         if (!isPaySupported) {
-            toastor.showSingleLongToast("微信版本过低，请升级微信后重试！");
 
+            toastor.showSingleLongToast("微信版本过低，请升级微信后重试！");
             return;
         }
 
         if (weiXinPayResult == null) {
-            toastor.showSingleLongToast("订单支付失败");
 
+            toastor.showSingleLongToast("订单支付失败");
             return;
         }
 
@@ -317,9 +364,11 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<OrderSimple>() {
                     @Override
-                    public void onWebReturnSucess(OrderSimple orderSimple) {
-                        binding.setOrderSimple(orderSimple);
+                    public void onWebReturnSucess(OrderSimple mOrderSimple) {
+                        orderSimple = mOrderSimple;
+                        binding.sum.setText("￥" + mOrderSimple.getOrderSum());
                         queryBalance();
+                        binding.timeLayout.setVisibility(View.VISIBLE);
                         try {
                             SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             Date beginDate = new Date(System.currentTimeMillis());//获取当前时间
@@ -328,6 +377,32 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                         } catch (ParseException e) {
                             onError(e);
                         }
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+    }
+
+    public void queryActivityOrderSimple(String orderNO) {
+        activityShopCartApi.queryActivityOrder(orderNO)
+                .compose(this.<WebReturn<ActivityOrderSimple>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<ActivityOrderSimple>() {
+                    @Override
+                    public void onWebReturnSucess(ActivityOrderSimple mActivityOrderSimple) {
+                        activityOrderSimple = mActivityOrderSimple;
+                        binding.sum.setText("￥" + activityOrderSimple.getSpendMoney());
+                        queryBalance();
+
                     }
 
                     @Override
@@ -379,17 +454,11 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onWebReturnSucess(User user) {
                         balance.set(user.getBalance());
-                        canUseBalance = user.getBalance() >= binding.getOrderSimple().getOrderSum();
+                        if (isActivityPay)
+                            canUseBalance = user.getBalance() >= activityOrderSimple.getSpendMoney();
+                        else
+                            canUseBalance = user.getBalance() >= orderSimple.getOrderSum();
 
-
-//                        setPayAmount();
-//                        if (!canUseBalance) {
-//                            binding.useBalanceBtn.setBackgroundColor(0xffdddddd);
-//                            binding.iconWallet.setTextColor(0xffcccccc);
-//                            binding.useBalanceTitle.setTextColor(0xffaaaaaa);
-//                            binding.useBalanceContent.setTextColor(0xffbbbbbb);
-//                            binding.useBalance.setChecked(false);
-//                        }
                     }
 
                     @Override
@@ -411,39 +480,6 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         MainAplication.get(this).getUserComponent().plus(new OnlineOrderPayModule()).inject(this);
     }
 
-//    public void setPayAmount() {
-//        if (binding.useBalance.isChecked()) {
-//            double pay = binding.getOrderSimple().getOrderSum() - balance.get();
-//            binding.payAmount.setText("￥" + (pay > 0 ? pay : 0));
-//        } else {
-//            binding.payAmount.setText("￥" + binding.getOrderSimple().getOrderSum());
-//        }
-//        if (binding.useBalance.isChecked() && balance.get() >= binding.getOrderSimple().getOrderSum()) {
-//            binding.useAli.setChecked(false);
-//            binding.useWeiXin.setChecked(false);
-//
-//            binding.useAliBtn.setBackgroundColor(0xffdddddd);
-//            binding.iconAli.setTextColor(0xffcccccc);
-//            binding.textAli.setTextColor(0xffaaaaaa);
-//
-//            binding.useWeiXinBtn.setBackgroundColor(0xffdddddd);
-//            binding.iconWeixin.setTextColor(0xffcccccc);
-//            binding.textWeixin.setTextColor(0xffaaaaaa);
-//            canUseOnline = false;
-//        } else {
-//            binding.useAli.setChecked(true);
-//            binding.useWeiXin.setChecked(false);
-//
-//            binding.useAliBtn.setBackgroundColor(0x00000000);
-//            binding.iconAli.setTextColor(0xff00aaee);
-//            binding.textAli.setTextColor(0xff333333);
-//
-//            binding.useWeiXinBtn.setBackgroundColor(0x00000000);
-//            binding.iconWeixin.setTextColor(0xff62b900);
-//            binding.textWeixin.setTextColor(0xff333333);
-//            canUseOnline = true;
-//        }
-//    }
 
     public void showBanlanceDialog() {
         if (messageDialog != null && messageDialog.isShowing())
@@ -470,10 +506,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                         public void onWebReturnSucess(String s) {
                             toastor.showSingletonToast("订单支付成功");
                             EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
-                            if (!fromOrderDetail)
-                                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
-                            else
-                                finish();
+                            navigateToNext();
                         }
 
                         @Override
@@ -496,11 +529,13 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         if (messageDialog != null && messageDialog.isShowing())
             messageDialog.dismiss();
 
-        String massage = "返回将放弃此次支付，可在订单管理里面再次支付。（30分钟内未支付，订单将自动取消）";
-
+        String massage = "返回将放弃此次支付。";
         SpannableString spannableMassage = new SpannableString(massage);
-        spannableMassage.setSpan(new ForegroundColorSpan(0xffaaaaaa), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        spannableMassage.setSpan(new RelativeSizeSpan(0.8f), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        if (!isActivityPay){
+            massage = massage + "可在订单管理里面再次支付。（30分钟内未支付，订单将自动取消）";
+            spannableMassage.setSpan(new ForegroundColorSpan(0xffaaaaaa), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            spannableMassage.setSpan(new RelativeSizeSpan(0.8f), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
 
         messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
@@ -510,7 +545,31 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                 .setNegativeButton("放弃支付", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+                        if (isActivityPay) {
+                            showProgress("取消订单");
+                            activityShopCartApi.cancleActivityOrder(orderNO)
+                                    .compose(OnlineOrderPayActivity.this.<WebReturn<String>>bindToLifecycle())
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new WebReturnSubscriber<String>() {
+                                        @Override
+                                        public void onWebReturnSucess(String s) {
+                                            dismissProgress();
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onWebReturnFailure(String errorMessage) {
+                                            dismissProgress();
+                                        }
+
+                                        @Override
+                                        public void onWebReturnCompleted() {
+
+                                        }
+                                    });
+                        } else
+                            navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
                     }
                 })
                 .create();
@@ -524,6 +583,18 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         showExitDialog();
     }
 
+    public void navigateToNext() {
+        if (!fromOrderDetail)
+            if (isActivityPay)
+                navigate.navigateToSuccessResult(OnlineOrderPayActivity.this, null, true
+                        , activityOrderSimple.getActivityOrderType() == Constant.ActivityOrderType.EXCHANGEORDER ? SuccessResultActivity.FROM_PRIZEORDER_EXCHANGE : SuccessResultActivity.FROM_PRIZEORDER_LOTTERY
+                        , orderId);
+            else
+                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+        else
+            finish();
+    }
+
     @Override
     public void onClick(View v) {
         if (v == binding.backBtn)
@@ -532,20 +603,14 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
             binding.useBalance.setChecked(true);
             binding.useAli.setChecked(false);
             binding.useWeiXin.setChecked(false);
-//            if (canUseBalance) {
-//                binding.useBalance.toggle();
-//                setPayAmount();
-//            }
+
         }
 
         if (v == binding.useAliBtn) {
             binding.useBalance.setChecked(false);
             binding.useAli.setChecked(true);
             binding.useWeiXin.setChecked(false);
-//            if (canUseOnline) {
-//                binding.useAli.setChecked(true);
-//                binding.useWeiXin.setChecked(false);
-//            }
+
         }
         if (v == binding.useWeiXinBtn) {
             binding.useBalance.setChecked(false);
@@ -565,10 +630,14 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
             orderOnlinePayBody.setUseBalance(binding.useBalance.isChecked());
             orderOnlinePayBody.setUseAliPay(binding.useAli.isChecked());
             orderOnlinePayBody.setUseWeiXinPay(binding.useWeiXin.isChecked());
-            doPayOrder(orderOnlinePayBody);
+            if (isActivityPay)
+                doActivityPayOrder(orderOnlinePayBody);
+            else
+                doPayOrder(orderOnlinePayBody);
         }
         if (v == binding.orderBtn) {
-            navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, false, null, orderId, OrderDetailActivity.PARAM);
+            if (!isActivityPay)
+                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, false, null, orderId, OrderDetailActivity.PARAM);
         }
     }
 }

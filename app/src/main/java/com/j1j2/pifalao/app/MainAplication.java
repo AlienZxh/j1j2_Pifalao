@@ -181,6 +181,7 @@ public class MainAplication extends MultiDexApplication {
                 .setEnableCrop(true)
                 .setEnableRotate(true)
                 .setCropSquare(true)
+                .setForceCrop(true)
                 .setEnablePreview(true)
                 .build();
 

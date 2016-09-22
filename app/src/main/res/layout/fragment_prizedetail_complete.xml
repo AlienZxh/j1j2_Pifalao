@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+        <variable
+            name="activityWinPrize"
+            type="com.j1j2.data.model.ActivityWinPrize" />
+        <variable
+            name="times"
+            type="int" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_messages_bg"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_noraml">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fbf3f0"
+            android:orientation="vertical">
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/luckydoginfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60px"
+                android:layout_marginLeft="40px"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_marginTop="60px"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100px"
+                    android:layout_height="100px"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/user_head_img"
+                    app:layout_auto_basewidth="height" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_noraml"
+                    android:orientation="vertical">
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="获奖者："
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{activityWinPrize.Winner.WinnerEncrypt}"
+                            android:textColor="#eb3e5a"
+                            android:textSize="@dimen/text_biger" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="期号："
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{activityWinPrize.LotteryNum}"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="本期参与："
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{&quot;&quot;+activityWinPrize.Winner.WinnerParticipationTimes}"
+                            android:textColor="#eb3e5a"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="人次"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_small"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="揭晓时间："
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{activityWinPrize.WinTime}"
+                            android:textColor="@color/colorTextaaa"
+                            android:textSize="@dimen/text_normal" />
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+                </com.zhy.autolayout.AutoLinearLayout>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.j1j2.common.view.GiftDispalyView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/luckydoginfo"
+                android:background="#eb3e5a"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingLeft="@dimen/padding_noraml"
+                android:paddingRight="@dimen/padding_noraml"
+                android:paddingTop="@dimen/padding_noraml">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="幸运号码："
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{activityWinPrize.Winner.WinTicketNum}"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="40px" />
+
+                <TextView
+                    android:id="@+id/calculateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/white_conner_hollow_btn"
+                    android:paddingBottom="@dimen/padding_small"
+                    android:paddingLeft="@dimen/padding_noraml"
+                    android:paddingRight="@dimen/padding_noraml"
+                    android:paddingTop="@dimen/padding_small"
+                    android:text="计算详情"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_big" />
+            </com.j1j2.common.view.GiftDispalyView>
+
+            <com.haozhang.lib.SlantedTextView
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:gravity="center"
+                app:slantedBackgroundColor="#eb3e5a"
+                app:slantedLength="30dp"
+                app:slantedMode="left"
+                app:slantedText="获奖者"
+                app:slantedTextColor="@color/colorWhite"
+                app:slantedTextSize="14sp" />
+
+            <ImageView
+                android:layout_width="130px"
+                android:layout_height="130px"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_lucky" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_normal"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="#f3f3f3"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您没有参与本期活动哦！"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big"
+                android:visibility="@{times>0?View.GONE:View.VISIBLE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;本期已参与&quot;+times+&quot;人次&quot;}"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big"
+                android:visibility="@{times>0?View.VISIBLE:View.GONE}" />
+
+            <TextView
+                android:id="@+id/catNum"
+                android:layout_width="200px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                android:text="查看号码"
+                android:textColor="#009ff1"
+                android:textSize="@dimen/text_normal"
+                android:visibility="@{times>0?View.VISIBLE:View.GONE}" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

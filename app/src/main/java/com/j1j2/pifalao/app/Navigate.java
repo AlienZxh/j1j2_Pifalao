@@ -6,6 +6,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 
 import com.baidu.location.BDLocation;
+import com.j1j2.data.model.ActivityProcessStateProductInfo;
+import com.j1j2.data.model.ActivityProduct;
+import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Coupon;
@@ -698,12 +701,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToOnlineOrderPay(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId, String orderNO, boolean fromrderDetail) {
+    public void navigateToOnlineOrderPay(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId, String orderNO, boolean fromrderDetail, boolean isActivityPay) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.onlineOrderPayActivity(orderId, orderNO, fromrderDetail).start(context);
+            Bundler.onlineOrderPayActivity(orderId, orderNO, fromrderDetail, isActivityPay).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.onlineOrderPayActivity(orderId, orderNO, fromrderDetail).intent(context),
+            ActivityCompat.startActivity(context, Bundler.onlineOrderPayActivity(orderId, orderNO, fromrderDetail, isActivityPay).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -763,12 +766,156 @@ public class Navigate {
         }
     }
 
-    public void navigateToFreeConvertibilityActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+    public void navigateToFreeConvertibilityActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, List<ActivityProduct> activityProducts) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.freeConvertibilityActivity().start(context);
+            Bundler.freeConvertibilityActivity(activityProducts).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.freeConvertibilityActivity().intent(context),
+            ActivityCompat.startActivity(context, Bundler.freeConvertibilityActivity(activityProducts).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToPrizeActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int prizeType) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.prizeActivity(prizeType).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.prizeActivity(prizeType).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToParticipationRecordActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.participationRecordActivity(activityType).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.participationRecordActivity(activityType).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToPrizeDetailActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int prizeType, int activityProductId, ActivityWinPrize activityWinPrize) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.prizeDetailActivity(prizeType).productId(activityProductId).activityWinPrize(activityWinPrize).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.prizeDetailActivity(prizeType).productId(activityProductId).activityWinPrize(activityWinPrize).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToPrizeRecordActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int lotteryId) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.prizeRecordActivity(lotteryId).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.prizeRecordActivity(lotteryId).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToPrizeConfirmActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int prizeQuantity, ActivityProduct activityProduct, int prizeType) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.prizeConfirmActivity(activityProduct, prizeQuantity, prizeType).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.prizeConfirmActivity(activityProduct, prizeQuantity, prizeType).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToPrizeConfirmLotteryActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ActivityProcessStateProductInfo activityProduct, int activityProductType, int orderId, String orderNo) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.prizeConfirmLotteryActivity(activityProduct, activityProductType, orderId, orderNo).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.prizeConfirmLotteryActivity(activityProduct, activityProductType, orderId, orderNo).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+
+    public void navigateToShowOrderListActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.showOrderListActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.showOrderListActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToShowOrderActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId, ActivityProcessStateProductInfo product, String orderNO) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.showOrderActivity(orderId, product, orderNO).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.showOrderActivity(orderId, product, orderNO).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToCalculateDetailActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int lotteryId) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.calculateDetailActivity(lotteryId).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.calculateDetailActivity(lotteryId).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToPrizeOrderTimelineActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.prizeOrderTimelineActivity(orderId).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.prizeOrderTimelineActivity(orderId).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToSpecialOfferActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.specialOfferActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.specialOfferActivity().intent(context),
                     options.toBundle());
         }
         if (isFinish) {

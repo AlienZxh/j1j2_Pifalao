@@ -28,4 +28,8 @@ public class EmptyUtils {
     public static boolean isEmpty(String str) {
         return (null == str || str.length() <= 0);
     }
+
+    public static boolean isEmpty(Object object) {
+        return null == object ;
+    }
 }

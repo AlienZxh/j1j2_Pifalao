@@ -71,10 +71,8 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     @Inject
     ShopCart shopCart;
 
-
     DialogPlus timeDialog;
     ViewDeliverytimePickerBinding timeDialogBinding;
-
 
     public OrderSubmitState orderSubmitState;
 
@@ -202,7 +200,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-
         if (v == binding.confirmOrder) {
             if (null == orderSubmitState.PredictSendTime.get() || orderSubmitState.PredictSendTime.get().length() <= 0) {
                 toastor.showSingletonToast("请选择自提时间");
@@ -214,7 +211,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             }
             setConfirmBtnEnable(false);
             orderSubmitState.OrderMemo = binding.memo.getText().toString();
-            toastor.showSingleLongToast("订单提交中，请稍后...");
             confirmOrderViewModel.commitOrder(orderSubmitState);
         }
         if (v == binding.backBtn)
@@ -268,7 +264,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             confirmOrderViewModel.queryCoupons(Constant.CouponType.COUPON_ALL, moduleId);
     }
 
-
     public void clearShopCart() {
         shopCart.clear();
     }
@@ -282,6 +277,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     }
 
     public void navigateToOnlineOrderPay(int orderId, String orderNO) {
-        navigate.navigateToOnlineOrderPay(this, null, true, orderId, orderNO, false);
+        navigate.navigateToOnlineOrderPay(this, null, true, orderId, orderNO, false,false);
     }
 }

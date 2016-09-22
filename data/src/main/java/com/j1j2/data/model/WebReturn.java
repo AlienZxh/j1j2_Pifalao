@@ -1,7 +1,5 @@
 package com.j1j2.data.model;
 
-import com.google.gson.annotations.Expose;
-
 /**
  * Created by alienzxh on 16-3-11.
  */
@@ -11,6 +9,8 @@ public class WebReturn<T> {
     private T Detail;
 
     private String ErrorMessage;
+
+    private String OtherMessage;
 
     public boolean isValue() {
         return Value;
@@ -36,12 +36,21 @@ public class WebReturn<T> {
         Detail = detail;
     }
 
+    public String getOtherMessage() {
+        return OtherMessage;
+    }
+
+    public void setOtherMessage(String otherMessage) {
+        OtherMessage = otherMessage;
+    }
+
     @Override
     public String toString() {
         return "WebReturn{" +
                 "Value=" + Value +
                 ", Detail=" + Detail +
                 ", ErrorMessage='" + ErrorMessage + '\'' +
+                ", OtherMessage='" + OtherMessage + '\'' +
                 '}';
     }
 }

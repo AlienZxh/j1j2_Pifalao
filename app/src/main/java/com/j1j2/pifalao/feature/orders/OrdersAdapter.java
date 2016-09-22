@@ -37,6 +37,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
         notifyItemRangeInserted(startIndex, newOrders.size());
     }
 
+    public void clear(){
+        orderSimples.clear();
+        notifyDataSetChanged();
+    }
+
     public interface OnOrdersClickListener {
 
         void onReceiveClickListener(View view, OrderSimple orderSimple, int position);

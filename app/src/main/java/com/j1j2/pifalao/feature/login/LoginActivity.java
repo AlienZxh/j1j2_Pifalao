@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.login;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
@@ -42,6 +43,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setLoginViewModel(loginViewModel);
+
+
     }
 
     @Override
@@ -56,11 +59,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             binding.password.setText(userLoginPreference.getPassWord(""));
         }
 
-
-
-
         binding.autoLoginCeck.setOnCheckedChangeListener(this);
     }
+
 
     @Override
     protected void setupActivityComponent() {
@@ -88,7 +89,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 return;
             }
             Logger.d("login IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
-            toastor.showSingleLongToast("登录中，请稍后...");
             loginViewModel.login(username, password, binding.autoLoginCeck.isChecked());
         }
         if (v == binding.registerBtn) {
@@ -96,6 +96,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
         if (v == binding.forgetPSW)
             navigate.navigateToFindPSW(this, null, false);
+
+
     }
 
     @Override

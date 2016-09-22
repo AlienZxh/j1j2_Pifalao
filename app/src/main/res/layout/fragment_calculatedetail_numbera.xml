@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="numA"
+            type="long" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:text="数值A"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_big" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_small"
+            android:lineSpacingExtra="3dp"
+            android:text="=截止该奖品开奖时间点前本站全部奖品的最后50参与时间所代表数值之和"
+            android:textColor="@color/colorText666"
+            android:textSize="@dimen/text_normal" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/detailBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_smaller"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="="
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{&quot;&quot;+numA}"
+                android:textColor="#ff4647"
+                android:textSize="@dimen/text_big" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/detailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展开"
+                android:textColor="#1e94de"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <com.j1j2.common.view.WrapRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="400px"
+            android:layout_marginTop="@dimen/padding_small"
+            android:background="@drawable/calculatedetail_list_bg"
+            android:visibility="gone" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</layout>

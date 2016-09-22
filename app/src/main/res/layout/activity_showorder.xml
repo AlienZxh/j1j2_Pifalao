@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <import type="com.j1j2.common.util.EmptyUtils" />
+
+        <import type="android.view.View" />
+
+        <import type="com.j1j2.pifalao.BuildConfig" />
+
+        <variable
+            name="product"
+            type="com.j1j2.data.model.ActivityProcessStateProductInfo" />
+
+        <variable
+            name="orderNO"
+            type="String" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="晒单"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_noraml">
+
+            <ImageView
+                android:layout_width="160px"
+                android:layout_height="160px"
+                app:displayImg="@{Uri.parse(EmptyUtils.isEmpty(product.ThumbImg)?@string/text_empty:(BuildConfig.IMAGE_URL+product.ThumbImg))}"
+                app:layout_auto_baseheight="width" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:maxLines="3"
+                    android:text="@{product.productName}"
+                    android:textColor="@color/colorText666"
+                    android:textSize="@dimen/text_big" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@{EmptyUtils.isEmpty(product.lotteryNum)?&quot;单号：&quot;:&quot;期号：&quot;}"
+                        android:textColor="@color/colorText666"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@{EmptyUtils.isEmpty(product.lotteryNum)?orderNO:product.lotteryNum}"
+                        android:textColor="@color/colorText666"
+                        android:textSize="@dimen/text_big" />
+                </com.zhy.autolayout.AutoLinearLayout>
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="250px">
+
+            <EditText
+                android:id="@+id/msg"
+                android:layout_width="match_parent"
+                android:layout_height="250px"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="写下你的获奖感言，让朋友们都沾沾好运吧..."
+                android:inputType="textMultiLine"
+                android:maxLength="500"
+                android:padding="@dimen/padding_noraml"
+                android:textColor="@color/colorText666"
+                android:textColorHint="@color/colorGrayCCCCCC"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/text_normal"
+                android:maxLines="1"
+                android:text="500"
+                android:textColor="@color/colorGrayCCCCCC"
+                android:textSize="@dimen/text_normal" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_noraml">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/imgList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayE2E2E2" />
+
+        <TextView
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/content_height_normal"
+            android:background="@drawable/orange_conner_btn_selector"
+            android:gravity="center"
+            android:text="提　交"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

@@ -42,6 +42,8 @@ dependencies {
     compile commonDependencies.nineold
     compile commonDependencies.badgeview
     compile commonDependencies.jsbridge
+    compile commonDependencies.marqueeview
+    compile commonDependencies.spotsdialog
     //图片加载
     compile commonDependencies.glide
     compile commonDependencies.galleryfinal
@@ -50,6 +52,6 @@ dependencies {
     compile commonDependencies.glidetransformations
     compile commonDependencies.highlight
     compile commonDependencies.multitypeview
-
+    compile commonDependencies.slantedtextview
     testCompile commonTestDependencies.junit
 }

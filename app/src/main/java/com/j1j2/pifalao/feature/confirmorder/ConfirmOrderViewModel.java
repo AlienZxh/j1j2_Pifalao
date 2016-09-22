@@ -63,6 +63,7 @@ public class ConfirmOrderViewModel {
     }
 
     public void commitOrder(final OrderSubmitState orderSubmitState) {
+        confirmOrderActivity.showProgress("订单提交中");
         OrderSubmitBody orderSubmitBody = new OrderSubmitBody();
         orderSubmitBody.setModuleId(orderSubmitState.ModuleId);
         orderSubmitBody.setOrderPayType(orderSubmitState.OrderPayType.get());
@@ -84,6 +85,7 @@ public class ConfirmOrderViewModel {
                 .subscribe(new WebReturnSubscriber<SubmitOrderReturn>() {
                     @Override
                     public void onWebReturnSucess(SubmitOrderReturn submitOrderReturn) {
+                        confirmOrderActivity.dismissProgress();
                         confirmOrderActivity.toastor.getSingletonToast("订单提交成功");
                         BackGroundService.updateUnRead(confirmOrderActivity);
                         confirmOrderActivity.clearShopCart();
@@ -98,6 +100,7 @@ public class ConfirmOrderViewModel {
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        confirmOrderActivity.dismissProgress();
                         confirmOrderActivity.toastor.showSingletonToast(errorMessage);
                         confirmOrderActivity.setConfirmBtnEnable(true);
                     }

@@ -5,8 +5,12 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
 
 
+import okhttp3.MultipartBody;
 import retrofit2.http.Body;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -24,7 +28,9 @@ public interface UserLoginApi {
     Observable<WebReturn<String>> updateUserTerminalDetail(@Body LoginBody loginBody);
     //______________________________________________________________________________________
 
-
+    @Multipart
+    @POST("UserLogin/PostUserProtrait")
+    Observable<WebReturn<String>> postUserProtrait(@Part("imgFile") MultipartBody.Part file);
 
 
 }

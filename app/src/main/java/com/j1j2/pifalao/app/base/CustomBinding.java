@@ -17,6 +17,8 @@ import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeRelativeLayout;
 import com.j1j2.pifalao.R;
 
+import java.util.Collections;
+
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -30,7 +32,6 @@ public class CustomBinding {
             linearLayout.showTextBadge("" + num);
         else
             linearLayout.hiddenBadge();
-
     }
 
     @BindingAdapter({"bind:showNum"})

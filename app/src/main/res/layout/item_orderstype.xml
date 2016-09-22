@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/typeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/content_height_big"
+        android:layout_marginBottom="@dimen/padding_noraml"
+        android:layout_marginLeft="@dimen/padding_noraml"
+        android:layout_marginRight="@dimen/padding_noraml"
+        android:layout_marginTop="@dimen/padding_noraml"
+        android:background="@drawable/item_orderstype_bg_selector"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/typename"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="center"
+            android:textColor="@drawable/text_click_colors"
+            android:textSize="@dimen/text_big" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

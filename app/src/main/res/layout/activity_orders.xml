@@ -8,7 +8,7 @@
 
         <variable
             name="orderType"
-            type="int"/>
+            type="android.databinding.ObservableInt" />
 
         <variable
             name="ordersViewModel"
@@ -33,21 +33,35 @@
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/icon_normal"
-                app:OnClickListener="@{ordersViewModel.ordersActivity}"/>
+                app:OnClickListener="@{ordersViewModel.ordersActivity}" />
 
             <TextView
+                android:id="@+id/action_bar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@{StringUtils.getOrdersActionBarTitle(orderType)}"
+                android:text="@{StringUtils.getOrdersActionBarTitle(orderType.get())}"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_actionbar_title" />
+                android:textSize="@dimen/text_actionbar_title"
+                app:OnClickListener="@{ordersViewModel.ordersActivity}" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/action_bar_title"
+                android:gravity="center_vertical"
+                android:paddingRight="16px"
+                android:text="@string/icon_unfold"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_location_icon_arrow" />
+
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.malinskiy.superrecyclerview.SuperRecyclerView

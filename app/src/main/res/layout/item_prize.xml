@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.net.Uri" />
+
+        <import type="android.view.View" />
+
+        <import type="com.j1j2.common.util.EmptyUtils" />
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <import type="com.j1j2.pifalao.BuildConfig" />
+
+        <variable
+            name="prizeType"
+            type="int" />
+
+        <variable
+            name="activityWinPrize"
+            type="com.j1j2.data.model.ActivityWinPrize" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_messages_bg"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_noraml"
+        android:paddingRight="@dimen/padding_noraml"
+        android:paddingTop="@dimen/padding_noraml">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@{activityWinPrize.ProductInfo.ProductName}"
+            android:textColor="@color/colorText333"
+            android:textSize="@dimen/text_biger" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_noraml"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="240px"
+                android:layout_height="240px"
+                app:displayImg="@{Uri.parse(EmptyUtils.isEmpty(activityWinPrize.ProductInfo.Imgs)?@string/text_empty:(BuildConfig.IMAGE_URL+activityWinPrize.ProductInfo.Imgs.get(0).S320X320))}"
+                app:layout_auto_basewidth="height" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                android:orientation="vertical">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="本期参与："
+                        android:textColor="@color/colorTextaaa"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@{activityWinPrize.CurrentUserParticipationTimes+&quot;人次&quot;}"
+                        android:textColor="@color/colorTextaaa"
+                        android:textSize="@dimen/text_normal" />
+
+                    <TextView
+                        android:id="@+id/catNum"
+                        android:layout_width="200px"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="查看详情"
+                        android:textColor="#67b0f4"
+                        android:textSize="@dimen/text_normal"
+                        android:visibility="@{activityWinPrize.CurrentUserParticipationTimes>0?View.VISIBLE:View.GONE}" />
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#fefde1"
+                        android:visibility="@{prizeType==1?View.VISIBLE:View.GONE}" />
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="获奖者："
+                                android:textColor="@color/colorTextaaa"
+                                android:textSize="@dimen/text_normal" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@{activityWinPrize.Winner.WinnerEncrypt}"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/text_normal" />
+
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="幸运号码："
+                                android:textColor="@color/colorTextaaa"
+                                android:textSize="@dimen/text_normal" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@{activityWinPrize.Winner.WinTicketNum}"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/text_normal" />
+
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+                        <com.zhy.autolayout.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="总需："
+                                android:textColor="@color/colorText666"
+                                android:textSize="@dimen/text_normal" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:text="@{activityWinPrize.MaxUser+&quot;人次&quot;}"
+                                android:textColor="@color/colorText666"
+                                android:textSize="@dimen/text_normal" />
+
+                        </com.zhy.autolayout.AutoLinearLayout>
+
+
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                    <ImageView
+                        android:layout_width="60px"
+                        android:layout_height="93px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="60px"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/icon_prize"
+                        android:visibility="@{prizeType==1?View.VISIBLE:View.GONE}" />
+
+                </com.zhy.autolayout.AutoRelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@{&quot;揭晓时间：&quot;+activityWinPrize.WinTime}"
+                    android:textColor="@color/colorText666"
+                    android:textSize="@dimen/text_normal" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayE2E2E2"
+            android:visibility="@{prizeType==1?View.VISIBLE:View.GONE}" />
+
+        <TextView
+            android:id="@+id/prizeorderBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_big"
+            android:gravity="right|center_vertical"
+            android:paddingRight="@dimen/padding_noraml"
+            android:text="@{StringUtils.getPrizeOrdersState(activityWinPrize.OrderState)+&quot;>&quot;}"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/text_big"
+            android:visibility="@{prizeType==1?View.VISIBLE:View.GONE}" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

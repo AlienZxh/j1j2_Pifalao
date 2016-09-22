@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
+import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
 import com.j1j2.common.util.ScreenUtils;
@@ -102,6 +103,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     ValueAnimator valueAnimator;
     int[] endLocation = new int[2];
     int[] startocation = new int[2];
+
 
     @Override
     protected void initBinding() {
@@ -306,6 +308,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     @Override
     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
         queryProducts(false);
+
     }
 
     @Override

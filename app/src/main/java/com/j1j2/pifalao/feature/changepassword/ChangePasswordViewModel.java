@@ -23,6 +23,7 @@ public class ChangePasswordViewModel {
     }
 
     public void changePassword(String oldPSW, final String newPSW) {
+        changePasswordActivity.showProgress("数据提交中");
         ChangeUserPwdBody changeUserPwdBody = new ChangeUserPwdBody();
         changeUserPwdBody.setNewPwd(newPSW);
         changeUserPwdBody.setOldPwd(oldPSW);
@@ -33,12 +34,14 @@ public class ChangePasswordViewModel {
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
                     public void onWebReturnSucess(String s) {
+                        changePasswordActivity.dismissProgress();
                         changePasswordActivity.toastor.showSingletonToast(s);
                         changePasswordActivity.finishChange(newPSW);
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        changePasswordActivity.dismissProgress();
                         changePasswordActivity.toastor.showSingletonToast(errorMessage);
                     }
 

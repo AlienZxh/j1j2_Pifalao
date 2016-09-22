@@ -27,20 +27,8 @@ public class Module implements Parcelable {
     private double OrderAmountMinLimit;
     private String ModuleServiceScope;
     private boolean Normal;
+    private boolean IsHot;
 
-    @Override
-    public String toString() {
-        return "Module{" +
-                "WareHouseModuleId=" + WareHouseModuleId +
-                ", ModuleName='" + ModuleName + '\'' +
-                ", Subscribed=" + Subscribed +
-                ", DisplayRank=" + DisplayRank +
-                ", ModuleType=" + ModuleType +
-                ", OrderAmountMinLimit=" + OrderAmountMinLimit +
-                ", ModuleServiceScope='" + ModuleServiceScope + '\'' +
-                ", Normal=" + Normal +
-                '}';
-    }
 
     public int getWareHouseModuleId() {
         return WareHouseModuleId;
@@ -106,6 +94,14 @@ public class Module implements Parcelable {
         Normal = normal;
     }
 
+    public boolean isHot() {
+        return IsHot;
+    }
+
+    public void setHot(boolean hot) {
+        IsHot = hot;
+    }
+
 
     @Override
     public int describeContents() {
@@ -116,12 +112,13 @@ public class Module implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.WareHouseModuleId);
         dest.writeString(this.ModuleName);
-        dest.writeByte(Subscribed ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.Subscribed ? (byte) 1 : (byte) 0);
         dest.writeInt(this.DisplayRank);
         dest.writeInt(this.ModuleType);
         dest.writeDouble(this.OrderAmountMinLimit);
         dest.writeString(this.ModuleServiceScope);
-        dest.writeByte(Normal ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.Normal ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.IsHot ? (byte) 1 : (byte) 0);
     }
 
     public Module() {
@@ -136,9 +133,10 @@ public class Module implements Parcelable {
         this.OrderAmountMinLimit = in.readDouble();
         this.ModuleServiceScope = in.readString();
         this.Normal = in.readByte() != 0;
+        this.IsHot = in.readByte() != 0;
     }
 
-    public static final Parcelable.Creator<Module> CREATOR = new Parcelable.Creator<Module>() {
+    public static final Creator<Module> CREATOR = new Creator<Module>() {
         @Override
         public Module createFromParcel(Parcel source) {
             return new Module(source);
@@ -149,20 +147,4 @@ public class Module implements Parcelable {
             return new Module[size];
         }
     };
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Module module = (Module) o;
-
-        return WareHouseModuleId == module.WareHouseModuleId;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return WareHouseModuleId;
-    }
 }

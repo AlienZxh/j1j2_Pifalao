@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.j1j2.data.model.ActivityStateChain" />
+
+        <import type="com.j1j2.common.util.StringUtils" />
+
+        <variable
+            name="activityStateChain"
+            type="ActivityStateChain" />
+
+        <variable
+            name="isNowState"
+            type="boolean" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="44px"
+        android:paddingTop="44px">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="32px"
+                    android:layout_height="32px"
+                    android:background="@{isNowState?@drawable/timeline_spot_selected:@drawable/timeline_spot_normal}"
+                    android:gravity="center"
+                    app:layout_auto_baseheight="width" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="44px"
+                android:gravity="center_vertical"
+                android:text="已收货"
+                android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_biger" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="44px"
+                android:layout_marginLeft="@dimen/padding_noraml"
+                android:gravity="center_vertical"
+                android:text="@{activityStateChain.ProcessTimeStr==null?&quot;&quot;:(&quot;（&quot;+activityStateChain.ProcessTimeStr+&quot;）&quot;)}"
+                android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            android:layout_width="648px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120px"
+            android:text="奖品已收到，快递已签收。"
+            android:textColor="@{isNowState?@color/colorAccent:@color/colorTextaaa}"
+            android:textSize="@dimen/text_normal" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

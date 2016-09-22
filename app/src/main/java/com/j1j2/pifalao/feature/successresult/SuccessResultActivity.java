@@ -8,6 +8,7 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
 import com.j1j2.pifalao.databinding.ActivitySuccessresultBinding;
+import com.j1j2.pifalao.feature.onlineorderpay.OnlineOrderPayActivity;
 import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,6 +27,8 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
     public static final int FROM_CONFIRMORDER = 0;
     public static final int FROM_UPDATEVIP = 1;
     public static final int FROM_REGISTER = 2;
+    public static final int FROM_PRIZEORDER_LOTTERY = 3;
+    public static final int FROM_PRIZEORDER_EXCHANGE = 4;
 
     ActivitySuccessresultBinding binding;
 
@@ -72,6 +75,20 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
                 binding.cancelBtn.setVisibility(View.GONE);
                 confirmBtnStr.set("完　成");
                 break;
+            case FROM_PRIZEORDER_LOTTERY:
+                toolbarTitle.set("订单提交成功");
+                message.set("您的订单提交成功！");
+                cancelBtnStr.set("返回首页");
+                confirmBtnStr.set("查看订单");
+                binding.confirmBtn.setVisibility(View.GONE);
+                break;
+            case FROM_PRIZEORDER_EXCHANGE:
+                toolbarTitle.set("订单提交成功");
+                message.set("您的订单提交成功！");
+                cancelBtnStr.set("返回首页");
+                binding.cancelBtn.setVisibility(View.GONE);
+                confirmBtnStr.set("查看订单");
+                break;
         }
     }
 
@@ -92,6 +109,9 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
                     EventBus.getDefault().post(new NavigateToHomeEvent());
                     finish();
                     break;
+                case FROM_PRIZEORDER_LOTTERY:
+                    navigate.navigateToMemberHomeActivity(this, null, true);
+                    break;
             }
         }
         if (v == binding.confirmBtn) {
@@ -106,6 +126,9 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
                 case FROM_UPDATEVIP:
                     EventBus.getDefault().post(new NavigateToHomeEvent());
                     finish();
+                    break;
+                case FROM_PRIZEORDER_EXCHANGE:
+                    navigate.navigateToPrizeOrderTimelineActivity(this, null, true, orderId);
                     break;
             }
         }

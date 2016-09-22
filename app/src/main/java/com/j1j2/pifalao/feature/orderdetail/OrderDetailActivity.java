@@ -166,7 +166,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             showDeleteDialog(orderId);
         }
         if (v == binding.pay) {
-            navigate.navigateToOnlineOrderPay(this, null, false, orderId, orderDetailViewModel.orderDetailObservableField.get().getOrderNO(), true);
+            navigate.navigateToOnlineOrderPay(this, null, false, orderId, orderDetailViewModel.orderDetailObservableField.get().getOrderNO(), true,false);
         }
         if (v == binding.receive) {
             orderDetailViewModel.receiveOrder(orderId);

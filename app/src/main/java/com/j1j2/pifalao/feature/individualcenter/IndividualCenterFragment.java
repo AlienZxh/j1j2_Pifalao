@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseFragment;
@@ -23,6 +24,7 @@ import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.common.util.Toastor;
+import com.j1j2.pifalao.feature.participationrecord.ParticipationRecordActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -74,8 +76,9 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
 
         void navigateToSetting();
 
-        void navigateToNormalCoupon();
+        void navigateToOrders(int orderType);
 
+        void navigateToParticipationRecord(int activityType);
     }
 
     private IndividualCenterFragmentListener listener;
@@ -129,6 +132,7 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
     protected void onResumeLazy() {
         super.onResumeLazy();
         individualCenterViewModel.queryUser();
+        individualCenterViewModel.queryOrderStatistics();
     }
 
     @Override
@@ -191,9 +195,9 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
 
     @Override
     public void onClick(View v) {
-        if (v == binding.orderManager ) {
-            listener.navigateToOrderManager();
-        }
+//        if (v == binding.orderManager) {
+//            listener.navigateToOrderManager();
+//        }
         if (v == binding.qrCode) {
             listener.navigateToQRCode();
         }
@@ -203,15 +207,15 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
         if (v == binding.walletManager) {
             listener.navigateToWalletManager();
         }
-        if (v == binding.massageManager ) {
+        if (v == binding.massageManager) {
             listener.navigateToMessages();
         }
         if (v == binding.collectManager) {
             listener.navigateToCollects();
         }
-        if (v == binding.accountManager) {
-            listener.navigateToAccount();
-        }
+//        if (v == binding.accountManager) {
+//            listener.navigateToAccount();
+//        }
         if (v == binding.updateVIP) {
             listener.navigateToVipUpdate();
         }
@@ -223,6 +227,23 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
         if (v == binding.userImg)
             messageDialog.show();
 
+        if (v == binding.SubmitOrder) {
+            listener.navigateToOrders(Constant.OrderType.ORDERTYPE_SUBMIT);
+        } else if (v == binding.UnPayOrder) {
+            listener.navigateToOrders(Constant.OrderType.ORDERTYPE_UNPAY);
+        } else if (v == binding.ExcutingOrder) {
+            listener.navigateToOrders(Constant.OrderType.ORDERTYPE_EXECUTING);
+        } else if (v == binding.DeliveryOrder) {
+            listener.navigateToOrders(Constant.OrderType.ORDERTYPE_DELIVERY);
+        } else if (v == binding.unRateOrder) {
+            listener.navigateToOrders(Constant.OrderType.ORDERTYPE_WAITFORRATE);
+        } else if (v == binding.allOrder) {
+            listener.navigateToOrders(Constant.OrderType.ORDERTYPE_ALL);
+        }
+
+        if (v == binding.allParticipationBtn) {
+            listener.navigateToParticipationRecord(ParticipationRecordActivity.RECORD_ONGOING);
+        }
 
     }
 }

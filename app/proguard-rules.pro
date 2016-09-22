@@ -200,7 +200,6 @@
 ##---------------End: proguard configuration for eventbus  ----------
 
 ##---------------Begin: proguard configuration for jpush  ----------
-
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
 #==================protobuf======================

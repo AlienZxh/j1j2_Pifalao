@@ -8,15 +8,15 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
+import com.j1j2.common.util.Toastor;
+import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.di.ActivityComponent;
 import com.j1j2.pifalao.app.di.ActivityModule;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.j1j2.pifalao.app.event.NetWorkEvent;
-import com.j1j2.common.util.Toastor;
 import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
@@ -25,10 +25,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-
 import javax.inject.Inject;
 
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -47,6 +46,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected Fragment currentFragment;
 
     protected AlertDialog messageDialog;
+
+    protected android.app.AlertDialog progressDialog;
 
     protected void initActionBar() {
 
@@ -132,6 +133,19 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
+    }
+
+    public void showProgress(String message) {
+        if (progressDialog == null) {
+            progressDialog = new SpotsDialog(this, message, R.style.CustomSpotDialog);
+            progressDialog.setCancelable(false);
+        } else
+            progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    public void dismissProgress() {
+        progressDialog.dismiss();
     }
 
     @Subscribe
