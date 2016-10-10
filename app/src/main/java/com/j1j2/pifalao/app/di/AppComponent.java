@@ -49,6 +49,8 @@ import com.j1j2.pifalao.feature.services.di.ServicesComponent;
 import com.j1j2.pifalao.feature.services.di.ServicesModule;
 import com.j1j2.pifalao.feature.showorders.di.ShowOrdersComponent;
 import com.j1j2.pifalao.feature.showorders.di.ShowOrdersModule;
+import com.j1j2.pifalao.feature.unsubscribe.di.ApplyForComponent;
+import com.j1j2.pifalao.feature.unsubscribe.di.ApplyForModule;
 import com.j1j2.pifalao.feature.vegetablesort.di.VegetableSortComponent;
 import com.j1j2.pifalao.feature.vegetablesort.di.VegetableSortModule;
 
@@ -117,4 +119,6 @@ public interface AppComponent {
     ShowOrdersComponent plus(ShowOrdersModule showOrdersModule);
 
     PrizeComponent plus(PrizeModule prizeModule);
+
+    ApplyForComponent plus(ApplyForModule applyForModule);
 }

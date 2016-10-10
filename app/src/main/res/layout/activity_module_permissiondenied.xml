@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+
+        <variable
+            name="isApplyed"
+            type="boolean" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/actionbar_height"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/backBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_back"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="仓库批发"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_actionbar_title" />
+
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/individualBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_mine"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}" />
+
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="420px"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_auto_basewidth="height">
+
+            <ImageView
+                android:layout_width="210px"
+                android:layout_height="210px"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_lock"
+                app:layout_auto_basewidth="height" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40px"
+                android:text="@{isApplyed?&quot;提示：您已提交申请，请耐心等待&quot;:&quot;提示：您的权限不足&quot;}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_biger" />
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorDividerE9E9E9" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60px"
+            android:background="@drawable/item_messages_bg"
+            android:orientation="vertical"
+            android:visibility="@{isApplyed?View.GONE:View.VISIBLE}">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120px"
+                    android:layout_height="80px"
+                    android:gravity="center"
+                    android:text="姓名："
+                    android:textColor="@color/colorText333" />
+
+                <EditText
+                    android:id="@+id/nameEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="80px"
+                    android:background="@null"
+                    android:hint="输入您的真实姓名"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:paddingRight="@dimen/padding_noraml"
+                    android:textColor="@color/colorText333"
+                    android:textColorHint="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_1px"
+                android:background="@color/colorDividerE9E9E9" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120px"
+                    android:layout_height="80px"
+                    android:gravity="center"
+                    android:text="电话："
+                    android:textColor="@color/colorText333" />
+
+                <EditText
+                    android:id="@+id/phoneEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="80px"
+                    android:background="@null"
+                    android:hint="输入您的手机号码"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:paddingRight="@dimen/padding_noraml"
+                    android:textColor="@color/colorText333"
+                    android:textColorHint="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_1px"
+                android:background="@color/colorDividerE9E9E9" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120px"
+                    android:layout_height="80px"
+                    android:gravity="center"
+                    android:text="地址："
+                    android:textColor="@color/colorText333" />
+
+                <EditText
+                    android:id="@+id/addressEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="80px"
+                    android:background="@null"
+                    android:hint="输入您的详细地址信息"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:paddingRight="@dimen/padding_noraml"
+                    android:textColor="@color/colorText333"
+                    android:textColorHint="@color/colorTextaaa"
+                    android:textSize="@dimen/text_normal" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <TextView
+            android:id="@+id/applyBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="34px"
+            android:background="@drawable/green_conner_btn_selector"
+            android:gravity="center"
+            android:text="申请开通钻石会员"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger"
+            android:visibility="@{isApplyed?View.GONE:View.VISIBLE}" />
+
+        <TextView
+            android:id="@+id/cancelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_big"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="34px"
+            android:background="@drawable/green_conner_btn_selector"
+            android:gravity="center"
+            android:text="您已提交申请，请耐心等待"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_biger"
+            android:visibility="@{isApplyed?View.VISIBLE:View.GONE}" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="25px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="１、仓库批发是以零利润超低价满足VIP大客户采购的服务；"
+                android:textColor="@color/colorText666"
+                android:textSize="@dimen/text_normal" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="16px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="２、本服务仅向"
+                android:textColor="@color/colorText666"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="钻石会员"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开放，非钻石会员无权访问；"
+                android:textColor="@color/colorText666"
+                android:textSize="@dimen/text_normal" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_marginRight="@dimen/padding_noraml"
+            android:layout_marginTop="16px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="３、更多详情咨询：404-808-7172 或 批发佬服务点。"
+                android:textColor="@color/colorText666"
+                android:textSize="@dimen/text_normal" />
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

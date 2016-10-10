@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40px"
+        android:gravity="center_horizontal"
+        android:text="没有更多了"
+        android:textColor="@color/colorText999"
+        android:textSize="@dimen/text_big" />
+</com.zhy.autolayout.AutoLinearLayout>

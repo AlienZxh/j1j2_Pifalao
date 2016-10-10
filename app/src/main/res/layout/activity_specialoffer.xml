@@ -4,7 +4,12 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".feature.products.ProductsActivity">
+    <data>
 
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
+    </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
@@ -40,17 +45,22 @@
                 android:textSize="@dimen/text_actionbar_title" />
 
 
-            <android.support.v7.widget.AppCompatSpinner
-                android:id="@+id/sortSpinner"
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:id="@+id/individualBtn"
                 fontPath="iconfont/iconfont.ttf"
-                android:layout_width="180px"
+                android:layout_width="@dimen/actionbar_height"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/actionbar_btn_bg"
                 android:gravity="center"
-                android:text="@string/icon_filter"
+                android:text="@string/icon_mine"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal" />
+                android:textSize="@dimen/icon_normal"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightTop"
+                app:badge_horizontalMargin="8dp"
+                app:badge_verticalMargin="8dp"
+                app:showCircle="@{unReadInfoManager.hasUnRead}" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <!--<include-->
@@ -62,11 +72,23 @@
         <!--bind:module="@{productViewModel.productsActivity.module}"-->
         <!--bind:second="@{productViewModel.second}" />-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/productList"
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/productList"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/colorLayoutBg" />-->
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorLayoutBg" />
+            android:layout_height="4px"
+            android:max="100"
+            android:progressDrawable="@drawable/webview_progressdrawable" />
+
+        <com.github.lzyzsd.jsbridge.BridgeWebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </com.zhy.autolayout.AutoLinearLayout>
 
 </layout>

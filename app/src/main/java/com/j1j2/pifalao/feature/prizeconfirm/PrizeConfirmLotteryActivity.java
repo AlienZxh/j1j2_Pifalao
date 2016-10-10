@@ -7,6 +7,7 @@ import android.view.View;
 import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.http.api.ActivityShopCartApi;
+import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.model.ActivityProcessStateProductInfo;
 import com.j1j2.data.model.LotteryFillAwardReceiveAddress;
 import com.j1j2.data.model.SubmitOrderReturn;
@@ -41,6 +42,8 @@ public class PrizeConfirmLotteryActivity extends BaseActivity implements View.On
 
     @Inject
     ActivityApi activityApi;
+    @Inject
+    UserAddressApi userAddressApi;
 
     @Arg
     ActivityProcessStateProductInfo activityProcessStateProductInfo;
@@ -139,6 +142,11 @@ public class PrizeConfirmLotteryActivity extends BaseActivity implements View.On
             commitOrder();
         }
 
+    }
+
+    @Override
+    public UserAddressApi getUserAddressApi() {
+        return userAddressApi;
     }
 
     @Override

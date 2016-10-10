@@ -16,6 +16,7 @@ public class UnReadInfoManager extends BaseObservable {
     private int unReadOrderCount;
     private int unReadPushMessageCount;
     private int userFavoritesCount;
+    private int foldRedPacketCount;
 
     private static UnReadInfoManager mInstance = null;
 
@@ -35,13 +36,15 @@ public class UnReadInfoManager extends BaseObservable {
         unReadOrderCount = 0;
         unReadPushMessageCount = 0;
         userFavoritesCount = 0;
+        foldRedPacketCount = 0;
     }
 
     public void setUnReadInfo(UnReadInfo unReadInfo) {
         unReadOrderCount = unReadInfo.getUnReadOrderCount();
         unReadPushMessageCount = unReadInfo.getUnReadPushMessageCount();
         userFavoritesCount = unReadInfo.getUserFavoritesCount();
-        if (unReadOrderCount + unReadPushMessageCount > 0) {
+        foldRedPacketCount = unReadInfo.getFoldRedPacketCount();
+        if (unReadOrderCount + unReadPushMessageCount + foldRedPacketCount > 0) {
             hasUnRead = true;
         } else {
             hasUnRead = false;
@@ -50,6 +53,7 @@ public class UnReadInfoManager extends BaseObservable {
         notifyPropertyChanged(BR.unReadPushMessageCount);
         notifyPropertyChanged(BR.unReadOrderCount);
         notifyPropertyChanged(BR.userFavoritesCount);
+        notifyPropertyChanged(BR.foldRedPacketCount);
     }
 
     public void clear() {
@@ -57,10 +61,12 @@ public class UnReadInfoManager extends BaseObservable {
         unReadOrderCount = 0;
         unReadPushMessageCount = 0;
         userFavoritesCount = 0;
+        foldRedPacketCount = 0;
         notifyPropertyChanged(BR.hasUnRead);
         notifyPropertyChanged(BR.unReadPushMessageCount);
         notifyPropertyChanged(BR.unReadOrderCount);
         notifyPropertyChanged(BR.userFavoritesCount);
+        notifyPropertyChanged(BR.foldRedPacketCount);
     }
 
     @Bindable
@@ -81,5 +87,10 @@ public class UnReadInfoManager extends BaseObservable {
     @Bindable
     public int getUserFavoritesCount() {
         return userFavoritesCount;
+    }
+
+    @Bindable
+    public int getFoldRedPacketCount() {
+        return foldRedPacketCount;
     }
 }

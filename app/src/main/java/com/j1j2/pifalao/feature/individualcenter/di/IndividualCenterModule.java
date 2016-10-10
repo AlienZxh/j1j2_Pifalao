@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.individualcenter.di;
 
+import com.google.gson.Gson;
 import com.j1j2.data.http.api.UserCouponApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserOrderApi;
@@ -30,11 +31,6 @@ public class IndividualCenterModule {
         return retrofit.create(UserLoginApi.class);
     }
 
-    @Provides
-    @ActivityScope
-    UserCouponApi userCouponApi(Retrofit retrofit) {
-        return retrofit.create(UserCouponApi.class);
-    }
 
     @Provides
     @ActivityScope
@@ -44,8 +40,8 @@ public class IndividualCenterModule {
 
     @Provides
     @ActivityScope
-    IndividualCenterViewModel individualCenterViewModel(User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi, UserCouponApi userCouponApi, UserOrderApi userOrderApi) {
-        return new IndividualCenterViewModel(user, individualCenterFragment, userLoginApi, userCouponApi, userOrderApi);
+    IndividualCenterViewModel individualCenterViewModel(Gson gson, User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi, UserOrderApi userOrderApi) {
+        return new IndividualCenterViewModel(gson, user, individualCenterFragment, userLoginApi, userOrderApi);
     }
 
     @Provides

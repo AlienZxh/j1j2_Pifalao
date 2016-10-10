@@ -55,7 +55,9 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-30.
  */
 @RequireBundler
-public class DeliveryHomeActivity extends BaseActivity implements View.OnClickListener, DeliveryHomeProductsFragment.DeliveryHomeProductsFragmentListener, ScrollableLayout.OnScrollListener, DeliveryAreasAdapter.OnAreaItemClickListener {
+public class DeliveryHomeActivity extends BaseActivity implements View.OnClickListener,
+        DeliveryHomeProductsFragment.DeliveryHomeProductsFragmentListener,
+        ScrollableLayout.OnScrollListener, DeliveryAreasAdapter.OnAreaItemClickListener {
 
     ActivityDeliveryhomeBinding binding;
 
@@ -270,7 +272,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void navigateToProductDetail(View view, ProductSimple productSimple, int position) {
-        navigate.navigateToProductDetailActivity(this, null, false, productSimple.getMainId());
+//        navigate.navigateToProductDetailActivity(this, null, false, productSimple.getMainId());
     }
 
     @Override

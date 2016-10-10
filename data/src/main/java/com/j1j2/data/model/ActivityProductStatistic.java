@@ -23,7 +23,7 @@ public class ActivityProductStatistic implements Parcelable {
     /// <summary>
     /// 活动商品库存剩余，如果有
     /// </summary>
-    private int Remain;
+    private Integer Remain;
 
 
     /// <summary>
@@ -55,11 +55,11 @@ public class ActivityProductStatistic implements Parcelable {
         ExchangeSum = exchangeSum;
     }
 
-    public int getRemain() {
+    public Integer getRemain() {
         return Remain;
     }
 
-    public void setRemain(int remain) {
+    public void setRemain(Integer remain) {
         Remain = remain;
     }
 
@@ -82,7 +82,7 @@ public class ActivityProductStatistic implements Parcelable {
         dest.writeInt(this.ProductId);
         dest.writeInt(this.ViewSum);
         dest.writeInt(this.ExchangeSum);
-        dest.writeInt(this.Remain);
+        dest.writeValue(this.Remain);
         dest.writeInt(this.MaxUserRemain);
     }
 
@@ -93,11 +93,11 @@ public class ActivityProductStatistic implements Parcelable {
         this.ProductId = in.readInt();
         this.ViewSum = in.readInt();
         this.ExchangeSum = in.readInt();
-        this.Remain = in.readInt();
+        this.Remain = (Integer) in.readValue(Integer.class.getClassLoader());
         this.MaxUserRemain = in.readInt();
     }
 
-    public static final Parcelable.Creator<ActivityProductStatistic> CREATOR = new Parcelable.Creator<ActivityProductStatistic>() {
+    public static final Creator<ActivityProductStatistic> CREATOR = new Creator<ActivityProductStatistic>() {
         @Override
         public ActivityProductStatistic createFromParcel(Parcel source) {
             return new ActivityProductStatistic(source);

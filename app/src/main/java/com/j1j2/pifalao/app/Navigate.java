@@ -12,11 +12,13 @@ import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Coupon;
+import com.j1j2.data.model.ImgUrl;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.OfflineOrderSimple;
 import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.RedPacket;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.requestbody.ClientRegisterStepOneBody;
@@ -102,18 +104,6 @@ public class Navigate {
         }
     }
 
-//    public void navigateFromServicePointToServicesActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint) {
-//        if (null == options || Build.VERSION.SDK_INT < 16) {
-//            context.startActivity(Bundler.servicesActivity(servicePoint).intent(context).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-//            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//        } else {
-//            ActivityCompat.startActivity(context, Bundler.servicesActivity(servicePoint).intent(context).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP),
-//                    options.toBundle());
-//        }
-//        if (isFinish) {
-//            ActivityCompat.finishAfterTransition(context);
-//        }
-//    }
 
     public void navigateToProductsActivityFromSort(Activity context, ActivityOptionsCompat options, boolean isFinish, ProductSort productSort, Module module) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
@@ -453,12 +443,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToSuccessResult(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType, int orderId) {
+    public void navigateToSuccessResult(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType, int orderId, String orderNO) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.successResultActivity(activityType).orderId(orderId).start(context);
+            Bundler.successResultActivity(activityType).orderId(orderId).orderNO(orderNO).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.successResultActivity(activityType).orderId(orderId).intent(context),
+            ActivityCompat.startActivity(context, Bundler.successResultActivity(activityType).orderId(orderId).orderNO(orderNO).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -583,12 +573,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToVipHome(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+    public void navigateToVipHome(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.vipHomeActivity().start(context);
+            Bundler.vipHomeActivity(activityType).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.vipHomeActivity().intent(context),
+            ActivityCompat.startActivity(context, Bundler.vipHomeActivity(activityType).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -623,25 +613,12 @@ public class Navigate {
     }
 
 
-    public void navigateToUnsubscribeDelivery(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+    public void navigateToUnsubscribeModule(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.unsubscribeDeliveryActivity().start(context);
+            Bundler.unsubscribeModuleActivity(module).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.unsubscribeDeliveryActivity().intent(context),
-                    options.toBundle());
-        }
-        if (isFinish) {
-            ActivityCompat.finishAfterTransition(context);
-        }
-    }
-
-    public void navigateToUnsubscribeModule(Activity context, ActivityOptionsCompat options, boolean isFinish) {
-        if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.unsubscribeModuleActivity().start(context);
-            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else {
-            ActivityCompat.startActivity(context, Bundler.unsubscribeModuleActivity().intent(context),
+            ActivityCompat.startActivity(context, Bundler.unsubscribeModuleActivity(module).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -805,12 +782,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToPrizeDetailActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int prizeType, int activityProductId, ActivityWinPrize activityWinPrize) {
+    public void navigateToPrizeDetailActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityProductId, ActivityWinPrize activityWinPrize) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.prizeDetailActivity(prizeType).productId(activityProductId).activityWinPrize(activityWinPrize).start(context);
+            Bundler.prizeDetailActivity(activityProductId).activityWinPrize(activityWinPrize).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.prizeDetailActivity(prizeType).productId(activityProductId).activityWinPrize(activityWinPrize).intent(context),
+            ActivityCompat.startActivity(context, Bundler.prizeDetailActivity(activityProductId).activityWinPrize(activityWinPrize).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -910,12 +887,100 @@ public class Navigate {
         }
     }
 
-    public void navigateToSpecialOfferActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId) {
+    public void navigateToSpecialOfferActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
             Bundler.specialOfferActivity().start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             ActivityCompat.startActivity(context, Bundler.specialOfferActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToLotteryRuleActivity(Activity context, ActivityOptionsCompat options, boolean isFinish) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.lotteryRuleActivity().start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.lotteryRuleActivity().intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToImgsGalleryActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, List<ImgUrl> urls, int index) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.imgsGalleryActivity(urls).index(index).start(context);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.imgsGalleryActivity(urls).index(index).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToModulePermissionDeniedActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.modulePermissionDeniedActivity(module).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.modulePermissionDeniedActivity(module).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToBriberyMoneyRemindActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int count) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.briberyMoneyRemindActivity(count).start(context);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.briberyMoneyRemindActivity(count).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToBriberyMoneysActivity(Activity context, ActivityOptionsCompat options, boolean isFinish,int selectState) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.briberyMoneysActivity(selectState).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.briberyMoneysActivity(selectState).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToBriberyMoneyOpenActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, RedPacket redPacket) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.briberyMoneyOpenActivity(redPacket).start(context);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.briberyMoneyOpenActivity(redPacket).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToBriberyMoneyResultActivity(Activity context, ActivityOptionsCompat options, boolean isFinish,RedPacket redPacket) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.briberyMoneyResultActivity(redPacket).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.briberyMoneyResultActivity(redPacket).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

@@ -8,6 +8,7 @@ import com.j1j2.data.model.LotteryCacluteResult;
 import com.j1j2.data.model.LotteryFillAwardReceiveAddress;
 import com.j1j2.data.model.LotteryParticipationTimes;
 import com.j1j2.data.model.PagerManager;
+import com.j1j2.data.model.RedPacket;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.AcceptanceSpeechSubmit;
 
@@ -89,4 +90,21 @@ public interface ActivityApi {
     /// 查询某个抽奖活动 的计算结果 的时间记录
     @POST("Activity/QueryLotteryCacluateResult")
     Observable<WebReturn<LotteryCacluteResult>> queryLotteryCacluateResult(@Query("lotteryId") int lotteryId);
+
+    /// 查询用户未领取的有效红包总数
+    @POST("Activity/QueryFoldRedPacketCount")
+    Observable<WebReturn<Integer>> queryFoldRedPacketCount();
+
+    /// 查询用户 红包记录 带分页
+    /// queryState值
+    /// 1：有效未领取红包
+    /// 2：已领取红包
+    /// 3：已失效红包
+    @POST("Activity/QueryUserRedPackets")
+    Observable<WebReturn<PagerManager<RedPacket>>> queryUserRedPackets(@Query("pageIndex") int pageIndex, @Query("queryState") int queryState);
+
+
+    @POST("Activity/UnfoldRedPacket")
+    Observable<WebReturn<String>> unfoldRedPacket(@Query("recordId") int recordId, @Query("orderNO") String orderNO);
+
 }

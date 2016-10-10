@@ -26,25 +26,27 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_messages_bg"
-        android:orientation="vertical"
-        android:paddingLeft="16px"
-        android:paddingRight="16px">
+        android:background="@drawable/item_orders_bg"
+        android:orientation="vertical">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="#eaffe6"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="26px"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingTop="26px">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="状态："
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_big" />
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:layout_width="0dp"
@@ -54,17 +56,21 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_big" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_1px"
+                android:layout_weight="1" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="总金额："
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_big" />
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@{StringUtils.getPriceWiteSymbol(orderSimple.OrderSum)}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_big" />
@@ -82,6 +88,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingTop="@dimen/padding_noraml">
 
             <TextView
@@ -97,10 +105,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
-                android:layout_marginRight="@dimen/padding_noraml"
                 android:text="@{orderSimple.ModuleName}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big" />
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -116,21 +123,22 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="下单时间："
-                android:textColor="@color/colorText333"
+                android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/padding_noraml"
                 android:text="@{orderSimple.OrderSubmitTimeStr}"
-                android:textColor="@color/colorText333"
+                android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
         </com.zhy.autolayout.AutoLinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="16px"
+            android:layout_marginRight="16px"
             android:background="@color/colorGrayF0F0F0" />
 
         <com.zhy.autolayout.AutoLinearLayout
@@ -140,6 +148,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingTop="@dimen/padding_noraml"
             app:OnClickListener="@{onClick}">
 
@@ -157,7 +167,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
-                android:layout_marginRight="@dimen/padding_noraml"
                 android:text="@{StringUtils.getOrdersQuantity(orderSimple.ProductDetails)}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
@@ -174,6 +183,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="16px"
+            android:layout_marginRight="16px"
             android:background="@color/colorGrayF0F0F0" />
 
         <com.zhy.autolayout.AutoLinearLayout
@@ -188,12 +199,11 @@
                 android:id="@+id/receive"
                 android:layout_width="130px"
                 android:layout_height="62px"
-                android:layout_marginLeft="@dimen/padding_small"
-                android:layout_marginRight="@dimen/padding_small"
-                android:background="@drawable/orange_conner_btn_selector"
+                android:background="@drawable/orange_conner_hollow_btn"
                 android:gravity="center"
+                android:layout_marginRight="16px"
                 android:text="确认收货"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_normal"
                 android:visibility="@{orderSimple.OrderState==16||(orderSimple.OrderState==8&amp;&amp;orderSimple.ModuleType==Constant.ModuleType.DELIVERY)?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
@@ -202,68 +212,24 @@
                 android:id="@+id/pay"
                 android:layout_width="130px"
                 android:layout_height="62px"
-                android:layout_marginLeft="@dimen/padding_small"
-                android:layout_marginRight="@dimen/padding_small"
                 android:background="@drawable/orange_conner_btn_selector"
                 android:gravity="center"
+                android:layout_marginRight="16px"
                 android:text="去支付"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_normal"
                 android:visibility="@{orderSimple.OrderState==2?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
-            <!--<TextView-->
-            <!--android:id="@+id/comment"-->
-            <!--android:layout_width="130px"-->
-            <!--android:layout_height="62px"-->
-            <!--android:layout_marginLeft="@dimen/padding_small"-->
-            <!--android:layout_marginRight="@dimen/padding_small"-->
-            <!--android:background="@drawable/blue_conner_btn_selector"-->
-            <!--android:gravity="center"-->
-            <!--android:text="评价"-->
-            <!--android:textColor="@color/colorWhite"-->
-            <!--android:textSize="@dimen/text_normal"-->
-            <!--android:visibility="@{orderSimple.OrderState==32?View.VISIBLE : View.GONE}"-->
-            <!--app:OnClickListener="@{onClick}" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/cancel"-->
-            <!--android:layout_width="130px"-->
-            <!--android:layout_height="62px"-->
-            <!--android:layout_marginLeft="@dimen/padding_small"-->
-            <!--android:layout_marginRight="@dimen/padding_small"-->
-            <!--android:background="@drawable/gray_conner_btn_selector"-->
-            <!--android:gravity="center"-->
-            <!--android:text="取消订单"-->
-            <!--android:textColor="@color/colorTextaaa"-->
-            <!--android:textSize="@dimen/text_normal"-->
-            <!--android:visibility="@{orderSimple.OrderState==1?View.VISIBLE : View.GONE}"-->
-            <!--app:OnClickListener="@{onClick}" />-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/servicepoint"-->
-            <!--android:layout_width="130px"-->
-            <!--android:layout_height="62px"-->
-            <!--android:layout_marginLeft="@dimen/padding_small"-->
-            <!--android:layout_marginRight="@dimen/padding_small"-->
-            <!--android:background="@drawable/orange_conner_btn_selector"-->
-            <!--android:gravity="center"-->
-            <!--android:text="查看服务点"-->
-            <!--android:textColor="@color/colorWhite"-->
-            <!--android:textSize="@dimen/text_normal"-->
-            <!--android:visibility="gone"-->
-            <!--app:OnClickListener="@{onClick}" />-->
-
             <TextView
                 android:id="@+id/detail"
                 android:layout_width="130px"
                 android:layout_height="62px"
-                android:layout_marginLeft="@dimen/padding_small"
-                android:layout_marginRight="@dimen/padding_small"
-                android:background="@drawable/green_conner_btn_selector"
+                android:layout_marginRight="16px"
+                android:background="@drawable/green_conner_hollow_btn"
                 android:gravity="center"
                 android:text="订单详情"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_normal"
                 app:OnClickListener="@{onClick}" />
         </com.zhy.autolayout.AutoLinearLayout>

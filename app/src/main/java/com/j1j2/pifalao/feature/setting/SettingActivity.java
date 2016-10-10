@@ -11,7 +11,10 @@ import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
+import com.j1j2.common.util.FileUtils;
+import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.UnReadInfoManager;
@@ -19,14 +22,22 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivitySettingBinding;
 import com.j1j2.pifalao.feature.account.di.AccountModule;
+import com.trello.rxlifecycle.ActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 import in.workarounds.bundler.annotations.RequireBundler;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-3-24.
@@ -58,6 +69,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void initViews() {
         binding.versionName.setText(getLocalVersionName(this));
+
+        binding.cacheSize.setText(FileUtils.getFormatSize(FileUtils.getFolderSize(new File(Constant.FilePath.saveFolder))));
     }
 
 
@@ -81,6 +94,50 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         } else {
                             toastor.showSingletonToast("没有拨打电话权限");
                         }
+                    }
+                })
+                .create();
+        messageDialog.show();
+    }
+
+    private void showClearCacheDialog() {
+        if (messageDialog != null && messageDialog.isShowing())
+            messageDialog.dismiss();
+        messageDialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .setTitle("提示")
+                .setMessage("确认清除缓存吗？")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showProgress("缓存删除中");
+                        Observable.create(new Observable.OnSubscribe<Void>() {
+                            @Override
+                            public void call(Subscriber<? super Void> subscriber) {
+                                FileUtils.deleteFolderFile(Constant.FilePath.saveFolder, true);
+                                subscriber.onCompleted();
+                            }
+                        })
+//                                .compose(SettingActivity.this.<Void>bindUntilEvent(ActivityEvent.DESTROY))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Subscriber<Void>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        binding.cacheSize.setText(FileUtils.getFormatSize(FileUtils.getFolderSize(new File(Constant.FilePath.saveFolder))));
+                                        dismissProgress();
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+
+                                    }
+
+                                    @Override
+                                    public void onNext(Void aVoid) {
+                                    }
+                                });
                     }
                 })
                 .create();
@@ -111,6 +168,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             unReadInfoManager.clear();
             EventBus.getDefault().postSticky(new LogStateEvent(false));
 //            finish();
+        }
+
+        if (v == binding.clearCache) {
+            showClearCacheDialog();
         }
     }
 

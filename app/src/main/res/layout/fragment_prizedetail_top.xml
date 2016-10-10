@@ -2,114 +2,118 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <com.zhy.autolayout.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="780px">
+        android:layout_height="wrap_content">
 
-
-        <com.zhy.autolayout.AutoLinearLayout
-            android:id="@+id/nameLayout"
+        <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/content_height_biger"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorWhite"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="780px">
 
-            <TextView
-                android:id="@+id/tag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_noraml"
-                android:background="@drawable/orange_conner_white_tag_bg"
-                android:paddingBottom="4px"
-                android:paddingLeft="6px"
-                android:paddingRight="6px"
-                android:paddingTop="4px"
-                android:text="@string/self_product"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/text_normal" />
-
-            <View
-                android:layout_width="@dimen/padding_small"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="2"
-                android:text="简单的根据circleNum的数量进行了圆的绘制"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="@dimen/height_1px"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/padding_noraml"
-                android:layout_marginTop="@dimen/padding_noraml"
-                android:background="@color/colorTextbf" />
 
             <com.zhy.autolayout.AutoLinearLayout
-                android:id="@+id/shareBtn"
-                android:layout_width="@dimen/content_height_biger"
+                android:id="@+id/nameLayout"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/content_height_biger"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorWhite"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
-                    fontPath="iconfont/iconfont.ttf"
+                    android:id="@+id/tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/icon_share"
-                    android:textColor="@color/colorText999"
-                    android:textSize="@dimen/icon_small" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="分享"
-                    android:textColor="@color/colorText999"
+                    android:layout_marginLeft="@dimen/padding_noraml"
+                    android:background="@drawable/orange_conner_white_tag_bg"
+                    android:paddingBottom="4px"
+                    android:paddingLeft="6px"
+                    android:paddingRight="6px"
+                    android:paddingTop="4px"
+                    android:text="@string/self_product"
+                    android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_normal" />
 
+                <View
+                    android:layout_width="@dimen/padding_small"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:text="简单的根据circleNum的数量进行了圆的绘制"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/text_big"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/height_1px"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/padding_noraml"
+                    android:layout_marginTop="@dimen/padding_noraml"
+                    android:background="@color/colorTextbf" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/shareBtn"
+                    android:layout_width="@dimen/content_height_biger"
+                    android:layout_height="@dimen/content_height_biger"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/icon_share"
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/icon_small" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="分享"
+                        android:textColor="@color/colorText999"
+                        android:textSize="@dimen/text_normal" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
             </com.zhy.autolayout.AutoLinearLayout>
-        </com.zhy.autolayout.AutoLinearLayout>
 
-        <com.j1j2.common.view.viewpager.autoscrollviewpager.AutoScrollViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="680px"
-            android:layout_above="@id/nameLayout"
-            app:layout_auto_basewidth="height" />
+            <com.j1j2.common.view.viewpager.autoscrollviewpager.AutoScrollViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="680px"
+                android:layout_above="@id/nameLayout"
+                app:layout_auto_basewidth="height" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="12px"
-            android:layout_above="@id/nameLayout"
-            android:background="@drawable/detail_gradient" />
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="12px"
+                android:layout_above="@id/nameLayout"
+                android:background="@drawable/detail_gradient" />
 
-        <com.j1j2.common.view.smarttablayout.SmartTabLayout
-            android:id="@+id/tab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/divider"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/padding_big"
-            app:stl_clickable="false"
-            app:stl_customTabTextLayoutId="@layout/view_tabcircle"
-            app:stl_dividerColor="@color/colorTransparent"
-            app:stl_dividerThickness="0dp"
-            app:stl_indicatorColor="@color/colorAccent"
-            app:stl_indicatorCornerRadius="@dimen/circle_tab_size"
-            app:stl_indicatorGravity="center"
-            app:stl_indicatorInFront="true"
-            app:stl_indicatorInterpolation="linear"
-            app:stl_indicatorThickness="@dimen/circle_tab_size"
-            app:stl_underlineColor="@color/colorTransparent"
-            app:stl_underlineThickness="0dp" />
+            <com.j1j2.common.view.smarttablayout.SmartTabLayout
+                android:id="@+id/tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/divider"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/padding_big"
+                app:stl_clickable="false"
+                app:stl_customTabTextLayoutId="@layout/view_tabcircle"
+                app:stl_dividerColor="@color/colorTransparent"
+                app:stl_dividerThickness="0dp"
+                app:stl_indicatorColor="@color/colorAccent"
+                app:stl_indicatorCornerRadius="@dimen/circle_tab_size"
+                app:stl_indicatorGravity="center"
+                app:stl_indicatorInFront="true"
+                app:stl_indicatorInterpolation="linear"
+                app:stl_indicatorThickness="@dimen/circle_tab_size"
+                app:stl_underlineColor="@color/colorTransparent"
+                app:stl_underlineThickness="0dp" />
+        </com.zhy.autolayout.AutoRelativeLayout>
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

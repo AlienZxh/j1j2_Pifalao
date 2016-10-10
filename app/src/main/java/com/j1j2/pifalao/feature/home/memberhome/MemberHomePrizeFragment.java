@@ -29,7 +29,7 @@ public class MemberHomePrizeFragment extends LazyFragment implements View.OnClic
     public interface MemberHomePrizeFragmentListener {
         void navigateToPrize();
 
-        void navigateToPrizeDetail(int activityType, ActivityWinPrize activityWinPrize);
+        void navigateToPrizeDetail(int activityProductId, ActivityWinPrize activityWinPrize);
 
         List<ActivityWinPrize> getActivityWinPrizes();
     }
@@ -79,6 +79,6 @@ public class MemberHomePrizeFragment extends LazyFragment implements View.OnClic
 
     @Override
     public void navigateToPrizeDetail(ActivityWinPrize activityWinPrize) {
-        listener.navigateToPrizeDetail(PrizeDetailActivity.PRIZE_COMPLETED,activityWinPrize);
+        listener.navigateToPrizeDetail(activityWinPrize.getProductInfo().getProductId(),activityWinPrize);
     }
 }

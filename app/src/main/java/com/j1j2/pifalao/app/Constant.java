@@ -17,6 +17,9 @@ public class Constant {
 
         String editPhotoCacheFolder = saveFolder + "/EditPhotoCacheFolder/";
         String takePhotoFolder = saveFolder + "/TakePhotoFolder/";
+        String compressPhotoFolder = saveFolder + "/CompressPhotoFolder/";
+
+        String cacheImgFolder = saveFolder + "/CacheImgFolder/";
 
         String apkFileName = "pifalao.apk";
         String ttfFileName = "iconfont.ttf";
@@ -44,6 +47,7 @@ public class Constant {
         int BANQUET = 18;
         int FRUIT = 19;
         int MEMBER = 20;
+        int SPECIALOFFER = 21;
     }
 
     public static SparseIntArray moduleColors = new SparseIntArray() {{
@@ -67,7 +71,8 @@ public class Constant {
         put(ModuleType.TICKET, 0xffff9900);
         put(ModuleType.BANQUET, 0xff1ba1e2);
         put(ModuleType.FRUIT, 0xff22ac38);
-        put(ModuleType.MEMBER, 0xff1ba1e2);
+        put(ModuleType.MEMBER, 0xff01c8c6);
+        put(ModuleType.SPECIALOFFER, 0xffff5d24);
     }};
 
     public static SparseIntArray moduleIconId = new SparseIntArray() {{
@@ -92,6 +97,7 @@ public class Constant {
         put(ModuleType.BANQUET, R.string.icon_service_banquet);
         put(ModuleType.FRUIT, R.string.icon_service_fruit);
         put(ModuleType.MEMBER, R.string.icon_service_member);
+        put(ModuleType.SPECIALOFFER, R.string.icon_service_specialoffer);
     }};
 
     public interface ProductsOrderbyId {
@@ -156,7 +162,8 @@ public class Constant {
         int UNRAFFLED = 4;/// 待抽奖
         int RAFFLED = 8;/// 已揭晓
         int AWARDED = 16;/// 已领奖
-        int USERRECEIVED =32;// 已收货
+        int DLIVERYED = 22;///已发货
+        int USERRECEIVED = 32;// 已收货
         int SHARED = 64;/// 已评论
         int COMPLETED = 128;/// 已完成
         int INVALID = -1;/// 作废、冻结
@@ -165,5 +172,21 @@ public class Constant {
     public interface ActivityOrderType {
         int EXCHANGEORDER = 1;///兑换活动订单
         int LOTTERYORDER = 2;/// 抽奖活动订单
+    }
+
+    public interface ActivitySortType {
+        int EXCHANGE = 1;///兑换活动
+        int LOTTERY = 2;/// 抽奖活动
+    }
+
+    public interface ShareType {
+        String PRODUCT = "product";//商品分享
+        String ACTIVITY = "activity";//活动分享
+    }
+
+    public interface RedPacketState {
+        int AVAILABILITY = 1;
+        int USED = 2;
+        int UNAVAILABILITY = 3;
     }
 }

@@ -6,6 +6,8 @@
 
         <import type="android.net.Uri" />
 
+        <import type="android.view.View" />
+
         <import type="com.j1j2.pifalao.BuildConfig" />
 
         <import type="com.j1j2.common.util.EmptyUtils" />
@@ -20,19 +22,38 @@
         android:layout_height="wrap_content"
         android:layout_margin="5px"
         android:background="@color/colorWhite"
-        android:orientation="vertical"
-        android:padding="5px">
+        android:orientation="vertical">
 
-
-        <ImageView
+        <com.zhy.autolayout.AutoFrameLayout
             android:layout_width="match_parent"
             android:layout_height="374px"
-            app:displayImg="@{Uri.parse(EmptyUtils.isEmpty(activityProduct.ImgList)?@string/text_empty:(BuildConfig.IMAGE_URL+activityProduct.ImgList.get(0).S320X320))}"
-            app:layout_auto_basewidth="height" />
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px"
+            android:layout_marginTop="5px"
+            app:layout_auto_basewidth="height">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:displayImg="@{Uri.parse(EmptyUtils.isEmpty(activityProduct.ImgList)?@string/text_empty:(BuildConfig.IMAGE_URL+activityProduct.ImgList.get(0).S320X320))}" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorTransparentGray"
+                android:gravity="center"
+                android:text="@string/icon_sell_out"
+                android:textColor="@color/colorWhite"
+                android:textSize="100px"
+                android:visibility="@{!EmptyUtils.isEmpty(activityProduct.Statistics.Remain)&amp;&amp;activityProduct.Statistics.Remain&lt;=0?View.VISIBLE:View.GONE}" />
+        </com.zhy.autolayout.AutoFrameLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_marginRight="@dimen/padding_small"
             android:layout_marginTop="@dimen/padding_small"
             android:ellipsize="end"
             android:gravity="center"
@@ -44,6 +65,8 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/content_height_normal"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_marginRight="@dimen/padding_small"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -93,11 +116,15 @@
         <TextView
             android:id="@+id/prizeBtnOne"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/content_height_big"
+            android:layout_height="65px"
+            android:layout_marginBottom="@dimen/padding_small"
+            android:layout_marginLeft="@dimen/padding_small"
+            android:layout_marginRight="@dimen/padding_small"
             android:layout_marginTop="@dimen/padding_noraml"
-            android:background="@drawable/orange_conner_btn_selector"
+            android:background="@{!EmptyUtils.isEmpty(activityProduct.Statistics.Remain)&amp;&amp;activityProduct.Statistics.Remain&lt;=0?@drawable/disable_btn_conner_bg:@drawable/orange_conner_btn_selector}"
+            android:enabled="@{EmptyUtils.isEmpty(activityProduct.Statistics.Remain)||activityProduct.Statistics.Remain>0}"
             android:gravity="center"
-            android:text="立即兑换"
+            android:text="@{!EmptyUtils.isEmpty(activityProduct.Statistics.Remain)&amp;&amp;activityProduct.Statistics.Remain&lt;=0?&quot;抢光了&quot;:&quot;立即兑换&quot;}"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_biger" />
     </com.zhy.autolayout.AutoLinearLayout>

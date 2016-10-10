@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.LazyFragment;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.databinding.FragmentParticipationrecordBinding;
@@ -41,11 +43,9 @@ public class ParticipationRecordFragment extends LazyFragment implements
     public interface ParticipationRecordFragmentListener {
         ActivityApi getActivityApi();
 
-        void showCatNumDialog(List<String> stringList);
+        void showCatNumDialog(int lottery);
 
         void navigateToPrizeDetail(ActivityWinPrize data);
-
-        void navigateToPrizeOrder(ActivityWinPrize data);
 
         void backToMemberHome();
     }
@@ -121,13 +121,26 @@ public class ParticipationRecordFragment extends LazyFragment implements
                     @Override
                     public void onWebReturnSucess(PagerManager<ActivityWinPrize> activityWinPrizePagerManager) {
                         pageCount = activityWinPrizePagerManager.getPageCount();
+
+                        List<ActivityWinPrize> activityWinPrizes = new ArrayList<ActivityWinPrize>();
+
+                        if (state == ActivityApi.PRIZE_ONGOING || state == ActivityApi.PRIZE_RAFFLED) {
+                            if (!EmptyUtils.isEmpty(activityWinPrizePagerManager.getList()))
+                                for (ActivityWinPrize activityWinPrize : activityWinPrizePagerManager.getList()) {
+                                    if (!activityWinPrizes.contains(activityWinPrize)) {
+                                        activityWinPrizes.add(activityWinPrize);
+                                    }
+                                }
+                        } else
+                            activityWinPrizes = activityWinPrizePagerManager.getList();
+
                         if (pageIndex == 1) {
                             if (adapter == null || binding.recordList.getRecyclerView().getAdapter() == null)
-                                binding.recordList.setAdapter(adapter = new ParticipationRecordAdapter(activityWinPrizePagerManager.getList(), ParticipationRecordFragment.this));
+                                binding.recordList.setAdapter(adapter = new ParticipationRecordAdapter(activityWinPrizes, ParticipationRecordFragment.this));
                             else
-                                adapter.initData(activityWinPrizePagerManager.getList());
+                                adapter.initData(activityWinPrizes);
                         } else if (pageIndex <= pageCount) {
-                            adapter.addAll(activityWinPrizePagerManager.getList());
+                            adapter.addAll(activityWinPrizes);
                         } else {
                             setLoadMoreComplete();
                         }
@@ -146,28 +159,6 @@ public class ParticipationRecordFragment extends LazyFragment implements
                 });
     }
 
-    public void queryParticipationTimesDetails(int lottery) {
-        listener.getActivityApi().queryParticipationTimesDetails(lottery)
-                .compose(this.<WebReturn<List<String>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<String>>() {
-                    @Override
-                    public void onWebReturnSucess(List<String> stringList) {
-                        listener.showCatNumDialog(stringList);
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
-    }
 
     public void setLoadMoreBegin() {
         binding.recordList.setupMoreListener(this, 1);
@@ -190,7 +181,7 @@ public class ParticipationRecordFragment extends LazyFragment implements
 
     @Override
     public void showCatNumDialog(ActivityWinPrize data) {
-        queryParticipationTimesDetails(data.getLotteryId());
+        listener.showCatNumDialog(data.getLotteryId());
     }
 
     @Override
@@ -203,8 +194,5 @@ public class ParticipationRecordFragment extends LazyFragment implements
         listener.backToMemberHome();
     }
 
-    @Override
-    public void navigateToPrizeOrder(ActivityWinPrize data) {
-        listener.navigateToPrizeOrder(data);
-    }
+
 }

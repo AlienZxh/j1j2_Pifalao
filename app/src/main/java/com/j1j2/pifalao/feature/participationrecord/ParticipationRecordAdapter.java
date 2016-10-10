@@ -28,7 +28,6 @@ public class ParticipationRecordAdapter extends RecyclerView.Adapter<Participati
 
         void backToMemberHome();
 
-        void navigateToPrizeOrder(ActivityWinPrize data);
     }
 
     private ParticipationRecordAdapterListener listener;
@@ -114,16 +113,6 @@ public class ParticipationRecordAdapter extends RecyclerView.Adapter<Participati
                         listener.navigateToPrizeDetail(data);
                 }
             });
-
-            if (data.getOrderState() >= Constant.ActivityOrderState.RAFFLED) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (listener != null)
-                            listener.navigateToPrizeOrder(data);
-                    }
-                });
-            }
         }
     }
 }

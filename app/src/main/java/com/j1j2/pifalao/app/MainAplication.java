@@ -18,6 +18,8 @@ import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.PlatformConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -36,7 +38,6 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
-import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 
 /**
@@ -79,9 +80,9 @@ public class MainAplication extends MultiDexApplication {
         super.onCreate();
         String processName = getProcessName();
         if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
+            initBugly();
             initDefendeleak();
             initLogger();
-//            initAndroidDevMetrics();
             initBaiduMap();
             initComponent();
             initUmeng();
@@ -89,7 +90,6 @@ public class MainAplication extends MultiDexApplication {
             initLeakCanary();
             initOkHttpUtil();
             initGalleryFinal();
-
         }
     }
 
@@ -131,13 +131,6 @@ public class MainAplication extends MultiDexApplication {
 
     }
 
-//    private void initAndroidDevMetrics(){
-//        if (BuildConfig.DEBUG) {
-//            AndroidDevMetrics.initWith(this);
-//        }
-//        Logger.d("AndroidDevMetrics初始化完成");
-//    }
-
     private void initJPush() {
         if (BuildConfig.DEBUG)
             JPushInterface.setDebugMode(true);
@@ -170,11 +163,11 @@ public class MainAplication extends MultiDexApplication {
 
     private void initGalleryFinal() {
         //设置主题
-//ThemeConfig.CYAN
+        //ThemeConfig.CYAN
         ThemeConfig theme = new ThemeConfig.Builder()
                 .setTitleBarBgColor(getResources().getColor(R.color.colorPrimary))
                 .build();
-//配置功能
+        //配置功能
         FunctionConfig functionConfig = new FunctionConfig.Builder()
                 .setEnableCamera(true)
                 .setEnableEdit(true)
@@ -202,10 +195,15 @@ public class MainAplication extends MultiDexApplication {
         //_________________________________________
         PlatformConfig.setWeixin("wxaaf65494c086b0d3", "5acdc3455a4bcbbdd4610177188af355");
         //微信 appid appsecret
-        PlatformConfig.setSinaWeibo("3170884849","3acdf3a8db1e704b0b9de0418a951e52");
+        PlatformConfig.setSinaWeibo("3170884849", "3acdf3a8db1e704b0b9de0418a951e52");
         //新浪微博 appkey appsecret
         PlatformConfig.setQQZone("1103829290", "BAgqsmAnuefshU3a");
         // QQ和Qzone appid appkey
+    }
+
+
+    private void initBugly() {
+        Bugly.init(getApplicationContext(), "1103829290", BuildConfig.DEBUG);
     }
 
     public AppComponent getAppComponent() {
@@ -217,6 +215,9 @@ public class MainAplication extends MultiDexApplication {
     }
 
     public UserComponent createUserComponent(User user) {
+        //设置bugly上传用户信息
+        CrashReport.setUserId(""+user.getUserId());
+        CrashReport.putUserData(getApplicationContext(), "loginaccount", user.getLoginAccount());
         userComponent = appComponent.plus(new UserModule(user));
         return userComponent;
     }
@@ -227,6 +228,8 @@ public class MainAplication extends MultiDexApplication {
 
 
     public boolean isLogin() {
+        Logger.d("isLogin Cookie " + (null != userLoginPreference.getLoginCookie(null)));
+        Logger.d("isLogin userComponent " + (null != userComponent));
         return null != userLoginPreference.getLoginCookie(null) && null != userComponent;
     }
 

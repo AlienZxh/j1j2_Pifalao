@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.model.ActivityProduct;
+import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentPrizedetailBottomBinding;
 import com.j1j2.pifalao.feature.prizeconfirm.PrizeConfirmActivity;
@@ -28,19 +31,20 @@ public class PrizeDetailBottomFragment extends BaseFragment implements View.OnCl
 
     public interface PrizeDetailBottomFragmentListener {
 
+        ActivityWinPrize getActivityWinPrize();
+
         ActivityProduct getActivityProduct();
 
         User getUser();
 
         void navigateToPrizeConfirm();
+
+        void backToMemberHome();
     }
 
     PrizeDetailBottomFragmentListener listener;
 
     FragmentPrizedetailBottomBinding binding;
-
-    @Arg
-    int activityType;
 
     @Override
     protected void setupActivityComponent() {
@@ -68,17 +72,17 @@ public class PrizeDetailBottomFragment extends BaseFragment implements View.OnCl
     @Override
     protected void initViews() {
         binding.confirmOrder.setOnClickListener(this);
-        if (activityType == PrizeDetailActivity.GIFT) {
-            binding.text.setVisibility(View.GONE);
-            binding.confirmOrder.setText("立即兑换");
-        } else if (activityType == PrizeDetailActivity.PRIZE_ONGOING) {
-            binding.text.setVisibility(View.GONE);
-            binding.confirmOrder.setText("立即参与");
-        } else if (activityType == PrizeDetailActivity.PRIZE_COMPLETED) {
+        if (listener.getActivityWinPrize() != null) {
             binding.text.setVisibility(View.VISIBLE);
             binding.confirmOrder.setText("立即前往");
+        } else if (listener.getActivityProduct().getSortType() == Constant.ActivitySortType.EXCHANGE) {
+            binding.text.setVisibility(View.GONE);
+            binding.confirmOrder.setText("立即兑换");
+        } else if (listener.getActivityProduct().getSortType() == Constant.ActivitySortType.LOTTERY) {
+            binding.text.setVisibility(View.GONE);
+            binding.confirmOrder.setText("立即参与");
         }
-        if (activityType == PrizeDetailActivity.GIFT || activityType == PrizeDetailActivity.PRIZE_ONGOING)
+        if (listener.getActivityWinPrize() == null)
             if (listener.getActivityProduct().getConfigs().getCostExchangePoint() == null) {
 
             } else if (listener.getUser().getPoint() < listener.getActivityProduct().getConfigs().getCostExchangePoint()) {
@@ -92,26 +96,29 @@ public class PrizeDetailBottomFragment extends BaseFragment implements View.OnCl
                 binding.confirmOrder.setText("商品售罄");
                 binding.confirmOrder.setEnabled(false);
             }
-        if (activityType == PrizeDetailActivity.PRIZE_ONGOING)
+        if (listener.getActivityWinPrize() == null && listener.getActivityProduct().getSortType() == Constant.ActivitySortType.LOTTERY)
             if (listener.getActivityProduct().getStatistics().getMaxUserRemain() <= 0 && listener.getActivityProduct().getConfigs().getMaxUsers() > 0) {
                 binding.confirmOrder.setBackgroundColor(0xffdcdcdc);
                 binding.confirmOrder.setTextColor(Color.WHITE);
                 binding.confirmOrder.setText("参与人数已满");
                 binding.confirmOrder.setEnabled(false);
             }
-
-
+        if (listener.getActivityWinPrize() == null && listener.getActivityProduct().getSortType() == Constant.ActivitySortType.EXCHANGE)
+            if (!EmptyUtils.isEmpty(listener.getActivityProduct().getStatistics().getRemain()) && listener.getActivityProduct().getStatistics().getRemain() <= 0) {
+                binding.confirmOrder.setBackgroundColor(0xffdcdcdc);
+                binding.confirmOrder.setTextColor(Color.WHITE);
+                binding.confirmOrder.setText("抢光了");
+                binding.confirmOrder.setEnabled(false);
+            }
     }
 
     @Override
     public void onClick(View v) {
         if (v == binding.confirmOrder)
-            if (activityType == PrizeDetailActivity.GIFT) {
+            if (listener.getActivityWinPrize() != null) {
+                listener.backToMemberHome();
+            } else {
                 listener.navigateToPrizeConfirm();
-            } else if (activityType == PrizeDetailActivity.PRIZE_ONGOING) {
-                listener.navigateToPrizeConfirm();
-            } else if (activityType == PrizeDetailActivity.PRIZE_COMPLETED) {
-
             }
 
     }

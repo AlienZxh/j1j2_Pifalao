@@ -27,7 +27,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 public class CustomBinding {
     @BindingAdapter({"bind:showNum"})
-    public static void showNum(AutoBGABadgeLinearLayout linearLayout, int num) {
+    public static void  showNum(AutoBGABadgeLinearLayout linearLayout, int num) {
         if (num > 0)
             linearLayout.showTextBadge("" + num);
         else
@@ -132,5 +132,17 @@ public class CustomBinding {
                                 .into(view);
                     }
                 });
+    }
+
+    @BindingAdapter({"bind:displayImgUserHead"})
+    public static void displayImgUserHead(final ImageView view, Uri uri) {
+        Glide.with(view.getContext())
+                .load(uri)
+                .asBitmap()
+                .error(R.drawable.user_head_img)
+                .placeholder(R.drawable.user_head_img)
+                .dontAnimate()
+                .transform(new CropCircleTransformation(view.getContext()))
+                .into(view);
     }
 }

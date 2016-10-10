@@ -7,14 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.model.Address;
+import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseFragment;
+import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.UserAddressSelectEvent;
 import com.j1j2.pifalao.databinding.FragmentPrizeconfirmInfoMaterialBinding;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-9-2.
@@ -23,6 +29,8 @@ public class PrizeConfirmInfoMaterialFragment extends BaseFragment implements Vi
 
     public interface PrizeConfirmInfoMaterialFragmentListener {
         void navigateToAddressManager();
+
+        UserAddressApi getUserAddressApi();
     }
 
     FragmentPrizeconfirmInfoMaterialBinding binding;
@@ -36,6 +44,8 @@ public class PrizeConfirmInfoMaterialFragment extends BaseFragment implements Vi
         super.onAttach(activity);
         listener = (PrizeConfirmInfoMaterialFragmentListener) activity;
     }
+
+
 
     @Override
     protected String getFragmentName() {
@@ -51,6 +61,8 @@ public class PrizeConfirmInfoMaterialFragment extends BaseFragment implements Vi
     @Override
     protected void initViews() {
         binding.addressBtn.setOnClickListener(this);
+
+        queryDefaultAddress();
     }
 
     public Address getAddress() {
@@ -61,6 +73,35 @@ public class PrizeConfirmInfoMaterialFragment extends BaseFragment implements Vi
     public void onClick(View v) {
         if (v == binding.addressBtn)
             listener.navigateToAddressManager();
+    }
+
+
+    public void queryDefaultAddress(){
+        listener.getUserAddressApi().queryUserDefaultAddress()
+                .compose(this.<WebReturn<Address>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<Address>() {
+                    @Override
+                    public void onWebReturnSucess(Address mAddress) {
+                        address =mAddress;
+                        binding.addressIcon.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                        binding.addressText.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                        binding.addressText.setText(address.getReceiverName()
+                                + "　　" + address.getReceiverTel()
+                                + "\n" + address.getAddress());
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)

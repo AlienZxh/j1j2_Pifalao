@@ -18,6 +18,7 @@ import com.j1j2.pifalao.app.di.ActivityModule;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.j1j2.pifalao.app.event.NetWorkEvent;
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -60,6 +61,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected void setupActivityComponent() {
         getActivityComponent().inject(this);
     }
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -145,7 +147,8 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     public void dismissProgress() {
-        progressDialog.dismiss();
+        if (progressDialog != null)
+            progressDialog.dismiss();
     }
 
     @Subscribe

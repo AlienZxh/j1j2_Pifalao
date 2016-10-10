@@ -34,6 +34,8 @@ public class ActivityParticipator implements Parcelable {
     /// </summary>
     private int WinnerParticipationTimes;
 
+    private String Portrait;
+
     public int getUserId() {
         return UserId;
     }
@@ -75,6 +77,15 @@ public class ActivityParticipator implements Parcelable {
     }
 
 
+    public String getPortrait() {
+        return Portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        Portrait = portrait;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -87,6 +98,7 @@ public class ActivityParticipator implements Parcelable {
         dest.writeString(this.WinnerEncrypt);
         dest.writeString(this.WinTicketNum);
         dest.writeInt(this.WinnerParticipationTimes);
+        dest.writeString(this.Portrait);
     }
 
     public ActivityParticipator() {
@@ -98,9 +110,10 @@ public class ActivityParticipator implements Parcelable {
         this.WinnerEncrypt = in.readString();
         this.WinTicketNum = in.readString();
         this.WinnerParticipationTimes = in.readInt();
+        this.Portrait = in.readString();
     }
 
-    public static final Parcelable.Creator<ActivityParticipator> CREATOR = new Parcelable.Creator<ActivityParticipator>() {
+    public static final Creator<ActivityParticipator> CREATOR = new Creator<ActivityParticipator>() {
         @Override
         public ActivityParticipator createFromParcel(Parcel source) {
             return new ActivityParticipator(source);

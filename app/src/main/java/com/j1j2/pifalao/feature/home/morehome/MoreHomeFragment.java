@@ -24,7 +24,9 @@ import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentMorehomeBinding;
 import com.j1j2.pifalao.feature.home.memberhome.MemberHomeActivity;
 import com.j1j2.pifalao.feature.home.morehome.di.MoreHomeModule;
+import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.main.MainActivity;
+import com.j1j2.pifalao.feature.services.ServicesActivity;
 import com.trello.rxlifecycle.FragmentLifecycleProvider;
 
 import java.util.ArrayList;
@@ -124,29 +126,43 @@ public class MoreHomeFragment extends BaseFragment implements MoreHomeAdapter.On
     @Override
     public void onItemClickListener(View view, Module module, int position) {
         if (module.isSubscribed()) {
-            if (module.getModuleType() == Constant.ModuleType.DELIVERY && module.isSubscribed()) {
-                navigate.navigateToDeliveryHomeActivity(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, userRelativePreference.getSelectedServicePoint(null), module);
+            if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
+                navigate.navigateToDeliveryHomeActivity(getActivity(), null, false, userRelativePreference.getSelectedServicePoint(null), module);
                 userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE && module.isSubscribed()) {
-                navigate.navigateToMainActivity(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.STORESTYLE);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE && module.isSubscribed()) {
-                navigate.navigateToMainActivity(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, MainActivity.VEGETABLE);
+            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+                if (MainAplication.get(getContext()).isLogin()) {
+                    if (MainAplication.get(getContext()).getUserComponent().user().getRoleId() == 10002) {
+                        navigate.navigateToMainActivity(getActivity(), null, false, module, MainActivity.STORESTYLE);
+                        userRelativePreference.setSelectedModule(module);
+                    } else {
+                        navigate.navigateToModulePermissionDeniedActivity(getActivity(), null, false, module);
+                    }
+                } else {
+                    navigate.navigateToLogin(getActivity(), null, false);
+                }
+            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
+                navigate.navigateToMainActivity(getActivity(), null, false, module, MainActivity.VEGETABLE);
                 userRelativePreference.setSelectedModule(module);
             } else if (module.getModuleType() == Constant.ModuleType.VIP) {
                 if (MainAplication.get(getActivity()).isLogin()) {
-                    navigate.navigateToVipHome(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+                    navigate.navigateToVipHome(getActivity(), null, false, VipHomeActivity.VIPHOME);
                     userRelativePreference.setSelectedModule(module);
                 } else {
                     navigate.navigateToLogin(getActivity(), null, false);
                 }
             } else if (module.getModuleType() == Constant.ModuleType.HOUSEKEEPING) {
-                navigate.navigateToHouseKeeping(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+                navigate.navigateToHouseKeeping(getActivity(), null, false);
             } else if (module.getModuleType() == Constant.ModuleType.MOBILE)
-                navigate.navigateToOfflineModuleHome(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, module, userRelativePreference.getSelectedServicePoint(null));
-
+                navigate.navigateToOfflineModuleHome(getActivity(), null, false, module, userRelativePreference.getSelectedServicePoint(null));
+            else if (module.getModuleType() == Constant.ModuleType.MEMBER) {
+                navigate.navigateToMemberHomeActivity(getActivity(), null, false);
+                userRelativePreference.setSelectedModule(module);
+            } else if (module.getModuleType() == Constant.ModuleType.SPECIALOFFER) {
+                navigate.navigateToSpecialOfferActivity(getActivity(), null, false);
+                userRelativePreference.setSelectedModule(module);
+            }
         } else {
-            navigate.navigateToUnsubscribeModule(getActivity(), ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false);
+            navigate.navigateToUnsubscribeModule(getActivity(), null, false, module);
         }
     }
 }

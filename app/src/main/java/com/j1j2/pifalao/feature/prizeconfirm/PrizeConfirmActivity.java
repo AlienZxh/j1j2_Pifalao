@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.http.api.ActivityShopCartApi;
+import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.model.ActivityOrderSimple;
 import com.j1j2.data.model.ActivityProduct;
@@ -59,6 +60,8 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
     @Inject
     ActivityShopCartApi activityShopCartApi;
     @Inject
+    UserAddressApi userAddressApi;
+    @Inject
     UserRelativePreference userRelativePreference;
 
     Module module;
@@ -89,6 +92,7 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
         module = userRelativePreference.getSelectedModule(null);
 
         if (prizeType == Constant.ActivityOrderType.EXCHANGEORDER) {
+            binding.confirmOrder.setText("确认兑换");
             if (activityProduct.getType() == Constant.ActivityProductType.VirtualPhoneCharge)
                 changeFragment(R.id.infomationFragment, phoneFragment = new PrizeConfirmInfoPhoneFragment());
             if (activityProduct.getType() == Constant.ActivityProductType.Material)
@@ -133,6 +137,7 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
         if (materialFragment != null) {
             activityOrderSubmitBody.setAddress(materialFragment.getAddress().getAddress());
             activityOrderSubmitBody.setUserContacter(materialFragment.getAddress().getReceiverName());
+            activityOrderSubmitBody.setUserPhone(materialFragment.getAddress().getReceiverTel());
         }
         activityShopCartApi.submitActivityOrders(activityOrderSubmitBody)
                 .compose(this.<WebReturn<SubmitOrderReturn>>bindToLifecycle())
@@ -175,7 +180,8 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
                         else
                             navigate.navigateToSuccessResult(PrizeConfirmActivity.this, null, true
                                     , prizeType == Constant.ActivityOrderType.LOTTERYORDER ? SuccessResultActivity.FROM_PRIZEORDER_LOTTERY : SuccessResultActivity.FROM_PRIZEORDER_EXCHANGE
-                                    , mActivityOrderSimple.getOrderId());
+                                    , mActivityOrderSimple.getOrderId()
+                                    , mActivityOrderSimple.getOrderNO());
                     }
 
                     @Override
@@ -213,6 +219,10 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    @Override
+    public UserAddressApi getUserAddressApi() {
+        return userAddressApi;
+    }
 
     @Override
     public void navigateToAddressManager() {

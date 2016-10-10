@@ -64,7 +64,6 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
         module = userRelativePreference.getSelectedModule(null);
         binding.setModule(module);
 
-
     }
 
     @Override
@@ -112,12 +111,11 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
                 })
                 .create();
         messageDialog.show();
-
     }
 
     @Override
     public void onClick(View v) {
-        if (v == binding.confirmOrder) {
+        if (v == binding.confirmOrder || v == binding.shopConfirmOrder) {
             if (shopCartViewModel.getShopCartItems() == null) {
                 toastor.showSingletonToast("请等待购物车加载完成");
                 return;

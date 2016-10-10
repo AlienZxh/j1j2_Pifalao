@@ -9,7 +9,7 @@ public class User {
      * UserId : 760
      * LoginAccount : 15200348636
      * StoreName :
-     * RoleId : 10003
+     * RoleId : 10003：普通用户  10002：门店用户
      * Point : 122
      * DeliveryTemplateId : 25
      * ServicePointId : 2

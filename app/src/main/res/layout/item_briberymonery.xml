@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="java.lang.String" />
+
+        <import type="android.view.View" />
+
+        <import type="com.j1j2.pifalao.app.Constant" />
+
+        <variable
+            name="redPacket"
+            type="com.j1j2.data.model.RedPacket" />
+
+        <variable
+            name="redPacketState"
+            type="int" />
+    </data>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_messages_bg"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_noraml">
+
+        <com.zhy.autolayout.AutoFrameLayout
+            android:layout_width="146px"
+            android:layout_height="200px"
+            app:layout_auto_basewidth="height">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/img_briberymoney_item" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorTransparentGray"
+                android:gravity="center"
+                android:text="@string/icon_loseefficacy"
+                android:textColor="@color/colorWhite"
+                android:textSize="80px"
+                android:visibility="@{redPacketState==Constant.RedPacketState.UNAVAILABILITY?View.VISIBLE:View.GONE}" />
+        </com.zhy.autolayout.AutoFrameLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="0dp"
+            android:layout_height="200px"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="每周会员日红包"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_biger" />
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:baselineAlignedChildIndex="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="@{redPacketState==Constant.RedPacketState.USED?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="红包金额："
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(redPacket.amount)}"
+                    android:textColor="@color/colorRed"
+                    android:textSize="@dimen/text_biger"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="元"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="（已发放到账户余额）"
+                    android:textColor="@color/colorText999"
+                    android:textSize="20px" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="中奖时间："
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{redPacket.winTimeStr}"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="@{redPacketState==Constant.RedPacketState.USED?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="领取时间："
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{redPacket.settleTimeStr}"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:visibility="@{redPacketState!=Constant.RedPacketState.USED?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="失效时间："
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{redPacket.endTimeStr}"
+                    android:textColor="@color/colorText999"
+                    android:textSize="@dimen/text_big" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <TextView
+            fontPath="iconfont/iconfont.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/padding_noraml"
+            android:text="@string/icon_click"
+            android:textColor="#d8d8d8"
+            android:textSize="50px"
+            android:visibility="@{redPacketState==Constant.RedPacketState.AVAILABILITY?View.VISIBLE:View.GONE}" />
+    </com.zhy.autolayout.AutoLinearLayout>
+</layout>

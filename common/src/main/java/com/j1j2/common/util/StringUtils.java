@@ -186,6 +186,8 @@ public class StringUtils {
             case 8:
                 return "待领奖";
             case 16:
+                return "待发货";
+            case 22:
                 return "待收货";
             case 32:
                 return "待晒单";
@@ -213,6 +215,8 @@ public class StringUtils {
             case 8:
                 return "请尽快领取您的奖品～";
             case 16:
+                return "据说好东西都需要稍微等一下～";
+            case 22:
                 return "据说好东西都需要稍微等一下～";
             case 32:
                 return "听说晒单会带来好运呢，写下您的中奖感言吧~";

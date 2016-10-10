@@ -25,7 +25,7 @@ public class EmptyUtils {
         return null == objs || objs.length <= 0;
     }
 
-    public static boolean isEmpty(String str) {
+    public static boolean isEmpty(CharSequence str) {
         return (null == str || str.length() <= 0);
     }
 

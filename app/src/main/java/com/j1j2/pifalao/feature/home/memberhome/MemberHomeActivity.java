@@ -5,6 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.j1j2.common.util.Toastor;
@@ -20,6 +22,7 @@ import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.UnReadInfo;
+import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
 import com.j1j2.pifalao.R;
@@ -36,6 +39,7 @@ import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityMemberhomeBinding;
 import com.j1j2.pifalao.feature.home.memberhome.di.MemberHomeModule;
 import com.j1j2.pifalao.feature.home.morehome.MoreHomeFragment;
+import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.MainAdapter;
 import com.j1j2.pifalao.feature.prize.PrizeActivity;
@@ -74,7 +78,12 @@ import rx.schedulers.Schedulers;
  * Created by alienzxh on 16-8-23.
  */
 @RequireBundler
-public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyFragment.MemberHomeLuckyFragmentListener, MemberHomeFreeFragment.MemberHomeFreeFragmentListener, MemberHomeBannerFragment.MemberHomeBannerFragmentListener, MemberHomePrizeFragment.MemberHomePrizeFragmentListener, ScrollableLayout.OnScrollListener, View.OnClickListener {
+public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyFragment.MemberHomeLuckyFragmentListener
+        , MemberHomeFreeFragment.MemberHomeFreeFragmentListener
+        , MemberHomeBannerFragment.MemberHomeBannerFragmentListener
+        , MemberHomePrizeFragment.MemberHomePrizeFragmentListener
+        , ScrollableLayout.OnScrollListener, View.OnClickListener
+        , SwipeRefreshLayout.OnRefreshListener {
 
     ActivityMemberhomeBinding binding;
 
@@ -90,6 +99,12 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
     Map<String, Map<String, List<ActivityProduct>>> stringMapMap;
 
     List<ActivityWinPrize> activityWinPrizes;
+
+    boolean isFirst = true;
+
+    MemberHomeBannerFragment memberHomeBannerFragment;
+    MemberHomeFreeFragment memberHomeFreeFragment;
+    List<Fragment> fragments;
 
     @Override
     protected void setupActivityComponent() {
@@ -108,12 +123,28 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
         binding.backBtn.setOnClickListener(this);
         binding.searchview.setOnClickListener(this);
         binding.loginBtn.setOnClickListener(this);
+        binding.ruleBtn.setOnClickListener(this);
+        //_____________________________________________________________
+        binding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        binding.refreshLayout.setOnRefreshListener(this);
 
+//        binding.refreshLayout.setProgressViewOffset(false, 0, (int) TypedValue
+//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
+//                        .getDisplayMetrics()));
+        binding.refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                binding.refreshLayout.setRefreshing(true);
+            }
+        });
         //________________________________________________________________________
         binding.scrollableLayout.setOnScrollListener(this);
+    }
 
-        //_____________________________________________________________
-        loadData();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
     }
 
     private void loadData() {
@@ -164,56 +195,71 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
 
             @Override
             public void onWebReturnCompleted() {
-                changeFragment(R.id.HomeBannerFragment, new MemberHomeBannerFragment());
-                changeFragment(R.id.HomePrizeFragment, new MemberHomePrizeFragment());
-                changeFragment(R.id.HomeFreeFragment, new MemberHomeFreeFragment());
-                //____________________________________________________
-                final List<String> strings = new ArrayList<>();
-                final List<Fragment> fragments = new ArrayList<>();
-                strings.add("全部");
-                fragments.add(Bundler.memberHomeLuckyFragment("全部").create());
-                for (String key : stringMapMap.get("幸运抽奖").keySet()) {
-                    strings.add(key);
-                    fragments.add(Bundler.memberHomeLuckyFragment(key).create());
+                if (isFirst) {
+                    changeFragment(R.id.HomeBannerFragment, memberHomeBannerFragment = new MemberHomeBannerFragment());
+                    changeFragment(R.id.HomePrizeFragment, new MemberHomePrizeFragment());
+                    changeFragment(R.id.HomeFreeFragment, memberHomeFreeFragment = new MemberHomeFreeFragment());
+                    binding.viewpagerLayout.setVisibility(View.VISIBLE);
+                    //____________________________________________________
+                    final List<String> strings = new ArrayList<>();
+                    fragments = new ArrayList<>();
+                    strings.add("全部");
+                    fragments.add(Bundler.memberHomeLuckyFragment("全部").create());
+                    for (String key : stringMapMap.get("幸运抽奖").keySet()) {
+                        strings.add(key);
+                        fragments.add(Bundler.memberHomeLuckyFragment(key).create());
+                    }
+                    strings.add("进度");
+                    fragments.add(Bundler.memberHomeLuckyFragment("进度").create());
+
+                    binding.viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                        @Override
+                        public Fragment getItem(int position) {
+                            return fragments.get(position);
+                        }
+
+                        @Override
+                        public int getCount() {
+                            return 4;
+                        }
+
+                        @Override
+                        public CharSequence getPageTitle(int position) {
+                            return strings.get(position);
+                        }
+                    });
+                    binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(0));
+                    binding.idStickynavlayoutIndicator.setViewPager(binding.viewpager);
+                    binding.idStickynavlayoutIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                        @Override
+                        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                        }
+
+                        @Override
+                        public void onPageSelected(int position) {
+                            binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(position));
+                        }
+
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+
+                        }
+                    });
+                    isFirst = false;
+
+                } else {
+                    memberHomeFreeFragment.refreshList();
+                    ((MemberHomeLuckyFragment) fragments.get(binding.viewpager.getCurrentItem())).refreshList();
                 }
-                strings.add("进度");
-                fragments.add(Bundler.memberHomeLuckyFragment("进度").create());
-
-
-                binding.viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                binding.refreshLayout.post(new Runnable() {
                     @Override
-                    public Fragment getItem(int position) {
-                        return fragments.get(position);
-                    }
-
-                    @Override
-                    public int getCount() {
-                        return 4;
-                    }
-
-                    @Override
-                    public CharSequence getPageTitle(int position) {
-                        return strings.get(position);
+                    public void run() {
+                        binding.refreshLayout.setRefreshing(false);
+                        binding.refreshLayout.setEnabled(false);
                     }
                 });
-                binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(0));
-                binding.idStickynavlayoutIndicator.setViewPager(binding.viewpager);
-                binding.idStickynavlayoutIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-                        binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(position));
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                });
             }
         });
 
@@ -233,6 +279,14 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
             MainAplication.get(this).loginOut();
             EventBus.getDefault().postSticky(new LogStateEvent(false));
         }
+    }
+
+    @Override
+    public User getUser() {
+        if (MainAplication.get(this).isLogin())
+            return MainAplication.get(this).getUserComponent().user();
+        else
+            return null;
     }
 
     @Override
@@ -270,10 +324,13 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
             Collections.sort(allList, new Comparator<ActivityProduct>() {
                 @Override
                 public int compare(ActivityProduct lhs, ActivityProduct rhs) {
-                    if (lhs.getStatistics().getMaxUserRemain() > rhs.getStatistics().getMaxUserRemain()) {
-                        return 1;
-                    } else if (lhs.getStatistics().getMaxUserRemain() < rhs.getStatistics().getMaxUserRemain()) {
+                    double lhsRate = (lhs.getConfigs().getMaxUsers() - lhs.getStatistics().getMaxUserRemain())/(double)lhs.getConfigs().getMaxUsers();
+                    double rhsRate = (rhs.getConfigs().getMaxUsers() - rhs.getStatistics().getMaxUserRemain())/(double)rhs.getConfigs().getMaxUsers();
+
+                    if (lhsRate > rhsRate) {
                         return -1;
+                    } else if (lhsRate < rhsRate) {
+                        return 1;
                     } else
                         return 0;
                 }
@@ -283,6 +340,14 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
             return stringMapMap.get("幸运抽奖").get(key);
 
 
+    }
+
+    @Override
+    public void navigateToPoint() {
+        if (MainAplication.get(this).isLogin())
+            navigate.navigateToVipHome(this, null, false, VipHomeActivity.POINT);
+        else
+            navigate.navigateToLogin(this, null, false);
     }
 
     @Override
@@ -315,7 +380,7 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
     @Override
     public void navigateToPrizeDetail(int activityType, ActivityProduct activityProduct) {
         if (MainAplication.get(this).isLogin())
-            navigate.navigateToPrizeDetailActivity(this, null, false, activityType, activityProduct.getProductId(), null);
+            navigate.navigateToPrizeDetailActivity(this, null, false, activityProduct.getProductId(), null);
         else
             navigate.navigateToLogin(this, null, false);
 
@@ -324,7 +389,7 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
     @Override
     public void navigateToPrizeDetail(int activityType, ActivityWinPrize activityWinPrize) {
         if (MainAplication.get(this).isLogin())
-            navigate.navigateToPrizeDetailActivity(this, null, false, activityType, -1, activityWinPrize);
+            navigate.navigateToPrizeDetailActivity(this, null, false, activityWinPrize.getProductInfo().getProductId(), activityWinPrize);
         else
             navigate.navigateToLogin(this, null, false);
     }
@@ -333,6 +398,11 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
     @Override
     public void onScroll(int currentY, int maxY) {
 
+    }
+
+    @Override
+    public void onRefresh() {
+        loadData();
     }
 
     @Override
@@ -346,5 +416,7 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
                 navigate.navigateToLogin(this, null, false);
         if (v == binding.searchview)
             navigate.navigateToSearchActivity(this, null, false, userRelativePreference.getSelectedModule(null));
+        if (v == binding.ruleBtn)
+            navigate.navigateToLotteryRuleActivity(this, null, false);
     }
 }

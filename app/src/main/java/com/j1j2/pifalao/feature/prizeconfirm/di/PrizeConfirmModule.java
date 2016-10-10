@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.http.api.ActivityShopCartApi;
+import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.home.memberhome.MemberHomeActivity;
@@ -41,6 +42,12 @@ public class PrizeConfirmModule {
     @ActivityScope
     UserLoginApi userLoginApi(Retrofit retrofit) {
         return retrofit.create(UserLoginApi.class);
+    }
+
+    @Provides
+    @ActivityScope
+    UserAddressApi userAddressApi(Retrofit retrofit) {
+        return retrofit.create(UserAddressApi.class);
     }
 
     @Provides

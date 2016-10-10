@@ -26,15 +26,14 @@
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal"
-                 />
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="参与记录"
+                android:text="我的活动"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
 

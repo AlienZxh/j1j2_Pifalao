@@ -29,6 +29,8 @@ public class ActivityOrderSimple {
     /// </summary>
     private int ActivityOrderType;
 
+    private boolean DispatchTicketFailed;
+
     public String getCreateTimeStr() {
         return CreateTimeStr;
     }
@@ -75,5 +77,13 @@ public class ActivityOrderSimple {
 
     public void setActivityOrderType(int activityOrderType) {
         ActivityOrderType = activityOrderType;
+    }
+
+    public boolean isDispatchTicketFailed() {
+        return DispatchTicketFailed;
+    }
+
+    public void setDispatchTicketFailed(boolean dispatchTicketFailed) {
+        DispatchTicketFailed = dispatchTicketFailed;
     }
 }

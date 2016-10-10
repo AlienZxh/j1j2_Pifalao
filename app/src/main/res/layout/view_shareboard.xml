@@ -13,6 +13,7 @@
             android:orientation="horizontal">
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/weixinShareBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -35,7 +36,6 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-                        android:id="@+id/weixinShareBtn"
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -60,6 +60,7 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/weixinFriendShareBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -82,13 +83,13 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-                        android:id="@+id/weixinFriendShareBtn"
+
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#ff78d094"
                         android:text="@string/icon_share_weixin_friend"
+                        android:textColor="#ff78d094"
                         android:textSize="@dimen/height_services_img"
                         app:layout_auto_basewidth="height" />
 
@@ -107,6 +108,7 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/sinaShareBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -129,13 +131,13 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-                        android:id="@+id/sinaShareBtn"
+
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#ffef6968"
                         android:text="@string/icon_share_sina"
+                        android:textColor="#ffef6968"
                         android:textSize="@dimen/height_services_img"
                         app:layout_auto_basewidth="height" />
 
@@ -160,6 +162,7 @@
             android:orientation="horizontal">
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/qqShareBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -182,13 +185,13 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-                        android:id="@+id/qqShareBtn"
+
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#ff4d89e9"
                         android:text="@string/icon_share_qq"
+                        android:textColor="#ff4d89e9"
                         android:textSize="@dimen/height_services_img"
                         app:layout_auto_basewidth="height" />
 
@@ -207,6 +210,7 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/qqZoneShareBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -229,13 +233,13 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-                        android:id="@+id/qqZoneShareBtn"
+
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#fff2c754"
                         android:text="@string/icon_share_qq_zone"
+                        android:textColor="#fff2c754"
                         android:textSize="@dimen/height_services_img"
                         app:layout_auto_basewidth="height" />
 
@@ -254,6 +258,7 @@
             </com.zhy.autolayout.AutoLinearLayout>
 
             <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/copyShareBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -276,13 +281,12 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-                        android:id="@+id/copyShareBtn"
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#ffcfcfcf"
                         android:text="@string/icon_share_copy"
+                        android:textColor="#ffcfcfcf"
                         android:textSize="@dimen/height_services_img"
                         app:layout_auto_basewidth="height" />
 

@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="晒单"
+                android:text="用户晒单"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>

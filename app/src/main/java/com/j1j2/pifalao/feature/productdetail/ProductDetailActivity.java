@@ -284,9 +284,10 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
             String title = productDetail.getName();
             String text = "会员价：" + productDetail.getProductUnits().get(0).getMemberPrice() + "/" + productDetail.getProductUnits().get(0).getUnit()
                     + "\n" + "我在批发佬发现了一个不错的商品，快来看看吧！";
-            String url = "http://www.pifalao.com/home/share?productMainId="
-                    + productDetail.getMainId() + "&moduleId="
-                    + productDetail.getModuleId();
+            String url = "http://www.pifalao.com/home/share?"
+                    + "shareType=" + Constant.ShareType.PRODUCT
+                    + "&productMainId=" + productDetail.getMainId()
+                    + "&moduleId=" + productDetail.getModuleId();
             if (v == dialogBinding.weixinShareBtn) {
                 new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN).setCallback(umShareListener)
                         .withText(text)

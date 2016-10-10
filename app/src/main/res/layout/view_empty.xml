@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    tools:ignore="MissingPrefix">
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/emptyIcon"
+        android:layout_width="260px"
+        android:layout_height="240px"
+        android:layout_marginBottom="@dimen/padding_big"
+        android:scaleType="fitCenter"
+        android:src="@drawable/img_participationrecord_empty" />
 
     <TextView
-        fontPath="iconfont/iconfont.ttf"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/emptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="暂无记录"
+        android:textColor="@color/colorText999"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/retryBtn"
+        android:layout_width="220px"
+        android:layout_height="65px"
+        android:layout_marginTop="50px"
+        android:background="@drawable/orange_conner_btn_selector"
         android:gravity="center"
-        android:text="@string/icon_prompt"
-        android:textColor="@color/colorGrayDEDEDE"
-        android:textSize="120px" />
+        android:visibility="gone"
+        android:text="立即参与"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_biger" />
+
 </com.zhy.autolayout.AutoLinearLayout>

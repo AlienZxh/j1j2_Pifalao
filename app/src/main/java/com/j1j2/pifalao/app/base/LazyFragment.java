@@ -69,7 +69,15 @@ public abstract class LazyFragment extends BaseLazyFragment {
             isInit = true;
             onCreateViewLazy(savedInstanceState);
         }
+        //__________________________________________________________________
 
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
     }
 
     @Override
@@ -138,9 +146,7 @@ public abstract class LazyFragment extends BaseLazyFragment {
             super.setContentView(initBinding(inflater, layout, savedInstanceState));
         }
         initViews();
-        //__________________________________________________________________
-        if (!EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().register(this);
+
     }
 
     protected void onResumeLazy() {
@@ -152,7 +158,7 @@ public abstract class LazyFragment extends BaseLazyFragment {
     }
 
     protected void onDestroyViewLazy() {
-        EventBus.getDefault().unregister(this);
+
     }
 
 
@@ -182,8 +188,7 @@ public abstract class LazyFragment extends BaseLazyFragment {
             onDestroyViewLazy();
         }
         isInit = false;
-
-
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

@@ -69,7 +69,7 @@ public class FreeConvertibilityActivity extends BaseActivity implements View.OnC
     @Override
     public void navigateToPrizeDetail(ActivityProduct activityProduct) {
         if (MainAplication.get(this).isLogin())
-            navigate.navigateToPrizeDetailActivity(this, null, false, PrizeDetailActivity.GIFT, activityProduct.getProductId(), null);
+            navigate.navigateToPrizeDetailActivity(this, null, false, activityProduct.getProductId(), null);
         else
             navigate.navigateToLogin(this, null, false);
     }

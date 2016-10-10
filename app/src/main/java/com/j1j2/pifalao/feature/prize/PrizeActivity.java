@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.LotteryParticipationTimes;
@@ -92,6 +93,12 @@ public class PrizeActivity extends BaseActivity implements SwipeRefreshLayout.On
         binding.prizeList.setRefreshListener(this);
 
         //____________________________________________
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         onRefresh();
     }
 
@@ -154,14 +161,24 @@ public class PrizeActivity extends BaseActivity implements SwipeRefreshLayout.On
                     @Override
                     public void onWebReturnSucess(PagerManager<ActivityWinPrize> activityWinPrizePagerManager) {
                         pageCount = activityWinPrizePagerManager.getPageCount();
+
+                        List<ActivityWinPrize> activityWinPrizes = new ArrayList<ActivityWinPrize>();
+
+                        if (!EmptyUtils.isEmpty(activityWinPrizePagerManager.getList()))
+                            for (ActivityWinPrize activityWinPrize : activityWinPrizePagerManager.getList()) {
+                                if (!activityWinPrizes.contains(activityWinPrize)) {
+                                    activityWinPrizes.add(activityWinPrize);
+                                }
+                            }
+
                         if (pageIndex == 1) {
                             if (adapter == null || binding.prizeList.getAdapter() == null) {
-                                binding.prizeList.setAdapter(adapter = new PrizeAdapter(new ArrayList<ActivityWinPrize>(), prizeType));
+                                binding.prizeList.setAdapter(adapter = new PrizeAdapter(activityWinPrizes, prizeType));
                                 adapter.setListener(PrizeActivity.this);
                             } else
-                                adapter.initData(activityWinPrizePagerManager.getList());
+                                adapter.initData(activityWinPrizes);
                         } else if (pageIndex <= pageCount) {
-                            adapter.addAll(activityWinPrizePagerManager.getList());
+                            adapter.addAll(activityWinPrizes);
                         } else {
                             setLoadMoreComplete();
                         }

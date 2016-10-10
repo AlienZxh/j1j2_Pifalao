@@ -8,7 +8,9 @@ import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.service.BackGroundService;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityIndividualcenterBinding;
+import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -28,6 +30,7 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Inject
     UnReadInfoManager unReadInfoManager;
+
 
     @Override
     protected void initBinding() {
@@ -53,6 +56,16 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
         } else {
             navigate.navigateToLogin(this, null, true);
         }
+    }
+
+    @Override
+    public void showFragmentProgress(String msg) {
+        showProgress(msg);
+    }
+
+    @Override
+    public void dismissFragmentProgress() {
+        dismissProgress();
     }
 
     @Override
@@ -86,14 +99,14 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
     }
 
     @Override
-    public void navigateToAccount() {
-        navigate.navigateToAccount(this, null, false);
+    public void navigateToBriberymonerys() {
+        navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);
     }
 
     @Override
     public void navigateToVipUpdate() {
 //        navigate.navigateToVipUpdateStepOne(this, null, false);
-        navigate.navigateToVipHome(this, null, false);
+        navigate.navigateToVipHome(this, null, false, VipHomeActivity.VIPHOME);
     }
 
     @Override
@@ -103,11 +116,11 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Override
     public void navigateToOrders(int orderType) {
-        navigate.navigateToOrders(this, null, false,orderType);
+        navigate.navigateToOrders(this, null, false, orderType);
     }
 
     @Override
     public void navigateToParticipationRecord(int activityType) {
-        navigate.navigateToParticipationRecordActivity(this,null,false,activityType);
+        navigate.navigateToParticipationRecordActivity(this, null, false, activityType);
     }
 }

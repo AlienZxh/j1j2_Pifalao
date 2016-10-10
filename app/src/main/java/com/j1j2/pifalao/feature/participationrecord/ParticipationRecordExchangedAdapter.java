@@ -83,7 +83,7 @@ public class ParticipationRecordExchangedAdapter extends RecyclerView.Adapter<Pa
         @Override
         public void bind(@NonNull final ActivityProduct data, int position) {
             binding.setActivityProduct(data);
-            binding.detail.setOnClickListener(new View.OnClickListener() {
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null)

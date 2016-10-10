@@ -63,12 +63,19 @@
                 app:showCircle="@{unReadInfoManager.hasUnRead}" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <View
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_1px"
-            android:background="#e2ffdd" />
+            android:layout_height="4px"
+            android:max="100"
+            android:progressDrawable="@drawable/webview_progressdrawable" />
 
-        <com.github.lzyzsd.jsbridge.BridgeWebView
+        <!--<com.github.lzyzsd.jsbridge.BridgeWebView-->
+            <!--android:id="@+id/webview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+        <WebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

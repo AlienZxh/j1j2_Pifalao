@@ -38,7 +38,9 @@ public class ParticipationRecordExchangedFragment extends LazyFragment implement
     public interface ParticipationRecordExchangedFragmentListener {
         ActivityApi getActivityApi();
 
-        void navigateToPrizeOrder(ActivityProduct activityProduct);
+        void navigateToPrizeOrder(int orderId);
+
+        void backToMemberHome();
     }
 
     ParticipationRecordExchangedFragmentListener listener;
@@ -78,10 +80,19 @@ public class ParticipationRecordExchangedFragment extends LazyFragment implement
                 .build());
         binding.recordList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.recordList.setRefreshListener(this);
-
-        onRefresh();
+        binding.recordList.getEmptyView().findViewById(R.id.retryBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.backToMemberHome();
+            }
+        });
     }
 
+    @Override
+    protected void onResumeLazy() {
+        super.onResumeLazy();
+        onRefresh();
+    }
 
     public void setLoadMoreBegin() {
         binding.recordList.setupMoreListener(this, 1);
@@ -143,6 +154,6 @@ public class ParticipationRecordExchangedFragment extends LazyFragment implement
 
     @Override
     public void navigateToPrizeOrder(ActivityProduct data) {
-        listener.navigateToPrizeOrder(data);
+        listener.navigateToPrizeOrder(data.getOrderId());
     }
 }

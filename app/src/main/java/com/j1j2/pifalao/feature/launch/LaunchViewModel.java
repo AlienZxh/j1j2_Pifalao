@@ -47,7 +47,6 @@ import rx.schedulers.Schedulers;
 public class LaunchViewModel {
 
     private boolean isCheckingUpdate = false;
-    private boolean isDownloadingTTF = false;
     private boolean canNavigate = true;
 
     private UserLoginApi userLoginApi;
@@ -57,7 +56,6 @@ public class LaunchViewModel {
 
     private RequestCall checkUpdateCall;
     private RequestCall downloadAPKCall;
-    private RequestCall downloadTTFCall;
 
     public LaunchViewModel(UserLoginApi userLoginApi, LaunchActivity launchActivity, UserLoginPreference userLoginPreference) {
         this.userLoginApi = userLoginApi;
@@ -65,31 +63,6 @@ public class LaunchViewModel {
         this.userLoginPreference = userLoginPreference;
     }
 
-//    public void downloadTTF() {
-//        isDownloadingTTF = true;
-//        downloadTTFCall = OkHttpUtils
-//                .get()
-//                .url("http://at.alicdn.com/t/font_1465613622_7339592.ttf")
-//                .build();
-//        downloadTTFCall.execute(new FileCallBack(Constant.FilePath.saveFolder, Constant.FilePath.ttfFileName) {
-//            @Override
-//            public void inProgress(float progress, long total) {
-//
-//            }
-//
-//            @Override
-//            public void onError(Call call, Exception e) {
-//                isDownloadingTTF = false;
-//            }
-//
-//            @Override
-//            public void onResponse(File response) {
-//                isDownloadingTTF = false;
-//            }
-//
-//
-//        });
-//    }
 
     public void downloadAPK() {
         launchActivity.showDownloadDialog();
@@ -128,7 +101,6 @@ public class LaunchViewModel {
             }
         });
     }
-
 
 
     public void getUpdateInfo() {
@@ -184,7 +156,7 @@ public class LaunchViewModel {
                     public void onError(Throwable e) {
                         super.onError(e);
 
-                        while (isCheckingUpdate || isDownloadingTTF) {
+                        while (isCheckingUpdate) {
 
                         }
 
@@ -192,32 +164,38 @@ public class LaunchViewModel {
                             return;
                         MainAplication.get(launchActivity).loginOut();
                         EventBus.getDefault().postSticky(new LogStateEvent(false));
+                        Logger.d("pifalaolaunch loginError " + e.toString());
                         launchActivity.navigateTo();
                     }
 
                     @Override
                     public void onWebReturnSucess(User user) {
+
+                        Logger.d("pifalaolaunch CanAutoLogin " + launchActivity.getResources().getBoolean(R.bool.can_auto_login));
+                        Logger.d("pifalaolaunch IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
+
                         if (userLoginPreference.getIsAutoLogin(false) && launchActivity.getResources().getBoolean(R.bool.can_auto_login)) {
                             MainAplication.get(launchActivity).login(user);
                             EventBus.getDefault().postSticky(new LogStateEvent(true));
+                            Logger.d("pifalaolaunch loginSucess");
                         } else {
                             MainAplication.get(launchActivity).loginOut();
                             EventBus.getDefault().postSticky(new LogStateEvent(false));
+                            Logger.d("pifalaolaunch loginSucess but cant autologin");
                         }
-                        Logger.d("launch CanAutoLogin " + launchActivity.getResources().getBoolean(R.bool.can_auto_login));
-                        Logger.d("launch IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
                     }
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
                         MainAplication.get(launchActivity).loginOut();
                         EventBus.getDefault().postSticky(new LogStateEvent(false));
+                        Logger.d("pifalaolaunch loginFailure ");
                     }
 
                     @Override
                     public void onWebReturnCompleted() {
 
-                        while (isCheckingUpdate || isDownloadingTTF) {
+                        while (isCheckingUpdate) {
 
                         }
 
@@ -301,15 +279,12 @@ public class LaunchViewModel {
     public void onDestory() {
         canNavigate = false;
         isCheckingUpdate = false;
-        isDownloadingTTF = false;
 
 
         if (null != downloadAPKCall)
             downloadAPKCall.cancel();
         if (null != checkUpdateCall)
             checkUpdateCall.cancel();
-        if (null != downloadTTFCall)
-            downloadTTFCall.cancel();
     }
 
     public boolean isCheckingUpdate() {
@@ -320,13 +295,6 @@ public class LaunchViewModel {
         isCheckingUpdate = checkingUpdate;
     }
 
-    public boolean isDownloadingTTF() {
-        return isDownloadingTTF;
-    }
-
-    public void setDownloadingTTF(boolean downloadingTTF) {
-        isDownloadingTTF = downloadingTTF;
-    }
 
     public boolean isCanNavigate() {
         return canNavigate;

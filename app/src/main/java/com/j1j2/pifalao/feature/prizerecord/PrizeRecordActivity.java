@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.prizerecord;
 import android.databinding.DataBindingUtil;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.LotteryParticipationTimes;
@@ -61,6 +62,12 @@ public class PrizeRecordActivity extends BaseActivity implements SwipeRefreshLay
 
     @Override
     protected void initViews() {
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         binding.recordList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.recordList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)

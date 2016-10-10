@@ -228,9 +228,10 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         //_______________________________________
         mHandler = new PayHandler(this, isActivityPay);
 
-        if (isActivityPay)
+        if (isActivityPay) {
+            binding.arrow.setVisibility(View.INVISIBLE);
             queryActivityOrderSimple(orderNO);
-        else
+        } else
             queryOrderSimple(orderId);
     }
 
@@ -328,20 +329,17 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
     public void doWeiXinPay(WeiXinPayResult weiXinPayResult) {
         dismissProgress();
         if (!wxApi.isWXAppInstalled()) {
-
             toastor.showSingleLongToast("未安装微信，请安装微信后重试！");
             return;
         }
 
         boolean isPaySupported = wxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
         if (!isPaySupported) {
-
             toastor.showSingleLongToast("微信版本过低，请升级微信后重试！");
             return;
         }
 
         if (weiXinPayResult == null) {
-
             toastor.showSingleLongToast("订单支付失败");
             return;
         }
@@ -402,7 +400,15 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                         activityOrderSimple = mActivityOrderSimple;
                         binding.sum.setText("￥" + activityOrderSimple.getSpendMoney());
                         queryBalance();
-
+                        binding.timeLayout.setVisibility(View.VISIBLE);
+                        try {
+                            SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Date beginDate = new Date(System.currentTimeMillis());//获取当前时间
+                            Date endDate = new Date(simple.parse(mActivityOrderSimple.getCreateTimeStr()).getTime() + 1800000);
+                            countDown(beginDate, endDate);
+                        } catch (ParseException e) {
+                            onError(e);
+                        }
                     }
 
                     @Override
@@ -531,8 +537,9 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
         String massage = "返回将放弃此次支付。";
         SpannableString spannableMassage = new SpannableString(massage);
-        if (!isActivityPay){
+        if (!isActivityPay) {
             massage = massage + "可在订单管理里面再次支付。（30分钟内未支付，订单将自动取消）";
+            spannableMassage = new SpannableString(massage);
             spannableMassage.setSpan(new ForegroundColorSpan(0xffaaaaaa), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             spannableMassage.setSpan(new RelativeSizeSpan(0.8f), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         }
@@ -586,11 +593,16 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
     public void navigateToNext() {
         if (!fromOrderDetail)
             if (isActivityPay)
-                navigate.navigateToSuccessResult(OnlineOrderPayActivity.this, null, true
+                navigate.navigateToSuccessResult(this, null, true
                         , activityOrderSimple.getActivityOrderType() == Constant.ActivityOrderType.EXCHANGEORDER ? SuccessResultActivity.FROM_PRIZEORDER_EXCHANGE : SuccessResultActivity.FROM_PRIZEORDER_LOTTERY
-                        , orderId);
+                        , orderId
+                        , orderNO);
             else
-                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+//                navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+                navigate.navigateToSuccessResult(this, null, true
+                        , SuccessResultActivity.FROM_CONFIRMORDER
+                        , orderId
+                        , orderNO);
         else
             finish();
     }

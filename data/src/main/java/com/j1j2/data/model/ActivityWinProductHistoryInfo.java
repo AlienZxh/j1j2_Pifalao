@@ -19,6 +19,8 @@ public class ActivityWinProductHistoryInfo implements Parcelable {
     /// </summary>
     private String ProductName;
 
+    private String Introduce;
+
     /// <summary>
     /// 商品图片
     /// </summary>
@@ -40,6 +42,14 @@ public class ActivityWinProductHistoryInfo implements Parcelable {
         ProductName = productName;
     }
 
+    public String getIntroduce() {
+        return Introduce;
+    }
+
+    public void setIntroduce(String introduce) {
+        Introduce = introduce;
+    }
+
     public List<ActivityProductImg> getImgs() {
         return Imgs;
     }
@@ -58,6 +68,7 @@ public class ActivityWinProductHistoryInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.ProductId);
         dest.writeString(this.ProductName);
+        dest.writeString(this.Introduce);
         dest.writeTypedList(this.Imgs);
     }
 
@@ -67,10 +78,11 @@ public class ActivityWinProductHistoryInfo implements Parcelable {
     protected ActivityWinProductHistoryInfo(Parcel in) {
         this.ProductId = in.readInt();
         this.ProductName = in.readString();
+        this.Introduce = in.readString();
         this.Imgs = in.createTypedArrayList(ActivityProductImg.CREATOR);
     }
 
-    public static final Parcelable.Creator<ActivityWinProductHistoryInfo> CREATOR = new Parcelable.Creator<ActivityWinProductHistoryInfo>() {
+    public static final Creator<ActivityWinProductHistoryInfo> CREATOR = new Creator<ActivityWinProductHistoryInfo>() {
         @Override
         public ActivityWinProductHistoryInfo createFromParcel(Parcel source) {
             return new ActivityWinProductHistoryInfo(source);

@@ -12,6 +12,8 @@
 
         <import type="com.j1j2.common.util.StringUtils" />
 
+        <import type="com.j1j2.pifalao.app.Constant" />
+
         <import type="com.j1j2.pifalao.BuildConfig" />
 
         <variable
@@ -78,7 +80,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="@{activityWinPrize.CurrentUserParticipationTimes+&quot;人次&quot;}"
+                        android:text="@{prizeType==0?activityWinPrize.Winner.WinnerParticipationTimes+&quot;人次&quot;:activityWinPrize.CurrentUserParticipationTimes+&quot;人次&quot;}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
 
@@ -205,7 +207,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@{&quot;揭晓时间：&quot;+activityWinPrize.WinTime}"
+                    android:text="@{&quot;揭晓时间：&quot;+activityWinPrize.WinnTimeStr}"
                     android:textColor="@color/colorText666"
                     android:textSize="@dimen/text_normal" />
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.data.model.AcceptanceSpeech;
+import com.j1j2.data.model.ImgUrl;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemShoworderBinding;
@@ -22,10 +23,16 @@ import java.util.List;
  */
 public class ShowOrderAdapter extends RecyclerView.Adapter<ShowOrderAdapter.ShowOrderViewHolder> {
 
-    private List<AcceptanceSpeech> strings;
+    public interface ShowOrderAdapterListener {
+        void navigateToImgsGalleryActivity(View view, List<ImgUrl> urls, int position);
+    }
 
-    public ShowOrderAdapter(List<AcceptanceSpeech> strings) {
+    private List<AcceptanceSpeech> strings;
+    ShowOrderAdapterListener listener;
+
+    public ShowOrderAdapter(List<AcceptanceSpeech> strings, ShowOrderAdapterListener listener) {
         this.strings = strings;
+        this.listener = listener;
     }
 
     public void addAll(Collection<AcceptanceSpeech> newAcceptanceSpeechs) {
@@ -64,7 +71,7 @@ public class ShowOrderAdapter extends RecyclerView.Adapter<ShowOrderAdapter.Show
         return this.strings == null ? 0 : this.strings.size();
     }
 
-    public class ShowOrderViewHolder extends AutoBindingViewHolder<ItemShoworderBinding, AcceptanceSpeech> {
+    public class ShowOrderViewHolder extends AutoBindingViewHolder<ItemShoworderBinding, AcceptanceSpeech> implements PrizeImgShowAdapter.PrizeImgShowAdapterListener {
         private Context context;
 
         public ShowOrderViewHolder(View itemView) {
@@ -86,7 +93,13 @@ public class ShowOrderAdapter extends RecyclerView.Adapter<ShowOrderAdapter.Show
 //                .color(0xffd2d2d2)
 //                .size(1)
 //                .build());
-            binding.imgList.setAdapter(new PrizeImgShowAdapter(data.getImgs()));
+            binding.imgList.setAdapter(new PrizeImgShowAdapter(data.getImgs(), this));
+        }
+
+        @Override
+        public void onShowImgClick(View view, List<ImgUrl> urls, int position) {
+            if (listener != null)
+                listener.navigateToImgsGalleryActivity(view, urls, position);
         }
     }
 }

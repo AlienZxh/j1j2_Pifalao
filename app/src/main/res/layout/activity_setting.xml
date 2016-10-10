@@ -277,6 +277,65 @@
 
         </com.zhy.autolayout.AutoLinearLayout>
 
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:layout_marginTop="@dimen/padding_noraml"
+            android:background="@color/colorGrayF0F0F0" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/clearCache"
+            android:layout_width="match_parent"
+            android:layout_height="88px"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_biger"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{settingActivity}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="清除缓存"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:id="@+id/cacheSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                android:text=""
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_1px"
+            android:background="@color/colorGrayF0F0F0" />
+
+
         <TextView
             android:id="@+id/logout"
             android:layout_width="691px"
@@ -290,9 +349,6 @@
             android:textSize="30px"
             app:OnClickListener="@{settingActivity}" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_1px"
-            android:background="@color/colorGrayF0F0F0" />
+
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

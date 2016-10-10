@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.j1j2.common.R;
+import com.j1j2.common.util.EmptyUtils;
 import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -54,20 +55,21 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
 
     public QuantityView(final Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initViews(attrs);
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
+                int currentQuantity = quantity;
                 if (clickId == R.id.minusBtn) {
-                    quantity--;
+                    currentQuantity--;
                 }
                 if (clickId == R.id.addBtn) {
-                    quantity++;
+                    currentQuantity++;
                 }
-                quantityEdit.setText("" + quantity);
+                quantityEdit.setText("" + currentQuantity);
                 return super.onSingleTapUp(e);
             }
         });
-        initViews(attrs);
     }
 
     private void initViews(AttributeSet attrs) {
@@ -98,18 +100,16 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        if (null == s.toString() || s.length() <= 0) {
-            quantity = 1;
-            quantityEdit.setText("" + quantity);
+        if (Integer.valueOf(s.toString()) == quantity) {
+            return;
+        } else if (EmptyUtils.isEmpty(s)) {
+            quantityEdit.setText("" + 1);
             return;
         } else if (Integer.valueOf(s.toString()) <= 0) {
-            quantity = 1;
-            quantityEdit.setText("" + quantity);
+            quantityEdit.setText("" + 1);
             return;
         } else if (Integer.valueOf(s.toString()) > maxQuantity) {
-            quantity = maxQuantity;
-            quantityEdit.setText("" + quantity);
+            quantityEdit.setText("" + maxQuantity);
             if (onMaxQuantityListener != null)
                 onMaxQuantityListener.onMaxQuantity(QuantityView.this);
             return;
@@ -142,15 +142,15 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
         if (this.quantity == quantity)
             return;
         if (quantity <= 0) {
-            quantity = 1;
+            quantityEdit.setText("" + 1);
         } else if (quantity > maxQuantity) {
-            quantity = maxQuantity;
+            quantityEdit.setText("" + maxQuantity);
             if (onMaxQuantityListener != null)
                 onMaxQuantityListener.onMaxQuantity(QuantityView.this);
         } else {
-            this.quantity = quantity;
+            quantityEdit.setText("" + quantity);
         }
-        quantityEdit.setText("" + quantity);
+
     }
 
     public void setOnQuantityChangeListener(OnQuantityChangeListener onQuantityChangeListener) {

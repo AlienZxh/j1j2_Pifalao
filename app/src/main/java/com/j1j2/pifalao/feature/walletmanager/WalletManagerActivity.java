@@ -10,9 +10,11 @@ import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityWalletmanagerBinding;
 import com.j1j2.pifalao.feature.coupons.CouponsActivity;
+import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.walletmanager.di.WalletManagerModule;
 
 import java.util.ArrayList;
@@ -39,6 +41,10 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
     @Inject
     User user;
 
+    @Inject
+    UnReadInfoManager unReadInfoManager;
+
+
     @Arg
     @Required(false)
     Module module;
@@ -56,6 +62,7 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
         binding = DataBindingUtil.setContentView(this, R.layout.activity_walletmanager);
         binding.setWalletManagerViewModel(walletManagerViewModel);
         binding.setUser(user);
+        binding.setUnReadInfoManager(unReadInfoManager);
     }
 
     @Override
@@ -93,9 +100,12 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.pointBtn)
-            navigate.navigateToVipHome(this, null, false);
+            navigate.navigateToVipHome(this, null, false, VipHomeActivity.VIPHOME);
         if (v == binding.balanceBtn)
             navigate.navigateToBalanceDetail(this, null, false);
+        if (v == binding.briberymoneryBtn) {
+            navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);
+        }
         if (null != normalCoupons && v == binding.coupon) {
             navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
         }

@@ -1,9 +1,11 @@
 package com.j1j2.pifalao.wxapi;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.BundleCompat;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -31,6 +33,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     private boolean isSuccess;
 
+    InputMethodManager imm;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wxpayentry);
@@ -41,18 +45,19 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     protected void initViews() {
+
+
     }
 
     @Override
     public void onClick(View v) {
-        if (v == binding.backBtn || v == binding.cancelBtn || v == binding.confirmBtn) {
+        if (v == binding.backBtn) {
             onBackPressed();
         }
     }
 
     @Override
     public void onBackPressed() {
-        EventBus.getDefault().post(new WeiXinPayReturnEvent(isSuccess));
         super.onBackPressed();
     }
 
@@ -67,19 +72,13 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if (baseResp.errCode == 0) {
                 isSuccess = true;
-                binding.successIcon.setText(getResources().getText(R.string.icon_round_check_fill));
-                binding.successIcon.setTextColor(0xff4ab134);
-                binding.messageText.setText("微信支付成功");
-                binding.messageText.setTextColor(0xff4ab134);
-                binding.cancelBtn.setVisibility(View.GONE);
             } else {
                 isSuccess = false;
-                binding.successIcon.setText(getResources().getText(R.string.icon_close_fill));
-                binding.successIcon.setTextColor(0xffff9900);
-                binding.messageText.setText("微信支付失败");
-                binding.messageText.setTextColor(0xffff9900);
-                binding.confirmBtn.setVisibility(View.GONE);
             }
+
+            EventBus.getDefault().post(new WeiXinPayReturnEvent(isSuccess));
+
+            onBackPressed();
         }
     }
 }

@@ -268,9 +268,9 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         shopCart.clear();
     }
 
-    public void navigateToSuccess(int orderId) {
-        navigate.navigateToSuccessResult(this, null, true, SuccessResultActivity.FROM_CONFIRMORDER, orderId);
-    }
+//    public void navigateToSuccess(int orderId) {
+//        navigate.navigateToSuccessResult(this, null, true, SuccessResultActivity.FROM_CONFIRMORDER, orderId);
+//    }
 
     public void navigateToOrderDetail(int orderId) {
         navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);

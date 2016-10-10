@@ -42,13 +42,25 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
 
+            <TextView
+                android:id="@+id/ruleBtn"
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/actionbar_height"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/actionbar_productdetail_btn_bg"
+                android:gravity="center"
+                android:text="@string/icon_query"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/icon_normal" />
+
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <com.zhy.autolayout.AutoFrameLayout
             android:id="@+id/bottomFragment"
             android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_height="@dimen/height_bottombar" />
+            android:layout_height="@dimen/height_bottombar"
+            android:layout_alignParentBottom="true" />
 
     </com.zhy.autolayout.AutoRelativeLayout>
 

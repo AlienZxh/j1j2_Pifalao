@@ -79,7 +79,7 @@ public class PrizeImgAdapter extends RecyclerView.Adapter<PrizeImgAdapter.PrizeI
                     .load(data == null ? "" : (BuildConfig.IMAGE_URL + data.getS320X320()))
                     .asBitmap()
                     .error(R.drawable.icon_img_add)
-                    .placeholder(R.drawable.icon_img_add)
+                    .placeholder(R.drawable.loadimg_loading)
                     .into(binding.img);
             binding.img.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -39,9 +39,11 @@ public class PrizeDetailSelectFragment extends LazyFragment {
 
         void showToastor(String msg);
 
-        void showCatNumDialog(List<String> numList);
+        void showCatNumDialog();
 
         int getLotteryId();
+
+        int getTimes();
     }
 
     FragmentPrizedetailSelectBinding binding;
@@ -82,46 +84,29 @@ public class PrizeDetailSelectFragment extends LazyFragment {
         binding.catNum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.showCatNumDialog(numList);
+                listener.showCatNumDialog();
             }
         });
         binding.setActivityProduct(listener.getActivityProduct());
+        binding.setTimes(listener.getTimes());
+        int limit = 9999;
+        int remain = 9999;
         if (listener.getActivityProduct().getConfigs().getTimesLimits() > 0)
-            binding.quantityview.setMaxQuantity(listener.getActivityProduct().getConfigs().getTimesLimits());
+            limit = listener.getActivityProduct().getConfigs().getTimesLimits() - listener.getTimes();
+        if (listener.getActivityProduct().getStatistics().getMaxUserRemain() > 0)
+            remain = listener.getActivityProduct().getStatistics().getMaxUserRemain();
+
+        binding.quantityview.setMaxQuantity(Math.min(limit, remain));
+
         binding.quantityview.setOnMaxQuantityListener(new QuantityView.OnMaxQuantityListener() {
             @Override
             public void onMaxQuantity(QuantityView view) {
                 listener.showToastor("不能超过购买限制");
             }
         });
-        queryParticipationTimesDetails();
+
+
     }
-
-
-    public void queryParticipationTimesDetails() {
-        activityApi.queryParticipationTimesDetails(listener.getLotteryId())
-                .compose(this.<WebReturn<List<String>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<String>>() {
-                    @Override
-                    public void onWebReturnSucess(List<String> stringList) {
-                        numList = stringList;
-                        binding.setTimes(stringList.size());
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
-    }
-
 
 
     public int getPrizeQuantity() {

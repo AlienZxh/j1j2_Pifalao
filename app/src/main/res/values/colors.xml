@@ -65,6 +65,8 @@
 
     <color name="colorTransparentGray">#4d000000</color>
 
+    <color name="colorTransparentGrayDark">#b0000000</color>
+
     <color name="colorDivider">#FFCCCCCC</color>
     <color name="colorPromtionTimebg">#FFFFFDD3</color>
 

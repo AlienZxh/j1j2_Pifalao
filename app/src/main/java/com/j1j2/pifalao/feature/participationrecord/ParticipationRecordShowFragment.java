@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.AcceptanceSpeech;
+import com.j1j2.data.model.ImgUrl;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
@@ -21,6 +22,7 @@ import com.j1j2.pifalao.feature.showorders.ShowOrderAdapter;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -28,11 +30,14 @@ import rx.schedulers.Schedulers;
 /**
  * Created by alienzxh on 16-9-21.
  */
-public class ParticipationRecordShowFragment extends LazyFragment implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener {
+public class ParticipationRecordShowFragment extends LazyFragment implements SwipeRefreshLayout.OnRefreshListener
+        , OnMoreListener
+        , ShowOrderAdapter.ShowOrderAdapterListener {
 
     public interface ParticipationRecordShowFragmentListener {
         ActivityApi getActivityApi();
-
+        void navigateToImgsGalleryActivity(View view,List<ImgUrl> urls, int position);
+        void backToMemberHome();
     }
 
     ParticipationRecordShowFragmentListener listener;
@@ -66,6 +71,12 @@ public class ParticipationRecordShowFragment extends LazyFragment implements Swi
         binding.recordList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.recordList.setRefreshListener(this);
         queryAcceptanceSpeechs(true);
+        binding.recordList.getEmptyView().findViewById(R.id.retryBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.backToMemberHome();
+            }
+        });
     }
 
     private void queryAcceptanceSpeechs(boolean isRefresh) {
@@ -83,7 +94,7 @@ public class ParticipationRecordShowFragment extends LazyFragment implements Swi
                         pageCount = acceptanceSpeechPagerManager.getPageCount();
                         if (pageIndex == 1) {
                             if (adapter == null || binding.recordList.getAdapter() == null)
-                                binding.recordList.setAdapter(adapter = new ShowOrderAdapter(acceptanceSpeechPagerManager.getList()));
+                                binding.recordList.setAdapter(adapter = new ShowOrderAdapter(acceptanceSpeechPagerManager.getList(),ParticipationRecordShowFragment.this));
                             else
                                 adapter.initData(acceptanceSpeechPagerManager.getList());
                         } else if (pageIndex <= pageCount) {
@@ -124,5 +135,10 @@ public class ParticipationRecordShowFragment extends LazyFragment implements Swi
     @Override
     public void onRefresh() {
         queryAcceptanceSpeechs(true);
+    }
+
+    @Override
+    public void navigateToImgsGalleryActivity(View view,List<ImgUrl> urls, int position) {
+        listener.navigateToImgsGalleryActivity(view,urls,position);
     }
 }

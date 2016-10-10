@@ -26,8 +26,10 @@ import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityMainBinding;
+import com.j1j2.pifalao.feature.coupons.CouponsActivity;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 import com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeFragment;
+import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
 import com.j1j2.pifalao.feature.main.di.MainModule;
@@ -50,7 +52,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-16.
  */
 @RequireBundler
-public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabClickListener, HasComponent<MainComponent>, StoreStyleHomeFragment.StoreStyleHomeFragmentListener, IndividualCenterFragment.IndividualCenterFragmentListener, VegetableHomeFragment.VegetableHomeFragmentListener, View.OnClickListener, VegetableSortFragment.VegetableSortFragmentListener {
+public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabClickListener, View.OnClickListener
+        , HasComponent<MainComponent>
+        , StoreStyleHomeFragment.StoreStyleHomeFragmentListener
+        , IndividualCenterFragment.IndividualCenterFragmentListener
+        , VegetableHomeFragment.VegetableHomeFragmentListener
+        , VegetableSortFragment.VegetableSortFragmentListener {
 
     public final static int STORESTYLE = 0;
     public final static int VEGETABLE = 1;
@@ -252,6 +259,16 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     }
 
     @Override
+    public void showFragmentProgress(String msg) {
+        showProgress(msg);
+    }
+
+    @Override
+    public void dismissFragmentProgress() {
+        dismissProgress();
+    }
+
+    @Override
     public void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position) {
         navigate.navigateToProductsActivityFromSort(this, null, false, productSort, module);
     }
@@ -292,14 +309,14 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     }
 
     @Override
-    public void navigateToAccount() {
-        navigate.navigateToAccount(this, null, false);
+    public void navigateToBriberymonerys() {
+        navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);
     }
 
     @Override
     public void navigateToVipUpdate() {
 //        navigate.navigateToVipUpdateStepOne(this, null, false);
-        navigate.navigateToVipHome(this, null, false);
+        navigate.navigateToVipHome(this, null, false, VipHomeActivity.VIPHOME);
     }
 
     @Override
@@ -320,11 +337,11 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     @Override
     public void navigateToOrders(int orderType) {
-        navigate.navigateToOrders(this, null, false,orderType);
+        navigate.navigateToOrders(this, null, false, orderType);
     }
 
     @Override
     public void navigateToParticipationRecord(int activityType) {
-        navigate.navigateToParticipationRecordActivity(this,null,false,activityType);
+        navigate.navigateToParticipationRecordActivity(this, null, false, activityType);
     }
 }

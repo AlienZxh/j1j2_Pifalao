@@ -28,6 +28,13 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
     @Inject
     UserRelativePreference userRelativePreference;
 
+    //        int[] imgId = {R.drawable.guide_img_1,
+//                R.drawable.guide_img_2,
+//                R.drawable.guide_img_3,
+//                R.drawable.guide_img_4};
+    int[] imgId = {R.drawable.guide_img_2,
+            R.drawable.guide_img_4};
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_guide);
@@ -37,10 +44,7 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
     protected void initViews() {
         userRelativePreference.setIsFirst(false);
         //____________________________________________________
-        int[] imgId = {R.drawable.guide_img_1,
-                R.drawable.guide_img_2,
-                R.drawable.guide_img_3,
-                R.drawable.guide_img_4};
+
         GuideAdapter guideAdapter = new GuideAdapter(imgId, 0.58f);
         binding.guideViewPager.setAdapter(guideAdapter);
 
@@ -61,7 +65,7 @@ public class GuideActivity extends BaseActivity implements ViewPager.OnPageChang
 
     @Override
     public void onPageSelected(int position) {
-        if (position == 3) {
+        if (position == imgId.length - 1) {
             binding.guideBtn.setVisibility(View.VISIBLE);
             binding.tab.setVisibility(View.GONE);
         } else {

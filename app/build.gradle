@@ -1,7 +1,17 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'com.frogermcs.androiddevmetrics'
+apply plugin: 'bugly'
+apply plugin: 'com.tencent.bugly.plugin.betauploader'
+
+bugly {
+    appId = '1103829290'
+    appKey = 'BAgqsmAnuefshU3a'
+}
+beta {
+    appId = '1103829290'
+    appKey = 'BAgqsmAnuefshU3a'
+}
 
 dexcount {
     format = "list"
@@ -36,6 +46,11 @@ android {
     }
 
     defaultConfig {
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+        }
+
         multiDexEnabled true
 
         minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
@@ -68,7 +83,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
-
+            //8079
             buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
             buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
@@ -119,6 +134,7 @@ dependencies {
     provided appDependencies.javaxAnnotation
     //内存泄露检测
     debugCompile appDebugDependencies.leakcanary
+    //debugCompile appReleaseDependencies.leakcanary
     releaseCompile appReleaseDependencies.leakcanary
     //rxlifecycle
     compile appDependencies.rxlifecycle
@@ -128,7 +144,9 @@ dependencies {
     compile appDependencies.eventbus
     compile appDependencies.okhttputils
     compile appDependencies.multidex
-
+    //腾讯bugly
+    compile appDependencies.buglySDKUpgrade
+    compile appDependencies.buglyNDK
     //umeng
     compile appDependencies.umengAnalytics
     //单元测试

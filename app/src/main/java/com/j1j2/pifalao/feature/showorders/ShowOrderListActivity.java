@@ -1,12 +1,14 @@
 package com.j1j2.pifalao.feature.showorders;
 
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.AcceptanceSpeech;
+import com.j1j2.data.model.ImgUrl;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
@@ -18,6 +20,7 @@ import com.j1j2.pifalao.feature.showorders.di.ShowOrdersModule;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,7 +33,9 @@ import rx.schedulers.Schedulers;
  */
 
 @RequireBundler
-public class ShowOrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener, View.OnClickListener {
+public class ShowOrderListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OnMoreListener
+        , View.OnClickListener
+        , ShowOrderAdapter.ShowOrderAdapterListener {
 
     ActivityShoworderListBinding binding;
 
@@ -76,7 +81,7 @@ public class ShowOrderListActivity extends BaseActivity implements SwipeRefreshL
                         pageCount = acceptanceSpeechPagerManager.getPageCount();
                         if (pageIndex == 1) {
                             if (adapter == null || binding.orderList.getAdapter() == null)
-                                binding.orderList.setAdapter(adapter = new ShowOrderAdapter(acceptanceSpeechPagerManager.getList()));
+                                binding.orderList.setAdapter(adapter = new ShowOrderAdapter(acceptanceSpeechPagerManager.getList(), ShowOrderListActivity.this));
                             else
                                 adapter.initData(acceptanceSpeechPagerManager.getList());
                         } else if (pageIndex <= pageCount) {
@@ -117,6 +122,11 @@ public class ShowOrderListActivity extends BaseActivity implements SwipeRefreshL
     @Override
     public void onRefresh() {
         queryAcceptanceSpeechs(true);
+    }
+
+    @Override
+    public void navigateToImgsGalleryActivity(View view,List<ImgUrl> urls, int position) {
+        navigate.navigateToImgsGalleryActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, urls, position);
     }
 
     @Override

@@ -23,10 +23,10 @@ import java.util.List;
 /**
  * Created by alienzxh on 16-8-24.
  */
-public class MemberHomeFreeFragment extends LazyFragment implements View.OnClickListener, MemberHomeFreeAdapter.MemberHomeFreeAdapterListener {
+public class MemberHomeFreeFragment extends LazyFragment implements MemberHomeFreeAdapter.MemberHomeFreeAdapterListener {
 
     public interface MemberHomeFreeFragmentListener {
-        void navigateToPrizeDetail(int activityType, ActivityProduct activityProduct);
+        void navigateToPrizeDetail(int activityProductId, ActivityProduct activityProduct);
 
         List<ActivityProduct> getFreeActivityProducts();
     }
@@ -61,18 +61,18 @@ public class MemberHomeFreeFragment extends LazyFragment implements View.OnClick
         adapter.setListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-
+    public void refreshList() {
+        adapter.initData(listener.getFreeActivityProducts());
     }
+
 
     @Override
     public void navigateToPrizeDetail(ActivityProduct activityProduct) {
-        listener.navigateToPrizeDetail(PrizeDetailActivity.GIFT, activityProduct);
+        listener.navigateToPrizeDetail(activityProduct.getProductId(), activityProduct);
     }
 
     @Override
     public void navigateToPrizeConfirm(ActivityProduct activityProduct) {
-        listener.navigateToPrizeDetail(PrizeDetailActivity.GIFT, activityProduct);
+        listener.navigateToPrizeDetail(activityProduct.getProductId(), activityProduct);
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/recordList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorLayoutBg"
+        app:layout_empty="@layout/view_participationrecord_empty"
+        app:layout_moreProgress="@layout/view_progressbar"
+        app:layout_progress="@layout/view_progressbar" />
+</layout>

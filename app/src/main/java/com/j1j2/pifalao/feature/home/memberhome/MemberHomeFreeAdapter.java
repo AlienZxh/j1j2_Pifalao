@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.model.ActivityProduct;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemMemberhomeFreeBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +32,17 @@ public class MemberHomeFreeAdapter extends RecyclerView.Adapter<MemberHomeFreeAd
 
     public MemberHomeFreeAdapter(List<ActivityProduct> activityProducts) {
         this.activityProducts = activityProducts;
+    }
+
+    public void initData(List<ActivityProduct> newActivityProducts) {
+        if (null != activityProducts && null != newActivityProducts) {
+            activityProducts.clear();
+            activityProducts.addAll(newActivityProducts);
+        } else if (null != newActivityProducts) {
+            activityProducts = new ArrayList<>();
+            activityProducts.addAll(newActivityProducts);
+        }
+        notifyDataSetChanged();
     }
 
     public void setListener(MemberHomeFreeAdapterListener listener) {
@@ -70,8 +83,9 @@ public class MemberHomeFreeAdapter extends RecyclerView.Adapter<MemberHomeFreeAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null)
-                        listener.navigateToPrizeDetail(data);
+                    if (EmptyUtils.isEmpty(data.getStatistics().getRemain()) || data.getStatistics().getRemain() > 0)
+                        if (listener != null)
+                            listener.navigateToPrizeDetail(data);
                 }
             });
             binding.prizeBtnOne.setOnClickListener(new View.OnClickListener() {

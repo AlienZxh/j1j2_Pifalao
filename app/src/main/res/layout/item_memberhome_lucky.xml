@@ -34,7 +34,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_1px"
-            android:background="@color/colorGrayDEDEDE" />
+            android:background="@color/colorDividerE9E9E9" />
 
         <TextView
             android:layout_width="match_parent"
@@ -103,7 +103,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/content_height_big"
+                android:layout_height="65px"
                 android:gravity="bottom"
                 android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangePoint)}"
                 android:textColor="@color/colorAccent"
@@ -111,7 +111,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/content_height_big"
+                android:layout_height="65px"
                 android:gravity="bottom"
                 android:paddingBottom="5px"
                 android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:&quot;积分&quot;}"
@@ -120,7 +120,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/content_height_big"
+                android:layout_height="65px"
                 android:gravity="bottom"
                 android:paddingBottom="10px"
                 android:text="+"
@@ -130,7 +130,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/content_height_big"
+                android:layout_height="65px"
                 android:gravity="bottom"
                 android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangeMoney)}"
                 android:textColor="@color/colorAccent"
@@ -138,7 +138,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/content_height_big"
+                android:layout_height="65px"
                 android:gravity="bottom"
                 android:paddingBottom="5px"
                 android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:&quot;元&quot;}"
@@ -153,10 +153,10 @@
             <TextView
                 android:id="@+id/nextBtn"
                 android:layout_width="250px"
-                android:layout_height="@dimen/content_height_big"
+                android:layout_height="65px"
                 android:background="@drawable/orange_conner_btn_selector"
                 android:gravity="center"
-                android:text="立即兑换"
+                android:text="立即参与"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_biger" />
 

@@ -1,9 +1,13 @@
 package com.j1j2.pifalao.feature.home.viphome;
 
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -25,6 +29,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import in.workarounds.bundler.Bundler;
+import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
 import okhttp3.Cookie;
 
@@ -33,6 +39,9 @@ import okhttp3.Cookie;
  */
 @RequireBundler
 public class VipHomeActivity extends BaseActivity implements View.OnClickListener {
+
+    public static final int VIPHOME = 1;
+    public static final int POINT = 2;
 
     ActivityViphomeBinding binding;
 
@@ -44,6 +53,12 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
     Gson gson;
     @Inject
     UnReadInfoManager unReadInfoManager;
+
+    @Arg
+    int activityType;
+
+    String privilegeUrl = BuildConfig.IMAGE_URL + "/VIPPrivilege/VIPPrivilege";
+    String pointUrl = BuildConfig.IMAGE_URL + "/VIPPrivilege/QueryUserPointDetailsLayout";
 
     @Override
     protected void initBinding() {
@@ -61,7 +76,8 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
         }.getType());
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
-        cookieManager.setCookie(BuildConfig.IMAGE_URL + "/VIPPrivilege/Index", cookies.get(0).toString());
+        cookieManager.setCookie(privilegeUrl, cookies.get(0).toString());
+        cookieManager.setCookie(pointUrl, cookies.get(0).toString());
 
 
         WebSettings webSettings = binding.webview.getSettings();
@@ -71,19 +87,34 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
             webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         }
 
-        binding.webview.loadUrl(BuildConfig.IMAGE_URL + "/VIPPrivilege/Index");
-        binding.webview.registerHandler("goToUserCoupon", new BridgeHandler() {
+        webSettings.setJavaScriptEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
+        // /VIPPrivilege/Index
+
+        if (activityType == VipHomeActivity.VIPHOME)
+            binding.webview.loadUrl(privilegeUrl);
+        if (activityType == VipHomeActivity.POINT)
+            binding.webview.loadUrl(pointUrl);
+
+        binding.webview.setWebViewClient(new WebViewClient() {
             @Override
-            public void handler(String data, CallBackFunction function) {
-                navigate.navigateToCoupons(VipHomeActivity.this, null, false, userRelativePreference.getSelectedModule(null), Constant.CouponType.COUPON_NORMAL);
-                function.onCallBack("submitFromWeb exe, response data from Java");
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                binding.webview.loadUrl(url);
+                binding.progress.setProgress(0);
+                binding.progress.setVisibility(View.VISIBLE);
+                return false;
             }
         });
-        binding.webview.registerHandler("goBackToFrame", new BridgeHandler() {
+        binding.webview.setWebChromeClient(new WebChromeClient() {
             @Override
-            public void handler(String data, CallBackFunction function) {
-                onBackPressed();
-                function.onCallBack("submitFromWeb exe, response data from Java");
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                binding.progress.setProgress(newProgress);
+                if (newProgress == 100) {
+                    binding.progress.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -92,14 +123,13 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
+        Bundler.inject(this);
         MainAplication.get(this).getUserComponent().plus(new VipHomeModule()).inject(this);
     }
 
 
-
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         if (binding.webview.canGoBack()) {
             binding.webview.goBack();
         } else {

@@ -445,7 +445,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="@dimen/padding_noraml"
                             android:background="@{confirmOrderViewModel.confirmOrderActivity.orderSubmitState.OrderPayType==Constant.OrderPayType.ONLINEPAYMENT?@drawable/productdetail_unit_bg_normal:@drawable/productdetail_unit_bg_activated}"
-                            android:visibility="@{confirmOrderViewModel.confirmOrderActivity.module.ModuleType==Constant.ModuleType.DELIVERY?View.VISIBLE:View.INVISIBLE}"
+                            android:visibility="invisible"
                             app:OnClickListener="@{confirmOrderViewModel.confirmOrderActivity}">
 
                             <TextView

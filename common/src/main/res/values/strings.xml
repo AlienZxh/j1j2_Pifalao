@@ -157,6 +157,7 @@
     <string name="icon_service_banquet">&#xe668;</string>
     <string name="icon_service_fruit">&#xe669;</string>
     <string name="icon_service_member">&#xe711;</string>
+    <string name="icon_service_specialoffer">&#xe71d;</string>
 
 
     <string name="icon_service_more">&#xe6cf;</string>
@@ -219,4 +220,15 @@
     <string name="icon_complete">&#xe70f;</string>
     <string name="icon_showorder">&#xe712;</string>
     <string name="icon_myprize">&#xe714;</string>
+
+    <string name="icon_query">&#xe6cb;</string>
+
+    <string name="icon_sell_out">&#xe6d6;</string>
+    <string name="icon_point_fill">&#xe6ae;</string>
+
+    <string name="icon_loseefficacy">&#xe71f;</string>
+    <string name="icon_click">&#xe71e;</string>
+    <string name="icon_briberymoney">&#xe720;</string>
+
+    <string name="icon_close_simple">&#xe603;</string>
 </resources>

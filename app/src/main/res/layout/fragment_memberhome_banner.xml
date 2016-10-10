@@ -8,6 +8,51 @@
         android:background="@color/colorWhite"
         android:orientation="vertical">
 
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/pointBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/content_height_normal"
+            android:gravity="center_vertical"
+            android:background="#ffb10b"
+            android:orientation="horizontal">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="@dimen/content_height_normal"
+                android:layout_height="@dimen/content_height_normal"
+                android:gravity="center"
+                android:text="@string/icon_point_fill"
+                android:textColor="@color/colorWhite"
+                android:textSize="32px" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="我的积分："
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/pointText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/height_1px"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="积分详情>"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal"
+                android:layout_marginRight="@dimen/padding_noraml"/>
+        </com.zhy.autolayout.AutoLinearLayout>
+
         <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300px">
@@ -22,9 +67,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/divider"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/padding_big"
-                android:layout_alignParentBottom="true"
                 app:stl_clickable="false"
                 app:stl_customTabTextLayoutId="@layout/view_tabcircle"
                 app:stl_dividerColor="@color/colorTransparent"
@@ -69,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_small"
-                    android:text="正在进行"
+                    android:text="我的参与"
                     android:textColor="@color/colorText666"
                     android:textSize="@dimen/text_big" />
 
@@ -97,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_small"
-                    android:text="已揭晓"
+                    android:text="我的揭晓"
                     android:textColor="@color/colorText666"
                     android:textSize="@dimen/text_big" />
 

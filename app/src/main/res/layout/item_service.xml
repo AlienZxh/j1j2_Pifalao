@@ -56,7 +56,7 @@
                 android:text="@string/icon_service_disable"
                 android:textColor="@color/colorTransparentGray"
                 android:textSize="@dimen/height_services_img"
-                android:visibility="@{module.Subscribed?View.GONE:View.VISIBLE}"
+                android:visibility="gone"
                 app:layout_auto_basewidth="height" />
 
             <TextView
@@ -67,17 +67,16 @@
                 android:text="暂未开通"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_normal"
-                android:visibility="@{module.Subscribed?View.GONE:View.VISIBLE}" />
+                android:visibility="gone" />
 
-            <TextView
-                fontPath="iconfont/iconfont.ttf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
+            <ImageView
+                android:layout_width="40px"
+                android:layout_height="40px"
                 android:layout_gravity="right"
-                android:text="@string/icon_hot_fill"
-                android:textColor="@color/colorRed"
-                android:textSize="20sp"
+                android:gravity="center"
+                android:src="@drawable/icon_hot_fill"
+                android:scaleType="fitCenter"
+                android:visibility="@{module.Hot?View.VISIBLE:View.GONE}"
                 app:layout_auto_basewidth="height" />
 
         </com.zhy.autolayout.AutoFrameLayout>

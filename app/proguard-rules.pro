@@ -329,3 +329,8 @@
 -keep class com.linkedin.** { *; }
 #  -keepattributes Signature
 ##---------------End: proguard configuration for umengShare  ----------
+
+##---------------Begin: proguard configuration for bugly  ----------
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+##---------------End: proguard configuration for bugly  ----------

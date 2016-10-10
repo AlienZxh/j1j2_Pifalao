@@ -27,7 +27,7 @@ public class LotteryParticipationTimes implements Parcelable {
     /// <summary>
     /// 参与抽奖活动时间
     /// </summary>
-    private String ParticipateTime;
+    private String ParticipateTimeStr;
 
     /// <summary>
     /// 参与活动 的奖票号
@@ -66,12 +66,12 @@ public class LotteryParticipationTimes implements Parcelable {
         ParticipationTimes = participationTimes;
     }
 
-    public String getParticipateTime() {
-        return ParticipateTime;
+    public String getParticipateTimeStr() {
+        return ParticipateTimeStr;
     }
 
-    public void setParticipateTime(String participateTime) {
-        ParticipateTime = participateTime;
+    public void setParticipateTimeStr(String participateTimeStr) {
+        ParticipateTimeStr = participateTimeStr;
     }
 
 
@@ -85,7 +85,7 @@ public class LotteryParticipationTimes implements Parcelable {
         dest.writeString(this.UserMobile);
         dest.writeString(this.UserMobileEncrypt);
         dest.writeInt(this.ParticipationTimes);
-        dest.writeString(this.ParticipateTime);
+        dest.writeString(this.ParticipateTimeStr);
         dest.writeStringList(this.TicketsNum);
     }
 
@@ -96,11 +96,11 @@ public class LotteryParticipationTimes implements Parcelable {
         this.UserMobile = in.readString();
         this.UserMobileEncrypt = in.readString();
         this.ParticipationTimes = in.readInt();
-        this.ParticipateTime = in.readString();
+        this.ParticipateTimeStr = in.readString();
         this.TicketsNum = in.createStringArrayList();
     }
 
-    public static final Parcelable.Creator<LotteryParticipationTimes> CREATOR = new Parcelable.Creator<LotteryParticipationTimes>() {
+    public static final Creator<LotteryParticipationTimes> CREATOR = new Creator<LotteryParticipationTimes>() {
         @Override
         public LotteryParticipationTimes createFromParcel(Parcel source) {
             return new LotteryParticipationTimes(source);

@@ -66,6 +66,12 @@ public class ActivityProduct implements Parcelable {
     private String SubSortName;
 
     /// <summary>
+    /// 活动分类类型
+    /// 1：兑换　　２：抽奖
+    /// </summary>
+    private int SortType;
+
+    /// <summary>
     /// 活动商品参数配置
     /// </summary>
     private ActivityProductConfig Configs;
@@ -252,6 +258,15 @@ public class ActivityProduct implements Parcelable {
     }
 
 
+    public int getSortType() {
+        return SortType;
+    }
+
+    public void setSortType(int sortType) {
+        SortType = sortType;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -275,6 +290,7 @@ public class ActivityProduct implements Parcelable {
         dest.writeTypedList(this.ImgList);
         dest.writeString(this.ParentSortName);
         dest.writeString(this.SubSortName);
+        dest.writeInt(this.SortType);
         dest.writeParcelable(this.Configs, flags);
         dest.writeParcelable(this.Statistics, flags);
         dest.writeString(this.ExchangeTimeStr);
@@ -302,6 +318,7 @@ public class ActivityProduct implements Parcelable {
         this.ImgList = in.createTypedArrayList(ActivityProductImg.CREATOR);
         this.ParentSortName = in.readString();
         this.SubSortName = in.readString();
+        this.SortType = in.readInt();
         this.Configs = in.readParcelable(ActivityProductConfig.class.getClassLoader());
         this.Statistics = in.readParcelable(ActivityProductStatistic.class.getClassLoader());
         this.ExchangeTimeStr = in.readString();

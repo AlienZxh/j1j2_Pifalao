@@ -37,9 +37,11 @@ public class PrizeDetailCompleteFragment extends BaseFragment implements View.On
 
         ActivityWinPrize getActivityWinPrize();
 
-        void showCatNumDialog(List<String> stringList);
+        void showCatNumDialog();
 
         int getLotteryId();
+
+        int getTimes();
     }
 
     PrizeDetailCompleteFragmentListener listener;
@@ -80,31 +82,7 @@ public class PrizeDetailCompleteFragment extends BaseFragment implements View.On
         binding.setActivityWinPrize(listener.getActivityWinPrize());
         binding.calculateBtn.setOnClickListener(this);
         binding.catNum.setOnClickListener(this);
-        queryParticipationTimesDetails();
-    }
-
-    public void queryParticipationTimesDetails() {
-        activityApi.queryParticipationTimesDetails(listener.getLotteryId())
-                .compose(this.<WebReturn<List<String>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<String>>() {
-                    @Override
-                    public void onWebReturnSucess(List<String> stringList) {
-                        numList = stringList;
-                        binding.setTimes(stringList.size());
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
+        binding.setTimes(listener.getTimes());
     }
 
 
@@ -113,6 +91,6 @@ public class PrizeDetailCompleteFragment extends BaseFragment implements View.On
         if (v == binding.calculateBtn)
             listener.navigateToCalculateDetail();
         if (v == binding.catNum)
-            listener.showCatNumDialog(numList);
+            listener.showCatNumDialog();
     }
 }

@@ -122,7 +122,6 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
         binding.tab.setViewPager(binding.viewPager);
         binding.viewPager.startAutoScroll(2000);
         binding.viewPager.setInterval(2000);
-        binding.viewPager.startAutoScroll();
     }
 
     public void initActivityProducts(List<ProductSimple> productSimples) {

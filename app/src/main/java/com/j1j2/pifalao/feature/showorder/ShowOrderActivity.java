@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.showorder;
 
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.j1j2.common.util.EmptyUtils;
+import com.j1j2.common.util.PhotoUtils;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.AcceptanceSpeechImg;
 import com.j1j2.data.model.ActivityProcessStateProductInfo;
@@ -17,12 +19,15 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.AcceptanceSpeechSubmit;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.PrizeOrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityShoworderBinding;
+import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailModule;
+import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -79,8 +84,27 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
             if (EmptyUtils.isEmpty(resultList)) {
 
             } else {
-                File uploadFile = new File(resultList.get(0).getPhotoPath());
-                postAcceptanceSpeechImg(selectPosition, uploadFile);
+                final String path = resultList.get(0).getPhotoPath();
+
+                Thread thread = new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+
+                        int orientation = PhotoUtils.readPictureDegree(path);//获取旋转角度
+                        Bitmap bitmap = PhotoUtils.getimage(path);//压缩图片
+                        if (Math.abs(orientation) > 0) {
+                            bitmap = PhotoUtils.rotaingImageView(orientation, bitmap);//旋转图片
+                        }
+                        bitmap = PhotoUtils.imageCropSquare(bitmap);
+                        String dirPath = Constant.FilePath.compressPhotoFolder;
+                        String fileName = System.currentTimeMillis() + "_compress.jpg";
+                        PhotoUtils.saveBitmap(dirPath, fileName, bitmap);
+                        postAcceptanceSpeechImg(selectPosition, new File(dirPath, fileName));
+                    }
+                });
+                ShowOrderActivity.this.showProgress("图片上传中");
+                thread.start();
             }
 
 
@@ -124,7 +148,7 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void fillAcceptanceSpeechText() {
-        showProgress("评论提交中");
+        showProgress("晒单提交中");
         AcceptanceSpeechSubmit acceptanceSpeechSubmit = new AcceptanceSpeechSubmit();
         acceptanceSpeechSubmit.setOrderId(orderId);
         acceptanceSpeechSubmit.setMsg(binding.msg.getText().toString());
@@ -156,8 +180,7 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void postAcceptanceSpeechImg(final int position, File file) {
-        showProgress("图片上传中");
-
+//        showProgress("图片上传中");
         OkHttpUtils.post()
                 .url(BuildConfig.IMAGE_URL + "/v5/Activity/PostAcceptanceSpeechImg?orderId=" + orderId)
                 .addFile("imgFile", file.getName(), file)
@@ -183,11 +206,18 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
                             AcceptanceSpeechImg acceptanceSpeechImg = new AcceptanceSpeechImg();
                             acceptanceSpeechImg.setNormalImg(imgs[0]);
                             acceptanceSpeechImg.setS320X320(imgs[1]);
-                            if (acceptanceSpeechImgs.size() <= position)
+
+                            Logger.d("zxh position " + position + "  size " + acceptanceSpeechImgs.size());
+
+                            if (acceptanceSpeechImgs.size() <= position) {
                                 acceptanceSpeechImgs.add(acceptanceSpeechImg);
-                            else
+                                adapter.notifyDataSetChanged();
+                            } else {
                                 acceptanceSpeechImgs.set(position, acceptanceSpeechImg);
-                            adapter.notifyItemInserted(position);
+                                adapter.notifyItemRangeChanged(position, 1);
+                            }
+
+
                         } else {
                             toastor.showSingletonToast(response.getErrorMessage());
                         }

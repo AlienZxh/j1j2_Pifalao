@@ -24,16 +24,18 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_messages_bg"
-        android:orientation="vertical"
-        android:paddingLeft="16px"
-        android:paddingRight="16px">
+        android:background="@drawable/item_orders_bg"
+        android:orientation="vertical">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:background="#eaffe6"
             android:orientation="horizontal"
+            android:layout_marginTop="1dp"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingBottom="26px"
             android:paddingTop="26px">
 
@@ -41,8 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="状态："
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_big" />
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:layout_width="0dp"
@@ -51,18 +53,20 @@
                 android:text="已完成"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_big" />
-
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_1px"
+                android:layout_weight="1" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="总金额："
-                android:textColor="@color/colorTextaaa"
-                android:textSize="@dimen/text_big" />
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@{StringUtils.getPriceWiteSymbol(offlineOrderSimple.Amount)}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_big" />
@@ -79,6 +83,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingTop="@dimen/padding_noraml">
 
@@ -94,10 +100,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
-                android:layout_marginRight="@dimen/padding_noraml"
                 android:text="@{offlineOrderSimple.ShopName}"
-                android:textColor="@color/colorText333"
-                android:textSize="@dimen/text_big" />
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_normal" />
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -113,21 +118,22 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="下单时间："
-                android:textColor="@color/colorText333"
+                android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/padding_noraml"
                 android:text="@{offlineOrderSimple.SubmitTimeStr}"
-                android:textColor="@color/colorText333"
+                android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
         </com.zhy.autolayout.AutoLinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="16px"
+            android:layout_marginRight="16px"
             android:background="@color/colorGrayF0F0F0" />
 
         <com.zhy.autolayout.AutoLinearLayout
@@ -136,6 +142,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingTop="@dimen/padding_noraml"
             app:OnClickListener="@{onClick}">
@@ -154,7 +162,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14px"
-                android:layout_marginRight="@dimen/padding_noraml"
                 android:text="@{StringUtils.getOrdersQuantity(offlineOrderSimple.ProductDetails==null?0:offlineOrderSimple.ProductDetails.size())}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
@@ -171,6 +178,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_1px"
+            android:layout_marginLeft="16px"
+            android:layout_marginRight="16px"
             android:background="@color/colorGrayF0F0F0" />
 
         <com.zhy.autolayout.AutoLinearLayout
@@ -178,6 +187,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|right"
             android:orientation="horizontal"
+            android:paddingLeft="16px"
+            android:paddingRight="16px"
             android:paddingBottom="@dimen/padding_noraml"
             android:paddingTop="@dimen/padding_noraml">
 
@@ -186,8 +197,6 @@
                 android:id="@+id/detail"
                 android:layout_width="130px"
                 android:layout_height="62px"
-                android:layout_marginLeft="@dimen/padding_small"
-                android:layout_marginRight="@dimen/padding_small"
                 android:background="@drawable/green_conner_btn_selector"
                 android:gravity="center"
                 android:text="订单详情"

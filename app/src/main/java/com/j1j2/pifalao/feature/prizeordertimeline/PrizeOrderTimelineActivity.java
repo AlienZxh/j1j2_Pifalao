@@ -1,7 +1,9 @@
 package com.j1j2.pifalao.feature.prizeordertimeline;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -9,20 +11,24 @@ import android.view.View;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.ActivityProcessState;
 import com.j1j2.data.model.ActivityStateChain;
+import com.j1j2.data.model.ImgUrl;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.event.NavigateToMemberHomeEvent;
 import com.j1j2.pifalao.app.event.PrizeOrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityPrizeorderTimelineBinding;
 import com.j1j2.pifalao.databinding.ItemPrizeorderCompleteBinding;
+import com.j1j2.pifalao.databinding.ItemPrizeorderDeliveryBinding;
 import com.j1j2.pifalao.databinding.ItemPrizeorderNormalBinding;
 import com.j1j2.pifalao.databinding.ItemPrizeorderReceiveBinding;
 import com.j1j2.pifalao.databinding.ItemPrizeorderShoworderBinding;
 import com.j1j2.pifalao.databinding.ItemPrizeorderWinBinding;
 import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailModule;
+import com.j1j2.pifalao.feature.services.ServicesActivity;
 import com.j1j2.pifalao.feature.showorders.PrizeImgShowAdapter;
 import com.shizhefei.view.multitype.ItemBinderFactory;
 import com.shizhefei.view.multitype.MultiTypeAdapter;
@@ -45,7 +51,8 @@ import rx.schedulers.Schedulers;
  * Created by alienzxh on 16-9-7.
  */
 @RequireBundler
-public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnClickListener {
+public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnClickListener,
+        PrizeImgShowAdapter.PrizeImgShowAdapterListener {
 
     ActivityPrizeorderTimelineBinding binding;
 
@@ -120,6 +127,7 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
 
                         PrizeOrderTimelineActivity.this.activityProcessState = activityProcessState;
                         binding.setActivityOrderState(activityProcessState.getCurrentOrderState());
+                        binding.setActivityOrderType(activityProcessState.getActivityType());
                         ItemBinderFactory itemBinderFactory = new ItemBinderFactory(getSupportFragmentManager());
                         List<Object> uiList = new ArrayList<>();
                         int nowState = activityProcessState.getTimeChains().get(0).getState();
@@ -149,12 +157,28 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
                                 ItemPrizeorderReceiveBinding receiveBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_prizeorder_receive, null, false);
                                 receiveBinding.setActivityStateChain(activityStateChain);
                                 receiveBinding.setIsNowState(false);
-                                receiveBinding.setAddress("收货地址：\n"
-                                        + activityProcessState.getWinnerAwardInfo().getName()
-                                        + "    " + activityProcessState.getWinnerAwardInfo().getMobile()
-                                        + "\n" + activityProcessState.getWinnerAwardInfo().getAddress());
+                                if (activityProcessState.getProductType() == Constant.ActivityProductType.Material)
+                                    receiveBinding.setAddress("收货地址：\n"
+                                            + activityProcessState.getWinnerAwardInfo().getName()
+                                            + "    " + activityProcessState.getWinnerAwardInfo().getMobile()
+                                            + "\n" + activityProcessState.getWinnerAwardInfo().getAddress());
+                                else
+                                    receiveBinding.setAddress("领取号码：\n"
+                                            + activityProcessState.getWinnerAwardInfo().getMobile());
                                 uiList.add(receiveBinding.getRoot());
 
+
+                            } else if (activityStateChain.getState() == Constant.ActivityOrderState.DLIVERYED) {
+                                if (nowState == activityStateChain.getState()) {
+                                    ItemPrizeorderNormalBinding normalBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_prizeorder_normal, null, false);
+                                    normalBinding.setIsNowState(true);
+                                    normalBinding.setActivityStateChain(activityStateChain);
+                                    uiList.add(normalBinding.getRoot());
+                                }
+                                ItemPrizeorderDeliveryBinding deliveryBinding =DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_prizeorder_delivery, null, false);
+                                deliveryBinding.setIsNowState(false);
+                                deliveryBinding.setActivityStateChain(activityStateChain);
+                                uiList.add(deliveryBinding.getRoot());
 
                             } else if (activityStateChain.getState() == Constant.ActivityOrderState.USERRECEIVED) {
                                 if (nowState == activityStateChain.getState()) {
@@ -180,7 +204,7 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
                                 //                .color(0xffd2d2d2)
                                 //                .size(1)
                                 //                .build());
-                                showorderBinding.imgList.setAdapter(new PrizeImgShowAdapter(activityProcessState.getAcceptanceSpeech().getImgs()));
+                                showorderBinding.imgList.setAdapter(new PrizeImgShowAdapter(activityProcessState.getAcceptanceSpeech().getImgs(), PrizeOrderTimelineActivity.this));
                                 uiList.add(showorderBinding.getRoot());
                             } else {
                                 ItemPrizeorderNormalBinding normalBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_prizeorder_normal, null, false);
@@ -213,7 +237,7 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
         messageDialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("提示")
-                .setMessage("确认已收到中奖商品吗？")
+                .setMessage("请确认是否已经收到奖品")
                 .setNegativeButton("取消", null)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -228,6 +252,11 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
     @Subscribe
     public void onOrderStateChangeEvent(PrizeOrderStateChangeEvent event) {
         queryActivityOrderProcessState();
+    }
+
+    @Override
+    public void onShowImgClick(View view, List<ImgUrl> urls, int position) {
+        navigate.navigateToImgsGalleryActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, urls, position);
     }
 
     @Override
@@ -247,7 +276,13 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
             navigate.navigateToShowOrderActivity(this, null, false, orderId,
                     activityProcessState.getProductInfo(),
                     activityProcessState.getOrderNO());
-        if (v == binding.againBtn)
-            navigate.navigateToMemberHomeActivity(this, null, true);
+        if (v == binding.againBtn){
+            Intent intent = new Intent(this, ServicesActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+
+            EventBus.getDefault().post(new NavigateToMemberHomeEvent());
+        }
+
     }
 }

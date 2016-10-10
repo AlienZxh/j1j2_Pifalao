@@ -7,8 +7,13 @@
 
         <import type="com.j1j2.pifalao.app.Constant" />
 
+
         <variable
             name="activityOrderState"
+            type="int" />
+
+        <variable
+            name="activityOrderType"
             type="int" />
     </data>
 
@@ -41,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="奖品动态"
+                android:text="@{activityOrderType==Constant.ActivityOrderType.LOTTERYORDER?&quot;奖品动态&quot;:&quot;礼品动态&quot;}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
@@ -62,7 +67,9 @@
             <com.shizhefei.view.multitype.MultiTypeView
                 android:id="@+id/MultiTypeView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="110px" />
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="match_parent"
@@ -98,7 +105,7 @@
                     android:text="确认收货"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_big"
-                    android:visibility="@{activityOrderState==Constant.ActivityOrderState.AWARDED?View.VISIBLE : View.GONE}" />
+                    android:visibility="@{activityOrderState==Constant.ActivityOrderState.DLIVERYED?View.VISIBLE : View.GONE}" />
 
                 <TextView
                     android:id="@+id/showorder"

@@ -6,6 +6,10 @@
 
         <import type="com.j1j2.common.util.EmptyUtils" />
 
+        <import type="android.net.Uri" />
+
+        <import type="com.j1j2.pifalao.BuildConfig" />
+
         <variable
             name="acceptanceSpeech"
             type="com.j1j2.data.model.AcceptanceSpeech" />
@@ -20,8 +24,11 @@
         <ImageView
             android:layout_width="100px"
             android:layout_height="100px"
+            android:background="@drawable/img_circle_bg"
+            android:padding="@dimen/height_1px"
             android:scaleType="fitCenter"
             android:src="@drawable/user_head_img"
+            app:displayImgUserHead="@{Uri.parse((BuildConfig.IMAGE_URL+acceptanceSpeech.Portrait))}"
             app:layout_auto_basewidth="height" />
 
         <com.zhy.autolayout.AutoLinearLayout

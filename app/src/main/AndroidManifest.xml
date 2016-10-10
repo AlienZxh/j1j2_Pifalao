@@ -92,7 +92,7 @@
 
                 <data
                     android:host="www.j1j2.com"
-                    android:path="/productdetail"
+                    android:path="/openwith"
                     android:port="80"
                     android:scheme="pifalao" />
             </intent-filter>
@@ -253,15 +253,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".feature.unsubscribe.UnsubscribeModuleActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
             android:name=".feature.unsubscribe.UnsubscribeCityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".feature.unsubscribe.UnsubscribeDeliveryActivity"
+            android:name=".feature.unsubscribe.UnsubscribeModuleActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -285,7 +281,7 @@
             android:name=".feature.onlineorderpay.OnlineOrderPayActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".feature.home.housekeepinghome.HouseKeepingActivity"
             android:screenOrientation="portrait"
@@ -335,6 +331,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".feature.lotteryrule.LotteryRuleActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".feature.calculatedetail.CalculateDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -343,8 +343,36 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".feature.specialoffer.SpecialOfferActivity"
+            android:name=".feature.home.specialofferhome.SpecialOfferActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.imgsgallery.ImgsGalleryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActivityDialog"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.unsubscribe.ModulePermissionDeniedActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.briberymoneyremind.BriberyMoneyRemindActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActivityDialog"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.briberymoneys.BriberyMoneysActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.briberymoneyopen.BriberyMoneyOpenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.ActivityDialog"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".feature.briberymoneyresult.BriberyMoneyResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.BriberyMoneyResultTheme"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <!--微信回调页面-->
         <activity
@@ -374,24 +402,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".WBShareActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
-            android:configChanges="keyboardHidden|orientation"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"></activity>
-
-        <service
-            android:name="com.sina.weibo.sdk.net.DownloadService"
-            android:exported="false"></service>
 
         <activity
             android:name="com.tencent.tauth.AuthActivity"
@@ -422,6 +432,10 @@
         <service
             android:name=".app.service.BackGroundService"
             android:exported="false" />
+        <!--腾讯 bugly-->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
 
         <!--umeng统计-->
         <meta-data
@@ -548,6 +562,12 @@
             android:name="JPUSH_APPKEY"
             android:value="64858242969d6d699b843984" />
         <!-- </>值来自开发者平台取得的AppKey-->
+
+
+        <!--Glide配置-->
+        <meta-data
+            android:name="com.j1j2.pifalao.app.GlideConfiguration"
+            android:value="GlideModule" />
     </application>
 
 </manifest>

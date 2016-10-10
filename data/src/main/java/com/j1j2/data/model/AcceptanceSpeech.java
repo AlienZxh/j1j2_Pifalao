@@ -13,6 +13,7 @@ public class AcceptanceSpeech {
     private String ShareTimeStr;
     private String UserMobile;
     private String MobileEncrypt;
+    private String Portrait;
     private ActivityProcessStateProductInfo ProductInfo;
 
     public int getOrderId() {
@@ -77,5 +78,13 @@ public class AcceptanceSpeech {
 
     public void setProductInfo(ActivityProcessStateProductInfo productInfo) {
         ProductInfo = productInfo;
+    }
+
+    public String getPortrait() {
+        return Portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        Portrait = portrait;
     }
 }

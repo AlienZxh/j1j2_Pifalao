@@ -2,8 +2,8 @@ ext {
     //Android
     androidBuildToolsVersion = "24.0.2"
     androidMinSdkVersion = 15
-    androidTargetSdkVersion = 23
-    androidCompileSdkVersion = 23
+    androidTargetSdkVersion = 24
+    androidCompileSdkVersion = 24
 
     //Libraries
     daggerVersion = '2.2'
@@ -58,6 +58,8 @@ ext {
     slantedtextviewVersion = '1.2'
     marqueeviewVersion = '1.1.0'
     spotsdialogVersion = '0.7@aar'
+    buglySDKUpgradeVersion = 'latest.release'
+    buglyNDKVersion = 'latest.release'
 
     //Testing
     jUnitVersion = '4.12'
@@ -94,6 +96,8 @@ ext {
             okhttputils          : "com.zhy:okhttputils:${okhttputilsVersion}",
             multidex             : "com.android.support:multidex:${multidexVersion}",
             umengAnalytics       : "com.umeng.analytics:analytics:${umengAnalyticsVersion}",
+            buglySDKUpgrade      : "com.tencent.bugly:crashreport_upgrade:${buglySDKUpgradeVersion}",
+            buglyNDK             : "com.tencent.bugly:nativecrashreport:${buglyNDKVersion}",
     ]
 
     appReleaseDependencies = [
@@ -139,7 +143,7 @@ ext {
             cardview            : "com.android.support:cardview-v7:${supportVersion}",
             flexibledivider     : "com.yqritc:recyclerview-flexibledivider:${flexibledividerVersion}",
             animators           : "jp.wasabeef:recyclerview-animators:${animatorsVersion}",
-            superrecyclerview   : "com.malinskiy:superrecyclerview:${superrecyclerviewVersion}",            circular            : "com.github.castorflex.smoothprogressbar:library-circular:${circularVersion}",
+            superrecyclerview   : "com.malinskiy:superrecyclerview:${superrecyclerviewVersion}", circular: "com.github.castorflex.smoothprogressbar:library-circular:${circularVersion}",
             tagview             : "com.veinhorn.tagview:library:${tagviewVersion}",
             dialogplus          : "com.orhanobut:dialogplus:${dialogplusVersion}",
             zxing               : "com.google.zxing:core:${zxingVersion}",

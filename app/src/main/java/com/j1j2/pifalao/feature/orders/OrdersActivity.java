@@ -71,12 +71,12 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         binding.setOrdersViewModel(ordersViewModel);
         binding.orderList.getRecyclerView().setClipToPadding(false);
-        binding.orderList.getRecyclerView().setPadding(0, AutoUtils.getPercentHeightSize(10), 0, AutoUtils.getPercentHeightSize(10));
+        binding.orderList.getRecyclerView().setPadding(0, AutoUtils.getPercentHeightSize(20), 0, AutoUtils.getPercentHeightSize(20));
         binding.orderList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.orderList.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(this)
                 .colorResId(R.color.colorTransparent)
-                .size(AutoUtils.getPercentHeightSize(8))
+                .size(AutoUtils.getPercentHeightSize(20))
                 .build());
         binding.orderList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.orderList.setRefreshListener(this);

@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="unReadInfoManager"
+            type="com.j1j2.pifalao.app.UnReadInfoManager" />
 
         <variable
             name="user"
@@ -51,7 +54,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_productdetail"
+            android:layout_height="@dimen/padding_noraml"
             android:background="@drawable/item_products_divider" />
 
 
@@ -92,6 +95,7 @@
                 android:text="@{&quot;&quot;+user.Balance+&quot;元&quot;}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
+
             <TextView
                 fontPath="iconfont/iconfont.ttf"
                 android:layout_width="wrap_content"
@@ -160,9 +164,63 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_1px"
-            android:background="@color/colorGrayF0F0F0" />
+            android:layout_height="@dimen/padding_noraml"
+            android:background="@drawable/item_products_divider" />
 
+        <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/briberymoneryBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/padding_noraml"
+            android:paddingLeft="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_noraml"
+            app:OnClickListener="@{walletManagerViewModel.walletManagerActivity}">
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_small"
+                android:layout_marginRight="@dimen/padding_small"
+                android:text="@string/icon_briberymoney"
+                android:textColor="#ffff4f4f"
+                android:textSize="@dimen/icon_normal" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="我的红包"
+                android:textColor="@color/colorText333"
+                android:textSize="@dimen/text_big" />
+
+            <cn.bingoogolapple.badgeview.BGABadgeTextView
+                android:layout_width="100px"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/padding_noraml"
+                app:badge_bgColor="@color/colorRed"
+                app:badge_gravity="rightCenter"
+                app:badge_textSize="12sp"
+                app:showNum="@{unReadInfoManager.foldRedPacketCount}" />
+
+            <TextView
+                fontPath="iconfont/iconfont.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/padding_noraml"
+                android:text="@string/icon_arrow_right"
+                android:textColor="@color/colorTextaaa"
+                android:textSize="@dimen/text_big" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_noraml"
+            android:background="@drawable/item_products_divider" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/coupon"

@@ -3,46 +3,50 @@ package com.j1j2.pifalao.feature.individualcenter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableInt;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
+import com.j1j2.common.util.EmptyUtils;
+import com.j1j2.common.util.Toastor;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseFragment;
-import com.j1j2.pifalao.app.base.LazyFragment;
-import com.j1j2.pifalao.app.event.VipUpdateSuccessEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
-import com.j1j2.common.util.Toastor;
 import com.j1j2.pifalao.feature.participationrecord.ParticipationRecordActivity;
 
-import org.greenrobot.eventbus.Subscribe;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import cn.finalteam.toolsfinal.io.FileUtils;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+
+import com.j1j2.common.util.PhotoUtils;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by alienzxh on 16-3-18.
  */
 @RequireBundler
-public class IndividualCenterFragment extends LazyFragment implements View.OnClickListener {
+public class IndividualCenterFragment extends BaseFragment implements View.OnClickListener {
 
 
     @Override
@@ -58,6 +62,11 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
     private final int REQUEST_CODE_GALLERY = 1001;
 
     public interface IndividualCenterFragmentListener {
+
+        void showFragmentProgress(String msg);
+
+        void dismissFragmentProgress();
+
         void navigateToOrderManager();
 
         void navigateToQRCode();
@@ -70,7 +79,7 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
 
         void navigateToCollects();
 
-        void navigateToAccount();
+        void navigateToBriberymonerys();
 
         void navigateToVipUpdate();
 
@@ -107,13 +116,30 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
     private GalleryFinal.OnHanlderResultCallback mOnHanlderResultCallback = new GalleryFinal.OnHanlderResultCallback() {
         @Override
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-            userRelativePreference.setUserImg(resultList.get(0).getPhotoPath());
 
-            Glide.with(IndividualCenterFragment.this)
-                    .load(Uri.parse("file://" + userRelativePreference.getUserImg(null)))
-                    .asBitmap()
-                    .placeholder(R.drawable.user_head_img)
-                    .into(binding.userImg);
+            if (!EmptyUtils.isEmpty(resultList)) {
+                final String path = resultList.get(0).getPhotoPath();
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        int orientation = PhotoUtils.readPictureDegree(path);//获取旋转角度
+                        Bitmap bitmap = PhotoUtils.getimage(path);//压缩图片
+                        if (Math.abs(orientation) > 0) {
+                            bitmap = PhotoUtils.rotaingImageView(orientation, bitmap);//旋转图片
+                        }
+                        bitmap = PhotoUtils.imageCropSquare(bitmap);
+                        String dirPath = Constant.FilePath.compressPhotoFolder;
+                        String fileName = System.currentTimeMillis() + "_compress.jpg";
+                        PhotoUtils.saveBitmap(dirPath, fileName, bitmap);
+                        individualCenterViewModel.upLoadUserImg(new File(dirPath, fileName));
+                    }
+                });
+                IndividualCenterFragment.this.getListener().showFragmentProgress("头像上传中");
+                thread.start();
+
+            }
         }
 
         @Override
@@ -122,16 +148,18 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
         }
     };
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         listener = (IndividualCenterFragmentListener) activity;
     }
 
+
     @Override
-    protected void onResumeLazy() {
-        super.onResumeLazy();
-        individualCenterViewModel.queryUser();
+    public void onResume() {
+        super.onResume();
+        individualCenterViewModel.queryUser(false);
         individualCenterViewModel.queryOrderStatistics();
     }
 
@@ -145,13 +173,10 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
 
     @Override
     protected void initViews() {
-        individualCenterViewModel.queryAllCoupons(userRelativePreference.getSelectedModule(null));
-        //___________________________________________________________
-        Glide.with(IndividualCenterFragment.this)
-                .load(Uri.parse("file://" + userRelativePreference.getUserImg(null)))
-                .asBitmap()
-                .placeholder(R.drawable.user_head_img)
-                .into(binding.userImg);
+
+        SpannableString spannableString = new SpannableString(binding.updateVIP.getText().toString());
+        spannableString.setSpan(new UnderlineSpan(), 0, spannableString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.updateVIP.setText(spannableString);
         //__________________________________________________
         if (fragmentType != FROM_INDIVIDUALCENTERACTIVITY)
             binding.backBtn.setVisibility(View.GONE);
@@ -180,11 +205,6 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
     }
 
 
-//    @Subscribe
-//    public void onVipUpdateSuccessEvent(VipUpdateSuccessEvent event) {
-//        individualCenterViewModel.queryUser();
-//    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -193,11 +213,15 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
         }
     }
 
+    public IndividualCenterFragmentListener getListener() {
+        return listener;
+    }
+
     @Override
     public void onClick(View v) {
-//        if (v == binding.orderManager) {
-//            listener.navigateToOrderManager();
-//        }
+        if (v == binding.briberymonery) {
+            listener.navigateToBriberymonerys();
+        }
         if (v == binding.qrCode) {
             listener.navigateToQRCode();
         }
@@ -213,9 +237,7 @@ public class IndividualCenterFragment extends LazyFragment implements View.OnCli
         if (v == binding.collectManager) {
             listener.navigateToCollects();
         }
-//        if (v == binding.accountManager) {
-//            listener.navigateToAccount();
-//        }
+
         if (v == binding.updateVIP) {
             listener.navigateToVipUpdate();
         }

@@ -12,6 +12,7 @@ import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
 import com.j1j2.data.model.ActivityProduct;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.LazyFragment;
+import com.j1j2.pifalao.app.recyclerviewadapter.RecyclerArrayAdapter;
 import com.j1j2.pifalao.databinding.FragmentMemberhomeLuckyBinding;
 import com.j1j2.pifalao.feature.prizedetail.PrizeDetailActivity;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -33,7 +34,7 @@ public class MemberHomeLuckyFragment extends LazyFragment implements ScrollableH
 
 
     public interface MemberHomeLuckyFragmentListener {
-        void navigateToPrizeDetail(int activityType, ActivityProduct activityProduct);
+        void navigateToPrizeDetail(int activityProductId, ActivityProduct activityProduct);
 
         List<ActivityProduct> getActivityProducts(String key);
     }
@@ -72,24 +73,43 @@ public class MemberHomeLuckyFragment extends LazyFragment implements ScrollableH
 
     @Override
     protected void initViews() {
-        binding.idStickynavlayoutInnerscrollview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.idStickynavlayoutInnerscrollview.addItemDecoration(new HorizontalDividerItemDecoration
+        binding.scrollview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.scrollview.addItemDecoration(new HorizontalDividerItemDecoration
                 .Builder(getContext())
                 .color(0x00ffffff)
                 .size(AutoUtils.getPercentHeightSize(20))
                 .build());
-        binding.idStickynavlayoutInnerscrollview.setAdapter(adapter = new MemberHomeLuckyAdapter(listener.getActivityProducts(key)));
-        adapter.setListener(this);
+        binding.scrollview.setAdapter(adapter = new MemberHomeLuckyAdapter(getContext(), this));
+        adapter.setNoMore(R.layout.view_nomore_memberlucky, new RecyclerArrayAdapter.OnNoMoreListener() {
+            @Override
+            public void onNoMoreShow() {
+
+            }
+
+            @Override
+            public void onNoMoreClick() {
+
+            }
+        });
+        refreshList();
     }
+
+
+    public void refreshList() {
+        adapter.clear();
+        adapter.addAll(listener.getActivityProducts(key));
+        adapter.add(null);
+    }
+
 
     @Override
     public View getScrollableView() {
-        return binding.idStickynavlayoutInnerscrollview;
+        return binding.scrollview;
     }
 
     @Override
     public void navigateToPrizeDetail(ActivityProduct activityProduct) {
-        listener.navigateToPrizeDetail(PrizeDetailActivity.PRIZE_ONGOING, activityProduct);
+        listener.navigateToPrizeDetail(activityProduct.getProductId(), activityProduct);
     }
 
 

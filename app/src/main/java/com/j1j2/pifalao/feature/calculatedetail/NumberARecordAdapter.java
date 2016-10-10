@@ -59,10 +59,12 @@ public class NumberARecordAdapter extends RecyclerView.Adapter<NumberARecordAdap
         public void bind(@NonNull LotteryCacluateTime data, int position) {
             if (position == 0) {
                 binding.text1.setText("参与时间");
-                binding.text3.setText("会员账号（所属门店）");
+                binding.text3.setText("会员账号（门店）");
+                binding.text2.setVisibility(View.INVISIBLE);
             } else {
                 binding.text1.setText(data.getOrderTimeStr());
                 binding.text2.setText("" + data.getTimeConvertData());
+                binding.text2.setVisibility(View.VISIBLE);
                 binding.text3.setText(data.getMobileEncrypt() + (data.getStoreName() == null ? "" : "（" + data.getStoreName() + "）"));
             }
 

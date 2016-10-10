@@ -14,6 +14,7 @@ public class UnReadInfo {
     private int UnReadOrderCount;
     private int UnReadPushMessageCount;
     private int UserFavoritesCount;
+    private int FoldRedPacketCount;
 
     public int getUnReadOrderCount() {
         return UnReadOrderCount;
@@ -39,12 +40,21 @@ public class UnReadInfo {
         this.UserFavoritesCount = UserFavoritesCount;
     }
 
+    public int getFoldRedPacketCount() {
+        return FoldRedPacketCount;
+    }
+
+    public void setFoldRedPacketCount(int foldRedPacketCount) {
+        FoldRedPacketCount = foldRedPacketCount;
+    }
+
     @Override
     public String toString() {
         return "UnReadInfo{" +
                 "UnReadOrderCount=" + UnReadOrderCount +
                 ", UnReadPushMessageCount=" + UnReadPushMessageCount +
                 ", UserFavoritesCount=" + UserFavoritesCount +
+                ", FoldRedPacketCount=" + FoldRedPacketCount +
                 '}';
     }
 }

@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.data.model.ActivityWinPrize;
 import com.j1j2.data.model.BannerActivity;
+import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.app.base.LazyFragment;
 import com.j1j2.pifalao.databinding.FragmentMemberhomeBannerBinding;
 import com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeTopAdapter;
@@ -23,7 +26,7 @@ import java.util.List;
 /**
  * Created by alienzxh on 16-8-24.
  */
-public class MemberHomeBannerFragment extends LazyFragment implements View.OnClickListener {
+public class MemberHomeBannerFragment extends BaseFragment implements View.OnClickListener {
 
     public interface MemberHomeBannerFragmentListener {
         void navigateToParticipation(int activityType);
@@ -32,7 +35,11 @@ public class MemberHomeBannerFragment extends LazyFragment implements View.OnCli
 
         void navigateToPrize(int acyivityType);
 
+        void navigateToPoint();
 
+        User getUser();
+
+        List<ActivityWinPrize> getActivityWinPrizes();
     }
 
     MemberHomeBannerFragmentListener listener;
@@ -46,6 +53,24 @@ public class MemberHomeBannerFragment extends LazyFragment implements View.OnCli
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        binding.viewPager.stopAutoScroll();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.viewPager.startAutoScroll();
+        if (listener.getUser() == null) {
+            binding.pointBtn.setVisibility(View.GONE);
+        } else {
+            binding.pointBtn.setVisibility(View.VISIBLE);
+            binding.pointText.setText("" + listener.getUser().getPoint());
+        }
+    }
+
+    @Override
     protected String getFragmentName() {
         return "MemberHomeBannerFragment";
     }
@@ -56,9 +81,10 @@ public class MemberHomeBannerFragment extends LazyFragment implements View.OnCli
         return binding.getRoot();
     }
 
+
     @Override
     protected void initViews() {
-
+        binding.pointBtn.setOnClickListener(this);
         binding.ongoing.setOnClickListener(this);
         binding.showorder.setOnClickListener(this);
         binding.myprize.setOnClickListener(this);
@@ -66,10 +92,18 @@ public class MemberHomeBannerFragment extends LazyFragment implements View.OnCli
         initTopAdv();
         //______________________________________________________________
         List<String> info = new ArrayList<>();
-        info.add("1. 阿生；静安寺；");
-        info.add("2. 地方建设制度监控ｖｎ");
-        info.add("3. 阿生；静安寺；");
-        info.add("4. 地方建设制度监控ｖｎ");
+        int maxlength = 30;
+        for (ActivityWinPrize activityWinPrize : listener.getActivityWinPrizes()) {
+            String text = "恭喜" + activityWinPrize.getWinner().getWinnerEncrypt()
+                    + "用户夺得" + activityWinPrize.getProductInfo().getProductName();
+            for (int i = 0; i <= (text.length() / maxlength); i++) {
+                if (i == (text.length() / maxlength))
+                    info.add(text.substring(i * maxlength, text.length()));
+                else
+                    info.add(text.substring(i * maxlength, (i + 1) * maxlength));
+            }
+//            info.add(text);
+        }
         binding.marqueeView.startWithList(info);
     }
 
@@ -79,8 +113,8 @@ public class MemberHomeBannerFragment extends LazyFragment implements View.OnCli
         binding.tab.setViewPager(binding.viewPager);
         binding.viewPager.startAutoScroll(2000);
         binding.viewPager.setInterval(2000);
-        binding.viewPager.startAutoScroll();
     }
+
 
     @Override
     public void onClick(View v) {
@@ -95,6 +129,9 @@ public class MemberHomeBannerFragment extends LazyFragment implements View.OnCli
         }
         if (v == binding.myprize) {
             listener.navigateToPrize(PrizeActivity.PRIZE_MINE);
+        }
+        if (v == binding.pointBtn) {
+            listener.navigateToPoint();
         }
 
     }

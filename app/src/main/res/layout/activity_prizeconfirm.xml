@@ -185,7 +185,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangePoint)}"
+                        android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangePoint)?&quot;&quot;:(&quot;&quot;+(activityProduct.Configs.CostExchangePoint*prizeQuantity))}"
                         android:textColor="@color/colorAccent"
                         android:textSize="40px"
                         android:textStyle="bold" />
@@ -210,7 +210,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:(&quot;&quot;+activityProduct.Configs.CostExchangeMoney)}"
+                        android:text="@{EmptyUtils.isEmpty(activityProduct.Configs.CostExchangeMoney)?&quot;&quot;:(&quot;&quot;+(activityProduct.Configs.CostExchangeMoney*prizeQuantity))}"
                         android:textColor="@color/colorAccent"
                         android:textSize="40px"
                         android:textStyle="bold" />

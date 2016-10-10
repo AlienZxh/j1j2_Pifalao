@@ -131,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5px"
-                android:text="就能获得奖品"
+                android:text="就有机会获得奖品"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_big" />
         </com.zhy.autolayout.AutoLinearLayout>

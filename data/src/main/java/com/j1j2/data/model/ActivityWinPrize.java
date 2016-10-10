@@ -31,7 +31,7 @@ public class ActivityWinPrize implements Parcelable {
     /// <summary>
     /// 获奖时间
     /// </summary>
-    private String WinTime;
+    private String WinnTimeStr;
 
     /// <summary>
     /// 活动抽奖总须人数
@@ -95,12 +95,12 @@ public class ActivityWinPrize implements Parcelable {
         ProductName = productName;
     }
 
-    public String getWinTime() {
-        return WinTime;
+    public String getWinnTimeStr() {
+        return WinnTimeStr;
     }
 
-    public void setWinTime(String winTime) {
-        WinTime = winTime;
+    public void setWinnTimeStr(String winnTimeStr) {
+        WinnTimeStr = winnTimeStr;
     }
 
     public int getMaxUser() {
@@ -153,6 +153,23 @@ public class ActivityWinPrize implements Parcelable {
 
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ActivityWinPrize that = (ActivityWinPrize) o;
+
+        return LotteryId == that.LotteryId;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return LotteryId;
+    }
+
+
+    @Override
     public int describeContents() {
         return 0;
     }
@@ -163,7 +180,7 @@ public class ActivityWinPrize implements Parcelable {
         dest.writeInt(this.LotteryId);
         dest.writeString(this.LotteryNum);
         dest.writeString(this.ProductName);
-        dest.writeString(this.WinTime);
+        dest.writeString(this.WinnTimeStr);
         dest.writeInt(this.MaxUser);
         dest.writeInt(this.CurrentUserParticipationTimes);
         dest.writeInt(this.MaxUserRemain);
@@ -180,7 +197,7 @@ public class ActivityWinPrize implements Parcelable {
         this.LotteryId = in.readInt();
         this.LotteryNum = in.readString();
         this.ProductName = in.readString();
-        this.WinTime = in.readString();
+        this.WinnTimeStr = in.readString();
         this.MaxUser = in.readInt();
         this.CurrentUserParticipationTimes = in.readInt();
         this.MaxUserRemain = in.readInt();

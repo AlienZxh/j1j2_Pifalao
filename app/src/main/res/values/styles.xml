@@ -20,6 +20,27 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.BriberyMoneyResultTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#d84e43</item>
+        <item name="colorPrimaryDark">#d84e43</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.ActivityDialog" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorTransparentGrayDark</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:textColorPrimary">@color/colorWhite</item>-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 
     <style name="AppTheme.Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert"/>
 
