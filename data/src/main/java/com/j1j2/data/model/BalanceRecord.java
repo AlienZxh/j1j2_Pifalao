@@ -19,7 +19,7 @@ public class BalanceRecord {
     private String CreateTimeStr;
     private double Amount;
     private int RecordType;// 1:余额支付 2:支付宝支付 3:微信支付 4:Online退款 5:线下使用存零（-） 6:增加存零（+） 7:现金充值 -1:其它
-
+    private String RecordTypeStr;
 
 
     public int getSourceType() {
@@ -60,5 +60,13 @@ public class BalanceRecord {
 
     public void setRecordType(int RecordType) {
         this.RecordType = RecordType;
+    }
+
+    public String getRecordTypeStr() {
+        return RecordTypeStr;
+    }
+
+    public void setRecordTypeStr(String recordTypeStr) {
+        RecordTypeStr = recordTypeStr;
     }
 }

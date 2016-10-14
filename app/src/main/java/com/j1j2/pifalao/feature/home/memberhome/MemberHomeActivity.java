@@ -229,8 +229,8 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
                         }
                     });
                     binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(0));
-                    binding.idStickynavlayoutIndicator.setViewPager(binding.viewpager);
-                    binding.idStickynavlayoutIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    binding.tab.setViewPager(binding.viewpager);
+                    binding.tab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                         @Override
                         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -291,7 +291,10 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
 
     @Override
     public List<ActivityProduct> getFreeActivityProducts() {
-        return stringMapMap.get("免费兑换").get("免费兑换");
+        if (stringMapMap.get("免费兑换") != null)
+            return stringMapMap.get("免费兑换").get("免费兑换");
+        else
+            return null;
     }
 
     @Override
@@ -303,9 +306,10 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
     public List<ActivityProduct> getActivityProducts(String key) {
 
         List<ActivityProduct> allList = new ArrayList<>();
-        for (List<ActivityProduct> value : stringMapMap.get("幸运抽奖").values()) {
-            allList.addAll(value);
-        }
+        if (stringMapMap.get("幸运抽奖") != null)
+            for (List<ActivityProduct> value : stringMapMap.get("幸运抽奖").values()) {
+                allList.addAll(value);
+            }
 
         if (key.equals("全部")) {
             Collections.sort(allList, new Comparator<ActivityProduct>() {
@@ -324,8 +328,8 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
             Collections.sort(allList, new Comparator<ActivityProduct>() {
                 @Override
                 public int compare(ActivityProduct lhs, ActivityProduct rhs) {
-                    double lhsRate = (lhs.getConfigs().getMaxUsers() - lhs.getStatistics().getMaxUserRemain())/(double)lhs.getConfigs().getMaxUsers();
-                    double rhsRate = (rhs.getConfigs().getMaxUsers() - rhs.getStatistics().getMaxUserRemain())/(double)rhs.getConfigs().getMaxUsers();
+                    double lhsRate = (lhs.getConfigs().getMaxUsers() - lhs.getStatistics().getMaxUserRemain()) / (double) lhs.getConfigs().getMaxUsers();
+                    double rhsRate = (rhs.getConfigs().getMaxUsers() - rhs.getStatistics().getMaxUserRemain()) / (double) rhs.getConfigs().getMaxUsers();
 
                     if (lhsRate > rhsRate) {
                         return -1;
@@ -337,7 +341,7 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
             });
             return allList;
         } else
-            return stringMapMap.get("幸运抽奖").get(key);
+            return stringMapMap.get("幸运抽奖") == null ? null : stringMapMap.get("幸运抽奖").get(key);
 
 
     }

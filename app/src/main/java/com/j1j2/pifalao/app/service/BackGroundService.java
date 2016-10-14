@@ -67,7 +67,7 @@ public class BackGroundService extends IntentService {
                     WebReturn<UnReadInfo> unReadInfoWebReturn = GsonProvider.provideGson().fromJson(response.body().string(), new TypeToken<WebReturn<UnReadInfo>>() {
                     }.getType());
                     unReadInfoManager.setUnReadInfo(unReadInfoWebReturn.getDetail());
-//                    EventBus.getDefault().post(new BackgroundServiceEvent(intent.getStringExtra("action"), unReadInfoWebReturn.getDetail()));
+                    //EventBus.getDefault().post(new BackgroundServiceEvent(intent.getStringExtra("action"), unReadInfoWebReturn.getDetail()));
                     Logger.e("BackGroundService " + unReadInfoWebReturn.toString());
                 } catch (Exception exception) {
                     Logger.e("BackGroundService " + exception.getMessage());

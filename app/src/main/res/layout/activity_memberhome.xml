@@ -89,7 +89,7 @@
                 android:orientation="vertical">
 
                 <com.zhy.autolayout.AutoLinearLayout
-                    android:id="@id/id_stickynavlayout_topview"
+                    android:id="@+id/topView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -154,7 +154,7 @@
                     </com.zhy.autolayout.AutoLinearLayout>
 
                     <com.j1j2.common.view.smarttablayout.SmartTabLayout
-                        android:id="@+id/id_stickynavlayout_indicator"
+                        android:id="@+id/tab"
                         android:layout_width="match_parent"
                         android:layout_height="70px"
                         android:background="@color/colorWhite"

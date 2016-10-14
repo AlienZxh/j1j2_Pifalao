@@ -27,6 +27,7 @@ public interface UserRelativePreference {
     public static final String KEY_SHOW_DELIVERYAREA = "key_show_deliveryarea";
     public static final String KEY_SHOW_LOCATION = "key_show_location";
     public static final String KEY_SHOW_HIGHLIGHT = "key_show_highlight";
+    public static final String KEY_SHOW_BRIBERYMONEY = "key_show_briberymoney";
 
     @KeyByString(KEY_ISFIRST)
     boolean getIsFirst(boolean mDefault);
@@ -129,4 +130,15 @@ public interface UserRelativePreference {
     @KeyByString(KEY_SHOW_HIGHLIGHT)
     @RemoveMethod
     UserRelativePreference removeShowHighLight();
+
+    @KeyByString(KEY_SHOW_BRIBERYMONEY)
+    boolean getShowBriberyMoney(boolean mDefault);
+
+    @KeyByString(KEY_SHOW_BRIBERYMONEY)
+    UserRelativePreference setShowBriberyMoney(boolean showBriberyMoney);
+
+    @KeyByString(KEY_SHOW_BRIBERYMONEY)
+    @RemoveMethod
+    UserRelativePreference removeShowBriberyMoney();
+
 }

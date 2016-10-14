@@ -71,7 +71,7 @@ public class BriberyMoneyOpenActivity extends BaseActivity implements
     void unfoldRedPacket(final View view) {
         activityApi
                 .unfoldRedPacket(redPacket.getRecordId(), redPacket.getSaleOrderNO())
-                .delay(1, TimeUnit.SECONDS)
+                .delay(1200, TimeUnit.MILLISECONDS)
                 .compose(this.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

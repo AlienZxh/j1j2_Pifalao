@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.zhy.autolayout.AutoLinearLayout
+    <FrameLayout
+        android:id="@+id/webviewContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/imgList"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:clipToPadding="false"-->
-            <!--android:paddingLeft="@dimen/padding_small"-->
-            <!--android:paddingRight="@dimen/padding_small" />-->
-
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    </com.zhy.autolayout.AutoLinearLayout>
+        android:layout_height="match_parent"/>
 </layout>

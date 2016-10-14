@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
@@ -22,6 +23,8 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivitySettingBinding;
 import com.j1j2.pifalao.feature.account.di.AccountModule;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,7 +46,8 @@ import rx.schedulers.Schedulers;
  * Created by alienzxh on 16-3-24.
  */
 @RequireBundler
-public class SettingActivity extends BaseActivity implements View.OnClickListener {
+public class SettingActivity extends BaseActivity implements View.OnClickListener
+        , MainAplication.AppUpgradeListener {
 
     ActivitySettingBinding binding;
 
@@ -59,6 +63,17 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         MainAplication.get(this).getUserComponent().plus(new AccountModule(this)).inject(this);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainAplication.get(this).registerAppUpgradeListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        MainAplication.get(this).clearAppUpgradeListener();
+        super.onDestroy();
+    }
 
     @Override
     protected void initBinding() {
@@ -158,7 +173,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             navigate.navigateToFeedBack(this, null, false);
         }
         if (v == binding.versionCheck)
-            showVersionDialog();
+            Beta.checkUpgrade();
         if (v == binding.changePassword) {
             navigate.navigateToChangePassword(this, null, false);
         }
@@ -207,5 +222,35 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             e.printStackTrace();
         }
         return localVersion;
+    }
+
+    @Override
+    public void onUpgradeFailed(boolean isManual) {
+
+    }
+
+    @Override
+    public void onUpgradeSuccess(boolean isManual) {
+
+    }
+
+    @Override
+    public void onUpgradeNoVersion(boolean isManual) {
+        showVersionDialog();
+    }
+
+    @Override
+    public void onUpgrading(boolean isManual) {
+
+    }
+
+    @Override
+    public void onUpgradeDialogCreate(Context context, View view, UpgradeInfo upgradeInfo) {
+
+    }
+
+    @Override
+    public void onUpgradeDialogDestory(Context context, View view, UpgradeInfo upgradeInfo) {
+
     }
 }

@@ -2,9 +2,11 @@ package com.j1j2.pifalao.feature.home.housekeepinghome;
 
 import android.databinding.DataBindingUtil;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import com.j1j2.common.util.Network;
 import com.j1j2.pifalao.BuildConfig;
@@ -27,7 +29,8 @@ import in.workarounds.bundler.annotations.RequireBundler;
 public class HouseKeepingActivity extends BaseActivity implements View.OnClickListener {
     ActivityHousekeepingBinding binding;
     UnReadInfoManager unReadInfoManager;
-
+    WebView webView;
+    
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_housekeeping);
@@ -37,17 +40,23 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
-//        WebSettings webSettings = binding.webview.getSettings();
-//        if (Network.isAvailable(this)) {
-//            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        } else {
-//            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-//        }
-        binding.webview.loadUrl(BuildConfig.IMAGE_URL + "/HouseManageService/Housekeeping.html");
-        binding.webview.setWebViewClient(new WebViewClient() {
+        webView = new WebView(this);
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.webviewContainer.addView(webView);
+
+        WebSettings webSettings = webView.getSettings();
+        if (Network.isAvailable(this)) {
+            webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        } else {
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        }
+        webSettings.setJavaScriptEnabled(true);
+
+        webView.loadUrl(BuildConfig.IMAGE_URL + "/HouseManageService/Housekeeping.html");
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                binding.webview.loadUrl(url);
+                webView.loadUrl(url);
                 return true;
             }
         });
@@ -62,10 +71,17 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.webviewContainer.removeAllViews();
+        webView.destroy();
+    }
+
+    @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        if (binding.webview.canGoBack())
-            binding.webview.goBack();
+        if (webView.canGoBack())
+            webView.goBack();
         else
             finish();
     }

@@ -176,6 +176,13 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
                     public void onWebReturnCompleted() {
 
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dismissProgress();
+                        toastor.showSingletonToast("连接失败，请重试");
+                    }
                 });
     }
 

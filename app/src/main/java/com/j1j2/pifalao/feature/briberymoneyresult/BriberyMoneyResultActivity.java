@@ -1,14 +1,19 @@
 package com.j1j2.pifalao.feature.briberymoneyresult;
 
+
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.j1j2.data.model.RedPacket;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityBriberymoneyResultBinding;
+import com.zhy.autolayout.AutoRelativeLayout;
+import com.zhy.autolayout.utils.AutoUtils;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
@@ -43,6 +48,20 @@ public class BriberyMoneyResultActivity extends BaseActivity implements View.OnC
         binding.amount.setOnClickListener(this);
         binding.record.setOnClickListener(this);
         binding.setRedPacket(redPacket);
+
+        final AutoRelativeLayout.LayoutParams layoutParams = new AutoRelativeLayout.LayoutParams(AutoRelativeLayout.LayoutParams.MATCH_PARENT, AutoUtils.getPercentHeightSize(450));
+        ValueAnimator anim = ValueAnimator.ofInt(layoutParams.height, 0);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                layoutParams.height = val;
+                binding.animView.setLayoutParams(layoutParams);
+            }
+        });
+        anim.setDuration(1000);
+        anim.setInterpolator(new AccelerateDecelerateInterpolator());
+        anim.start();
     }
 
     @Override
@@ -55,5 +74,7 @@ public class BriberyMoneyResultActivity extends BaseActivity implements View.OnC
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             finish();
         }
+
+
     }
 }

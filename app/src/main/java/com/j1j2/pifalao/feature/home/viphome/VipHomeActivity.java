@@ -1,13 +1,17 @@
 package com.j1j2.pifalao.feature.home.viphome;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -57,8 +61,21 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
     @Arg
     int activityType;
 
+    WebView webView;
+
     String privilegeUrl = BuildConfig.IMAGE_URL + "/VIPPrivilege/VIPPrivilege";
     String pointUrl = BuildConfig.IMAGE_URL + "/VIPPrivilege/QueryUserPointDetailsLayout";
+
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        Bundler.inject(this);
+        if (MainAplication.get(this).isLogin())
+            MainAplication.get(this).getUserComponent().plus(new VipHomeModule()).inject(this);
+        else {
+            navigate.navigateToLogin(this, null, true);
+        }
+    }
 
     @Override
     protected void initBinding() {
@@ -79,35 +96,43 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
         cookieManager.setCookie(privilegeUrl, cookies.get(0).toString());
         cookieManager.setCookie(pointUrl, cookies.get(0).toString());
 
+        webView = new WebView(this);
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.webviewContainer.addView(webView);
 
-        WebSettings webSettings = binding.webview.getSettings();
+        WebSettings webSettings = webView.getSettings();
         if (Network.isAvailable(this)) {
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         } else {
             webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         }
-
         webSettings.setJavaScriptEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-        // /VIPPrivilege/Index
 
         if (activityType == VipHomeActivity.VIPHOME)
-            binding.webview.loadUrl(privilegeUrl);
+            webView.loadUrl(privilegeUrl);
         if (activityType == VipHomeActivity.POINT)
-            binding.webview.loadUrl(pointUrl);
+            webView.loadUrl(pointUrl);
 
-        binding.webview.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                binding.webview.loadUrl(url);
+                webView.loadUrl(url);
                 binding.progress.setProgress(0);
                 binding.progress.setVisibility(View.VISIBLE);
                 return false;
             }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                if (url.equals(pointUrl)) {
+                    binding.title.setText("积分详情");
+                } else {
+                    binding.title.setText("会员特权");
+                }
+                super.onPageStarted(view, url, favicon);
+            }
         });
-        binding.webview.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -120,18 +145,19 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+
     @Override
-    protected void setupActivityComponent() {
-        super.setupActivityComponent();
-        Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new VipHomeModule()).inject(this);
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.webviewContainer.removeAllViews();
+        webView.destroy();
     }
 
 
     @Override
     public void onBackPressed() {
-        if (binding.webview.canGoBack()) {
-            binding.webview.goBack();
+        if (webView.canGoBack()) {
+            webView.goBack();
         } else {
             finish();
         }

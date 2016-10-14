@@ -112,6 +112,13 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
                     @Override
                     public void onWebReturnSucess(User user) {
                         binding.setUser(user);
+                        if (binding.getUser() != null && activityProduct.getConfigs().getCostExchangePoint() != null) {
+                            if (binding.getUser().getPoint() < (prizeQuantity * activityProduct.getConfigs().getCostExchangePoint())) {
+                                binding.confirmOrder.setEnabled(false);
+                                binding.confirmOrder.setBackgroundResource(R.drawable.disable_btn_conner_bg);
+                                binding.confirmOrder.setText("积分不足");
+                            }
+                        }
                     }
 
                     @Override
@@ -162,6 +169,13 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
                     public void onWebReturnCompleted() {
 
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dismissProgress();
+                        toastor.showSingletonToast("连接失败，请重试");
+                    }
                 });
     }
 
@@ -193,6 +207,13 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
                     public void onWebReturnCompleted() {
 
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dismissProgress();
+                        toastor.showSingletonToast("连接失败，请重试");
+                    }
                 });
     }
 
@@ -213,6 +234,8 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
                     return;
                 }
             }
+
+
             commitOrder();
         }
 

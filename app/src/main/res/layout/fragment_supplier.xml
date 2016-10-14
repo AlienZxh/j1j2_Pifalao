@@ -23,8 +23,8 @@
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <WebView
-            android:id="@+id/webview"
+        <FrameLayout
+            android:id="@+id/webviewContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

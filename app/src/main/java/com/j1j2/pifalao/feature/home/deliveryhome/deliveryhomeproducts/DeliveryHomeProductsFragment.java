@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.common.util.Toastor;
 import com.j1j2.common.view.quantityview.StateQuantityView;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
@@ -28,7 +29,6 @@ import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.databinding.FragmentDeliveryhomeProductsBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.di.DeliveryProductsModule;
-import com.j1j2.common.util.Toastor;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -135,14 +135,14 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
     @Override
     protected void initViews() {
-        binding.setDeliveryProductsViewModel(deliveryProductsViewModel);
+
         binding.parentSortList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.idStickynavlayoutInnerscrollview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.idStickynavlayoutInnerscrollview.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).colorResId(R.color.colorGrayEDEDED).sizeResId(R.dimen.height_1px).showLastDivider().build());
-        binding.idStickynavlayoutInnerscrollview.getRecyclerView().setClipToPadding(false);
-        binding.idStickynavlayoutInnerscrollview.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(110));
-        binding.idStickynavlayoutInnerscrollview.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
-//        binding.childSortList.setRefreshListener(this);
+        binding.childProductList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        binding.childProductList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).colorResId(R.color.colorGrayEDEDED).sizeResId(R.dimen.height_1px).showLastDivider().build());
+        binding.childProductList.getRecyclerView().setClipToPadding(false);
+        binding.childProductList.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(110));
+        binding.childProductList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
+//        binding.childProductList.setRefreshListener(this);
 
         deliveryProductsViewModel.queryProductSort(module.getWareHouseModuleId());
     }
@@ -168,7 +168,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
 
     public void setAdapter(DeliveryProductsAdapter deliveryProductsAdapter) {
-        binding.idStickynavlayoutInnerscrollview.setAdapter(deliveryProductsAdapter);
+        binding.childProductList.setAdapter(deliveryProductsAdapter);
         deliveryProductsAdapter.setOnProductClickListener(this);
     }
 
@@ -191,17 +191,10 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         }
     }
 
-//    public void addShopCart(ProductUnit unit, int Quantity) {
-//        shopCart.addUnitWitQuantity(unit, Quantity);
-//    }
 
     public void updateShopCart(ProductUnit unit, int Quantity) {
         shopCart.updateUnitWithQuantity(unit, Quantity);
     }
-
-//    public void removeShopCartItem(ProductUnit unit) {
-//        shopCart.removeUnit(unit);
-//    }
 
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -219,12 +212,12 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     }
 
     public void showLoad() {
-        binding.idStickynavlayoutInnerscrollview.showProgress();
+        binding.childProductList.showProgress();
     }
 
     public void hideLoad() {
-        binding.idStickynavlayoutInnerscrollview.hideProgress();
-        binding.idStickynavlayoutInnerscrollview.showRecycler();
+        binding.childProductList.hideProgress();
+        binding.childProductList.showRecycler();
     }
 
     public void queryProducts(boolean isRefresh, ProductSort parentSort, ProductSort childSort, int position) {
@@ -239,12 +232,12 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     }
 
     public void setLoadMoreBegin() {
-        binding.idStickynavlayoutInnerscrollview.setupMoreListener(this, 1);
+        binding.childProductList.setupMoreListener(this, 1);
     }
 
     public void setLoadMoreComplete() {
-        binding.idStickynavlayoutInnerscrollview.hideMoreProgress();
-        binding.idStickynavlayoutInnerscrollview.removeMoreListener();
+        binding.childProductList.hideMoreProgress();
+        binding.childProductList.removeMoreListener();
     }
 
     @Override
@@ -255,11 +248,6 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     @Override
     public void onRefresh() {
         queryProducts(true, parentSort, childSort, position);
-    }
-
-    @Override
-    public void onProductClick(View view, ProductSimple productSimple, int position) {
-        listener.navigateToProductDetail(view, productSimple, position);
     }
 
     public void updateShopCart(final boolean showAnim) {
@@ -302,7 +290,6 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
             }
         }
         if (shouldUpdate) {
-//            deliveryProductsViewModel.updateShopCart(showAnim);
             updateShopCart(productSimple.getProductUnits().get(0), quantity);
             updateShopCart(showAnim);
 

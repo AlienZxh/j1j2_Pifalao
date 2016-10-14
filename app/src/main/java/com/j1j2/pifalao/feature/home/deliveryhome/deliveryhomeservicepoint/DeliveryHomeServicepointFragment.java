@@ -133,6 +133,6 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
 
     @Override
     public View getScrollableView() {
-        return binding.idStickynavlayoutInnerscrollview;
+        return binding.scrollview;
     }
 }

@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorLayoutBg"
-        app:layout_empty="@layout/view_participationrecord_empty"
+        app:layout_empty="@layout/view_empty"
         app:layout_moreProgress="@layout/view_progressbar"
         app:layout_progress="@layout/view_progressbar" />
 </layout>

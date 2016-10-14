@@ -47,6 +47,14 @@ public class LoginViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<User>() {
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        loginActivity.dismissProgress();
+                        loginActivity.toastor.showSingletonToast("登录失败");
+                    }
+
                     @Override
                     public void onWebReturnSucess(User user) {
                         MainAplication.get(loginActivity).login(user);

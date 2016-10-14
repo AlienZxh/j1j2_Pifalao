@@ -2,45 +2,27 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-        <import type="com.j1j2.common.util.StringUtils" />
-
-        <variable
-            name="deliveryProductsViewModel"
-            type="com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.DeliveryProductsViewModel" />
-    </data>
-
-    <com.zhy.autolayout.AutoRelativeLayout
+    <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <com.zhy.autolayout.AutoLinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/parentSortList"
+            android:layout_width="208px"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrayF0F0F0" />
+
+
+        <com.malinskiy.superrecyclerview.SuperRecyclerView
+            android:id="@+id/childProductList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:background="@color/colorWhite"
+            app:layout_empty="@layout/view_delivery_empty"
+            app:layout_moreProgress="@layout/view_progressbar"
+            app:layout_progress="@layout/view_progressbar" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/parentSortList"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="27"
-                android:background="@color/colorGrayF0F0F0" />
-
-
-            <com.malinskiy.superrecyclerview.SuperRecyclerView
-                android:id="@id/id_stickynavlayout_innerscrollview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="73"
-                android:background="@color/colorWhite"
-                app:layout_empty="@layout/view_delivery_empty"
-                app:layout_moreProgress="@layout/view_progressbar"
-                app:layout_progress="@layout/view_progressbar" />
-
-        </com.zhy.autolayout.AutoLinearLayout>
-
-
-    </com.zhy.autolayout.AutoRelativeLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
 
 </layout>

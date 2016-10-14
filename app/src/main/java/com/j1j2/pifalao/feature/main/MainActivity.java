@@ -85,6 +85,14 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     AutoBGABadgeLinearLayout shopCartBadgeView;
     AutoBGABadgeFrameLayout individualcenterBadgeView;
 
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        Bundler.inject(this);
+
+        mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, module));
+        mainComponent.inject(this);
+    }
 
     @Override
     protected void initBinding() {
@@ -139,14 +147,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         binding.tab.setOnTabClickListener(this);
     }
 
-    @Override
-    protected void setupActivityComponent() {
-        super.setupActivityComponent();
-        Bundler.inject(this);
 
-        mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, module));
-        mainComponent.inject(this);
-    }
 
     @Override
     public void onTabClicked(int position) {
@@ -310,7 +311,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     @Override
     public void navigateToBriberymonerys() {
-        navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);
+        navigate.navigateToBriberyMoneysActivity(this, null, false, Constant.RedPacketState.AVAILABILITY);
     }
 
     @Override

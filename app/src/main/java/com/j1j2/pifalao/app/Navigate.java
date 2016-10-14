@@ -471,10 +471,10 @@ public class Navigate {
 
     public void navigateToDeliveryHomeActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint, Module module) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.deliveryHomeActivity(servicePoint, module).start(context);
+            Bundler.newDeliveryHomeActivity(servicePoint, module).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.deliveryHomeActivity(servicePoint, module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.newDeliveryHomeActivity(servicePoint, module).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

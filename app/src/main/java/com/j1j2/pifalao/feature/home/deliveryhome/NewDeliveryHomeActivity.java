@@ -6,15 +6,13 @@ import android.animation.ValueAnimator;
 import android.databinding.DataBindingUtil;
 import android.graphics.PointF;
 import android.support.annotation.Size;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
-import com.j1j2.common.view.scrollablelayout.ScrollableLayout;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.model.FreightType;
 import com.j1j2.data.model.Module;
@@ -31,15 +29,13 @@ import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
-import com.j1j2.pifalao.databinding.ActivityDeliveryhomeBinding;
+import com.j1j2.pifalao.databinding.ActivityDeliveryhomeNewBinding;
 import com.j1j2.pifalao.databinding.ViewDeliveryAreasBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.DeliveryHomeProductsFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryHomeServicepointFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
-import com.nineoldandroids.view.ViewHelper;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -57,15 +53,15 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by alienzxh on 16-3-30.
+ * Created by alienzxh on 16-10-14.
  */
 @RequireBundler
-public class DeliveryHomeActivity extends BaseActivity implements View.OnClickListener,
+public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClickListener,
         DeliveryHomeProductsFragment.DeliveryHomeProductsFragmentListener,
-        ScrollableLayout.OnScrollListener,
-        DeliveryAreasAdapter.OnAreaItemClickListener {
+        DeliveryAreasAdapter.OnAreaItemClickListener,
+        AppBarLayout.OnOffsetChangedListener {
 
-    ActivityDeliveryhomeBinding binding;
+    ActivityDeliveryhomeNewBinding binding;
 
     @Arg
     ServicePoint servicePoint;
@@ -94,11 +90,25 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     UnReadInfoManager unReadInfoManager = null;
 
+
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        Bundler.inject(this);
+        MainAplication.get(this).getAppComponent().plus(new DeliveryHomeModule(this)).inject(this);
+    }
+
     @Override
     protected void initBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_deliveryhome);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_deliveryhome_new);
         binding.setServicePoint(servicePoint);
         binding.setActivity(this);
+    }
+
+    @Override
+    protected void initActionBar() {
+        super.initActionBar();
+        setSupportActionBar(binding.toolbar);
     }
 
     @Override
@@ -118,31 +128,13 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
                 .create();
         areasDialogBinding.confirm.setOnClickListener(this);
         //____________________________________________________________________
-        binding.scrollableLayout.setOnScrollListener(this);
         deliveryHomeServicepointFragment = Bundler.deliveryHomeServicepointFragment(servicePoint).create();
         final List<Fragment> fragments = new ArrayList<>();
         fragments.add(Bundler.deliveryHomeProductsFragment(module).create());
         fragments.add(deliveryHomeServicepointFragment);
         String[] titles = {"商品", "商家"};
         binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments, titles));
-        binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(0));
         binding.tab.setViewPager(binding.viewpager);
-        binding.tab.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                binding.scrollableLayout.getHelper().setCurrentScrollableContainer((ScrollableHelper.ScrollableContainer) fragments.get(position));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         //________________________________________________________________________________
         queryFreightType(module.getWareHouseModuleId());
         //______________________
@@ -150,7 +142,6 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
             areasDialog.show();
             userRelativePreference.setShowDeliveryArea(false);
         }
-
     }
 
     public void queryFreightType(int moduleId) {
@@ -180,13 +171,21 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     }
 
 
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
+    }
 
     @Override
-    protected void setupActivityComponent() {
-        super.setupActivityComponent();
-        Bundler.inject(this);
-        MainAplication.get(this).getAppComponent().plus(new DeliveryHomeModule(this)).inject(this);
+    protected void onResume() {
+        super.onResume();
+        binding.appbarLayout.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        binding.appbarLayout.removeOnOffsetChangedListener(this);
     }
 
 
@@ -243,7 +242,6 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void showAddShopCartAnim(@Size(2) int[] startLocation) {
-
         if (valueAnimator != null && valueAnimator.isRunning())
             return;
         if (endLocation[0] == 0)
@@ -297,6 +295,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
             }
         });
         valueAnimator.start();
+
     }
 
     @Override
@@ -315,9 +314,4 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    @Override
-    public void onScroll(int currentY, int maxY) {
-        ViewHelper.setTranslationY(binding.head, (float) (currentY * 0.5));
-        Logger.d("onScroll currentY " + currentY + " maxY " + maxY);
-    }
 }

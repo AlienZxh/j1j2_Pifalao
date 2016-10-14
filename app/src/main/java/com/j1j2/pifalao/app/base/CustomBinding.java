@@ -27,7 +27,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 public class CustomBinding {
     @BindingAdapter({"bind:showNum"})
-    public static void  showNum(AutoBGABadgeLinearLayout linearLayout, int num) {
+    public static void etshowNum(AutoBGABadgeLinearLayout linearLayout, int num) {
         if (num > 0)
             linearLayout.showTextBadge("" + num);
         else

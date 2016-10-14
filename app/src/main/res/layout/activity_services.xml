@@ -127,6 +127,8 @@
                     android:layout_height="@dimen/height_services_point_img"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:background="@drawable/img_circle_bg"
+                    android:padding="@dimen/height_1px"
                     app:displayImgTransfrom="@{Uri.parse((BuildConfig.IMAGE_URL+sercivepoint.getServicePointImg()))}" />
 
                 <com.zhy.autolayout.AutoLinearLayout
@@ -171,7 +173,7 @@
         </com.zhy.autolayout.AutoLinearLayout>
 
         <TextView
-            android:id="@id/dragView"
+            android:id="@+id/qrView"
             fontPath="iconfont/iconfont.ttf"
             android:layout_width="100px"
             android:layout_height="100px"

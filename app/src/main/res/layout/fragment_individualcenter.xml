@@ -679,58 +679,6 @@
                     android:layout_height="@dimen/padding_productdetail"
                     android:background="@drawable/item_products_divider" />
 
-
-                <com.zhy.autolayout.AutoLinearLayout
-                    android:id="@+id/adderssManager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/padding_noraml"
-                    android:paddingLeft="@dimen/padding_small"
-                    android:paddingTop="@dimen/padding_noraml"
-                    app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
-
-                    <TextView
-                        fontPath="iconfont/iconfont.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padding_small"
-                        android:layout_marginRight="@dimen/padding_small"
-                        android:text="@string/icon_addressmanager"
-                        android:textColor="#ff007aff"
-                        android:textSize="@dimen/icon_normal" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="地址管理"
-                        android:textColor="@color/colorText333"
-                        android:textSize="@dimen/text_big" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingRight="@dimen/padding_noraml" />
-
-                    <TextView
-                        fontPath="iconfont/iconfont.ttf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/padding_noraml"
-                        android:text="@string/icon_arrow_right"
-                        android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_big" />
-
-                </com.zhy.autolayout.AutoLinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_1px"
-                    android:background="@color/colorGrayF0F0F0" />
-
                 <com.zhy.autolayout.AutoLinearLayout
                     android:id="@+id/walletManager"
                     android:layout_width="match_parent"
@@ -766,9 +714,9 @@
                         android:layout_height="wrap_content"
                         android:paddingRight="@dimen/padding_noraml"
                         android:text="券、余额、积分等"
-                        android:visibility="@{unReadInfoManager.foldRedPacketCount&gt;0?View.GONE:View.VISIBLE}"
                         android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_normal" />
+                        android:textSize="@dimen/text_normal"
+                        android:visibility="@{unReadInfoManager.foldRedPacketCount&gt;0?View.GONE:View.VISIBLE}" />
 
                     <cn.bingoogolapple.badgeview.BGABadgeTextView
                         android:layout_width="100px"
@@ -779,6 +727,57 @@
                         app:badge_gravity="rightCenter"
                         app:badge_textSize="12sp"
                         app:showNum="@{unReadInfoManager.foldRedPacketCount}" />
+
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_noraml"
+                        android:text="@string/icon_arrow_right"
+                        android:textColor="@color/colorTextaaa"
+                        android:textSize="@dimen/text_big" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_1px"
+                    android:background="@color/colorGrayF0F0F0" />
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/adderssManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/padding_noraml"
+                    android:paddingLeft="@dimen/padding_small"
+                    android:paddingTop="@dimen/padding_noraml"
+                    app:OnClickListener="@{individualCenterViewModel.individualCenterFragment}">
+
+                    <TextView
+                        fontPath="iconfont/iconfont.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_small"
+                        android:layout_marginRight="@dimen/padding_small"
+                        android:text="@string/icon_addressmanager"
+                        android:textColor="#ff007aff"
+                        android:textSize="@dimen/icon_normal" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="地址管理"
+                        android:textColor="@color/colorText333"
+                        android:textSize="@dimen/text_big" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/padding_noraml" />
 
                     <TextView
                         fontPath="iconfont/iconfont.ttf"

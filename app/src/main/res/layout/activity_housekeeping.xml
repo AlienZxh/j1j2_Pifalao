@@ -59,9 +59,9 @@
                 app:showCircle="@{unReadInfoManager.hasUnRead}" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <com.github.lzyzsd.jsbridge.BridgeWebView
-            android:id="@+id/webview"
+        <FrameLayout
+            android:id="@+id/webviewContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

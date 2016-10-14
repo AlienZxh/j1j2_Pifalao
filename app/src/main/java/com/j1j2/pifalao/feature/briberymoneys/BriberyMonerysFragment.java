@@ -95,16 +95,6 @@ public class BriberyMonerysFragment extends LazyFragment implements
         binding.recordList.setRefreshListener(this);
         binding.recordList.setupMoreListener(this, 1);
 
-        ((TextView) binding.recordList.getEmptyView().findViewById(R.id.emptyText)).setText("暂无数据");
-        ((TextView) binding.recordList.getEmptyView().findViewById(R.id.retryBtn)).setText("点击刷新");
-        binding.recordList.getEmptyView().findViewById(R.id.retryBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRefresh();
-            }
-        });
-
-
     }
 
     @Override

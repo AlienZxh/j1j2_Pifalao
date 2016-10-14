@@ -58,6 +58,13 @@ public class RegisterStepTwoViewModel {
                     public void onWebReturnCompleted() {
 
                     }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        registerStepTwoActivity.dismissProgress();
+                        registerStepTwoActivity.toastor.showSingletonToast("连接失败，请重试");
+                    }
                 });
     }
 
@@ -94,6 +101,13 @@ public class RegisterStepTwoViewModel {
                     @Override
                     public void onWebReturnCompleted() {
                         registerStepTwoActivity.completeRegister();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        registerStepTwoActivity.dismissProgress();
+                        registerStepTwoActivity.toastor.showSingletonToast("连接失败，请重试");
                     }
                 });
     }

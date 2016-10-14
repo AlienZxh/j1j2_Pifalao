@@ -14,7 +14,6 @@ import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemDeliveryproductsBinding;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -37,7 +36,6 @@ public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProduc
     }
 
     public interface OnProductClickListener {
-        void onProductClick(View view, ProductSimple productSimple, int position);
 
         void onQuantityChange(StateQuantityView view, ProductSimple productSimple, int position, int value);
 
@@ -151,14 +149,7 @@ public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProduc
                     return false;
                 }
             });
-            binding.layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onProductClickListener != null) {
-                        onProductClickListener.onProductClick(v, data, position);
-                    }
-                }
-            });
+
         }
     }
 }

@@ -54,91 +54,12 @@ public class LaunchViewModel {
     private UserLoginPreference userLoginPreference;
 
 
-    private RequestCall checkUpdateCall;
-    private RequestCall downloadAPKCall;
-
     public LaunchViewModel(UserLoginApi userLoginApi, LaunchActivity launchActivity, UserLoginPreference userLoginPreference) {
         this.userLoginApi = userLoginApi;
         this.launchActivity = launchActivity;
         this.userLoginPreference = userLoginPreference;
     }
 
-
-    public void downloadAPK() {
-        launchActivity.showDownloadDialog();
-        downloadAPKCall.execute(new FileCallBack(Constant.FilePath.saveFolder, Constant.FilePath.apkFileName)//
-        {
-            int lastProgress = 0;
-            int currentPregress = 0;
-
-            @Override
-            public void onBefore(Request request) {
-                super.onBefore(request);
-
-            }
-
-            @Override
-            public void inProgress(float progress, long total) {
-                currentPregress = (int) (progress * 100);
-                if (lastProgress < currentPregress) {
-                    lastProgress = currentPregress;
-                    launchActivity.setDownloadProgress(currentPregress, total);
-                }
-
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                launchActivity.toastor.showSingleLongToast("apk下载失败");
-                launchActivity.hideDownloadDialog();
-            }
-
-            @Override
-            public void onResponse(File response) {
-                launchActivity.hideDownloadDialog();
-                launchActivity.installAPK(response);
-                launchActivity.finish();
-            }
-        });
-    }
-
-
-    public void getUpdateInfo() {
-        isCheckingUpdate = true;
-        checkUpdateCall = OkHttpUtils
-                .get()
-                .url(BuildConfig.UPDATE_URL)
-                .build();
-        checkUpdateCall.execute(new Callback<UpdateInfo>() {
-            @Override
-            public UpdateInfo parseNetworkResponse(Response response) throws Exception {
-                return parseXml(response.body().byteStream());
-            }
-
-            @Override
-            public void onError(Call call, Exception e) {
-                initLoginState();
-            }
-
-            @Override
-            public void onResponse(UpdateInfo updateInfo) {
-                if (isUpdate(updateInfo, launchActivity.getVersionCode())) {
-                    downloadAPKCall = OkHttpUtils//
-                            .get()//
-                            .url(updateInfo.getSoftUrl())//
-                            .tag("downloadAPK")//
-                            .build();
-                    if (updateInfo.isCompulsory()) {
-                        launchActivity.showCompulsoryUpdateDialog();
-                    } else {
-                        launchActivity.showUpdateDialog();
-                    }
-                } else {
-                    isCheckingUpdate = false;
-                }
-            }
-        });
-    }
 
     public void initLoginState() {
         LoginBody loginBody = new LoginBody();
@@ -206,85 +127,11 @@ public class LaunchViewModel {
                 });
     }
 
-    public UpdateInfo parseXml(InputStream inStream) {
-        UpdateInfo updateInfo = new UpdateInfo();
-        // 实例化一个文档构建器工厂
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder builder = null;
-        Document document = null;
-        try {
-            // 通过文档构建器工厂获取一个文档构建器
-            builder = factory.newDocumentBuilder();
-            // 通过文档通过文档构建器构建一个文档实例
-            document = builder.parse(inStream);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (builder == null || document == null)
-                return null;
-        }
-        // 获取XML文件根节点
-        Element root = document.getDocumentElement();
-        // 获得所有子节点
-        NodeList childNodes = root.getChildNodes();
-        for (int j = 0; j < childNodes.getLength(); j++) {
-            // 遍历子节点
-            Node childNode = (Node) childNodes.item(j);
-            if (childNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element childElement = (Element) childNode;
-                // 版本号VersionCode
-                if ("EdtionNum".equals(childElement.getNodeName())) {
-                    updateInfo.setVersionCode(Integer.parseInt(childElement.getFirstChild()
-                            .getNodeValue()));
-                }
-                // 版本名称
-                if ("VersionName".equals(childElement.getNodeName())) {
-                    updateInfo.setVersionName(childElement.getFirstChild()
-                            .getNodeValue());
-                }
-                // 软件名称
-                else if (("SoftName".equals(childElement.getNodeName()))) {
-                    updateInfo.setSoftName(childElement.getFirstChild()
-                            .getNodeValue());
-                }
-                // 下载地址
-                else if (("SoftURL".equals(childElement.getNodeName()))) {
-                    updateInfo.setSoftUrl(childElement.getFirstChild()
-                            .getNodeValue());
-                }
-                // 是否强制升级
-                else if (("IsCompulsory".equals(childElement.getNodeName()))) {
-                    updateInfo.setCompulsory(Boolean.parseBoolean(childElement.getFirstChild()
-                            .getNodeValue()));
-                }
-            }
-        }
-        return updateInfo;
-    }
-
-    public boolean isUpdate(UpdateInfo updateInfo, int versingCode) {
-        if (updateInfo != null) {
-            if (versingCode > 0 && versingCode < updateInfo.getVersionCode()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void onDestory() {
         canNavigate = false;
         isCheckingUpdate = false;
-
-
-        if (null != downloadAPKCall)
-            downloadAPKCall.cancel();
-        if (null != checkUpdateCall)
-            checkUpdateCall.cancel();
     }
 
     public boolean isCheckingUpdate() {

@@ -46,9 +46,6 @@ public interface ShopCartApi {
     Observable<WebReturn<String>> queryPayState(@Query("orderNO") String orderNo,@Query("payType") int payType);
     //______________________________________________________________________________________________
 
-    @POST("ShopCart/QueryUserServicePoint")
-    Observable<String> queryUserServicePoint();
-
     @POST("ShopCart/ClearShopCart")
     Observable<String> clearShopCart(@Query("moduleId") int moduleId);
 

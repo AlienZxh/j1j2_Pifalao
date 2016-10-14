@@ -21,8 +21,8 @@ public class Constant {
 
         String cacheImgFolder = saveFolder + "/CacheImgFolder/";
 
-        String apkFileName = "pifalao.apk";
-        String ttfFileName = "iconfont.ttf";
+        String upgradeFolder = saveFolder + "/UpgradeFolder/";
+
     }
 
     public interface ModuleType {

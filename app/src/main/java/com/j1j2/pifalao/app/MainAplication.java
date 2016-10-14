@@ -1,10 +1,15 @@
 package com.j1j2.pifalao.app;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.j1j2.common.util.Toastor;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
@@ -14,11 +19,18 @@ import com.j1j2.pifalao.app.di.DaggerAppComponent;
 import com.j1j2.pifalao.app.di.UserComponent;
 import com.j1j2.pifalao.app.di.UserModule;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
+import com.j1j2.pifalao.feature.launch.LaunchActivity;
+import com.j1j2.pifalao.feature.setting.SettingActivity;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.BuglyStrategy;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.beta.ui.UILifecycleListener;
+import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.PlatformConfig;
@@ -45,14 +57,43 @@ import okhttp3.OkHttpClient;
  */
 public class MainAplication extends MultiDexApplication {
 
+    public interface AppUpgradeListener {
+        void onUpgradeFailed(boolean isManual);
+
+        void onUpgradeSuccess(boolean isManual);
+
+        void onUpgradeNoVersion(boolean isManual);
+
+        void onUpgrading(boolean isManual);
+
+        void onUpgradeDialogCreate(Context context, View view, UpgradeInfo upgradeInfo);
+
+        void onUpgradeDialogDestory(Context context, View view, UpgradeInfo upgradeInfo);
+    }
+
+    private AppUpgradeListener appUpgradeListener;
+
+
+    public void registerAppUpgradeListener(AppUpgradeListener appUpgradeListener) {
+        this.appUpgradeListener = appUpgradeListener;
+    }
+
+    public void clearAppUpgradeListener() {
+        this.appUpgradeListener = null;
+    }
+
+    //_______________________________________________
     private RefWatcher refWatcher;
     private AppComponent appComponent;
     private UserComponent userComponent;
+
 
     @Inject
     UserLoginPreference userLoginPreference;
     @Inject
     OkHttpClient okHttpClient;
+    @Inject
+    Toastor toastor;
 
     public static RefWatcher getRefWatcher(Context context) {
         return get(context).refWatcher;
@@ -203,7 +244,80 @@ public class MainAplication extends MultiDexApplication {
 
 
     private void initBugly() {
-        Bugly.init(getApplicationContext(), "1103829290", BuildConfig.DEBUG);
+        Beta.autoInit = false;//自动初始化开关
+        Beta.autoCheckUpgrade = false;//true表示初始化时自动检查升级; false表示不会自动检查升级,需要手动调用Beta.checkUpgrade()方法;
+        //只允许在***上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
+        Beta.canShowUpgradeActs.add(LaunchActivity.class);
+        Beta.canShowUpgradeActs.add(SettingActivity.class);
+        // 监听更新的各个状态，可以替换SDK内置的toast提示
+        Beta.upgradeStateListener = new UpgradeStateListener() {
+            @Override
+            public void onUpgradeFailed(boolean isManual) {
+
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onUpgradeFailed(isManual);
+            }
+
+            @Override
+            public void onUpgradeSuccess(boolean isManual) {
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onUpgradeSuccess(isManual);
+            }
+
+            @Override
+            public void onUpgradeNoVersion(boolean isManual) {
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onUpgradeNoVersion(isManual);
+            }
+
+            @Override
+            public void onUpgrading(boolean isManual) {
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onUpgrading(isManual);
+
+            }
+        };
+
+        /**
+         *  如果想监听升级对话框的生命周期事件，可以通过设置OnUILifecycleListener接口
+         *  回调参数解释：
+         *  context - 当前弹窗上下文对象
+         *  view - 升级对话框的根布局视图，可通过这个对象查找指定view控件
+         *  upgradeInfo - 升级信息
+         */
+        Beta.upgradeDialogLifecycleListener = new UILifecycleListener<UpgradeInfo>() {
+            @Override
+            public void onCreate(Context context, View view, UpgradeInfo upgradeInfo) {
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onUpgradeDialogCreate(context, view, upgradeInfo);
+            }
+
+            @Override
+            public void onStart(Context context, View view, UpgradeInfo upgradeInfo) {
+            }
+
+            @Override
+            public void onResume(Context context, View view, UpgradeInfo upgradeInfo) {
+            }
+
+            @Override
+            public void onPause(Context context, View view, UpgradeInfo upgradeInfo) {
+            }
+
+            @Override
+            public void onStop(Context context, View view, UpgradeInfo upgradeInfo) {
+            }
+
+            @Override
+            public void onDestroy(Context context, View view, UpgradeInfo upgradeInfo) {
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onUpgradeDialogDestory(context, view, upgradeInfo);
+            }
+        };
+        Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);//设置sd卡的Download为更新资源存储目录
+        BuglyStrategy strategy = new BuglyStrategy();
+        strategy.setAppChannel(BuildConfig.DEBUG ? "pifalao-debug" : "pifalao");
+        Bugly.init(getApplicationContext(), "1103829290", BuildConfig.DEBUG, strategy);
     }
 
     public AppComponent getAppComponent() {
@@ -216,7 +330,7 @@ public class MainAplication extends MultiDexApplication {
 
     public UserComponent createUserComponent(User user) {
         //设置bugly上传用户信息
-        CrashReport.setUserId(""+user.getUserId());
+        CrashReport.setUserId("" + user.getUserId());
         CrashReport.putUserData(getApplicationContext(), "loginaccount", user.getLoginAccount());
         userComponent = appComponent.plus(new UserModule(user));
         return userComponent;

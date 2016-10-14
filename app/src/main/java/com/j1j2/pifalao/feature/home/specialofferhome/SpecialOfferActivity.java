@@ -4,10 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 
 import com.j1j2.common.util.Network;
 import com.j1j2.pifalao.BuildConfig;
@@ -37,6 +39,8 @@ public class SpecialOfferActivity extends BaseActivity implements View.OnClickLi
 
     UnReadInfoManager unReadInfoManager = null;
 
+    WebView webView;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_specialoffer);
@@ -57,28 +61,30 @@ public class SpecialOfferActivity extends BaseActivity implements View.OnClickLi
         binding.backBtn.setOnClickListener(this);
         binding.individualBtn.setOnClickListener(this);
 
-        WebSettings webSettings = binding.webview.getSettings();
+        webView = new WebView(this);
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.webviewContainer.addView(webView);
+
+        WebSettings webSettings = webView.getSettings();
         if (Network.isAvailable(this)) {
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         } else {
             webSettings.setCacheMode(WebSettings.LOAD_CACHE_ONLY);
         }
         webSettings.setJavaScriptEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WebView.setWebContentsDebuggingEnabled(true);
-        }
-        // /VIPPrivilege/Index
-        binding.webview.loadUrl(BuildConfig.IMAGE_URL + "/WeeklySpecials/Index");
-        binding.webview.setWebViewClient(new WebViewClient() {
+
+
+        webView.loadUrl(BuildConfig.IMAGE_URL + "/WeeklySpecials/Index");
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                binding.webview.loadUrl(url);
+                webView.loadUrl(url);
                 binding.progress.setProgress(0);
                 binding.progress.setVisibility(View.VISIBLE);
                 return false;
             }
         });
-        binding.webview.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -92,11 +98,18 @@ public class SpecialOfferActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        if (binding.webview.canGoBack()) {
-            binding.webview.goBack();
+        if (webView.canGoBack()) {
+            webView.goBack();
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.webviewContainer.removeAllViews();
+        webView.destroy();
     }
 
     @Override

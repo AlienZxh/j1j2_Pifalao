@@ -42,7 +42,7 @@
     </style>
 
 
-    <style name="AppTheme.Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert"/>
+    <style name="AppTheme.Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -58,4 +58,7 @@
         <item name="DialogSpotCount">5</item>
     </style>
 
+    <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">32px</item>
+    </style>
 </resources>

@@ -88,6 +88,8 @@
 
 -keepattributes InnerClasses　#过滤内部类
 
+-keepattributes EnclosingMethod
+
 -keep class **.R$* { *; }  #保持R文件不被混淆，否则，你的反射是获取不到资源id的
 
 -keep class **.Webview2JsInterface { *; }  #保护WebView对HTML页面的API不被混淆
@@ -334,3 +336,9 @@
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 ##---------------End: proguard configuration for bugly  ----------
+
+##---------------Begin: proguard configuration for spotdialog  ----------
+-keep class dmax.dialog.** {
+    *;
+}
+##---------------End: proguard configuration for spotdialog  ----------

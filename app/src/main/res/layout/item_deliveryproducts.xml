@@ -19,7 +19,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_products_bg"
+        android:background="@color/colorWhite"
         android:paddingBottom="@dimen/padding_small"
         android:paddingTop="@dimen/padding_small">
 
@@ -28,8 +28,9 @@
             android:layout_width="140px"
             android:layout_height="140px"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/padding_small"
+            android:layout_marginLeft="@dimen/padding_small"
             app:displayImgAsBitmap="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            app:layout_auto_baseheight="width"
             app:siBorderColor="@color/colorGrayDEDEDE"
             app:siBorderWidth="1px"
             app:siRadius="1dp" />
@@ -37,6 +38,7 @@
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/padding_small"
             android:layout_toRightOf="@id/imgView"
             android:orientation="vertical">
 

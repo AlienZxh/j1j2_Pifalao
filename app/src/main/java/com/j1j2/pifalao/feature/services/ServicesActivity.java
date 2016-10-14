@@ -7,15 +7,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -53,7 +54,6 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.orhanobut.logger.Logger;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -111,6 +111,8 @@ public class ServicesActivity extends BaseMapActivity implements
 
     HighLight highLight;
 
+    WebView webView;
+    FrameLayout webviewContainer;
 
     @Override
     protected void setupActivityComponent() {
@@ -319,7 +321,7 @@ public class ServicesActivity extends BaseMapActivity implements
 
         highLight = new HighLight(this)//
                 .anchor(findViewById(R.id.rootlayout))//
-                .addHighLight(R.id.dragView, R.layout.view_qr_highlight,
+                .addHighLight(R.id.qrView, R.layout.view_qr_highlight,
                         new HighLight.OnPosCallback() {
                             @Override
                             public void getPos(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
@@ -345,8 +347,16 @@ public class ServicesActivity extends BaseMapActivity implements
         if (systemNotice.isState()) {
             View systemNoticeView = getLayoutInflater().inflate(
                     R.layout.view_systemnotice, null);
-            WebView webView = (WebView) systemNoticeView
-                    .findViewById(R.id.webview);
+
+            webviewContainer = (FrameLayout) systemNoticeView
+                    .findViewById(R.id.webviewContainer);
+
+            if (webView == null) {
+                webView = new WebView(this);
+                webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                webviewContainer.addView(webView);
+            }
+
             WebSettings webSettings = webView.getSettings();
             webSettings
                     .setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
@@ -454,7 +464,7 @@ public class ServicesActivity extends BaseMapActivity implements
             else
                 navigate.navigateToCityActivity(this, null, true);
         }
-        if (v == binding.dragView) {
+        if (v == binding.qrView) {
             if (MainAplication.get(this).isLogin())
                 showQRDialog();
             else
@@ -482,7 +492,10 @@ public class ServicesActivity extends BaseMapActivity implements
             unReadInfoManager = MainAplication.get(this).getUserComponent().unReadInfoManager();
             binding.setUnReadInfoManager(unReadInfoManager);
             BackGroundService.updateUnRead(this);
-            servicesViewModule.queryFoldRedPacketCount();
+            if (userRelativePreference.getShowBriberyMoney(true)) {
+                servicesViewModule.queryFoldRedPacketCount();
+                userRelativePreference.setShowBriberyMoney(false);
+            }
         }
 
     }
@@ -514,12 +527,12 @@ public class ServicesActivity extends BaseMapActivity implements
                 mBaiduMap.setMyLocationData(locData);
             }
 
-//            if (userRelativePreference.getShowLocation(false)) {
-//                servicesViewModule.queryServicepointInCity(location,
-//                        userRelativePreference.getSelectedCity(null),
-//                        userRelativePreference.getSelectedServicePoint(null));
-//                userRelativePreference.setShowLocation(false);
-//            }
+            if (userRelativePreference.getShowLocation(false)) {
+                servicesViewModule.queryServicepointInCity(location,
+                        userRelativePreference.getSelectedCity(null),
+                        userRelativePreference.getSelectedServicePoint(null));
+                userRelativePreference.setShowLocation(false);
+            }
         }
     }
 
@@ -597,6 +610,15 @@ public class ServicesActivity extends BaseMapActivity implements
         markIcon.recycle();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (webviewContainer != null && webView != null) {
+            webviewContainer.removeAllViews();
+            webView.destroy();
+        }
+
+    }
 
     private static Boolean isExit = false;
 

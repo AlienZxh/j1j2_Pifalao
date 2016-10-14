@@ -1,11 +1,10 @@
 package com.j1j2.pifalao.feature.home.deliveryhome.di;
 
-import com.j1j2.data.http.api.ProductApi;
+import android.app.Activity;
+
 import com.j1j2.data.http.api.ShopCartApi;
-import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.home.deliveryhome.DeliveryHomeActivity;
-import com.j1j2.pifalao.feature.home.deliveryhome.DeliveryHomeViewModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -16,9 +15,9 @@ import retrofit2.Retrofit;
  */
 @Module
 public class DeliveryHomeModule {
-    private DeliveryHomeActivity deliveryHomeActivity;
+    private Activity deliveryHomeActivity;
 
-    public DeliveryHomeModule(DeliveryHomeActivity deliveryHomeActivity) {
+    public DeliveryHomeModule(Activity deliveryHomeActivity) {
         this.deliveryHomeActivity = deliveryHomeActivity;
     }
 
@@ -30,14 +29,10 @@ public class DeliveryHomeModule {
 
     @Provides
     @ActivityScope
-    DeliveryHomeActivity deliveryHomeActivity() {
+    Activity deliveryHomeActivity() {
         return deliveryHomeActivity;
     }
 
-    @Provides
-    @ActivityScope
-    DeliveryHomeViewModel deliveryHomeViewModel(DeliveryHomeActivity deliveryHomeActivity, ShopCartApi shopCartApi) {
-        return new DeliveryHomeViewModel(deliveryHomeActivity, shopCartApi);
-    }
+
 
 }

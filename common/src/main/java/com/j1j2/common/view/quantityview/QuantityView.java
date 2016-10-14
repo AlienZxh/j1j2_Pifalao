@@ -100,10 +100,10 @@ public class QuantityView extends AutoLinearLayout implements TextWatcher, View.
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (Integer.valueOf(s.toString()) == quantity) {
-            return;
-        } else if (EmptyUtils.isEmpty(s)) {
+        if (EmptyUtils.isEmpty(s)) {
             quantityEdit.setText("" + 1);
+            return;
+        } else if (Integer.valueOf(s.toString()) == quantity) {
             return;
         } else if (Integer.valueOf(s.toString()) <= 0) {
             quantityEdit.setText("" + 1);

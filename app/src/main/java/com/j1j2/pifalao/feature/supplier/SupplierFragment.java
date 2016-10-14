@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 
 import com.j1j2.data.model.City;
 import com.j1j2.pifalao.BuildConfig;
@@ -34,6 +36,14 @@ public class SupplierFragment extends BaseFragment {
     @Arg
     City city;
 
+    WebView webView;
+
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        Bundler.inject(this);
+    }
+
     @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_supplier, container, false);
@@ -42,7 +52,11 @@ public class SupplierFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        WebSettings webSettings = binding.webview.getSettings();
+        webView = new WebView(getContext());
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.webviewContainer.addView(webView);
+
+        WebSettings webSettings = webView.getSettings();
         if (Network.isAvailable(getContext())) {
             webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         } else {
@@ -51,15 +65,16 @@ public class SupplierFragment extends BaseFragment {
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setUseWideViewPort(false);
         if (null != city)
-            binding.webview.loadDataWithBaseURL(BuildConfig.IMAGE_URL,
+            webView.loadDataWithBaseURL(BuildConfig.IMAGE_URL,
                     city.getPlatformDescription()
                             .replaceAll("img", "img width=100%"), "text/html",
                     "utf-8", null);
     }
 
     @Override
-    protected void setupActivityComponent() {
-        super.setupActivityComponent();
-        Bundler.inject(this);
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding.webviewContainer.removeAllViews();
+        webView.destroy();
     }
 }

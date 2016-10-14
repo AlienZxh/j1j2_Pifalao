@@ -27,12 +27,8 @@ public class User {
 
     private int UserId;
     private String LoginAccount;
-    private String StoreName;
     private int RoleId;
     private int Point;
-    private int DeliveryTemplateId;
-    private int ServicePointId;
-    private boolean AdminVerfiy;
     private String UserName;
     private String RegisterTimeStr;
     private String ExpireTimeStr;
@@ -44,141 +40,108 @@ public class User {
     private double Balance;
     private String Portrait;
 
-
-    public void setUserId(int UserId) {
-        this.UserId = UserId;
-    }
-
-    public void setLoginAccount(String LoginAccount) {
-        this.LoginAccount = LoginAccount;
-    }
-
-    public void setStoreName(String StoreName) {
-        this.StoreName = StoreName;
-    }
-
-    public void setRoleId(int RoleId) {
-        this.RoleId = RoleId;
-    }
-
-    public void setPoint(int Point) {
-        this.Point = Point;
-    }
-
-    public void setDeliveryTemplateId(int DeliveryTemplateId) {
-        this.DeliveryTemplateId = DeliveryTemplateId;
-    }
-
-    public void setServicePointId(int ServicePointId) {
-        this.ServicePointId = ServicePointId;
-    }
-
-    public void setAdminVerfiy(boolean AdminVerfiy) {
-        this.AdminVerfiy = AdminVerfiy;
-    }
-
-    public void setUserName(String UserName) {
-        this.UserName = UserName;
-    }
-
-    public void setRegisterTimeStr(String RegisterTimeStr) {
-        this.RegisterTimeStr = RegisterTimeStr;
-    }
-
-    public void setExpireTimeStr(String ExpireTimeStr) {
-        this.ExpireTimeStr = ExpireTimeStr;
-    }
-
-    public void setCurrentServiceTime(String CurrentServiceTime) {
-        this.CurrentServiceTime = CurrentServiceTime;
-    }
-
-    public void setVIPRegisterCode(String VIPRegisterCode) {
-        this.VIPRegisterCode = VIPRegisterCode;
-    }
-
-    public void setCost(double Cost) {
-        this.Cost = Cost;
-    }
-
-    public void setUserSaveAmount(double UserSaveAmount) {
-        this.UserSaveAmount = UserSaveAmount;
-    }
-
-    public void setUserLevelId(int UserLevelId) {
-        this.UserLevelId = UserLevelId;
-    }
-
-    public void setBalance(double Balance) {
-        this.Balance = Balance;
-    }
-
     public int getUserId() {
         return UserId;
+    }
+
+    public void setUserId(int userId) {
+        UserId = userId;
     }
 
     public String getLoginAccount() {
         return LoginAccount;
     }
 
-    public String getStoreName() {
-        return StoreName;
+    public void setLoginAccount(String loginAccount) {
+        LoginAccount = loginAccount;
     }
 
     public int getRoleId() {
         return RoleId;
     }
 
+    public void setRoleId(int roleId) {
+        RoleId = roleId;
+    }
+
     public int getPoint() {
         return Point;
     }
 
-    public int getDeliveryTemplateId() {
-        return DeliveryTemplateId;
-    }
-
-    public int getServicePointId() {
-        return ServicePointId;
-    }
-
-    public boolean isAdminVerfiy() {
-        return AdminVerfiy;
+    public void setPoint(int point) {
+        Point = point;
     }
 
     public String getUserName() {
         return UserName;
     }
 
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
     public String getRegisterTimeStr() {
         return RegisterTimeStr;
+    }
+
+    public void setRegisterTimeStr(String registerTimeStr) {
+        RegisterTimeStr = registerTimeStr;
     }
 
     public String getExpireTimeStr() {
         return ExpireTimeStr;
     }
 
+    public void setExpireTimeStr(String expireTimeStr) {
+        ExpireTimeStr = expireTimeStr;
+    }
+
     public String getCurrentServiceTime() {
         return CurrentServiceTime;
+    }
+
+    public void setCurrentServiceTime(String currentServiceTime) {
+        CurrentServiceTime = currentServiceTime;
     }
 
     public String getVIPRegisterCode() {
         return VIPRegisterCode;
     }
 
+    public void setVIPRegisterCode(String VIPRegisterCode) {
+        this.VIPRegisterCode = VIPRegisterCode;
+    }
+
     public double getCost() {
         return Cost;
+    }
+
+    public void setCost(double cost) {
+        Cost = cost;
     }
 
     public double getUserSaveAmount() {
         return UserSaveAmount;
     }
 
+    public void setUserSaveAmount(double userSaveAmount) {
+        UserSaveAmount = userSaveAmount;
+    }
+
     public int getUserLevelId() {
         return UserLevelId;
     }
 
+    public void setUserLevelId(int userLevelId) {
+        UserLevelId = userLevelId;
+    }
+
     public double getBalance() {
         return Balance;
+    }
+
+    public void setBalance(double balance) {
+        Balance = balance;
     }
 
     public String getPortrait() {
@@ -187,29 +150,5 @@ public class User {
 
     public void setPortrait(String portrait) {
         Portrait = portrait;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "UserId=" + UserId +
-                ", LoginAccount='" + LoginAccount + '\'' +
-                ", StoreName='" + StoreName + '\'' +
-                ", RoleId=" + RoleId +
-                ", Point=" + Point +
-                ", DeliveryTemplateId=" + DeliveryTemplateId +
-                ", ServicePointId=" + ServicePointId +
-                ", AdminVerfiy=" + AdminVerfiy +
-                ", UserName='" + UserName + '\'' +
-                ", RegisterTimeStr='" + RegisterTimeStr + '\'' +
-                ", ExpireTimeStr='" + ExpireTimeStr + '\'' +
-                ", CurrentServiceTime='" + CurrentServiceTime + '\'' +
-                ", VIPRegisterCode='" + VIPRegisterCode + '\'' +
-                ", Cost=" + Cost +
-                ", UserSaveAmount=" + UserSaveAmount +
-                ", UserLevelId=" + UserLevelId +
-                ", Balance=" + Balance +
-                ", Portrait='" + Portrait + '\'' +
-                '}';
     }
 }

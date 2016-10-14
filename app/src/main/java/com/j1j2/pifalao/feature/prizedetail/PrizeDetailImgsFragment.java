@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 
 import com.j1j2.data.model.ActivityProductImg;
 import com.j1j2.pifalao.BuildConfig;
@@ -37,6 +39,8 @@ public class PrizeDetailImgsFragment extends LazyFragment {
 
     FragmentPrizedetailImgsBinding binding;
 
+    WebView webView;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -56,20 +60,24 @@ public class PrizeDetailImgsFragment extends LazyFragment {
 
     @Override
     protected void initViews() {
-//        binding.imgList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-//        binding.imgList.addItemDecoration(new HorizontalDividerItemDecoration
-//                .Builder(getContext())
-//                .color(Color.TRANSPARENT)
-//                .size(AutoUtils.getPercentWidthSize(20))
-//                .build());
-//        binding.imgList.setAdapter(new PrizeDetailImgAdapter(listener.getImgList()));
-        WebSettings webSettings = binding.webview.getSettings();
+        webView = new WebView(getContext());
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.webviewContainer.addView(webView);
+
+        WebSettings webSettings = webView.getSettings();
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setUseWideViewPort(false);
         if (null != listener.getIntroduce())
-            binding.webview.loadDataWithBaseURL(BuildConfig.IMAGE_URL,
+            webView.loadDataWithBaseURL(BuildConfig.IMAGE_URL,
                     listener.getIntroduce()
                             .replaceAll("img", "img width=100%"), "text/html",
                     "utf-8", null);
+    }
+
+    @Override
+    protected void onDestroyViewLazy() {
+        super.onDestroyViewLazy();
+        binding.webviewContainer.removeAllViews();
+        webView.destroy();
     }
 }

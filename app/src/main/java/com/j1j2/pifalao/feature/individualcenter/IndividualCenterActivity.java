@@ -100,7 +100,7 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Override
     public void navigateToBriberymonerys() {
-        navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);
+        navigate.navigateToBriberyMoneysActivity(this, null, false, Constant.RedPacketState.AVAILABILITY);
     }
 
     @Override

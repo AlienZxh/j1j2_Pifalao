@@ -347,33 +347,7 @@ public class StringUtils {
 
 
     public static CharSequence getBalanceRecordStr(BalanceRecord balanceRecord) {
-        String str = "";
-        switch (balanceRecord.getRecordType()) {
-            case 1:
-                str = "余额支付（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            case 2:
-                str = "支付宝支付（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            case 3:
-                str = "微信支付（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            case 4:
-                str = "订单退款（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            case 5:
-                str = "使用余额（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            case 6:
-                str = "存入零钱（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            case 7:
-                str = "现金充值（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-            default:
-                str = "其它（" + balanceRecord.getCreateTimeStr() + "）";
-                break;
-        }
+        String str = balanceRecord.getRecordTypeStr() + "（" + balanceRecord.getCreateTimeStr() + "）";
         SpannableString msp = new SpannableString(str);
         msp.setSpan(new ForegroundColorSpan(0xff999999), str.indexOf("（"), str.indexOf("）") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         msp.setSpan(new RelativeSizeSpan(0.75f), str.indexOf("（"), str.indexOf("）") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

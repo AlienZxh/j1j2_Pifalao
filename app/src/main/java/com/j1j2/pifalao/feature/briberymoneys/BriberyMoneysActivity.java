@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.briberymoneys;
 
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
@@ -99,6 +100,7 @@ public class BriberyMoneysActivity extends BaseActivity implements View.OnClickL
     public void navigateToBriberyMoneryOpen(RedPacket redPacket) {
         navigate.navigateToBriberyMoneyOpenActivity(this, null, false, redPacket);
     }
+    
 
     @Override
     public void onClick(View v) {
