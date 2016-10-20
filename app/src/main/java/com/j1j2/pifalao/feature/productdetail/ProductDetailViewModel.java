@@ -96,6 +96,7 @@ public class ProductDetailViewModel {
                                 break;
                         }
                         productDetailActivity.moduleType = mProductDetail.getModuleType();
+                        productDetailActivity.initShareContent(mProductDetail);
                         productDetailActivity.initBanner(sizeProductImgs);
                         productDetailActivity.initPrice(mProductDetail);
                         productDetailActivity.initUnitsSelect(mProductDetail);

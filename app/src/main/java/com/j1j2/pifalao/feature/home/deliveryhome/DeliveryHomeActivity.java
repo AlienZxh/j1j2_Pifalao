@@ -8,8 +8,6 @@ import android.graphics.PointF;
 import android.support.annotation.Size;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -27,25 +25,22 @@ import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.dialog.DeliveryAreasDialogFragment;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityDeliveryhomeBinding;
-import com.j1j2.pifalao.databinding.ViewDeliveryAreasBinding;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts.DeliveryHomeProductsFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryHomeServicepointFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.di.DeliveryHomeModule;
 import com.nineoldandroids.view.ViewHelper;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -63,7 +58,7 @@ import rx.schedulers.Schedulers;
 public class DeliveryHomeActivity extends BaseActivity implements View.OnClickListener,
         DeliveryHomeProductsFragment.DeliveryHomeProductsFragmentListener,
         ScrollableLayout.OnScrollListener,
-        DeliveryAreasAdapter.OnAreaItemClickListener {
+        DeliveryAreasDialogFragment.DeliveryAreasDialogFragmentListener {
 
     ActivityDeliveryhomeBinding binding;
 
@@ -89,9 +84,6 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     ValueAnimator valueAnimator;
     int[] endLocation = new int[2];
 
-    DialogPlus areasDialog;
-    ViewDeliveryAreasBinding areasDialogBinding;
-
     UnReadInfoManager unReadInfoManager = null;
 
     @Override
@@ -103,20 +95,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
-        //___________________________________________________
-        areasDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_delivery_areas, null, false);
-        areasDialogBinding.areasList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        areasDialogBinding.areasList.setAdapter(new DeliveryAreasAdapter(Arrays.asList(servicePoint.getServiceAreas() != null ? servicePoint.getServiceAreas().split("\\;") : new String[]{})));
-        ((DeliveryAreasAdapter) areasDialogBinding.areasList.getAdapter()).setOnAreaItemClickListener(this);
-        areasDialog = DialogPlus.newDialog(this)
-                .setInAnimation(android.R.anim.fade_in)
-                .setOutAnimation(android.R.anim.fade_out)
-                .setCancelable(true)
-                .setContentHolder(new ViewHolder(areasDialogBinding.getRoot()))
-                .setContentBackgroundResource(R.color.colorTransparent)
-                .setGravity(Gravity.CENTER)
-                .create();
-        areasDialogBinding.confirm.setOnClickListener(this);
+
         //____________________________________________________________________
         binding.scrollableLayout.setOnScrollListener(this);
         deliveryHomeServicepointFragment = Bundler.deliveryHomeServicepointFragment(servicePoint).create();
@@ -147,7 +126,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
         queryFreightType(module.getWareHouseModuleId());
         //______________________
         if (userRelativePreference.getShowDeliveryArea(true)) {
-            areasDialog.show();
+            new DeliveryAreasDialogFragment().show(getSupportFragmentManager(),"DELIVERYAREASDIALOG");
             userRelativePreference.setShowDeliveryArea(false);
         }
 
@@ -214,10 +193,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
     }
 
 
-    @Override
-    public void OnAreaItemClick() {
-        areasDialog.dismiss();
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -236,8 +212,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
                 navigateToLogin(v);
         if (v == binding.searchview)
             navigate.navigateToSearchActivity(this, null, false, module);
-        if (v == areasDialogBinding.confirm)
-            areasDialog.dismiss();
+
     }
 
 
@@ -297,6 +272,11 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
             }
         });
         valueAnimator.start();
+    }
+
+    @Override
+    public String getServiceAreas() {
+        return servicePoint.getServiceAreas();
     }
 
     @Override

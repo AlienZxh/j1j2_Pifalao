@@ -63,7 +63,6 @@ public class BriberyMoneyOpenActivity extends BaseActivity implements
     @Override
     protected void initViews() {
         binding.close.setOnClickListener(this);
-        binding.layout.setOnClickListener(this);
         binding.openBtn.setOnClickListener(this);
         binding.setRedPacket(redPacket);
     }
@@ -119,7 +118,7 @@ public class BriberyMoneyOpenActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        if (v == binding.close || v == binding.layout)
+        if (v == binding.close)
             onBackPressed();
         if (v == binding.openBtn) {
 

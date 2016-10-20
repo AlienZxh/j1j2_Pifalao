@@ -1,22 +1,14 @@
 package com.j1j2.pifalao.feature.services;
 
-import android.content.DialogInterface;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.FrameLayout;
+import android.view.animation.BounceInterpolator;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -28,8 +20,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.j1j2.common.util.QRCodeUtils;
+import com.j1j2.common.util.LocationUtils;
 import com.j1j2.common.util.ScreenUtils;
+import com.j1j2.common.view.interpolater.EaseBounceOutInterpolator;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.SystemNotice;
@@ -38,6 +31,9 @@ import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
+import com.j1j2.pifalao.app.dialog.QRDialogFragment;
+import com.j1j2.pifalao.app.dialog.QRDialogFragmentBundler;
+import com.j1j2.pifalao.app.dialog.SystemNoticeDialogFragmentBundler;
 import com.j1j2.pifalao.app.event.LocationEvent;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.event.LoginCookieTimeoutEvent;
@@ -46,15 +42,11 @@ import com.j1j2.pifalao.app.event.NavigateToPrizeDetailEvent;
 import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityServicesBinding;
-import com.j1j2.pifalao.databinding.ViewQrcodeBinding;
 import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.main.MainActivity;
+import com.j1j2.pifalao.feature.services.di.ServicesComponent;
 import com.j1j2.pifalao.feature.services.di.ServicesModule;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.orhanobut.logger.Logger;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -78,10 +70,11 @@ import zhy.com.highlight.HighLight;
 @RequireBundler
 public class ServicesActivity extends BaseMapActivity implements
         ServicesAdapter.OnItemClickListener
-        , View.OnClickListener
-        , OnDismissListener {
+        , View.OnClickListener, QRDialogFragment.QRDialogFragmentListener {
 
     ActivityServicesBinding binding;
+
+    ServicesComponent servicesComponent;
 
     @Inject
     ServicePoint servicePoint;
@@ -94,15 +87,6 @@ public class ServicesActivity extends BaseMapActivity implements
 
     MarkerOptions servicepointMarkOptions;
 
-    ViewQrcodeBinding qrBinding;
-    DialogPlus qrDialog;
-
-
-    float rememberScreenBrightness = 0.0f;
-
-    Bitmap appBitmap;
-    Bitmap qrBitMap;
-
     List<Module> modules;
 
     BDLocation location;
@@ -111,15 +95,18 @@ public class ServicesActivity extends BaseMapActivity implements
 
     HighLight highLight;
 
-    WebView webView;
-    FrameLayout webviewContainer;
+    private String locationDialogTag = "LOCATIONDIALOG";
+    private String invalidDialogTag = "INVALIDDIALOG";
+
+    ServicePoint selectServicePoint;
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
 
         Bundler.inject(this);
-        MainAplication.get(this).getAppComponent().plus(new ServicesModule(this)).inject(this);
+        servicesComponent = MainAplication.get(this).getAppComponent().plus(new ServicesModule(this));
+        servicesComponent.inject(this);
     }
 
     @Override
@@ -136,29 +123,12 @@ public class ServicesActivity extends BaseMapActivity implements
             showHighlight();
             userRelativePreference.setShowHighLight(false);
         }
-        //_________________________________________________________________________________
-        Window window = getWindow();
-        WindowManager.LayoutParams windowLp = window.getAttributes();
-        rememberScreenBrightness = windowLp.screenBrightness;
-        //________________________________________________________________________________
-        appBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-        //______________________________________________________________________________________
-        qrBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_qrcode, null, false);
-        qrDialog = DialogPlus.newDialog(this).setGravity(Gravity.CENTER)
-                .setCancelable(true)
-                .setInAnimation(android.R.anim.fade_in)
-                .setOutAnimation(android.R.anim.fade_out)
-                .setContentHolder(new ViewHolder(qrBinding.getRoot()))
-                .setContentHeight(AutoUtils.getPercentHeightSize(675))
-                .setContentWidth(AutoUtils.getPercentHeightSize(675))
-                .setOnDismissListener(this)
-                .setContentBackgroundResource(R.color.colorTransparent)
-                .create();
-        qrBinding.dialogClose.setOnClickListener(this);
+
         //_______________________________________________________________________________________
         binding.moduleList.setLayoutManager(new GridLayoutManager(this, 3));
         ScaleInAnimator scaleInAnimator = new ScaleInAnimator();
-        scaleInAnimator.setAddDuration(300);
+        scaleInAnimator.setAddDuration(400);
+        scaleInAnimator.setInterpolator(new EaseBounceOutInterpolator());
         binding.moduleList.setItemAnimator(scaleInAnimator);
 
 
@@ -169,39 +139,16 @@ public class ServicesActivity extends BaseMapActivity implements
         //__________________________________________________________________________________________
         servicesViewModule.querySystemNotice();
         //_______________________________________________________________
+
     }
 
     public void showLocationDialog(final ServicePoint servicePoint) {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage(servicePoint.getName() + "离您更近，是否进行切换？")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("切换", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        userRelativePreference.setSelectedServicePoint(servicePoint);
-                        userRelativePreference.setShowDeliveryArea(true);
-                        userRelativePreference.setShowLocation(true);
-                        navigate.navigateToServicesActivity(ServicesActivity.this, null, true);
-                    }
-                })
-                .create();
-        messageDialog.show();
+        selectServicePoint = servicePoint;
+        showMessageDialogDuplicate(true, locationDialogTag, "提示", servicePoint.getName() + "离您更近，是否进行切换？", "取消", "切换");
     }
 
     public void showInvalidDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage("无效的商品")
-                .setPositiveButton("知道了", null)
-                .create();
-        messageDialog.show();
+        showMessageDialogDuplicate(true, invalidDialogTag, "提示", "无效的商品", null, "知道了");
     }
 
 
@@ -217,7 +164,6 @@ public class ServicesActivity extends BaseMapActivity implements
 
     public void setModules(List<Module> modules) {
         this.modules = modules;
-
     }
 
     public void launchFromUrl() {
@@ -285,21 +231,13 @@ public class ServicesActivity extends BaseMapActivity implements
 //        mBaiduMap.setMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
-
-        showMarker(servicePoint);
-
-    }
-
-
-    public void setQRCode(final String str) {
-        qrBinding.qrcodeImg.post(new Runnable() {
+        mBaiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
-            public void run() {
-                toastor.showSingletonToast("特权码已刷新");
-                qrBitMap = QRCodeUtils.createQRCodeWithLogo(str, qrBinding.qrcodeImg.getHeight(), appBitmap);
-                qrBinding.qrcodeImg.setImageBitmap(qrBitMap);
+            public void onMapLoaded() {
+                MainAplication.get(ServicesActivity.this).getLocationService().requestLocation();
             }
         });
+        showMarker(servicePoint);
     }
 
 
@@ -311,9 +249,7 @@ public class ServicesActivity extends BaseMapActivity implements
     }
 
     public void showQRDialog() {
-        initWindows();
-        servicesViewModule.queryQRCode();
-        qrDialog.show();
+        QRDialogFragmentBundler.build().create().show(getSupportFragmentManager(), "QRDIALOG");
     }
 
 
@@ -341,38 +277,10 @@ public class ServicesActivity extends BaseMapActivity implements
     }
 
     public void showSystemNotice(SystemNotice systemNotice) {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-
         if (systemNotice.isState()) {
-            View systemNoticeView = getLayoutInflater().inflate(
-                    R.layout.view_systemnotice, null);
-
-            webviewContainer = (FrameLayout) systemNoticeView
-                    .findViewById(R.id.webviewContainer);
-
-            if (webView == null) {
-                webView = new WebView(this);
-                webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                webviewContainer.addView(webView);
-            }
-
-            WebSettings webSettings = webView.getSettings();
-            webSettings
-                    .setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-            webSettings.setUseWideViewPort(false);
-            webView.loadDataWithBaseURL(
-                    "http://218.244.128.140:7171",
-                    systemNotice.getNotifyText(),
-                    "text/html",
-                    "utf-8", null);
-            messageDialog = new AlertDialog.Builder(this)
-                    .setCancelable(true)
-                    .setTitle("通知")
-                    .setNegativeButton("知道了", null)
-                    .setView(systemNoticeView, ScreenUtils.dpToPx(15), 0, ScreenUtils.dpToPx(15), 0)
-                    .create();
-            messageDialog.show();
+            SystemNoticeDialogFragmentBundler.build()
+                    .notifyText(systemNotice.getNotifyText()).create()
+                    .show(getSupportFragmentManager(), "SYSTEMNOTICEDIALOG");
         }
     }
 
@@ -451,6 +359,11 @@ public class ServicesActivity extends BaseMapActivity implements
     }
 
     @Override
+    public ServicesComponent getComponent() {
+        return servicesComponent;
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == binding.loginBtn) {
             if (MainAplication.get(this).isLogin())
@@ -470,19 +383,10 @@ public class ServicesActivity extends BaseMapActivity implements
             else
                 navigate.navigateToLogin(this, null, false);
         }
-        if (v == qrBinding.dialogClose) {
-            if (qrDialog.isShowing())
-                qrDialog.dismiss();
-        }
         if (v == binding.servicepointBtn)
-            navigate.navigateToServicePointActivity(this, null, false, servicePoint, location);
+            navigate.navigateToServicePointActivity(this, null, false, servicePoint);
     }
 
-    @Override
-    public void onDismiss(DialogPlus dialog) {
-        rememberScreenBrightness();
-        servicesViewModule.stopQueryQRCode();
-    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.POSTING)
     public void onLogStateChangeEvent(LogStateEvent event) {
@@ -513,7 +417,7 @@ public class ServicesActivity extends BaseMapActivity implements
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         location = event.getLocation();
-        if (isLocationSuccess(location)) {
+        if (LocationUtils.isLocationSuccess(location)) {
             if (mBaiduMap != null) {
                 // 地图显示我的位置
                 MyLocationData locData = new MyLocationData.Builder()
@@ -525,13 +429,13 @@ public class ServicesActivity extends BaseMapActivity implements
                         .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
                         .build();
                 mBaiduMap.setMyLocationData(locData);
-            }
 
-            if (userRelativePreference.getShowLocation(false)) {
-                servicesViewModule.queryServicepointInCity(location,
-                        userRelativePreference.getSelectedCity(null),
-                        userRelativePreference.getSelectedServicePoint(null));
-                userRelativePreference.setShowLocation(false);
+                if (userRelativePreference.getShowLocation(false)) {
+                    servicesViewModule.queryServicepointInCity(location,
+                            userRelativePreference.getSelectedCity(null),
+                            userRelativePreference.getSelectedServicePoint(null));
+                    userRelativePreference.setShowLocation(false);
+                }
             }
         }
     }
@@ -577,21 +481,6 @@ public class ServicesActivity extends BaseMapActivity implements
             }
     }
 
-    private void rememberScreenBrightness() {
-        Window window = getWindow();
-        WindowManager.LayoutParams windowLp = window.getAttributes();
-        windowLp.screenBrightness = rememberScreenBrightness;
-        window.setAttributes(windowLp);
-    }
-
-    private void initWindows() {
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-        WindowManager.LayoutParams windowLp = window.getAttributes();
-        windowLp.screenBrightness = 1.0f;
-        window.setAttributes(windowLp);
-    }
-
 
     public void showMarker(ServicePoint servicePoint) {
         BitmapDescriptor markIcon = BitmapDescriptorFactory
@@ -611,14 +500,16 @@ public class ServicesActivity extends BaseMapActivity implements
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (webviewContainer != null && webView != null) {
-            webviewContainer.removeAllViews();
-            webView.destroy();
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(locationDialogTag)) {
+            userRelativePreference.setSelectedServicePoint(selectServicePoint);
+            userRelativePreference.setShowDeliveryArea(true);
+            userRelativePreference.setShowLocation(true);
+            navigate.navigateToServicesActivity(ServicesActivity.this, null, true);
         }
-
     }
+
 
     private static Boolean isExit = false;
 

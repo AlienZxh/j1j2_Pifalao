@@ -78,12 +78,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToServicePointActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint, BDLocation location) {
+    public void navigateToServicePointActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.servicePointActivity(servicePoint, location).start(context);
+            Bundler.servicePointActivity(servicePoint).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.servicePointActivity(servicePoint, location).intent(context),
+            ActivityCompat.startActivity(context, Bundler.servicePointActivity(servicePoint).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

@@ -173,10 +173,6 @@
 -dontwarn net.jodah.typetools.TypeResolver
 ##---------------End: proguard configuration for StoreBox  ----------
 
-##---------------Begin: proguard configuration for dialogplus  ----------
--keep class com.orhanobut.dialogplus.** { *; }
--dontwarn  com.orhanobut.dialogplus.**
-##---------------End: proguard configuration for dialogplus  ----------
 
 ##---------------Begin: proguard configuration for zxing  ----------
 -keep class com.google.zxing.** { *; }

@@ -87,6 +87,9 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void initViews() {
+        webView = new WebView(this);
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        binding.webviewContainer.addView(webView);
 
         List<Cookie> cookies = gson.<List<Cookie>>fromJson(userLoginPreference
                 .getLoginCookie(null), new TypeToken<List<Cookie>>() {
@@ -95,10 +98,6 @@ public class VipHomeActivity extends BaseActivity implements View.OnClickListene
         cookieManager.setAcceptCookie(true);
         cookieManager.setCookie(privilegeUrl, cookies.get(0).toString());
         cookieManager.setCookie(pointUrl, cookies.get(0).toString());
-
-        webView = new WebView(this);
-        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        binding.webviewContainer.addView(webView);
 
         WebSettings webSettings = webView.getSettings();
         if (Network.isAvailable(this)) {

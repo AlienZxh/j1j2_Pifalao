@@ -133,15 +133,12 @@ public class ParticipationRecordActivity extends BaseActivity implements View.On
                 .subscribe(new WebReturnSubscriber<List<String>>() {
                     @Override
                     public void onWebReturnSucess(List<String> stringList) {
-                        if (messageDialog != null && messageDialog.isShowing())
-                            messageDialog.dismiss();
-                        messageDialog = new AlertDialog.Builder(ParticipationRecordActivity.this)
+                     new AlertDialog.Builder(ParticipationRecordActivity.this)
                                 .setCancelable(true)
                                 .setTitle("幸运号码")
                                 .setItems(stringList.toArray(new String[stringList.size()]), null)
                                 .setPositiveButton("知道了", null)
-                                .create();
-                        messageDialog.show();
+                                .create().show();
                     }
 
                     @Override

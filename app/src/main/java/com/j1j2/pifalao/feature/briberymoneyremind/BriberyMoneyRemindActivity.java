@@ -2,6 +2,8 @@ package com.j1j2.pifalao.feature.briberymoneyremind;
 
 import android.databinding.DataBindingUtil;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -38,14 +40,13 @@ public class BriberyMoneyRemindActivity extends BaseActivity implements View.OnC
     @Override
     protected void initViews() {
         binding.close.setOnClickListener(this);
-        binding.layout.setOnClickListener(this);
         binding.img.setOnClickListener(this);
         binding.countText.setText("您有" + count + "个红包");
     }
 
     @Override
     public void onClick(View v) {
-        if (v == binding.close || v == binding.layout)
+        if (v == binding.close)
             onBackPressed();
         if (v == binding.img){
             navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);

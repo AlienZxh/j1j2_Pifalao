@@ -40,8 +40,6 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
 
     @Arg
     ServicePoint servicePoint;
-    @Arg
-    BDLocation location;
 
     @Inject
     ServicePointViewModel servicePointViewModel;
@@ -49,6 +47,8 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
     @Inject
     UserRelativePreference userRelativePreference;
 
+
+    private String callDialogTag = "CALLDIALOG";
 
     @Override
     protected void initBinding() {
@@ -68,30 +68,9 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
         MainAplication.get(this).getAppComponent().plus(new ServicePointModule(this, servicePoint)).inject(this);
     }
 
+
     private void showCallDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认拨打： " + servicePoint.getMobile() + "？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PackageManager pkm = getPackageManager();
-                        boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                                == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-                        if (has_permission) {
-                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
-                            startActivity(intent);
-                        } else {
-                            toastor.showSingletonToast("没有拨打电话权限");
-                        }
-                    }
-                })
-                .create();
-        messageDialog.show();
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + servicePoint.getMobile() + "？", "取消", "确定");
     }
 
     @Override
@@ -100,6 +79,7 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
             showCallDialog();
         }
         if (v == binding.navigationBtn) {
+            BDLocation location = MainAplication.get(this).getLocationService().getSuccessLocation();
             if (location == null) {
                 toastor.showSingletonToast("定位失败");
                 return;
@@ -120,6 +100,22 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
         }
         if (v == binding.backBtn) {
             onBackPressed();
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(callDialogTag)) {
+            PackageManager pkm = getPackageManager();
+            boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+            if (has_permission) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+                startActivity(intent);
+            } else {
+                toastor.showSingletonToast("没有拨打电话权限");
+            }
         }
     }
 }

@@ -381,9 +381,14 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <!--微信回调页面-->
         <activity
+            android:name=".pay.weixin.WXPayCallbackActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity-alias
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop" />
+            android:targetActivity=".pay.weixin.WXPayCallbackActivity" />
 
         <!--支付宝页面-->
         <activity
@@ -427,7 +432,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!---->
-
         <receiver android:name=".app.service.NetWorkReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -437,6 +441,7 @@
         <service
             android:name=".app.service.BackGroundService"
             android:exported="false" />
+
         <!--腾讯 bugly-->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
@@ -448,7 +453,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
         <!--umeng统计-->
         <meta-data

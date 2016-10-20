@@ -2,6 +2,8 @@ package com.j1j2.pifalao.feature.imgsgallery;
 
 import android.databinding.DataBindingUtil;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.j1j2.common.view.touchgallery.GalleryWidget.UrlPagerAdapter;
 import com.j1j2.data.model.ImgUrl;
@@ -46,13 +48,6 @@ public class ImgsGalleryActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
-        binding.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
         List<String> strUrls = new ArrayList<>();
         for (ImgUrl imgUrl : imgUrls) {

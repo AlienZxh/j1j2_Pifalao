@@ -34,6 +34,7 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.j1j2.common.util.LocationUtils;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
 import com.j1j2.pifalao.app.event.AddressSelectEvent;
@@ -139,7 +140,7 @@ public class AddressSelectActivity extends BaseMapActivity implements OnGetGeoCo
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         BDLocation location = event.getLocation();
-        if (isLocationSuccess(location)) {
+        if (LocationUtils.isLocationSuccess(location)) {
             refreshMyLocation(location);
             if (isFirst) {
                 toMayLocation(location);

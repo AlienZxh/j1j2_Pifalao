@@ -20,6 +20,8 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.dialog.MessageDialogFragmentBundler;
+import com.j1j2.pifalao.app.dialog.impl.IDialogPositiveButtonClickListener;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivitySettingBinding;
 import com.j1j2.pifalao.feature.account.di.AccountModule;
@@ -35,6 +37,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
+import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.RequireBundler;
 import rx.Observable;
 import rx.Subscriber;
@@ -56,6 +59,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Inject
     UnReadInfoManager unReadInfoManager;
+
+    private String versionDialogTag = "VERSIONDIALOG";
+    private String callDialogTag = "CALLDIALOG";
+    private String clearCacheDialogTag = "CLEARCACHEDIALOG";
 
     @Override
     protected void setupActivityComponent() {
@@ -89,74 +96,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    private void showCallDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认拨打： 400-808-7172？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PackageManager pkm = getPackageManager();
-                        boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                                == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-                        if (has_permission) {
-                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
-                            startActivity(intent);
-                        } else {
-                            toastor.showSingletonToast("没有拨打电话权限");
-                        }
-                    }
-                })
-                .create();
-        messageDialog.show();
+    public void showVersionDialog() {
+        showMessageDialogDuplicate(true, versionDialogTag, "提示", "已是最新版本", null, "确定");
     }
 
-    private void showClearCacheDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage("确认清除缓存吗？")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showProgress("缓存删除中");
-                        Observable.create(new Observable.OnSubscribe<Void>() {
-                            @Override
-                            public void call(Subscriber<? super Void> subscriber) {
-                                FileUtils.deleteFolderFile(Constant.FilePath.saveFolder, true);
-                                subscriber.onCompleted();
-                            }
-                        })
-//                                .compose(SettingActivity.this.<Void>bindUntilEvent(ActivityEvent.DESTROY))
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<Void>() {
-                                    @Override
-                                    public void onCompleted() {
-                                        binding.cacheSize.setText(FileUtils.getFormatSize(FileUtils.getFolderSize(new File(Constant.FilePath.saveFolder))));
-                                        dismissProgress();
-                                    }
+    public void showCallDialog() {
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： 400-808-7172？", "取消", "确定");
+    }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-
-                                    }
-
-                                    @Override
-                                    public void onNext(Void aVoid) {
-                                    }
-                                });
-                    }
-                })
-                .create();
-        messageDialog.show();
+    public void showClearCacheDialog() {
+        showMessageDialogDuplicate(true, clearCacheDialogTag, "提示", "确认清除缓存吗？", "取消", "确定");
     }
 
 
@@ -199,17 +148,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    public void showVersionDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage("已是最新版本")
-                .setPositiveButton("确定", null)
-                .create();
-        messageDialog.show();
-    }
 
     public static String getLocalVersionName(Context ctx) {
         String localVersion = "";
@@ -252,5 +190,49 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onUpgradeDialogDestory(Context context, View view, UpgradeInfo upgradeInfo) {
 
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(callDialogTag)) {
+            PackageManager pkm = getPackageManager();
+            boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+            if (has_permission) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
+                startActivity(intent);
+            } else {
+                toastor.showSingletonToast("没有拨打电话权限");
+            }
+        } else if (fragmentTag.equals(clearCacheDialogTag)) {
+            showProgress("缓存删除中");
+            Observable.create(new Observable.OnSubscribe<Void>() {
+                @Override
+                public void call(Subscriber<? super Void> subscriber) {
+                    FileUtils.deleteFolderFile(Constant.FilePath.saveFolder, true);
+                    subscriber.onCompleted();
+                }
+            })
+//                                .compose(SettingActivity.this.<Void>bindUntilEvent(ActivityEvent.DESTROY))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Void>() {
+                        @Override
+                        public void onCompleted() {
+                            binding.cacheSize.setText(FileUtils.getFormatSize(FileUtils.getFolderSize(new File(Constant.FilePath.saveFolder))));
+                            dismissProgress();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onNext(Void aVoid) {
+                        }
+                    });
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.location;
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.j1j2.common.util.LocationUtils;
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.ServicePoint;
@@ -53,7 +54,7 @@ public class LocationViewModel {
     }
 
     private Observable<WebReturn<List<ServicePoint>>> queryNearByWithLocation(BDLocation location) {
-        if (locationActivity.isLocationSuccess(location)) {
+        if (LocationUtils.isLocationSuccess(location)) {
             LatLng northeast = locationActivity.getNortheast(location);
             LatLng southwest = locationActivity.getSouthwest(location);
             return servicePointApi.queryServicePointWithOutDistanceInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude);
@@ -165,7 +166,7 @@ public class LocationViewModel {
             locationServicePointAdapter.notifyDataSetChanged();
             return;
         }
-        if (locationActivity.isLocationSuccess(location)) {
+        if (LocationUtils.isLocationSuccess(location)) {
             LatLng mPoint = new LatLng(location.getLatitude(), location.getLongitude());
             LatLng mServicePoint = null;
             for (ServicePoint servicePoint : mServicePoints) {

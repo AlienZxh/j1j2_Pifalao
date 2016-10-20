@@ -48,20 +48,18 @@ public class ServicesViewModule {
     ServicePoint servicePoint;
 
     ServicePointApi servicePointApi;
-    UserVipApi userVipApi;
     UserLoginApi userLoginApi;
     SystemAssistApi systemAssistApi;
     ActivityApi activityApi;
 
     ServicesActivity servicesActivity;
-    private Subscription subscription;
+
     private ServicesAdapter servicesAdapter;
 
-    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
+    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint,  UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
         this.servicePointApi = servicePointApi;
         this.servicesActivity = servicesActivity;
         this.servicePoint = servicePoint;
-        this.userVipApi = userVipApi;
         this.userLoginApi = userLoginApi;
         this.systemAssistApi = systemAssistApi;
         this.activityApi = activityApi;
@@ -159,41 +157,7 @@ public class ServicesViewModule {
 
     }
 
-    public void queryQRCode() {
-        if (null != subscription && subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-            subscription = null;
-        }
-        subscription = Observable
-                .interval(0, 60, TimeUnit.SECONDS)
-                .compose(servicesActivity.<Long>bindUntilEvent(ActivityEvent.DESTROY))
-                .flatMap(new Func1<Long, Observable<WebReturn<String>>>() {
-                    @Override
-                    public Observable<WebReturn<String>> call(Long aLong) {
-                        return userVipApi.queryLoginDimensionalCode();
-                    }
-                })
-                .compose(servicesActivity.<WebReturn<String>>bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<String>() {
-                    @Override
-                    public void onWebReturnSucess(String s) {
-                        servicesActivity.setQRCode(s);
-                    }
 
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
-
-    }
 
     public void updateUserTerminalDetail(final String deviceToken) {
         LoginBody loginBody = new LoginBody();
@@ -270,11 +234,6 @@ public class ServicesViewModule {
                 });
     }
 
-
-    public void stopQueryQRCode() {
-        if (subscription != null)
-            subscription.unsubscribe();
-    }
 
     public ServicesAdapter getServicesAdapter() {
         return servicesAdapter;

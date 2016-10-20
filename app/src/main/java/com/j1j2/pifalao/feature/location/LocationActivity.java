@@ -1,9 +1,7 @@
 package com.j1j2.pifalao.feature.location;
 
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableField;
 import android.graphics.Point;
-import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -23,6 +21,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.OverlayManager;
+import com.j1j2.common.util.LocationUtils;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
@@ -37,7 +36,6 @@ import com.j1j2.pifalao.feature.location.di.LocationModule;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -191,7 +189,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         location = event.getLocation();
-        if (isLocationSuccess(location)) {
+        if (LocationUtils.isLocationSuccess(location)) {
             if (mBaiduMap != null) {
                 // 地图显示我的位置
                 MyLocationData locData = new MyLocationData.Builder()
@@ -207,7 +205,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         }
         if (loadList) {
             locationViewModel.onCreate(location);
-            if (isLocationSuccess(location)) {
+            if (LocationUtils.isLocationSuccess(location)) {
                 LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(point, 14.0f);
                 mBaiduMap.setMapStatus(u);
@@ -220,7 +218,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     @Override
     public void onMapLoaded() {
         loadList = true;
-        mLocationClient.requestLocation();
+        MainAplication.get(this).getLocationService().requestLocation();
     }
 
     @Override
@@ -234,7 +232,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
             navigate.navigateToCityActivity(this, null, true);
         if (v == popBinding.popInfoIcon)
             if (servicePoint != null)
-                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, servicePoint, location);
+                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, servicePoint);
 
         if (v == popBinding.popLayout)
             if (servicePoint != null) {
@@ -249,12 +247,9 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     @Override
     public void onDistrictItemClickListener(View view, City city, int position) {
         if (position == 0) {
-            LocationEvent locationEvent = EventBus.getDefault().getStickyEvent(LocationEvent.class);
-            locationViewModel.queryNearByServicePoint(locationEvent.getLocation());
-
+            locationViewModel.queryNearByServicePoint(MainAplication.get(this).getLocationService().getmLocation());
         } else {
-            LocationEvent locationEvent = EventBus.getDefault().getStickyEvent(LocationEvent.class);
-            locationViewModel.queryInDistrict(locationEvent.getLocation(), city);
+            locationViewModel.queryInDistrict(MainAplication.get(this).getLocationService().getmLocation(), city);
         }
     }
 
@@ -268,7 +263,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     @Override
     public void onInfoClickListener(View view, ServicePoint servicePoint) {
-        navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint, location);
+        navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint);
     }
 
     public class ServicePointOverlayManager extends OverlayManager {

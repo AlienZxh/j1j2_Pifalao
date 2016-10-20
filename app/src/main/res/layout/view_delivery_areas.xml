@@ -2,9 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.zhy.autolayout.AutoLinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/white_conner_bg"
         android:orientation="vertical">
 
         <TextView

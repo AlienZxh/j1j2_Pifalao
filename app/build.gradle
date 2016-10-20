@@ -29,14 +29,11 @@ android {
     compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
     buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
-//    splits {
-//        abi {
-//            enable true
-//            reset()
-//            include 'arm64-v8a', 'armeabi-v7a', 'armeabi'
-//            universalApk false
-//        }
-//    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
     dataBinding {
         enabled true
@@ -97,8 +94,8 @@ android {
             zipAlignEnabled false
             shrinkResources false
             //9087
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9087/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9087\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
             buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }

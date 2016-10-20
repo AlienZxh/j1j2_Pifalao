@@ -7,7 +7,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorWhite</item>
-        <item name="android:textColorPrimary">@color/colorWhite</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,7 +14,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorWhite</item>
-        <item name="android:textColorPrimary">@color/colorWhite</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -25,18 +23,18 @@
         <item name="colorPrimaryDark">#d84e43</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorWhite</item>
-        <item name="android:textColorPrimary">@color/colorWhite</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.ActivityDialog" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme.ActivityDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorTransparentGrayDark</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <!--<item name="android:textColorPrimary">@color/colorWhite</item>-->
+        <item name="android:windowBackground">@color/colorTransparent</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -46,19 +44,22 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MemberHomeLuckTabLayout" parent="Widget.Design.TabLayout">
-        <item name="tabTextColor">@color/colorText999</item>
-        <item name="tabIndicatorColor">@color/colorPrimary</item>
-        <item name="tabSelectedTextColor">@color/colorPrimary</item>
-    </style>
-
     <style name="CustomSpotDialog" parent="android:Theme.DeviceDefault.Light.Dialog">
         <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
         <item name="DialogSpotColor">@color/colorPrimary</item>
         <item name="DialogSpotCount">5</item>
     </style>
 
-    <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">32px</item>
+    <style name="BottomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@style/BottomDialog.AnimationStyle</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
+    <style name="BottomDialog.AnimationStyle" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/umeng_socialize_slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/umeng_socialize_slide_out_from_bottom</item>
+    </style>
+
 </resources>

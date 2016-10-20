@@ -37,7 +37,6 @@ dependencies {
     compile commonDependencies.superrecyclerview
     compile commonDependencies.circular
     compile commonDependencies.tagview
-    compile commonDependencies.dialogplus
     compile commonDependencies.zxing
     compile commonDependencies.nineold
     compile commonDependencies.badgeview

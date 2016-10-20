@@ -7,20 +7,16 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.util.EmptyUtils;
-import com.j1j2.common.util.Toastor;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.model.ActivityProduct;
 import com.j1j2.data.model.ActivityProductImg;
 import com.j1j2.data.model.ActivityWinPrize;
-import com.j1j2.data.model.LotteryParticipationTimes;
 import com.j1j2.data.model.Module;
-import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.BuildConfig;
@@ -29,13 +25,11 @@ import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
+import com.j1j2.pifalao.app.dialog.ShareDialogFragment;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityPrizedetailBinding;
-import com.j1j2.pifalao.databinding.ViewShareboardBinding;
 import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailComponent;
 import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailModule;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.orhanobut.logger.Logger;
 import com.shizhefei.view.multitype.ItemBinderFactory;
 import com.shizhefei.view.multitype.MultiTypeAdapter;
@@ -72,7 +66,8 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
         PrizeDetailGiftSelectFragment.PrizeDetailGiftSelectFragmentListener,
         PrizeDetailTopFragment.PrizeDetailTopFragmentListener,
         PrizeDetailRecordFragment.PrizeDetailRecordFragmentListener,
-        PrizeDetailImgsFragment.PrizeDetailImgsFragmentListener {
+        PrizeDetailImgsFragment.PrizeDetailImgsFragmentListener,
+        ShareDialogFragment.ShareDialogFragmentListener {
 
 
     ActivityPrizedetailBinding binding;
@@ -101,9 +96,12 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
     FragmentData selectFragment;
     FragmentData giftSelectFragment;
 
-    ViewShareboardBinding dialogBinding;
-    DialogPlus shareDialog;
-
+    UMImage image;
+    String title;
+    String text;
+    String url;
+    String sinaText;
+    String clipText;
     //可以将一下代码加到你的MainActivity中，或者在任意一个需要调用分享功能的activity当中
     String[] mPermissionList = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS};
     String[] randomShareText = new String[]{"快来抢，$领取", "抢疯啦！$抽取", "新店开业，$抢", "仅需$，抢占", "来真的！$夺取", "不花钱，$来抢"};
@@ -131,21 +129,7 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
             queryActivityProductDetails();
         }
         //______________________________________________________________________________
-        dialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_shareboard, null, false);
-        shareDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
-                .setCancelable(true)
-                .setInAnimation(R.anim.slide_in_bottom)
-                .setOutAnimation(R.anim.slide_out_bottom)
-                .setContentHolder(new ViewHolder(dialogBinding.getRoot()))
-                .setContentBackgroundResource(R.color.colorWhite)
-                .create();
-        dialogBinding.cancelShareBtn.setOnClickListener(this);
-        dialogBinding.weixinShareBtn.setOnClickListener(this);
-        dialogBinding.weixinFriendShareBtn.setOnClickListener(this);
-        dialogBinding.sinaShareBtn.setOnClickListener(this);
-        dialogBinding.qqShareBtn.setOnClickListener(this);
-        dialogBinding.qqZoneShareBtn.setOnClickListener(this);
-        dialogBinding.copyShareBtn.setOnClickListener(this);
+
 
     }
 
@@ -202,7 +186,33 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
                         } else {
                             binding.actionBarTitle.setText("奖品详情");
                         }
+                        //_____________________________________________
+                        Module module = userRelativePreference.getSelectedModule(null);
+                        Random random = new Random();
 
+                        if (!EmptyUtils.isEmpty(activityProduct.getImgList()))
+                            image = new UMImage(PrizeDetailActivity.this, BuildConfig.IMAGE_URL + activityProduct.getImgList().get(0).getS320X320());
+                        else
+                            image = new UMImage(PrizeDetailActivity.this, "");
+
+                        String price = "";
+                        if (activityProduct.getConfigs().getCostExchangePoint() != null)
+                            price += activityProduct.getConfigs().getCostExchangePoint() + "积分";
+                        if (activityProduct.getConfigs().getCostExchangeMoney() != null)
+                            if (EmptyUtils.isEmpty(price))
+                                price += activityProduct.getConfigs().getCostExchangeMoney() + "元";
+                            else
+                                price += "+" + activityProduct.getConfigs().getCostExchangeMoney() + "元";
+
+                        title = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName();
+                        text = "哇！在批发佬发现好东西，必须拿出来分享！";
+                        url = "http://www.pifalao.com/home/share?"
+                                + "shareType=" + Constant.ShareType.ACTIVITY
+                                + "&activityId=" + activityProduct.getProductId()
+                                + "&moduleId=" + module.getWareHouseModuleId();
+                        sinaText = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName() + "　哇！在批发佬发现好东西，必须拿出来分享！";
+                        clipText = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName() + "\n哇！在批发佬发现好东西，必须拿出来分享！\n";
+                        //_____________________________________________________________
                         queryParticipationTimesDetails();
 
                     }
@@ -245,7 +255,6 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
                     }
                 });
     }
-
 
     private void queryUser() {
         userLoginApi.queryUserDetail()
@@ -364,22 +373,19 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
     public void showCatNumDialog() {
         if (EmptyUtils.isEmpty(numList))
             return;
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("幸运号码")
                 .setItems(numList.toArray(new String[numList.size()]), null)
                 .setPositiveButton("知道了", null)
-                .create();
-        messageDialog.show();
+                .create().show();
 
     }
 
     @Override
     public void showShareDialog() {
         ActivityCompat.requestPermissions(this, mPermissionList, 100);
-        shareDialog.show();
+        new ShareDialogFragment().show(getSupportFragmentManager(), "SHAREDIALOG");
     }
 
     @Override
@@ -391,104 +397,6 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
         if (v == binding.ruleBtn) {
             navigate.navigateToLotteryRuleActivity(this, null, false);
             return;
-        }
-
-        if (v == dialogBinding.cancelShareBtn) {
-            shareDialog.dismiss();
-            return;
-        }
-        if (activityProduct != null) {
-
-            UMImage image;
-            String title;
-            String text;
-            String url;
-            Module module = userRelativePreference.getSelectedModule(null);
-            Random random = new Random();
-
-            if (!EmptyUtils.isEmpty(activityProduct.getImgList()))
-                image = new UMImage(this, BuildConfig.IMAGE_URL + activityProduct.getImgList().get(0).getS320X320());
-            else
-                image = new UMImage(this, "");
-
-            String price = "";
-            if (activityProduct.getConfigs().getCostExchangePoint() != null)
-                price += activityProduct.getConfigs().getCostExchangePoint() + "积分";
-            if (activityProduct.getConfigs().getCostExchangeMoney() != null)
-                if (EmptyUtils.isEmpty(price))
-                    price += activityProduct.getConfigs().getCostExchangeMoney() + "元";
-                else
-                    price += "+" + activityProduct.getConfigs().getCostExchangeMoney() + "元";
-
-            title = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName();
-            text = "哇！在批发佬发现好东西，必须拿出来分享！";
-            url = "http://www.pifalao.com/home/share?"
-                    + "shareType=" + Constant.ShareType.ACTIVITY
-                    + "&activityId=" + activityProduct.getProductId()
-                    + "&moduleId=" + module.getWareHouseModuleId();
-
-
-            if (v == dialogBinding.weixinShareBtn) {
-                new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN).setCallback(umShareListener)
-                        .withText(text)
-                        .withTitle(title)
-                        .withMedia(image)
-                        .withTargetUrl(url)
-                        .share();
-                shareDialog.dismiss();
-                return;
-            }
-            if (v == dialogBinding.weixinFriendShareBtn) {
-                new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).setCallback(umShareListener)
-                        .withText(text)
-                        .withTitle(title)
-                        .withMedia(image)
-                        .withTargetUrl(url)
-                        .share();
-                shareDialog.dismiss();
-                return;
-            }
-            if (v == dialogBinding.sinaShareBtn) {
-                text = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName() + "　哇！在批发佬发现好东西，必须拿出来分享！";
-                new ShareAction(this).setPlatform(SHARE_MEDIA.SINA).setCallback(umShareListener)
-                        .withText(text)
-                        .withTitle(title)
-                        .withMedia(image)
-                        .withTargetUrl(url)
-                        .share();
-                shareDialog.dismiss();
-                return;
-            }
-
-            if (v == dialogBinding.qqShareBtn) {
-                new ShareAction(this).setPlatform(SHARE_MEDIA.QQ).setCallback(umShareListener)
-                        .withText(text)
-                        .withTitle(title)
-                        .withMedia(image)
-                        .withTargetUrl(url)
-                        .share();
-                shareDialog.dismiss();
-                return;
-            }
-            if (v == dialogBinding.qqZoneShareBtn) {
-                new ShareAction(this).setPlatform(SHARE_MEDIA.QZONE).setCallback(umShareListener)
-                        .withText(text)
-                        .withTitle(title)
-                        .withMedia(image)
-                        .withTargetUrl(url)
-                        .share();
-                shareDialog.dismiss();
-                return;
-            }
-            if (v == dialogBinding.copyShareBtn) {
-                text = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName() + "\n哇！在批发佬发现好东西，必须拿出来分享！\n";
-                ClipboardManager c = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData cd = ClipData.newPlainText("shareUrl", text + url);
-                c.setPrimaryClip(cd);
-                toastor.showSingletonToast("复制成功啦");
-                shareDialog.dismiss();
-                return;
-            }
         }
     }
 
@@ -524,5 +432,63 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
         /** attention to this below ,must add this**/
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         Logger.d("result", "onActivityResult");
+    }
+
+    @Override
+    public void onWeixinShareBtnClick() {
+        new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN).setCallback(umShareListener)
+                .withText(text)
+                .withTitle(title)
+                .withMedia(image)
+                .withTargetUrl(url)
+                .share();
+    }
+
+    @Override
+    public void onWeixinFriendShareBtnClick() {
+        new ShareAction(this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE).setCallback(umShareListener)
+                .withText(text)
+                .withTitle(title)
+                .withMedia(image)
+                .withTargetUrl(url)
+                .share();
+    }
+
+    @Override
+    public void onSinaShareBtnClick() {
+        new ShareAction(this).setPlatform(SHARE_MEDIA.SINA).setCallback(umShareListener)
+                .withText(sinaText)
+                .withTitle(title)
+                .withMedia(image)
+                .withTargetUrl(url)
+                .share();
+    }
+
+    @Override
+    public void onQQShareBtnClick() {
+        new ShareAction(this).setPlatform(SHARE_MEDIA.QQ).setCallback(umShareListener)
+                .withText(text)
+                .withTitle(title)
+                .withMedia(image)
+                .withTargetUrl(url)
+                .share();
+    }
+
+    @Override
+    public void onQQZoneShareBtnClick() {
+        new ShareAction(this).setPlatform(SHARE_MEDIA.QZONE).setCallback(umShareListener)
+                .withText(text)
+                .withTitle(title)
+                .withMedia(image)
+                .withTargetUrl(url)
+                .share();
+    }
+
+    @Override
+    public void onCopyShareBtnClick() {
+        ClipboardManager c = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData cd = ClipData.newPlainText("shareUrl", clipText);
+        c.setPrimaryClip(cd);
+        toastor.showSingletonToast(" 复制成功啦");
     }
 }

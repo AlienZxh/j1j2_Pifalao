@@ -1,8 +1,6 @@
 package com.j1j2.pifalao.app;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
@@ -13,6 +11,8 @@ import com.j1j2.common.util.Toastor;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
+import com.j1j2.pifalao.app.base.BaseActivityLifecycleCallbacks;
+import com.j1j2.pifalao.app.base.LocationService;
 import com.j1j2.pifalao.app.di.AppComponent;
 import com.j1j2.pifalao.app.di.AppModule;
 import com.j1j2.pifalao.app.di.DaggerAppComponent;
@@ -87,6 +87,7 @@ public class MainAplication extends MultiDexApplication {
     private AppComponent appComponent;
     private UserComponent userComponent;
 
+    private LocationService locationService;
 
     @Inject
     UserLoginPreference userLoginPreference;
@@ -131,6 +132,7 @@ public class MainAplication extends MultiDexApplication {
             initLeakCanary();
             initOkHttpUtil();
             initGalleryFinal();
+            registerActivityLifecycleCallbacks(new BaseActivityLifecycleCallbacks(locationService));
         }
     }
 
@@ -198,6 +200,7 @@ public class MainAplication extends MultiDexApplication {
 
 
     private void initBaiduMap() {
+        locationService = new LocationService(getApplicationContext());
         SDKInitializer.initialize(getApplicationContext());
         Logger.d("BaiduMap初始化完成");
     }
@@ -320,6 +323,7 @@ public class MainAplication extends MultiDexApplication {
         Bugly.init(getApplicationContext(), "1103829290", BuildConfig.DEBUG, strategy);
     }
 
+
     public AppComponent getAppComponent() {
         return appComponent;
     }
@@ -361,4 +365,7 @@ public class MainAplication extends MultiDexApplication {
                 .removeUserInfo();
     }
 
+    public LocationService getLocationService() {
+        return locationService;
+    }
 }

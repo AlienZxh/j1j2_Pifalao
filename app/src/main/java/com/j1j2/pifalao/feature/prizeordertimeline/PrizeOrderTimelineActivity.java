@@ -65,6 +65,8 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
     private MultiTypeAdapter<Object> multiTypeAdapter;
     ActivityProcessState activityProcessState;
 
+    String receiveDialogTag = "RECEIVEDIALOG";
+
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
@@ -182,7 +184,7 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
                                     normalBinding.setActivityStateChain(activityStateChain);
                                     uiList.add(normalBinding.getRoot());
                                 }
-                                ItemPrizeorderDeliveryBinding deliveryBinding =DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_prizeorder_delivery, null, false);
+                                ItemPrizeorderDeliveryBinding deliveryBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_prizeorder_delivery, null, false);
                                 deliveryBinding.setIsNowState(false);
                                 deliveryBinding.setActivityStateChain(activityStateChain);
                                 uiList.add(deliveryBinding.getRoot());
@@ -239,21 +241,7 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
     }
 
     public void showReceiveDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage("请确认是否已经收到奖品")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        confirmReceivedPrize();
-                    }
-                })
-                .create();
-        messageDialog.show();
+        showMessageDialogDuplicate(true, receiveDialogTag, "提示", "请确认是否已经收到奖品", "取消", "确定");
     }
 
     @Subscribe
@@ -283,7 +271,7 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
             navigate.navigateToShowOrderActivity(this, null, false, orderId,
                     activityProcessState.getProductInfo(),
                     activityProcessState.getOrderNO());
-        if (v == binding.againBtn){
+        if (v == binding.againBtn) {
             Intent intent = new Intent(this, ServicesActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
@@ -291,5 +279,13 @@ public class PrizeOrderTimelineActivity extends BaseActivity implements View.OnC
             EventBus.getDefault().post(new NavigateToMemberHomeEvent());
         }
 
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(receiveDialogTag)) {
+            confirmReceivedPrize();
+        }
     }
 }

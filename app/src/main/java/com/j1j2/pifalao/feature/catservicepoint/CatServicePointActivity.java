@@ -14,6 +14,7 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.j1j2.common.util.LocationUtils;
 import com.j1j2.data.model.ServicePoint;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -58,6 +59,12 @@ public class CatServicePointActivity extends BaseMapActivity implements View.OnC
         mBaiduMap.setMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         mBaiduMap.setMyLocationEnabled(true);// 开启定位图层
+        mBaiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                MainAplication.get(CatServicePointActivity.this).getLocationService().requestLocation();
+            }
+        });
     }
 
     @Override
@@ -103,18 +110,19 @@ public class CatServicePointActivity extends BaseMapActivity implements View.OnC
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
         BDLocation location = event.getLocation();
-        if (isLocationSuccess(location)) {
+        if (LocationUtils.isLocationSuccess(location)) {
             // 地图显示我的位置
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())// 定位精度
-                    .direction(100)// GPS定位时方向角度,顺时针0-360
-                    .latitude(location.getLatitude())// 百度纬度坐标
-                    .longitude(location.getLongitude())// 百度经度坐标
-                    .speed(location.getSpeed())// GPS定位时速度
-                    .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
-                    .build();
-            if (mBaiduMap != null)
+            if (mBaiduMap != null) {
+                MyLocationData locData = new MyLocationData.Builder()
+                        .accuracy(location.getRadius())// 定位精度
+                        .direction(100)// GPS定位时方向角度,顺时针0-360
+                        .latitude(location.getLatitude())// 百度纬度坐标
+                        .longitude(location.getLongitude())// 百度经度坐标
+                        .speed(location.getSpeed())// GPS定位时速度
+                        .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
+                        .build();
                 mBaiduMap.setMyLocationData(locData);
+            }
         }
 
     }

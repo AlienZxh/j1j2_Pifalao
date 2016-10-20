@@ -2,13 +2,16 @@ package com.j1j2.pifalao.app.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
+import com.j1j2.pifalao.app.dialog.MessageDialogFragmentBundler;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.RefWatcher;
@@ -19,6 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Field;
+
+import dmax.dialog.SpotsDialog;
 
 /**
  * Created by alienzxh on 16-3-16.
@@ -38,7 +43,9 @@ public abstract class BaseFragment extends RxFragment {
 
     }
 
-    protected AlertDialog messageDialog;
+    protected android.app.AlertDialog progressDialog;
+
+    protected DialogFragment messageDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,12 +115,6 @@ public abstract class BaseFragment extends RxFragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-    }
 
     @Override
     public void onDestroyView() {
@@ -142,6 +143,57 @@ public abstract class BaseFragment extends RxFragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void showProgress(String message) {
+        if (progressDialog == null) {
+            progressDialog = new SpotsDialog(getContext(), message, R.style.CustomSpotDialog);
+            progressDialog.setCancelable(false);
+        } else
+            progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    public void dismissProgress() {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+    }
+
+
+    public void showMessageDialogDuplicate(boolean cancelable, String fragmentTag, String title, String message, String negativeButtonText, String positiveButtonText) {
+        messageDialog = MessageDialogFragmentBundler.build().fragmentTag(fragmentTag)
+                .cancelable(cancelable)
+                .title(title)
+                .message(message)
+                .negativeButtonText(negativeButtonText)
+                .positiveButtonText(positiveButtonText)
+                .create();
+        messageDialog.show(getChildFragmentManager(), fragmentTag);
+    }
+
+    public void showMessageDialogNotDuplicate(boolean cancelable, String fragmentTag, String title, String message, String negativeButtonText, String positiveButtonText) {
+        dismissMessageDialog();
+        messageDialog = MessageDialogFragmentBundler.build().fragmentTag(fragmentTag)
+                .cancelable(cancelable)
+                .title(title)
+                .message(message)
+                .negativeButtonText(negativeButtonText)
+                .positiveButtonText(positiveButtonText)
+                .create();
+        messageDialog.show(getChildFragmentManager(), fragmentTag);
+    }
+
+    public void dismissMessageDialog() {
+        if (isMessageDialogShowing())
+            messageDialog.dismiss();
+
+    }
+
+    public boolean isMessageDialogShowing() {
+        if (messageDialog != null && messageDialog.isVisible())
+            return true;
+        else
+            return false;
     }
 
     @Subscribe

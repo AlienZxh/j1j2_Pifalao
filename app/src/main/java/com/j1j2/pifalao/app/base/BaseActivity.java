@@ -5,16 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 
+import com.j1j2.common.util.DialogUtils;
 import com.j1j2.common.util.Toastor;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.di.ActivityComponent;
 import com.j1j2.pifalao.app.di.ActivityModule;
+import com.j1j2.pifalao.app.dialog.BaseDialogFragment;
+import com.j1j2.pifalao.app.dialog.MessageDialogFragmentBundler;
+import com.j1j2.pifalao.app.dialog.impl.IDialogNegativeButtonClickListener;
+import com.j1j2.pifalao.app.dialog.impl.IDialogPositiveButtonClickListener;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.j1j2.pifalao.app.event.NetWorkEvent;
 import com.orhanobut.logger.Logger;
@@ -34,7 +40,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Created by alienzxh on 16-3-4.
  */
-public abstract class BaseActivity extends RxAppCompatActivity {
+public abstract class BaseActivity extends RxAppCompatActivity implements IDialogPositiveButtonClickListener, IDialogNegativeButtonClickListener {
 
     private String pageName = getClass().getSimpleName();
 
@@ -46,9 +52,11 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     protected Fragment currentFragment;
 
-    protected AlertDialog messageDialog;
+    protected DialogFragment messageDialog;
 
     protected android.app.AlertDialog progressDialog;
+
+    private String netWorkDialogTag = "NETWORKDIALOG";
 
     protected void initActionBar() {
 
@@ -95,15 +103,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (isMessageDialogShowing())
+            messageDialog.dismiss();
         EventBus.getDefault().unregister(this);
     }
 
@@ -151,6 +154,43 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             progressDialog.dismiss();
     }
 
+    public void showMessageDialogDuplicate(boolean cancelable, String fragmentTag, String title, String message, String negativeButtonText, String positiveButtonText) {
+        messageDialog = MessageDialogFragmentBundler.build().fragmentTag(fragmentTag)
+                .cancelable(cancelable)
+                .title(title)
+                .message(message)
+                .negativeButtonText(negativeButtonText)
+                .positiveButtonText(positiveButtonText)
+                .create();
+        messageDialog.show(getSupportFragmentManager(), fragmentTag);
+    }
+
+    public void showMessageDialogNotDuplicate(boolean cancelable, String fragmentTag, String title, String message, String negativeButtonText, String positiveButtonText) {
+        dismissMessageDialog();
+        messageDialog = MessageDialogFragmentBundler.build().fragmentTag(fragmentTag)
+                .cancelable(cancelable)
+                .title(title)
+                .message(message)
+                .negativeButtonText(negativeButtonText)
+                .positiveButtonText(positiveButtonText)
+                .create();
+        messageDialog.show(getSupportFragmentManager(), fragmentTag);
+    }
+
+    public void dismissMessageDialog() {
+        if (isMessageDialogShowing())
+            messageDialog.dismiss();
+
+    }
+
+    public boolean isMessageDialogShowing() {
+        if (messageDialog != null && messageDialog.isVisible())
+            return true;
+        else
+            return false;
+    }
+
+
     @Subscribe
     public void onBaseEvent(BaseEvent baseEvent) {
 
@@ -168,29 +208,26 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             message = "网络连接失败，请检查网络设置。";
             showDialog = true;
         }
+
         if (!showDialog) {
-            if (messageDialog != null && messageDialog.isShowing()) {
-                messageDialog.dismiss();
-                return;
-            } else {
-                return;
-            }
+            dismissMessageDialog();
+            return;
         } else {
-            if (messageDialog != null && messageDialog.isShowing()) {
-                messageDialog.dismiss();
-            }
+            showMessageDialogNotDuplicate(true, netWorkDialogTag, "提示", message, "取消", "设置");
         }
-        messageDialog = new AlertDialog.Builder(this)
-                .setTitle("提示")
-                .setMessage(message)
-                .setNegativeButton("取消", null)
-                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                        startActivity(intent);
-                    }
-                }).create();
-        messageDialog.show();
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        if (fragmentTag.equals(netWorkDialogTag)) {
+            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(String fragmentTag) {
+
     }
 }

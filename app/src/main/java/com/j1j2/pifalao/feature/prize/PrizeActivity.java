@@ -9,7 +9,6 @@ import android.view.View;
 import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.model.ActivityWinPrize;
-import com.j1j2.data.model.LotteryParticipationTimes;
 import com.j1j2.data.model.PagerManager;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
@@ -17,7 +16,6 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.databinding.ActivityPrizeBinding;
-import com.j1j2.pifalao.feature.freeconvertibility.FreeConvertibilityAdapter;
 import com.j1j2.pifalao.feature.prize.di.PrizeModule;
 import com.j1j2.pifalao.feature.prizedetail.di.PrizeDetailModule;
 import com.malinskiy.superrecyclerview.OnMoreListener;
@@ -25,7 +23,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -205,15 +202,12 @@ public class PrizeActivity extends BaseActivity implements SwipeRefreshLayout.On
                 .subscribe(new WebReturnSubscriber<List<String>>() {
                     @Override
                     public void onWebReturnSucess(List<String> stringList) {
-                        if (messageDialog != null && messageDialog.isShowing())
-                            messageDialog.dismiss();
-                        messageDialog = new AlertDialog.Builder(PrizeActivity.this)
+                        new AlertDialog.Builder(PrizeActivity.this)
                                 .setCancelable(true)
                                 .setTitle("幸运号码")
                                 .setItems(stringList.toArray(new String[stringList.size()]), null)
                                 .setPositiveButton("知道了", null)
-                                .create();
-                        messageDialog.show();
+                                .create().show();
                     }
 
                     @Override

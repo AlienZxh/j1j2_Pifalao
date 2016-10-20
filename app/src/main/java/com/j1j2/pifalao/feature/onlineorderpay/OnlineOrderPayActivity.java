@@ -1,31 +1,20 @@
 package com.j1j2.pifalao.feature.onlineorderpay;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableDouble;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AlertDialog;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
 
-import com.alipay.sdk.app.PayTask;
-import com.j1j2.common.util.UrlUtils;
-import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.http.api.ActivityShopCartApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserOrderApi;
 import com.j1j2.data.model.ActivityOrderSimple;
-import com.j1j2.data.model.ActivityProcessState;
 import com.j1j2.data.model.OnlinePayResult;
 import com.j1j2.data.model.OrderSimple;
-import com.j1j2.data.model.PayResult;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.WeiXinPayResult;
@@ -39,26 +28,18 @@ import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 import com.j1j2.pifalao.app.event.PrizeOrderStateChangeEvent;
-import com.j1j2.pifalao.app.event.WeiXinPayReturnEvent;
 import com.j1j2.pifalao.databinding.ActivityOnlineorderpayBinding;
 import com.j1j2.pifalao.feature.onlineorderpay.di.OnlineOrderPayModule;
 import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 import com.j1j2.pifalao.feature.successresult.SuccessResultActivity;
-import com.orhanobut.logger.Logger;
-import com.tencent.mm.sdk.constants.Build;
-import com.tencent.mm.sdk.modelpay.PayReq;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.j1j2.pifalao.pay.alipay.Alipay;
+import com.j1j2.pifalao.pay.weixin.WXPay;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
-import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -109,115 +90,14 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
     long remian;
 
-    private static final int Ali_SDK_PAY_FLAG = 1;
-
-    private PayHandler mHandler;
-
-    private IWXAPI wxApi;
-
-    private static class PayHandler extends Handler {
-        private final WeakReference<OnlineOrderPayActivity> mActivity;
-        private boolean isActivityPay;
-
-        public PayHandler(OnlineOrderPayActivity mActivity, boolean isActivityPay) {
-            this.mActivity = new WeakReference<OnlineOrderPayActivity>(mActivity);
-            this.isActivityPay = isActivityPay;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            final OnlineOrderPayActivity activity = mActivity.get();
-            if (activity != null) {
-                switch (msg.what) {
-                    case Ali_SDK_PAY_FLAG: {
-
-                        PayResult payResult = new PayResult((String) msg.obj);
-                        Logger.d("alipay  " + payResult.toString());
-                        /**
-                         * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
-                         * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
-                         * docType=1) 建议商户依赖异步通知
-                         */
-                        String resultInfo = payResult.getResult();// 同步返回需要验证的信息
-                        String resultStatus = payResult.getResultStatus();
-
-                        // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
-                        if (!TextUtils.equals(resultStatus, "9000")) {
-                            activity.dismissProgress();
-                            // 判断resultStatus 为非"9000"则代表可能支付失败
-                            // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-                            if (TextUtils.equals(resultStatus, "8000")) {
-                                activity.toastor.showSingletonToast("订单支付结果确认中");
-                                activity.finish();
-                            } else {
-                                // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                                activity.toastor.showSingletonToast("订单支付失败");
-                            }
-
-                        } else {
-                            ArrayMap<String, String> resultInfoMap = UrlUtils.toMap(resultInfo);
-                            boolean success = false;
-                            try {
-                                success = Boolean.parseBoolean(resultInfoMap.get("success").replaceAll("\"", ""));
-                            } catch (Exception e) {
-                                Logger.e(Arrays.toString(e.getStackTrace()));
-                            }
-
-                            if (success) {
-                                activity.shopCartApi.queryPayState(activity.orderNO, Constant.OnlinePayType.ALIPAY)
-                                        .compose(activity.<WebReturn<String>>bindToLifecycle())
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(new WebReturnSubscriber<String>() {
-                                            @Override
-                                            public void onWebReturnSucess(String s) {
-                                                activity.dismissProgress();
-                                                activity.toastor.showSingletonToast("订单支付成功");
-                                                EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
-                                                activity.navigateToNext();
-                                            }
-
-                                            @Override
-                                            public void onWebReturnFailure(String errorMessage) {
-                                                activity.dismissProgress();
-                                                activity.toastor.showSingletonToast("订单支付失败");
-                                            }
-
-                                            @Override
-                                            public void onWebReturnCompleted() {
-
-                                            }
-                                        });
-
-                            } else {
-                                activity.dismissProgress();
-                                activity.toastor.showSingletonToast("订单支付失败");
-                            }
-                        }
-
-                        break;
-                    }
-                    default:
-                        break;
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
-    }
+    String exitDialogTag = "EXITDIALOG";
 
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_onlineorderpay);
         binding.setOnClickListener(this);
         binding.setBalance(balance);
-//_______________________________________
-        wxApi = WXAPIFactory.createWXAPI(this, Constant.WEIXIN_APP_ID, false);
-        wxApi.registerApp(Constant.WEIXIN_APP_ID);
+
     }
 
     @Override
@@ -225,8 +105,6 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         binding.useBalance.setChecked(true);
         binding.useAli.setChecked(false);
         binding.useWeiXin.setChecked(false);
-        //_______________________________________
-        mHandler = new PayHandler(this, isActivityPay);
 
         if (isActivityPay) {
             binding.arrow.setVisibility(View.INVISIBLE);
@@ -250,9 +128,9 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                             EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
                             navigateToNext();
                         } else if (onlinePayResult.isUseAliPay()) {
-                            doAliPay(onlinePayResult.getAliPayResult());
+                            doAlipay(onlinePayResult.getAliPayResult());
                         } else if (onlinePayResult.isUseWeiXinPay()) {
-                            doWeiXinPay(onlinePayResult.getWeiXinPayResult());
+                            doWXPay(onlinePayResult.getWeiXinPayResult());
                         }
                     }
 
@@ -292,9 +170,9 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                             EventBus.getDefault().post(new PrizeOrderStateChangeEvent());
                             navigateToNext();
                         } else if (onlinePayResult.isUseAliPay()) {
-                            doAliPay(onlinePayResult.getAliPayResult());
+                            doAlipay(onlinePayResult.getAliPayResult());
                         } else if (onlinePayResult.isUseWeiXinPay()) {
-                            doWeiXinPay(onlinePayResult.getWeiXinPayResult());
+                            doWXPay(onlinePayResult.getWeiXinPayResult());
                         }
                     }
 
@@ -320,53 +198,157 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
     }
 
 
-    public void doAliPay(final String payRequest) {
-        Runnable payRunnable = new Runnable() {
+    /**
+     * 微信支付
+     *
+     * @param weiXinPayResult 支付服务生成的支付参数
+     */
+    private void doWXPay(WeiXinPayResult weiXinPayResult) {
+        WXPay.init(getApplicationContext(), Constant.WEIXIN_APP_ID);      //要在支付前调用
+        WXPay.getInstance().doPay(weiXinPayResult, new WXPay.WXPayResultCallBack() {
             @Override
-            public void run() {
-                // 构造PayTask 对象
-                PayTask alipay = new PayTask(OnlineOrderPayActivity.this);
-                // 调用支付接口，获取支付结果
-                String result = alipay.pay(payRequest, true);
-                Message msg = new Message();
-                msg.what = Ali_SDK_PAY_FLAG;
-                msg.obj = result;
-                mHandler.sendMessage(msg);
-            }
-        };
-        // 必须异步调用
-        Thread payThread = new Thread(payRunnable);
-        payThread.start();
+            public void onSuccess() {
+                shopCartApi.queryPayState(orderNO, Constant.OnlinePayType.ALIPAY)
+                        .compose(OnlineOrderPayActivity.this.<WebReturn<String>>bindToLifecycle())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new WebReturnSubscriber<String>() {
+                            @Override
+                            public void onWebReturnSucess(String s) {
+                                dismissProgress();
+                                toastor.showSingletonToast("订单支付成功");
+                                EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
+                                navigateToNext();
+                            }
 
+                            @Override
+                            public void onWebReturnFailure(String errorMessage) {
+                                dismissProgress();
+                                toastor.showSingletonToast("订单支付失败");
+                            }
+
+                            @Override
+                            public void onWebReturnCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                                dismissProgress();
+                                toastor.showSingletonToast("连接失败，请重试");
+                            }
+                        });
+            }
+
+            @Override
+            public void onError(int error_code) {
+                switch (error_code) {
+                    case WXPay.NO_OR_LOW_WX:
+                        dismissProgress();
+                        toastor.showSingletonToast("未安装微信或微信版本过低");
+                        break;
+
+                    case WXPay.ERROR_PAY_PARAM:
+                        dismissProgress();
+                        toastor.showSingletonToast("支付参数错误");
+                        break;
+
+                    case WXPay.ERROR_PAY:
+                        dismissProgress();
+                        toastor.showSingletonToast("支付失败");
+                        break;
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                dismissProgress();
+                toastor.showSingletonToast("支付取消");
+            }
+        });
     }
 
-    public void doWeiXinPay(WeiXinPayResult weiXinPayResult) {
-        dismissProgress();
-        if (!wxApi.isWXAppInstalled()) {
-            toastor.showSingleLongToast("未安装微信，请安装微信后重试！");
-            return;
-        }
+    /**
+     * 支付宝支付
+     *
+     * @param pay_param 支付服务生成的支付参数
+     */
+    private void doAlipay(String pay_param) {
+        new Alipay(this, pay_param, new Alipay.AlipayResultCallBack() {
+            @Override
+            public void onSuccess() {
+                shopCartApi.queryPayState(orderNO, Constant.OnlinePayType.ALIPAY)
+                        .compose(OnlineOrderPayActivity.this.<WebReturn<String>>bindToLifecycle())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new WebReturnSubscriber<String>() {
+                            @Override
+                            public void onWebReturnSucess(String s) {
+                                dismissProgress();
+                                toastor.showSingletonToast("订单支付成功");
+                                EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
+                                navigateToNext();
+                            }
 
-        boolean isPaySupported = wxApi.getWXAppSupportAPI() >= Build.PAY_SUPPORTED_SDK_INT;
-        if (!isPaySupported) {
-            toastor.showSingleLongToast("微信版本过低，请升级微信后重试！");
-            return;
-        }
+                            @Override
+                            public void onWebReturnFailure(String errorMessage) {
+                                dismissProgress();
+                                toastor.showSingletonToast("订单支付失败");
+                            }
 
-        if (weiXinPayResult == null) {
-            toastor.showSingleLongToast("订单支付失败");
-            return;
-        }
+                            @Override
+                            public void onWebReturnCompleted() {
 
-        PayReq req = new PayReq();
-        req.appId = weiXinPayResult.getAppId();
-        req.partnerId = weiXinPayResult.getPartnerId();
-        req.prepayId = weiXinPayResult.getPrepayId();
-        req.packageValue = weiXinPayResult.getPackage();
-        req.nonceStr = weiXinPayResult.getNonceStr();
-        req.timeStamp = weiXinPayResult.getTimestamp();
-        req.sign = weiXinPayResult.getSign();
-        wxApi.sendReq(req);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                                dismissProgress();
+                                toastor.showSingletonToast("连接失败，请重试");
+                            }
+                        });
+            }
+
+            @Override
+            public void onDealing() {
+                dismissProgress();
+                toastor.showSingletonToast("支付处理中...");
+            }
+
+            @Override
+            public void onError(int error_code) {
+                switch (error_code) {
+                    case Alipay.ERROR_RESULT:
+                        dismissProgress();
+                        toastor.showSingletonToast("支付结果解析错误");
+                        break;
+
+                    case Alipay.ERROR_NETWORK:
+                        dismissProgress();
+                        toastor.showSingletonToast("网络连接错误");
+                        break;
+
+                    case Alipay.ERROR_PAY:
+                        dismissProgress();
+                        toastor.showSingletonToast("支付码支付失败");
+                        break;
+
+                    default:
+                        dismissProgress();
+                        toastor.showSingletonToast("支付错误");
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onCancel() {
+                dismissProgress();
+                toastor.showSingletonToast("支付取消");
+            }
+        }).doPay();
     }
 
     public void queryOrderSimple(int orderId) {
@@ -502,53 +484,10 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
 
     public void showBanlanceDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setMessage("余额不足，请到服务点充值后再试！")
-                .setPositiveButton("知道了", null)
-                .create();
-        messageDialog.show();
-
-    }
-
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onWeiXinPayReturnEvent(WeiXinPayReturnEvent event) {
-        if (event.isSuccess()) {
-            shopCartApi.queryPayState(orderNO, Constant.OnlinePayType.WEIXINPAY)
-                    .compose(this.<WebReturn<String>>bindToLifecycle())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new WebReturnSubscriber<String>() {
-                        @Override
-                        public void onWebReturnSucess(String s) {
-                            toastor.showSingletonToast("订单支付成功");
-                            EventBus.getDefault().post(new OrderStateChangeEvent(false, Constant.OrderType.ORDERTYPE_UNPAY, Constant.OrderType.ORDERTYPE_SUBMIT));
-                            navigateToNext();
-                        }
-
-                        @Override
-                        public void onWebReturnFailure(String errorMessage) {
-                            toastor.showSingletonToast("订单支付失败");
-
-                        }
-
-                        @Override
-                        public void onWebReturnCompleted() {
-
-                        }
-                    });
-        } else {
-
-        }
+        showMessageDialogDuplicate(true,"MESSAGEDIALOG", "提示", "请确认是否已经收到奖品", null, "知道了");
     }
 
     private void showExitDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-
         String massage = "返回将放弃此次支付。";
         SpannableString spannableMassage = new SpannableString(massage);
         if (!isActivityPay) {
@@ -557,51 +496,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
             spannableMassage.setSpan(new ForegroundColorSpan(0xffaaaaaa), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             spannableMassage.setSpan(new RelativeSizeSpan(0.8f), massage.indexOf("（"), massage.indexOf("）") + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         }
-
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("确认要放弃支付吗?")
-                .setPositiveButton("取消", null)
-                .setMessage(spannableMassage)
-                .setNegativeButton("放弃支付", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (isActivityPay) {
-                            showProgress("取消订单");
-                            activityShopCartApi.cancleActivityOrder(orderNO)
-                                    .compose(OnlineOrderPayActivity.this.<WebReturn<String>>bindToLifecycle())
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new WebReturnSubscriber<String>() {
-                                        @Override
-                                        public void onWebReturnSucess(String s) {
-                                            dismissProgress();
-                                            finish();
-                                        }
-
-                                        @Override
-                                        public void onWebReturnFailure(String errorMessage) {
-                                            dismissProgress();
-                                        }
-
-                                        @Override
-                                        public void onWebReturnCompleted() {
-
-                                        }
-
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            super.onError(e);
-                                            dismissProgress();
-                                            toastor.showSingletonToast("连接失败，请重试");
-                                        }
-                                    });
-                        } else
-                            navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
-                    }
-                })
-                .create();
-        messageDialog.show();
+        showMessageDialogDuplicate(true, exitDialogTag, "确认要放弃支付吗?", spannableMassage.toString(), "放弃支付", "取消");
     }
 
     @Override
@@ -671,6 +566,45 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         if (v == binding.orderBtn) {
             if (!isActivityPay)
                 navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, false, null, orderId, OrderDetailActivity.PARAM);
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(String fragmentTag) {
+        super.onDialogNegativeClick(fragmentTag);
+        if(fragmentTag.equals(exitDialogTag)){
+            if (isActivityPay) {
+                showProgress("取消订单");
+                activityShopCartApi.cancleActivityOrder(orderNO)
+                        .compose(OnlineOrderPayActivity.this.<WebReturn<String>>bindToLifecycle())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new WebReturnSubscriber<String>() {
+                            @Override
+                            public void onWebReturnSucess(String s) {
+                                dismissProgress();
+                                finish();
+                            }
+
+                            @Override
+                            public void onWebReturnFailure(String errorMessage) {
+                                dismissProgress();
+                            }
+
+                            @Override
+                            public void onWebReturnCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                super.onError(e);
+                                dismissProgress();
+                                toastor.showSingletonToast("连接失败，请重试");
+                            }
+                        });
+            } else
+                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
         }
     }
 }

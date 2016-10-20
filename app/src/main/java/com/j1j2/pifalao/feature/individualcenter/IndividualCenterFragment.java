@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.util.EmptyUtils;
+import com.j1j2.common.util.PhotoUtils;
 import com.j1j2.common.util.Toastor;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
@@ -27,20 +28,15 @@ import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.pifalao.feature.participationrecord.ParticipationRecordActivity;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.toolsfinal.io.FileUtils;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
-
-import com.j1j2.common.util.PhotoUtils;
-import com.orhanobut.logger.Logger;
 
 /**
  * Created by alienzxh on 16-3-18.
@@ -136,7 +132,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
                         individualCenterViewModel.upLoadUserImg(new File(dirPath, fileName));
                     }
                 });
-                IndividualCenterFragment.this.getListener().showFragmentProgress("头像上传中");
+                IndividualCenterFragment.this.showProgress("头像上传中");
                 thread.start();
 
             }
@@ -180,20 +176,8 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         //__________________________________________________
         if (fragmentType != FROM_INDIVIDUALCENTERACTIVITY)
             binding.backBtn.setVisibility(View.GONE);
-        //_______________________________________________________________
-        messageDialog = new AlertDialog.Builder(getContext())
-                .setCancelable(true)
-                .setTitle("请选择")
-                .setItems(new CharSequence[]{"　　拍摄照片", "　　本地图片"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0)
-                            GalleryFinal.openCamera(REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
-                        else
-                            GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, mOnHanlderResultCallback);
-                    }
-                })
-                .create();
+
+
     }
 
 
@@ -213,9 +197,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         }
     }
 
-    public IndividualCenterFragmentListener getListener() {
-        return listener;
-    }
+
 
     @Override
     public void onClick(View v) {
@@ -246,9 +228,21 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         }
         if (v == binding.backBtn)
             getActivity().onBackPressed();
-        if (v == binding.userImg)
-            messageDialog.show();
-
+        if (v == binding.userImg){
+            new AlertDialog.Builder(getContext())
+                    .setCancelable(true)
+                    .setTitle("请选择")
+                    .setItems(new CharSequence[]{"　　拍摄照片", "　　本地图片"}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0)
+                                GalleryFinal.openCamera(REQUEST_CODE_CAMERA, mOnHanlderResultCallback);
+                            else
+                                GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, mOnHanlderResultCallback);
+                        }
+                    })
+                    .create().show();
+        }
         if (v == binding.SubmitOrder) {
             listener.navigateToOrders(Constant.OrderType.ORDERTYPE_SUBMIT);
         } else if (v == binding.UnPayOrder) {

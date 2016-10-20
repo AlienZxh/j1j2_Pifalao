@@ -23,7 +23,6 @@ public class ServicesModule {
 
     private ServicesActivity servicesActivity;
 
-
     public ServicesModule(ServicesActivity servicesActivity) {
         this.servicesActivity = servicesActivity;
 
@@ -73,7 +72,7 @@ public class ServicesModule {
 
     @Provides
     @ActivityScope
-    ServicesViewModule servicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserVipApi userVipApi, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
-        return new ServicesViewModule(servicesActivity, servicePointApi, servicePoint, userVipApi, userLoginApi, systemAssistApi, activityApi);
+    ServicesViewModule servicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
+        return new ServicesViewModule(servicesActivity, servicePointApi, servicePoint, userLoginApi, systemAssistApi, activityApi);
     }
 }

@@ -239,9 +239,7 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void showImgChooseDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("请选择")
                 .setItems(new CharSequence[]{"　　拍摄照片", "　　本地图片"}, new DialogInterface.OnClickListener() {
@@ -253,8 +251,7 @@ public class ShowOrderActivity extends BaseActivity implements View.OnClickListe
                             GalleryFinal.openGallerySingle(REQUEST_CODE_GALLERY, mOnHanlderResultCallback);
                     }
                 })
-                .create();
-        messageDialog.show();
+                .create().show();
     }
 
     @Override

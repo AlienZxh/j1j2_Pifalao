@@ -1,20 +1,15 @@
 package com.j1j2.pifalao.feature.individualcenter;
 
 import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.j1j2.data.http.api.UserCouponApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserOrderApi;
-import com.j1j2.data.model.Coupon;
-import com.j1j2.data.model.Module;
 import com.j1j2.data.model.OrderStatistics;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.BuildConfig;
-import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.trello.rxlifecycle.FragmentEvent;
@@ -22,7 +17,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.File;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -44,7 +38,7 @@ public class IndividualCenterViewModel {
     public ObservableField<User> userObservableField;
     public ObservableField<OrderStatistics> statisticsObservableField = new ObservableField<>();
 
-    public IndividualCenterViewModel(Gson gson, User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi,  UserOrderApi userOrderApi) {
+    public IndividualCenterViewModel(Gson gson, User user, IndividualCenterFragment individualCenterFragment, UserLoginApi userLoginApi, UserOrderApi userOrderApi) {
         this.gson = gson;
         this.user = user;
         this.individualCenterFragment = individualCenterFragment;
@@ -64,7 +58,7 @@ public class IndividualCenterViewModel {
                     @Override
                     public void onWebReturnSucess(User mUser) {
                         if (isUploadImg)
-                            individualCenterFragment.getListener().dismissFragmentProgress();
+                            individualCenterFragment.dismissProgress();
                         MainAplication.get(individualCenterFragment.getContext()).login(mUser);
                         userObservableField.set(mUser);
                     }
@@ -72,7 +66,7 @@ public class IndividualCenterViewModel {
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
                         if (isUploadImg)
-                            individualCenterFragment.getListener().dismissFragmentProgress();
+                            individualCenterFragment.dismissProgress();
                     }
 
                     @Override
@@ -84,7 +78,7 @@ public class IndividualCenterViewModel {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        individualCenterFragment.getListener().dismissFragmentProgress();
+                        individualCenterFragment.dismissProgress();
                         individualCenterFragment.toastor.showSingletonToast("连接失败，请重试");
                     }
                 });
@@ -159,7 +153,7 @@ public class IndividualCenterViewModel {
 
                     @Override
                     public void onError(Call call, Exception e) {
-                        individualCenterFragment.getListener().dismissFragmentProgress();
+                        individualCenterFragment.dismissProgress();
                     }
 
                     @Override
@@ -170,7 +164,7 @@ public class IndividualCenterViewModel {
                             queryUser(true);
                         } else {
                             individualCenterFragment.toastor.showSingletonToast(response.getErrorMessage());
-                            individualCenterFragment.getListener().dismissFragmentProgress();
+                            individualCenterFragment.dismissProgress();
                         }
                     }
                 });

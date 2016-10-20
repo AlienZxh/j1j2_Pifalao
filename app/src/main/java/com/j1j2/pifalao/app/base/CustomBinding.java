@@ -26,15 +26,15 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  * Created by alienzxh on 16-3-26.
  */
 public class CustomBinding {
-    @BindingAdapter({"bind:showNum"})
-    public static void etshowNum(AutoBGABadgeLinearLayout linearLayout, int num) {
+    @BindingAdapter({"showNum"})
+    public static void showNum(AutoBGABadgeLinearLayout linearLayout, int num) {
         if (num > 0)
             linearLayout.showTextBadge("" + num);
         else
             linearLayout.hiddenBadge();
     }
 
-    @BindingAdapter({"bind:showNum"})
+    @BindingAdapter({"showNum"})
     public static void showNum(BGABadgeTextView linearLayout, int num) {
         if (num > 0)
             linearLayout.showTextBadge("" + num);
@@ -42,7 +42,7 @@ public class CustomBinding {
             linearLayout.hiddenBadge();
     }
 
-    @BindingAdapter({"bind:showNum"})
+    @BindingAdapter({"showNum"})
     public static void showNum(AutoBGABadgeRelativeLayout linearLayout, int num) {
         if (num > 0)
             linearLayout.showTextBadge("" + num);
@@ -50,7 +50,7 @@ public class CustomBinding {
             linearLayout.hiddenBadge();
     }
 
-    @BindingAdapter({"bind:showCircle"})
+    @BindingAdapter({"showCircle"})
     public static void showCircle(BGABadgeTextView textView, boolean hasUnRead) {
         if (hasUnRead)
             textView.showCirclePointBadge();
@@ -58,7 +58,7 @@ public class CustomBinding {
             textView.hiddenBadge();
     }
 
-    @BindingAdapter({"bind:displayImg"})
+    @BindingAdapter({"displayImg"})
     public static void displayImg(ImageView view, Uri uri) {
         Glide.with(view.getContext())
                 .load(uri)
@@ -67,7 +67,7 @@ public class CustomBinding {
                 .into(view);
     }
 
-    @BindingAdapter({"bind:displayImgWithoutCache"})
+    @BindingAdapter({"displayImgWithoutCache"})
     public static void displayImgWithoutCache(ImageView view, Uri uri) {
         Glide.with(view.getContext())
                 .load(uri)
@@ -78,7 +78,7 @@ public class CustomBinding {
                 .into(view);
     }
 
-    @BindingAdapter({"bind:displayImgAsBitmap"})
+    @BindingAdapter({"displayImgAsBitmap"})
     public static void displayImgAsBitmap(RoundedImageView view, @DrawableRes int resId) {
         Glide.with(view.getContext())
                 .load(resId)
@@ -88,7 +88,7 @@ public class CustomBinding {
                 .into(view);
     }
 
-    @BindingAdapter({"bind:displayImgAsBitmap"})
+    @BindingAdapter({"displayImgAsBitmap"})
     public static void displayImgAsBitmap(RoundedImageView view, Uri uri) {
         Glide.with(view.getContext())
                 .load(uri)
@@ -98,7 +98,7 @@ public class CustomBinding {
                 .into(view);
     }
 
-    @BindingAdapter({"bind:displayImgServicepoint"})
+    @BindingAdapter({"displayImgServicepoint"})
     public static void displayImgServicepoint(RoundedImageView view, Uri uri) {
         Glide.with(view.getContext())
                 .load(uri)
@@ -108,7 +108,7 @@ public class CustomBinding {
     }
 
 
-    @BindingAdapter({"bind:displayImgTransfrom"})
+    @BindingAdapter({"displayImgTransfrom"})
     public static void displayImgTransfrom(final ImageView view, Uri uri) {
         Glide.with(view.getContext())
                 .load(uri)
@@ -134,7 +134,7 @@ public class CustomBinding {
                 });
     }
 
-    @BindingAdapter({"bind:displayImgUserHead"})
+    @BindingAdapter({"displayImgUserHead"})
     public static void displayImgUserHead(final ImageView view, Uri uri) {
         Glide.with(view.getContext())
                 .load(uri)

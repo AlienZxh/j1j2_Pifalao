@@ -1,15 +1,12 @@
 package com.j1j2.pifalao.feature.home.offlinemodulehome;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.baidu.location.BDLocation;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviParaOption;
@@ -22,9 +19,7 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.app.event.LocationEvent;
 import com.j1j2.pifalao.app.event.LogStateEvent;
-import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.databinding.ActivityOfflinemodulehomeBinding;
 import com.j1j2.pifalao.feature.home.offlinemodulehome.di.OfflineModuleHomeModule;
 
@@ -57,9 +52,9 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
     @Inject
     ServicePointApi servicePointApi;
 
-    BDLocation location;
-
     UnReadInfoManager unReadInfoManager = null;
+
+    private String callDialogTag = "CALLDIALOG";
 
     @Override
     protected void initBinding() {
@@ -113,10 +108,6 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
                 });
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onLocationEvent(LocationEvent event) {
-        location = event.getLocation();
-    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLogStateChangeEvent(LogStateEvent event) {
@@ -129,30 +120,8 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
         }
     }
 
-    private void showCallDialog() {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认拨打： " + servicePoint.getMobile() + "？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        PackageManager pkm = getPackageManager();
-                        boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                                == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-                        if (has_permission) {
-                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
-                            startActivity(intent);
-                        } else {
-                            toastor.showSingletonToast("没有拨打电话权限");
-                        }
-                    }
-                })
-                .create();
-        messageDialog.show();
+    public void showCallDialog() {
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + servicePoint.getMobile() + "？", "取消", "确定");
     }
 
     @Override
@@ -167,6 +136,7 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
             else
                 navigate.navigateToLogin(this, null, false);
         if (v == binding.inBtn) {
+            BDLocation location = MainAplication.get(this).getLocationService().getSuccessLocation();
             if (location == null) {
                 toastor.showSingletonToast("定位失败");
                 return;
@@ -178,5 +148,23 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
             BaiduMapNavigation.openBaiduMapNavi(naviParaOption, this);
 
         }
+    }
+
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(callDialogTag)) {
+            PackageManager pkm = getPackageManager();
+            boolean has_permission = (PackageManager.PERMISSION_GRANTED
+                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
+            if (has_permission) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+                startActivity(intent);
+            } else {
+                toastor.showSingletonToast("没有拨打电话权限");
+            }
+        }
+
     }
 }

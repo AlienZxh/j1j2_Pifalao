@@ -1,8 +1,6 @@
 package com.j1j2.pifalao.feature.addressmanager;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -44,6 +42,11 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
     @Arg
     boolean isSelect;
 
+    private String deleteDialogTag = "DELETEDIALOG";
+
+    private int deleteAddressId;
+
+    private int deletePosition;
 
     @Override
     protected void initBinding() {
@@ -114,27 +117,21 @@ public class AddressManagerActivity extends BaseActivity implements View.OnClick
         navigate.navigateToAddAddress(this, null, false, AddAddressActivity.EDIT_ADDRESS, address);
     }
 
-    public void showDeleteDialog(final int addressId, final int position) {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认删除该地址吗？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        addressManagerViewModel.deleteAddress(addressId, position);
-                    }
-                })
-                .create();
-        messageDialog.show();
+    public void showDeleteDialog(int addressId, int position) {
+        deleteAddressId = addressId;
+        deletePosition = position;
+        showMessageDialogDuplicate(true, deleteDialogTag, "提示", "确认删除该地址吗？", "取消", "确定");
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onAddressListChangeEvent(AddressListChangeEvent event) {
         addressManagerViewModel.queryAddress();
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(deleteDialogTag))
+            addressManagerViewModel.deleteAddress(deleteAddressId, deletePosition);
     }
 }

@@ -4,7 +4,8 @@
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
         android:orientation="vertical">
 
         <com.zhy.autolayout.AutoLinearLayout
@@ -314,6 +315,7 @@
             android:id="@+id/cancelShareBtn"
             android:layout_width="match_parent"
             android:layout_height="120px"
+
             android:gravity="center"
             android:text="取消"
             android:textColor="@color/colorText333"

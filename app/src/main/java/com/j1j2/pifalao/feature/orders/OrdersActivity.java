@@ -1,11 +1,9 @@
 package com.j1j2.pifalao.feature.orders;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableInt;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,9 +28,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,6 +56,9 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     RecyclerView orderTypesView;
     OrdersTypeAdapter ordersTypeAdapter;
     SingleSelector singleSelector;
+
+    private String deleteDialogTag = "DELETEDIALOG";
+    int selectOrderId;
 
     @Override
     protected void initBinding() {
@@ -134,21 +132,9 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
 
     public void showDeleteDialog(final int orderId) {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认删除该订单吗？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ordersViewModel.cancleOrder(orderId);
-                    }
-                })
-                .create();
-        messageDialog.show();
+        selectOrderId = orderId;
+        showMessageDialogDuplicate(true, deleteDialogTag, "提示", "确认删除该订单吗？", "取消", "确定");
+
     }
 
 
@@ -278,5 +264,13 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     @Override
     public void onOfflineOrderClick(View v, OfflineOrderSimple offlineOrderSimple, int position) {
         navigate.navigateToOfflineOrderDetail(this, null, false, offlineOrderSimple);
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(deleteDialogTag)) {
+            ordersViewModel.cancleOrder(selectOrderId);
+        }
     }
 }

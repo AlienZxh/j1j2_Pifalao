@@ -5,7 +5,6 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 
 import com.j1j2.data.model.Address;
@@ -19,20 +18,16 @@ import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.dialog.TimeSelectDialogFragment;
 import com.j1j2.pifalao.app.event.AddressListChangeEvent;
 import com.j1j2.pifalao.app.event.CouponSelectEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.app.event.UserAddressSelectEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityConfirmorderBinding;
-import com.j1j2.pifalao.databinding.ViewDeliverytimePickerBinding;
-import com.j1j2.pifalao.databinding.ViewOrderpaytypeBinding;
 import com.j1j2.pifalao.feature.confirmorder.di.ConfirmOrderModule;
 import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 import com.j1j2.pifalao.feature.orderproducts.OrderProductsActivity;
-import com.j1j2.pifalao.feature.successresult.SuccessResultActivity;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.ViewHolder;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -51,7 +46,8 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-21.
  */
 @RequireBundler
-public class ConfirmOrderActivity extends BaseActivity implements View.OnClickListener {
+public class ConfirmOrderActivity extends BaseActivity implements View.OnClickListener
+        , TimeSelectDialogFragment.TimeSelectDialogFragmentListener {
     ActivityConfirmorderBinding binding;
 
     @Arg
@@ -71,14 +67,24 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     @Inject
     ShopCart shopCart;
 
-    DialogPlus timeDialog;
-    ViewDeliverytimePickerBinding timeDialogBinding;
+    List<String> timeItems;
+    int selectIndex = 0;
 
     public OrderSubmitState orderSubmitState;
 
     public ObservableList<Coupon> coupons = new ObservableArrayList<>();
 
     public List<Coupon> allCoupons;
+
+    private TimeSelectDialogFragment timeSelectDialogFragment;
+
+    @Override
+    protected void setupActivityComponent() {
+        super.setupActivityComponent();
+        Bundler.inject(this);
+        MainAplication.get(this).getUserComponent().plus(new ConfirmOrderModule(this, shopCartItems)).inject(this);
+        orderSubmitState = new OrderSubmitState(moduleId, userRelativePreference.getSelectedServicePoint(null));
+    }
 
     @Override
     protected void initBinding() {
@@ -91,17 +97,6 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initViews() {
-        //___________________________________________________________
-        timeDialogBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.view_deliverytime_picker, null, false);
-        timeDialog = DialogPlus.newDialog(this).setGravity(Gravity.BOTTOM)
-                .setCancelable(true)
-                .setInAnimation(R.anim.slide_in_bottom)
-                .setOutAnimation(R.anim.slide_out_bottom)
-                .setContentHolder(new ViewHolder(timeDialogBinding.getRoot()))
-                .setContentBackgroundResource(R.color.colorWhite)
-                .create();
-        timeDialogBinding.timeickerCancel.setOnClickListener(this);
-        timeDialogBinding.timeickerConFirm.setOnClickListener(this);
         //__________________________________________________________
         confirmOrderViewModel.CountDown(moduleId);
         //___________________________________
@@ -113,32 +108,44 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void setupActivityComponent() {
-        super.setupActivityComponent();
-        Bundler.inject(this);
-        MainAplication.get(this).getUserComponent().plus(new ConfirmOrderModule(this, shopCartItems)).inject(this);
-        orderSubmitState = new OrderSubmitState(moduleId, userRelativePreference.getSelectedServicePoint(null));
+    public List<String> getTimeItems() {
+        return timeItems;
+    }
+
+    @Override
+    public void setSelectTime(String item) {
+        orderSubmitState.PredictSendTime.set(item);
+    }
+
+    @Override
+    public int getSelectIndex() {
+        return selectIndex;
+    }
+
+    @Override
+    public void setSelectIndex(int index) {
+        selectIndex = index;
     }
 
     public void showTimePicker() {
-        timeDialog.show();
+        if (timeSelectDialogFragment != null)
+            timeSelectDialogFragment.show(getSupportFragmentManager(), "TIMESELECTDIALOG");
     }
 
     public void initTimePicker(int deliveryType, List<DeliveryServiceTime> deliveryServiceTimes) {
-        List<String> items = new ArrayList<>();
+        timeItems = new ArrayList<>();
         if (deliveryType == Constant.DeliveryType.PICKBYSELF) {
-            items.add(deliveryServiceTimes.get(0).getFullLocalStringTimeSegement().substring(0, 2) + "有空就来拿");
+            timeItems.add(deliveryServiceTimes.get(0).getFullLocalStringTimeSegement().substring(0, 2) + "有空就来拿");
             for (DeliveryServiceTime deliveryServiceTime : deliveryServiceTimes) {
-                items.add(deliveryServiceTime.getFullLocalStringTimeSegement());
+                timeItems.add(deliveryServiceTime.getFullLocalStringTimeSegement());
             }
         } else if (deliveryType == Constant.DeliveryType.HOMEDELIVERY) {
-            items.add("立即配送");
-            items.add("电话预约");
+            timeItems.add("立即配送");
+            timeItems.add("电话预约");
         }
-        timeDialogBinding.timePicker.setItems(items);
-        timeDialogBinding.timePicker.setClipToPadding(false);
-        timeDialogBinding.timePicker.setSeletion(0);
-        orderSubmitState.PredictSendTime.set(items.get(0));
+
+        orderSubmitState.PredictSendTime.set(timeItems.get(selectIndex));
+        timeSelectDialogFragment = new TimeSelectDialogFragment();
     }
 
     public void initFreightType(List<FreightType> freightTypes) {
@@ -183,7 +190,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         }
-        if(coupons.size()<=0)
+        if (coupons.size() <= 0)
             binding.couponText.setTextColor(0xffaaaaaa);
         else
             binding.couponText.setTextColor(0xff333333);
@@ -217,18 +224,10 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
             onBackPressed();
         if (v == binding.timPickerBtn)
             showTimePicker();
-
-        if (v == timeDialogBinding.timeickerCancel)
-            timeDialog.dismiss();
-        if (v == timeDialogBinding.timeickerConFirm) {
-            orderSubmitState.PredictSendTime.set(timeDialogBinding.timePicker.getSeletedItem());
-            timeDialog.dismiss();
-        }
         if (v == binding.productList) {
             navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_CONFIRMORDER, moduleId, shopCartItems, null);
         }
         if (v == binding.couponBtn) {
-//            if (null != coupons && coupons.size() > 0)
             navigate.navigateToCouponSelect(this, null, false, moduleId, coupons, orderSubmitState.Coupon.get());
         }
         if (v == binding.addressLayout) {
@@ -268,15 +267,12 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         shopCart.clear();
     }
 
-//    public void navigateToSuccess(int orderId) {
-//        navigate.navigateToSuccessResult(this, null, true, SuccessResultActivity.FROM_CONFIRMORDER, orderId);
-//    }
 
     public void navigateToOrderDetail(int orderId) {
         navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
     }
 
     public void navigateToOnlineOrderPay(int orderId, String orderNO) {
-        navigate.navigateToOnlineOrderPay(this, null, true, orderId, orderNO, false,false);
+        navigate.navigateToOnlineOrderPay(this, null, true, orderId, orderNO, false, false);
     }
 }

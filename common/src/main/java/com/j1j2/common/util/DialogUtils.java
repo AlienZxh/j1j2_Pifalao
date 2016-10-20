@@ -38,6 +38,7 @@ public class DialogUtils {
     }
 
     private static String generateFragmentTag(Fragment fragment) {
-        return fragment.getClass().getName();
+        return fragment.getClass().getSimpleName();
     }
+
 }

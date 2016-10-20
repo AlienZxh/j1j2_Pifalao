@@ -1,10 +1,8 @@
 package com.j1j2.pifalao.feature.shopcart;
 
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
@@ -56,6 +54,9 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     Module module;
 
+    private String deleteDialogTag = "DELETEDIALOG";
+    ShopCartItem deleteShopCart;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopcart);
@@ -96,21 +97,8 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     }
 
     public void showDeleteDialog(final ShopCartItem shopCart) {
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("提示")
-                .setNegativeButton("取消", null)
-                .setMessage("确认删除该商品吗？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        shopCartViewModel.removeShopCartItem(shopCart.getProductId());
-                    }
-                })
-                .create();
-        messageDialog.show();
+        this.deleteShopCart = shopCart;
+        showMessageDialogDuplicate(true, deleteDialogTag, "提示", "确认删除该商品吗？", "取消", "确定");
     }
 
     @Override
@@ -165,6 +153,14 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
         } else {
             navigate.navigateToLogin(this, null, true);
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(String fragmentTag) {
+        super.onDialogPositiveClick(fragmentTag);
+        if (fragmentTag.equals(deleteDialogTag)) {
+            shopCartViewModel.removeShopCartItem(deleteShopCart.getProductId());
         }
     }
 }

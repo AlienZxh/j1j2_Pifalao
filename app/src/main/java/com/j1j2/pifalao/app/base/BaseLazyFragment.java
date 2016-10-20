@@ -3,12 +3,14 @@ package com.j1j2.pifalao.app.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.j1j2.pifalao.app.dialog.MessageDialogFragmentBundler;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.lang.reflect.Field;
@@ -21,6 +23,7 @@ public class BaseLazyFragment extends RxFragment {
     private View contentView;
     private Context context;
     private ViewGroup container;
+    protected DialogFragment messageDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,42 @@ public class BaseLazyFragment extends RxFragment {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public void showMessageDialogDuplicate(boolean cancelable, String fragmentTag, String title, String message, String negativeButtonText, String positiveButtonText) {
+        messageDialog = MessageDialogFragmentBundler.build().fragmentTag(fragmentTag)
+                .cancelable(cancelable)
+                .title(title)
+                .message(message)
+                .negativeButtonText(negativeButtonText)
+                .positiveButtonText(positiveButtonText)
+                .create();
+        messageDialog.show(getChildFragmentManager(), fragmentTag);
+    }
+
+    public void showMessageDialogNotDuplicate(boolean cancelable, String fragmentTag, String title, String message, String negativeButtonText, String positiveButtonText) {
+        dismissMessageDialog();
+        messageDialog = MessageDialogFragmentBundler.build().fragmentTag(fragmentTag)
+                .cancelable(cancelable)
+                .title(title)
+                .message(message)
+                .negativeButtonText(negativeButtonText)
+                .positiveButtonText(positiveButtonText)
+                .create();
+        messageDialog.show(getChildFragmentManager(), fragmentTag);
+    }
+
+    public void dismissMessageDialog() {
+        if (isMessageDialogShowing())
+            messageDialog.dismiss();
+    }
+
+    public boolean isMessageDialogShowing() {
+        if (messageDialog != null && messageDialog.isVisible())
+            return true;
+        else
+            return false;
     }
 
 

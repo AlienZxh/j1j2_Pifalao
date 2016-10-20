@@ -73,6 +73,8 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
 
     public ObservableBoolean isLogin = new ObservableBoolean(true);
 
+    private String timeDialogTag="TIMEDIALOG";
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -137,15 +139,7 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
     }
 
     public void showTimeDialog(){
-        if (messageDialog != null && messageDialog.isShowing())
-            messageDialog.dismiss();
-        messageDialog = new AlertDialog.Builder(getContext())
-                .setCancelable(true)
-                .setTitle("温馨提示")
-                .setMessage("　由于仓库周日休息停配，周五21:00 - 周六21:00期间的全部订单需要周一上午才能送达。")
-                .setPositiveButton("知道了", null)
-                .create();
-        messageDialog.show();
+        showMessageDialogDuplicate(true, timeDialogTag, "提示", "　由于仓库周日休息停配，周五21:00 - 周六21:00期间的全部订单需要周一上午才能送达。", null, "知道了");
     }
 
     @Override
