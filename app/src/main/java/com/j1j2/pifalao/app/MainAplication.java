@@ -2,6 +2,7 @@ package com.j1j2.pifalao.app;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,7 +21,6 @@ import com.j1j2.pifalao.app.di.UserComponent;
 import com.j1j2.pifalao.app.di.UserModule;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.feature.launch.LaunchActivity;
-import com.j1j2.pifalao.feature.setting.SettingActivity;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -30,6 +30,7 @@ import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
 import com.tencent.bugly.beta.ui.UILifecycleListener;
+import com.tencent.bugly.beta.upgrade.UpgradeListener;
 import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
@@ -58,6 +59,7 @@ import okhttp3.OkHttpClient;
 public class MainAplication extends MultiDexApplication {
 
     public interface AppUpgradeListener {
+
         void onUpgradeFailed(boolean isManual);
 
         void onUpgradeSuccess(boolean isManual);
@@ -122,6 +124,7 @@ public class MainAplication extends MultiDexApplication {
         super.onCreate();
         String processName = getProcessName();
         if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
+            initStrictMode();
             initBugly();
             initDefendeleak();
             initLogger();
@@ -133,6 +136,19 @@ public class MainAplication extends MultiDexApplication {
             initOkHttpUtil();
             initGalleryFinal();
             registerActivityLifecycleCallbacks(new BaseActivityLifecycleCallbacks(locationService));
+        }
+    }
+
+    private void initStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build());
         }
     }
 
@@ -247,34 +263,36 @@ public class MainAplication extends MultiDexApplication {
 
 
     private void initBugly() {
-        Beta.autoInit = false;//自动初始化开关
+        Beta.autoInit = true;//自动初始化开关
         Beta.autoCheckUpgrade = false;//true表示初始化时自动检查升级; false表示不会自动检查升级,需要手动调用Beta.checkUpgrade()方法;
         //只允许在***上显示更新弹窗，其他activity上不显示弹窗; 不设置会默认所有activity都可以显示弹窗;
         Beta.canShowUpgradeActs.add(LaunchActivity.class);
-        Beta.canShowUpgradeActs.add(SettingActivity.class);
         // 监听更新的各个状态，可以替换SDK内置的toast提示
         Beta.upgradeStateListener = new UpgradeStateListener() {
             @Override
             public void onUpgradeFailed(boolean isManual) {
-
+                Logger.d("MainAplication onUpgradeFailed");
                 if (appUpgradeListener != null)
                     appUpgradeListener.onUpgradeFailed(isManual);
             }
 
             @Override
             public void onUpgradeSuccess(boolean isManual) {
+                Logger.d("MainAplication onUpgradeSuccess");
                 if (appUpgradeListener != null)
                     appUpgradeListener.onUpgradeSuccess(isManual);
             }
 
             @Override
             public void onUpgradeNoVersion(boolean isManual) {
+                Logger.d("MainAplication onUpgradeNoVersion");
                 if (appUpgradeListener != null)
                     appUpgradeListener.onUpgradeNoVersion(isManual);
             }
 
             @Override
             public void onUpgrading(boolean isManual) {
+                Logger.d("MainAplication onUpgrading");
                 if (appUpgradeListener != null)
                     appUpgradeListener.onUpgrading(isManual);
 
@@ -320,7 +338,7 @@ public class MainAplication extends MultiDexApplication {
         Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);//设置sd卡的Download为更新资源存储目录
         BuglyStrategy strategy = new BuglyStrategy();
         strategy.setAppChannel(BuildConfig.DEBUG ? "pifalao-debug" : "pifalao");
-        Bugly.init(getApplicationContext(), "1103829290", BuildConfig.DEBUG, strategy);
+        Bugly.init(getApplicationContext(), Constant.BUGLY_ID, BuildConfig.DEBUG, strategy);
     }
 
 

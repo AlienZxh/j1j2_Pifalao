@@ -44,7 +44,6 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
     @Inject
     UnReadInfoManager unReadInfoManager;
 
-
     @Arg
     @Required(false)
     Module module;

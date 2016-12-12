@@ -48,7 +48,12 @@ public class ImgsGalleryActivity extends BaseActivity {
 
     @Override
     protected void initViews() {
-
+        binding.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         List<String> strUrls = new ArrayList<>();
         for (ImgUrl imgUrl : imgUrls) {
             strUrls.add(imgUrl.getUrl());

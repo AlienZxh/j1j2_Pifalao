@@ -70,6 +70,7 @@ public class MessageDialogFragment extends BaseDialogFragment implements DialogI
         return builder;
     }
 
+
     @Override
     public void onClick(DialogInterface dialog, int which) {
         if (which == DialogInterface.BUTTON_NEGATIVE)

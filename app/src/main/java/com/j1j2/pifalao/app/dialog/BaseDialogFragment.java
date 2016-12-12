@@ -45,6 +45,7 @@ public abstract class BaseDialogFragment extends RxDialogFragment {
     }
 
 
+
     /**
      * 为获取接口类型定义的一个辅助方法 简化每次都要强转的麻烦
      *

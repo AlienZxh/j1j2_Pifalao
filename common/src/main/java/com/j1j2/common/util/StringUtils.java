@@ -38,12 +38,14 @@ public class StringUtils {
 
     public static CharSequence getServicePointDistance(double d) {
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.##");
-        if (d < 30000) {
-            return ("距离：≈" + df.format(d)) + "米";
-        } else if (d == 0) {
+        if (d <= 0) {
             return "距离：定位失败";
-        } else
+        } else if (d > 30000) {
             return "距离：距离过远";
+        } else if (d <= 30000 && d > 0) {
+            return ("距离：≈" + df.format(d)) + "米";
+        }
+        return "距离：--";
     }
 
     public static CharSequence getStrWithBracket(String str) {

@@ -133,10 +133,7 @@ public class ModulePermissionDeniedActivity extends BaseActivity implements View
         if (v == binding.backBtn || v == binding.cancelBtn)
             onBackPressed();
         if (v == binding.individualBtn) {
-            if (MainAplication.get(this).isLogin())
-                navigate.navigateToIndividualCenter(this, null, false);
-            else
-                navigate.navigateToLogin(this, null, false);
+            navigate.navigateToIndividualCenter(this, null, false);
         }
 
         if (v == binding.applyBtn) {

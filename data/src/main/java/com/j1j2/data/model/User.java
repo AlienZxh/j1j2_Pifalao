@@ -39,6 +39,11 @@ public class User {
     private int UserLevelId;
     private double Balance;
     private String Portrait;
+    /// <summary>
+    /// 手机号码是否验证过
+    /// </summary>
+    private boolean MobileVerfied;
+
 
     public int getUserId() {
         return UserId;
@@ -150,5 +155,13 @@ public class User {
 
     public void setPortrait(String portrait) {
         Portrait = portrait;
+    }
+
+    public boolean isMobileVerfied() {
+        return MobileVerfied;
+    }
+
+    public void setMobileVerfied(boolean mobileVerfied) {
+        MobileVerfied = mobileVerfied;
     }
 }

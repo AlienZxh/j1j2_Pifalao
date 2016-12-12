@@ -57,6 +57,12 @@ android {
         versionCode globalConfiguration.getAt("androidVersionCode")
         versionName globalConfiguration.getAt("androidVersionName")
         testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME: applicationId,
+                JPUSH_APPKEY : "64858242969d6d699b843984", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
+        ]
     }
 
     signingConfigs {
@@ -94,8 +100,8 @@ android {
             zipAlignEnabled false
             shrinkResources false
             //9087
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:9087/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:9087\""
+            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
             buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
             buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
         }
@@ -147,6 +153,10 @@ dependencies {
     compile appDependencies.buglyNDK
     //umeng
     compile appDependencies.umengAnalytics
+    //jpush
+    compile appDependencies.jpush
+    //权限管理
+    compile appDependencies.easypermissions
     //单元测试
     testCompile appTestDependencies.junit
     //UI测试

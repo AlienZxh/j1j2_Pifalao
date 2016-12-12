@@ -14,12 +14,9 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.LazyFragment;
 import com.j1j2.pifalao.app.recyclerviewadapter.RecyclerArrayAdapter;
 import com.j1j2.pifalao.databinding.FragmentMemberhomeLuckyBinding;
-import com.j1j2.pifalao.feature.prizedetail.PrizeDetailActivity;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import in.workarounds.bundler.Bundler;

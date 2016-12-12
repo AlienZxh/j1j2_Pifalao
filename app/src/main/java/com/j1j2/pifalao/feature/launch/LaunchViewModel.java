@@ -80,7 +80,6 @@ public class LaunchViewModel {
                         while (isCheckingUpdate) {
 
                         }
-
                         if (!canNavigate)
                             return;
                         MainAplication.get(launchActivity).loginOut();
@@ -95,13 +94,14 @@ public class LaunchViewModel {
                         Logger.d("pifalaolaunch CanAutoLogin " + launchActivity.getResources().getBoolean(R.bool.can_auto_login));
                         Logger.d("pifalaolaunch IsAutoLogin " + userLoginPreference.getIsAutoLogin(false));
 
-                        if (userLoginPreference.getIsAutoLogin(false) && launchActivity.getResources().getBoolean(R.bool.can_auto_login)) {
+                        if (userLoginPreference.getIsAutoLogin(false) && launchActivity.getResources().getBoolean(R.bool.can_auto_login) && user.isMobileVerfied()) {
                             MainAplication.get(launchActivity).login(user);
                             EventBus.getDefault().postSticky(new LogStateEvent(true));
                             Logger.d("pifalaolaunch loginSucess");
                         } else {
                             MainAplication.get(launchActivity).loginOut();
                             EventBus.getDefault().postSticky(new LogStateEvent(false));
+                            Logger.d("pifalaolaunch loginSucess isMobile " + user.isMobileVerfied());
                             Logger.d("pifalaolaunch loginSucess but cant autologin");
                         }
                     }
@@ -115,18 +115,15 @@ public class LaunchViewModel {
 
                     @Override
                     public void onWebReturnCompleted() {
-
                         while (isCheckingUpdate) {
 
                         }
-
                         if (!canNavigate)
                             return;
                         launchActivity.navigateTo();
                     }
                 });
     }
-
 
 
     public void onDestory() {

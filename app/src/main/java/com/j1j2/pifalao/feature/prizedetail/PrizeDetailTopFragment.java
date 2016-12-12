@@ -17,6 +17,8 @@ import com.j1j2.pifalao.app.base.LazyFragment;
 import com.j1j2.pifalao.databinding.FragmentPrizedetailTopBinding;
 import com.j1j2.pifalao.feature.productdetail.ProductImgCycleAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -56,7 +58,7 @@ public class PrizeDetailTopFragment extends BaseFragment {
     @Override
     protected void initViews() {
         initBanner();
-        if (listener.getActivityWinPrize() !=null) {
+        if (listener.getActivityWinPrize() != null) {
             binding.tag.setText("已揭晓");
             binding.name.setText(listener.getActivityWinPrize().getProductInfo().getProductName());
             binding.viewPager.setAdapter(new PrizeImgCycleAdapter(listener.getActivityWinPrize().getProductInfo().getImgs()));
@@ -90,7 +92,7 @@ public class PrizeDetailTopFragment extends BaseFragment {
 
     public void initBanner() {
 
-        if (listener.getActivityWinPrize() !=null) {
+        if (listener.getActivityWinPrize() != null) {
             binding.viewPager.setAdapter(new PrizeImgCycleAdapter(listener.getActivityWinPrize().getProductInfo().getImgs()));
         } else {
             binding.viewPager.setAdapter(new PrizeImgCycleAdapter(listener.getActivityProduct().getImgList()));
@@ -99,5 +101,12 @@ public class PrizeDetailTopFragment extends BaseFragment {
         binding.viewPager.startAutoScroll(2000);
         binding.viewPager.setInterval(2000);
         binding.tab.setViewPager(binding.viewPager);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 }

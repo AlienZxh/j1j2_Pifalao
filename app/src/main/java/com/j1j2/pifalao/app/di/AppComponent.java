@@ -41,6 +41,8 @@ import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneComponent;
 import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneModule;
 import com.j1j2.pifalao.feature.register.steptwo.di.RegisterStepTwoComponent;
 import com.j1j2.pifalao.feature.register.steptwo.di.RegisterStepTwoModule;
+import com.j1j2.pifalao.feature.register.validateaccount.di.ValidateAccountComponent;
+import com.j1j2.pifalao.feature.register.validateaccount.di.ValidateAccountModule;
 import com.j1j2.pifalao.feature.search.di.SearchComponent;
 import com.j1j2.pifalao.feature.search.di.SearchModule;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointComponent;
@@ -121,4 +123,6 @@ public interface AppComponent {
     PrizeComponent plus(PrizeModule prizeModule);
 
     ApplyForComponent plus(ApplyForModule applyForModule);
+
+    ValidateAccountComponent plus(ValidateAccountModule validateAccountModule);
 }

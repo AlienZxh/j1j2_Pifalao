@@ -4,18 +4,11 @@ import android.databinding.DataBindingUtil;
 
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
-import com.j1j2.pifalao.app.UnReadInfoManager;
+import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.service.BackGroundService;
-import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityIndividualcenterBinding;
 import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import javax.inject.Inject;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.RequireBundler;
@@ -28,9 +21,6 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     ActivityIndividualcenterBinding binding;
 
-    @Inject
-    UnReadInfoManager unReadInfoManager;
-
 
     @Override
     protected void initBinding() {
@@ -39,7 +29,10 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Override
     protected void initViews() {
-        changeFragment(R.id.fragment, Bundler.individualCenterFragment(IndividualCenterFragment.FROM_INDIVIDUALCENTERACTIVITY).create());
+        if (MainAplication.get(this).isLogin())
+            changeFragment(R.id.fragment, Bundler.individualCenterFragment(IndividualCenterFragment.FROM_INDIVIDUALCENTERACTIVITY).create());
+        else
+            navigate.navigateToLogin(this, null, true);
     }
 
     @Override
@@ -48,30 +41,6 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
         BackGroundService.updateUnRead(this);
     }
 
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    public void onLogStateChangeEvent(LogStateEvent event) {
-        if (event.isLogin()) {
-
-        } else {
-            navigate.navigateToLogin(this, null, true);
-        }
-    }
-
-    @Override
-    public void showFragmentProgress(String msg) {
-        showProgress(msg);
-    }
-
-    @Override
-    public void dismissFragmentProgress() {
-        dismissProgress();
-    }
-
-    @Override
-    public void navigateToOrderManager() {
-        navigate.navigateToOrderManager(this, null, false);
-    }
 
     @Override
     public void navigateToQRCode() {
@@ -105,7 +74,6 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
 
     @Override
     public void navigateToVipUpdate() {
-//        navigate.navigateToVipUpdateStepOne(this, null, false);
         navigate.navigateToVipHome(this, null, false, VipHomeActivity.VIPHOME);
     }
 

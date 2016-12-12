@@ -40,7 +40,11 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Created by alienzxh on 16-3-4.
  */
-public abstract class BaseActivity extends RxAppCompatActivity implements IDialogPositiveButtonClickListener, IDialogNegativeButtonClickListener {
+public abstract class BaseActivity extends RxAppCompatActivity
+        implements IDialogPositiveButtonClickListener,
+        IDialogNegativeButtonClickListener {
+    protected final int RC_SETTINGS_SCREEN = 109;
+    protected static final int RC_CALLPHONE_PERM = 110;
 
     private String pageName = getClass().getSimpleName();
 
@@ -104,10 +108,11 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IDialo
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         if (isMessageDialogShowing())
             messageDialog.dismiss();
-        EventBus.getDefault().unregister(this);
+
     }
 
 

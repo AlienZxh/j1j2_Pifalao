@@ -203,6 +203,13 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
                 mBaiduMap.setMyLocationData(locData);
             }
         }
+
+    }
+
+    @Override
+    public void onMapLoaded() {
+        loadList = true;
+        location = MainAplication.get(this).getLocationService().getmLocation();
         if (loadList) {
             locationViewModel.onCreate(location);
             if (LocationUtils.isLocationSuccess(location)) {
@@ -212,13 +219,6 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
             }
             loadList = false;
         }
-
-    }
-
-    @Override
-    public void onMapLoaded() {
-        loadList = true;
-        MainAplication.get(this).getLocationService().requestLocation();
     }
 
     @Override

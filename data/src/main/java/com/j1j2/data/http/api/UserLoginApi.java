@@ -27,6 +27,13 @@ public interface UserLoginApi {
 
     @POST("UserLogin/UpdateUserTerminalDetail")
     Observable<WebReturn<String>> updateUserTerminalDetail(@Body LoginBody loginBody);
+
+    @POST("UserLogin/SendMobileVerifyCode")
+    Observable<WebReturn<String>> sendMobileVerifyCode();
+
+    @POST("UserLogin/SetUserMobileVerifyed")
+    Observable<WebReturn<String>> setUserMobileVerifyed(@Query("code") String code);
+
     //______________________________________________________________________________________
 
     @Multipart

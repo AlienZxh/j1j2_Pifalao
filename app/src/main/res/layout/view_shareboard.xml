@@ -132,7 +132,6 @@
                         app:layout_auto_basewidth="height" />
 
                     <TextView
-
                         fontPath="iconfont/iconfont.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

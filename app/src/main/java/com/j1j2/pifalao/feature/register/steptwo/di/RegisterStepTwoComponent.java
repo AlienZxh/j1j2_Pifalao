@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.register.steptwo.di;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.register.stepone.di.RegisterStepOneModule;
 import com.j1j2.pifalao.feature.register.steptwo.RegisterStepTwoActivity;
+import com.j1j2.pifalao.feature.register.validateaccount.ValidateAccountActivity;
 
 import dagger.Subcomponent;
 
@@ -13,4 +14,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {RegisterStepTwoModule.class})
 public interface RegisterStepTwoComponent {
     void inject(RegisterStepTwoActivity registerStepTwoActivity);
+
 }

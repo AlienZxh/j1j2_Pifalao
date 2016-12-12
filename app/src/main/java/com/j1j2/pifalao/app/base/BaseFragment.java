@@ -115,15 +115,9 @@ public abstract class BaseFragment extends RxFragment {
         }
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        EventBus.getDefault().unregister(this);
-    }
-
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         RefWatcher refWatcher = MainAplication.getRefWatcher(getActivity());
         refWatcher.watch(this);

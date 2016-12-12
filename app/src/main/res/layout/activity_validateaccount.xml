@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-        <variable
-            name="registerStepOneViewModel"
-            type="com.j1j2.pifalao.feature.register.stepone.RegisterStepOneViewModel" />
-    </data>
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
@@ -32,119 +25,31 @@
                 android:gravity="center"
                 android:text="@string/icon_back"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/icon_normal"
-                app:OnClickListener="@{registerStepOneViewModel.registerStepOneActivity}" />
+                android:textSize="@dimen/icon_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="注册"
+                android:text="手机验证"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
-        <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="722px"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_big"
-                android:paddingTop="@dimen/padding_big">
-
-                <TextView
-                    android:layout_width="56px"
-                    android:layout_height="56px"
-                    android:background="@drawable/register_step_selected_bg"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="36px"
-                    android:textStyle="bold"
-                    app:layout_auto_baseheight="width" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:text="验证手机号码"
-                    android:textColor="@color/colorText2a2a2a"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_big"
-                android:paddingTop="@dimen/padding_big">
-
-                <TextView
-                    android:layout_width="56px"
-                    android:layout_height="56px"
-                    android:background="@drawable/register_step_normal_bg"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="36px"
-                    android:textStyle="bold"
-                    app:layout_auto_baseheight="width" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:text="设置登录密码"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-
-            <com.zhy.autolayout.AutoLinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_big"
-                android:paddingTop="@dimen/padding_big">
-
-                <TextView
-                    android:layout_width="56px"
-                    android:layout_height="56px"
-                    android:background="@drawable/register_step_normal_bg"
-                    android:gravity="center"
-                    android:text="3"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="36px"
-                    android:textStyle="bold"
-                    app:layout_auto_baseheight="width" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_small"
-                    android:text="完成注册"
-                    android:textColor="@color/colorTextaaa"
-                    android:textSize="@dimen/text_normal" />
-
-            </com.zhy.autolayout.AutoLinearLayout>
-        </com.zhy.autolayout.AutoLinearLayout>
+            android:layout_marginLeft="@dimen/padding_big"
+            android:layout_marginTop="@dimen/padding_biger"
+            android:text="为保护您的账户安全，请验证手机号"
+            android:textColor="@color/colorText666"
+            android:textSize="@dimen/text_big" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="92px"
+            android:layout_marginTop="10px"
             android:background="@drawable/item_messages_bg"
             android:orientation="horizontal">
 
@@ -159,20 +64,18 @@
                 android:textColor="@color/colorText666"
                 android:textSize="40px" />
 
-            <EditText
-                android:id="@+id/phoneEdit"
+            <TextView
+                android:id="@+id/phoneText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5px"
                 android:layout_marginTop="5px"
                 android:layout_weight="60"
                 android:background="@color/colorWhite"
-                android:hint="请输入手机号码"
-                android:inputType="phone"
+                android:gravity="center_vertical"
                 android:maxLength="11"
                 android:maxLines="1"
                 android:textColor="@color/colorText2a2a2a"
-                android:textColorHint="@color/colorTextaaa"
                 android:textSize="30px" />
 
             <View
@@ -190,8 +93,7 @@
                 android:gravity="center"
                 android:text="获取验证码"
                 android:textColor="@color/colorBlueBtn"
-                android:textSize="@dimen/text_normal"
-                app:OnClickListener="@{registerStepOneViewModel.registerStepOneActivity}" />
+                android:textSize="@dimen/text_normal" />
 
         </com.zhy.autolayout.AutoLinearLayout>
 
@@ -275,17 +177,16 @@
         <TextView
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/padding_big"
-            android:layout_marginRight="@dimen/padding_big"
             android:layout_height="@dimen/content_height_big"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/padding_big"
+            android:layout_marginRight="@dimen/padding_big"
             android:layout_marginTop="@dimen/padding_big"
             android:background="@drawable/green_conner_btn_selector"
             android:gravity="center"
-            android:text="下一步>>"
+            android:text="验证手机号码"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/text_biger"
-            app:OnClickListener="@{registerStepOneViewModel.registerStepOneActivity}" />
+            android:textSize="@dimen/text_biger" />
 
     </com.zhy.autolayout.AutoLinearLayout>
 </layout>

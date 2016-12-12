@@ -26,8 +26,6 @@ import com.j1j2.pifalao.feature.couponselect.di.CouponSelectComponent;
 import com.j1j2.pifalao.feature.couponselect.di.CouponSelectModule;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeComponent;
 import com.j1j2.pifalao.feature.home.viphome.di.VipHomeModule;
-import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityComponent;
-import com.j1j2.pifalao.feature.individualcenter.di.IndividualActivityModule;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterComponent;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.pifalao.feature.messages.di.MessagesComponent;
@@ -75,8 +73,6 @@ public interface UserComponent {
     ShopCart shopCart();
 
     UnReadInfoManager unReadInfoManager();
-
-    IndividualActivityComponent plus(IndividualActivityModule individualActivityModule);
 
     IndividualCenterComponent plus(IndividualCenterModule individualCenterModule);
 
@@ -131,4 +127,5 @@ public interface UserComponent {
     PrizeConfirmComponent plus(PrizeConfirmModule prizeConfirmModule);
 
     PrizeDetailComponent plus(PrizeDetailModule prizeDetailModule);
+
 }

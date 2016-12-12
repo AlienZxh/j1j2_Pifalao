@@ -34,6 +34,7 @@
                 android:text="用户晒单"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
+
         </com.zhy.autolayout.AutoRelativeLayout>
 
 

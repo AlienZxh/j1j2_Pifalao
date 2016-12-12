@@ -14,7 +14,7 @@ public class ValidateUtils {
     public static boolean isMobileNO(String mobiles) {
         if (TextUtils.isEmpty(mobiles))
             return false;
-        Pattern p = Pattern.compile("[1][3578]\\d{9}");
+        Pattern p = Pattern.compile("[1][34578]\\d{9}");
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }

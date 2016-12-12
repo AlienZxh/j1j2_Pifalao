@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
@@ -78,7 +79,6 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
                 .build());
         binding.orderList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
         binding.orderList.setRefreshListener(this);
-
     }
 
     @Override
@@ -118,9 +118,18 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
         ordersTypeAdapter.setListener(this);
         popupWindow = new PopupWindow(orderTypesView,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(0x44000000));
-//_________________________________________
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00ffffff));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f; //0.0-1.0
+                getWindow().setAttributes(lp);
+            }
+        });
+        //_________________________________________
     }
 
     @Override
@@ -184,8 +193,14 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
     public void onClick(View v) {
         if (v == binding.backBtn)
             onBackPressed();
-        if (v == binding.actionBarTitle)
+        if (v == binding.actionBarTitle) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.alpha = 0.4f; //0.0-1.0
+            getWindow().setAttributes(lp);
             popupWindow.showAsDropDown(binding.toolbar);
+
+        }
+
     }
 
     @Override

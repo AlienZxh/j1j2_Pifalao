@@ -57,9 +57,10 @@ ext {
     slantedtextviewVersion = '1.2'
     marqueeviewVersion = '1.1.0'
     spotsdialogVersion = '0.7@aar'
-    buglySDKUpgradeVersion = 'latest.release'
+    buglySDKUpgradeVersion = '1.1.6'
     buglyNDKVersion = 'latest.release'
 
+    jpushVersion = '2.2.0'
     //Testing
     jUnitVersion = '4.12'
 
@@ -69,7 +70,8 @@ ext {
     rulesVersion = '0.4.1'
 
     //Development
-    leakCanaryVersion = '1.4-beta2'
+    leakCanaryVersion = '1.5'
+    easypermissionsVersion = '0.2.1'
 
     //umeng
     umengAnalyticsVersion = 'latest.integration'
@@ -97,6 +99,8 @@ ext {
             umengAnalytics       : "com.umeng.analytics:analytics:${umengAnalyticsVersion}",
             buglySDKUpgrade      : "com.tencent.bugly:crashreport_upgrade:${buglySDKUpgradeVersion}",
             buglyNDK             : "com.tencent.bugly:nativecrashreport:${buglyNDKVersion}",
+            jpush                : "cn.jiguang:jpush:${jpushVersion}",
+            easypermissions      : "pub.devrel:easypermissions:${easypermissionsVersion}",
     ]
 
     appReleaseDependencies = [

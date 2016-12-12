@@ -19,11 +19,13 @@ import com.j1j2.common.util.Toastor;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
+import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentIndividualcenterBinding;
+import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterComponent;
 import com.j1j2.pifalao.feature.individualcenter.di.IndividualCenterModule;
 import com.j1j2.pifalao.feature.participationrecord.ParticipationRecordActivity;
 
@@ -59,11 +61,6 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
 
     public interface IndividualCenterFragmentListener {
 
-        void showFragmentProgress(String msg);
-
-        void dismissFragmentProgress();
-
-        void navigateToOrderManager();
 
         void navigateToQRCode();
 
@@ -198,7 +195,6 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
     }
 
 
-
     @Override
     public void onClick(View v) {
         if (v == binding.briberymonery) {
@@ -228,7 +224,7 @@ public class IndividualCenterFragment extends BaseFragment implements View.OnCli
         }
         if (v == binding.backBtn)
             getActivity().onBackPressed();
-        if (v == binding.userImg){
+        if (v == binding.userImg) {
             new AlertDialog.Builder(getContext())
                     .setCancelable(true)
                     .setTitle("请选择")

@@ -208,12 +208,12 @@
     <string name="icon_cashpay">&#xe702;</string>
 
     <string name="icon_share">&#xe704;</string>
-    <string name="icon_share_weixin">&#xe703;</string>
+    <string name="icon_share_weixin">&#xe722;</string>
     <string name="icon_share_weixin_friend">&#xe708;</string>
-    <string name="icon_share_sina">&#xe706;</string>
+    <string name="icon_share_sina">&#xe721;</string>
     <string name="icon_share_qq">&#xe70a;</string>
     <string name="icon_share_qq_zone">&#xe709;</string>
-    <string name="icon_share_copy">&#xe705;</string>
+    <string name="icon_share_copy">&#xe723;</string>
 
 
     <string name="icon_ongoing">&#xe715;</string>

@@ -18,7 +18,7 @@ public class ShowOrderView extends AutoLinearLayout {
 
     private Paint mPaint;
     private Paint mStrokePaint;
-
+    private  RectF mRectF;
     private Path path;
 
     private float base;
@@ -55,6 +55,8 @@ public class ShowOrderView extends AutoLinearLayout {
         mStrokePaint.setColor(0xffe0e0e0);
         mStrokePaint.setStrokeWidth(1);
         mStrokePaint.setStyle(Paint.Style.STROKE);
+
+        mRectF = new RectF();
     }
 
     @Override
@@ -68,24 +70,24 @@ public class ShowOrderView extends AutoLinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        RectF mRectF;
+
         path.reset();
 
         path.moveTo(0, 0);
         path.lineTo(altitude, base);
         path.lineTo(altitude, y - conner / 2);
 
-        mRectF = new RectF(altitude, y - conner, altitude + conner, y);
+        mRectF.set(altitude, y - conner, altitude + conner, y);
         path.arcTo(mRectF, 180, -90);
 
         path.lineTo(x - conner / 2, y);
 
-        mRectF = new RectF(x - conner, y - conner, x, y);
+        mRectF.set(x - conner, y - conner, x, y);
         path.arcTo(mRectF, 90, -90);
 
         path.lineTo(x, conner / 2);
 
-        mRectF = new RectF(x - conner, 0, x, conner);
+        mRectF.set(x - conner, 0, x, conner);
         path.arcTo(mRectF, 0, -90);
 
         path.lineTo(0, 0);

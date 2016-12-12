@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.findpsw;
 import android.databinding.DataBindingUtil;
 import android.view.View;
 
+import com.j1j2.common.util.ValidateUtils;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -49,7 +50,7 @@ public class FindPSWActivity extends BaseActivity implements View.OnClickListene
     public void setSmsCodeBtnState(long countDown) {
         if (countDown <= 0) {
             binding.smsCodeBtn.setEnabled(true);
-            binding.smsCodeBtn.setTextColor(getResources().getColor(R.color.colorAccent));
+            binding.smsCodeBtn.setTextColor(getResources().getColor(R.color.colorBlueBtn));
             binding.smsCodeBtn.setText("获取验证码");
         } else {
             binding.smsCodeBtn.setEnabled(false);
@@ -65,7 +66,7 @@ public class FindPSWActivity extends BaseActivity implements View.OnClickListene
             onBackPressed();
         if (v == binding.smsCodeBtn) {
             phone = binding.phoneEdit.getText().toString();
-            if (phone.length() != 11) {
+            if (!ValidateUtils.isMobileNO(phone)) {
                 toastor.showSingletonToast("请输入正确的手机号码");
                 return;
             } else {
@@ -81,7 +82,7 @@ public class FindPSWActivity extends BaseActivity implements View.OnClickListene
             smscode = binding.smsCodeEdit.getText().toString();
             psw = binding.pswEdit.getText().toString();
             confirmpsw = binding.confirmPswEdit.getText().toString();
-            if (phone.length() != 11) {
+            if (!ValidateUtils.isMobileNO(phone)) {
                 toastor.showSingletonToast("请输入正确的手机号码");
                 return;
             }

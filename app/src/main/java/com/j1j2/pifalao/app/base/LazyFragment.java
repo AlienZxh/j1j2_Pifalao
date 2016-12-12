@@ -188,11 +188,11 @@ public abstract class LazyFragment extends BaseLazyFragment {
             onDestroyViewLazy();
         }
         isInit = false;
-        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onDestroy() {
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
         RefWatcher refWatcher = MainAplication.getRefWatcher(getActivity());
         refWatcher.watch(this);

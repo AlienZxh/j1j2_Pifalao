@@ -10,6 +10,7 @@ import com.j1j2.pifalao.R;
  */
 public class Constant {
     public final static String WEIXIN_APP_ID = "wxaaf65494c086b0d3";
+    public final static String BUGLY_ID = "1103829290";
 
     public interface FilePath {
         String saveFolder = Environment

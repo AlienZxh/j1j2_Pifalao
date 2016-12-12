@@ -1,56 +1,55 @@
 package com.j1j2.pifalao.feature.setting;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.j1j2.common.util.FileUtils;
-import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
-import com.j1j2.pifalao.app.dialog.MessageDialogFragmentBundler;
-import com.j1j2.pifalao.app.dialog.impl.IDialogPositiveButtonClickListener;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.databinding.ActivitySettingBinding;
 import com.j1j2.pifalao.feature.account.di.AccountModule;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
-import com.trello.rxlifecycle.ActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.RequireBundler;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by alienzxh on 16-3-24.
  */
 @RequireBundler
-public class SettingActivity extends BaseActivity implements View.OnClickListener
-        , MainAplication.AppUpgradeListener {
+public class SettingActivity extends BaseActivity implements View.OnClickListener,
+        MainAplication.AppUpgradeListener,
+        EasyPermissions.PermissionCallbacks {
 
     ActivitySettingBinding binding;
 
@@ -67,7 +66,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
-        MainAplication.get(this).getUserComponent().plus(new AccountModule(this)).inject(this);
+        if (MainAplication.get(this).isLogin())
+            MainAplication.get(this).getUserComponent().plus(new AccountModule(this)).inject(this);
+        else
+            navigate.navigateToLogin(this, null, true);
     }
 
     @Override
@@ -162,6 +164,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         return localVersion;
     }
 
+
     @Override
     public void onUpgradeFailed(boolean isManual) {
 
@@ -196,15 +199,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onDialogPositiveClick(String fragmentTag) {
         super.onDialogPositiveClick(fragmentTag);
         if (fragmentTag.equals(callDialogTag)) {
-            PackageManager pkm = getPackageManager();
-            boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-            if (has_permission) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
-                startActivity(intent);
-            } else {
-                toastor.showSingletonToast("没有拨打电话权限");
-            }
+            callPiFaLao();
         } else if (fragmentTag.equals(clearCacheDialogTag)) {
             showProgress("缓存删除中");
             Observable.create(new Observable.OnSubscribe<Void>() {
@@ -233,6 +228,52 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                         public void onNext(Void aVoid) {
                         }
                     });
+        }
+    }
+
+    @SuppressWarnings("all")
+    @AfterPermissionGranted(RC_CALLPHONE_PERM)
+    private void callPiFaLao() {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:400-808-7172"));
+            startActivity(intent);
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, "拨打电话，缺少拨打电话权限。",
+                    RC_CALLPHONE_PERM, Manifest.permission.CALL_PHONE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (requestCode == RC_CALLPHONE_PERM && EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this, "拨打电话，缺少拨打电话权限。")
+                    .setTitle("缺少权限")
+                    .setPositiveButton("设置")
+                    .setNegativeButton("取消", null /* click listener */)
+                    .setRequestCode(RC_SETTINGS_SCREEN)
+                    .build()
+                    .show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SETTINGS_SCREEN) {
+            // Do something after user returned from app settings screen, like showing a Toast.
+
         }
     }
 }

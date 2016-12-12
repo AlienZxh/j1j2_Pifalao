@@ -17,7 +17,7 @@ import com.zhy.autolayout.AutoFrameLayout;
 public class ArcView extends View {
 
     private Paint mPaint;
-
+    private Path path;
     private int w;
     private int h;
 
@@ -37,6 +37,7 @@ public class ArcView extends View {
         mPaint.setColor(0xffd84e43);
         mPaint.setStyle(Paint.Style.FILL);
 
+        path = new Path();
     }
 
     @Override
@@ -45,18 +46,17 @@ public class ArcView extends View {
         this.w = w;
         this.h = h;
         Log.d("", " onSizeChanged zxhhxz w:" + w + "  h:" + h);
+
+        path.moveTo(0, 0);
+        path.quadTo(w / 2, h, w, 0);
+        path.close();
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Path path;
-        Log.d("", " onDraw zxhhxz w:" + w + "  h:" + h);
-        path = new Path();
-        path.moveTo(0, 0);
-        path.quadTo(w / 2, h, w, 0);
-        path.close();
+
 
         canvas.drawPath(path, mPaint);
 

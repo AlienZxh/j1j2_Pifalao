@@ -1,7 +1,5 @@
 package com.j1j2.pifalao.feature.services;
 
-import android.graphics.Typeface;
-
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -9,7 +7,6 @@ import com.j1j2.data.http.api.ActivityApi;
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.http.api.UserLoginApi;
-import com.j1j2.data.http.api.UserVipApi;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Module;
 import com.j1j2.data.model.ServicePoint;
@@ -17,10 +14,8 @@ import com.j1j2.data.model.SystemNotice;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
 import com.j1j2.pifalao.app.Constant;
-import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.orhanobut.logger.Logger;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import java.util.ArrayList;
@@ -30,12 +25,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Scheduler;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -56,7 +47,7 @@ public class ServicesViewModule {
 
     private ServicesAdapter servicesAdapter;
 
-    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint,  UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
+    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
         this.servicePointApi = servicePointApi;
         this.servicesActivity = servicesActivity;
         this.servicePoint = servicePoint;
@@ -64,7 +55,6 @@ public class ServicesViewModule {
         this.systemAssistApi = systemAssistApi;
         this.activityApi = activityApi;
         this.modules = new ArrayList<>();
-//        Typeface typeface = Typeface.createFromFile(Constant.FilePath.saveFolder + Constant.FilePath.ttfFileName);
         this.servicesAdapter = new ServicesAdapter(modules);
     }
 
@@ -107,7 +97,7 @@ public class ServicesViewModule {
     }
 
     public void queryServicepointInCity(final BDLocation location, City city, final ServicePoint selectServicePoint) {
-        if (city == null || selectServicePoint == null)
+        if (city == null || selectServicePoint == null || location == null)
             return;
         servicePointApi.queryServicePointInCity(city.getPCCId())
                 .compose(servicesActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
@@ -151,12 +141,12 @@ public class ServicesViewModule {
                             return;
                         if (selectServicePoint.getServicePointId() != servicePoints.get(0).getServicePointId()) {
                             servicesActivity.showLocationDialog(servicePoints.get(0));
+
                         }
                     }
                 });
 
     }
-
 
 
     public void updateUserTerminalDetail(final String deviceToken) {
@@ -193,7 +183,7 @@ public class ServicesViewModule {
                 .subscribe(new WebReturnSubscriber<SystemNotice>() {
                     @Override
                     public void onWebReturnSucess(SystemNotice systemNotice) {
-                        if (systemNotice.isState())
+                        if (systemNotice != null && systemNotice.isState())
                             servicesActivity.showSystemNotice(systemNotice);
                     }
 
@@ -212,14 +202,15 @@ public class ServicesViewModule {
     public void queryFoldRedPacketCount() {
         activityApi.queryFoldRedPacketCount()
                 .delay(500, TimeUnit.MILLISECONDS)
-                .compose(servicesActivity.<WebReturn<Integer>>bindToLifecycle())
+                .compose(servicesActivity.<WebReturn<Integer>>bindUntilEvent(ActivityEvent.PAUSE))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<Integer>() {
                     @Override
                     public void onWebReturnSucess(Integer integer) {
-                        if (integer > 0)
+                        if (integer > 0) {
                             servicesActivity.showFoldRedPacket(integer);
+                        }
                     }
 
                     @Override

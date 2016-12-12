@@ -116,7 +116,11 @@
 ##---------------Begin: proguard configuration for 百度地图SDK ----------
 -keep class com.baidu.** {*;}
 -keep class vi.com.** {*;}
+-keep class com.sinovoice.** {*;}
+-keep class pvi.com.** {*;}
 -dontwarn com.baidu.**
+-dontwarn vi.com.**
+-dontwarn pvi.com.**
 ##---------------End: proguard configuration for 百度地图SDK  ----------
 
 #---------------Begin: proguard configuration for android v4 v7扩展包 ----------
@@ -239,12 +243,18 @@
 ##---------------End: proguard configuration for shapeimageview  ----------
 
 ##---------------Begin: proguard configuration for alipay  ----------
+-dontwarn com.alipay.**
+-dontwarn HttpUtils.HttpFetcher
+-dontwarn com.ta.utdid2.**
+-dontwarn com.ut.device.**
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}
 -keep class com.alipay.android.app.IRemoteServiceCallback{*;}
 -keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
 -keep class com.alipay.sdk.app.PayTask{ public *;}
 -keep class com.alipay.sdk.app.AuthTask{ public *;}
+-keep class com.alipay.mobilesecuritysdk.*
+-keep class com.ut.*
 ##---------------Begin: proguard configuration for alipay  ----------
 
 ##---------------Begin: proguard configuration for weixin  ----------

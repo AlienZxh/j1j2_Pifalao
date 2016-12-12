@@ -5,7 +5,6 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 
-import com.baidu.location.BDLocation;
 import com.j1j2.data.model.ActivityProcessStateProductInfo;
 import com.j1j2.data.model.ActivityProduct;
 import com.j1j2.data.model.ActivityWinPrize;
@@ -950,7 +949,7 @@ public class Navigate {
         }
     }
 
-    public void navigateToBriberyMoneysActivity(Activity context, ActivityOptionsCompat options, boolean isFinish,int selectState) {
+    public void navigateToBriberyMoneysActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int selectState) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
             Bundler.briberyMoneysActivity(selectState).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -975,12 +974,26 @@ public class Navigate {
         }
     }
 
-    public void navigateToBriberyMoneyResultActivity(Activity context, ActivityOptionsCompat options, boolean isFinish,RedPacket redPacket) {
+    public void navigateToBriberyMoneyResultActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, RedPacket redPacket) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
             Bundler.briberyMoneyResultActivity(redPacket).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             ActivityCompat.startActivity(context, Bundler.briberyMoneyResultActivity(redPacket).intent(context),
+                    options.toBundle());
+        }
+        if (isFinish) {
+            ActivityCompat.finishAfterTransition(context);
+        }
+    }
+
+    public void navigateToValidateAccountActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, String userName, String passWord,
+                                                  boolean isAutoLogin) {
+        if (null == options || Build.VERSION.SDK_INT < 16) {
+            Bundler.validateAccountActivity(userName, passWord, isAutoLogin).start(context);
+            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else {
+            ActivityCompat.startActivity(context, Bundler.validateAccountActivity(userName, passWord, isAutoLogin).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

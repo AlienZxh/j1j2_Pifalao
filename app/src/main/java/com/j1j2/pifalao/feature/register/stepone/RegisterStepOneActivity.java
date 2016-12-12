@@ -3,6 +3,7 @@ package com.j1j2.pifalao.feature.register.stepone;
 import android.databinding.DataBindingUtil;
 import android.view.View;
 
+import com.j1j2.common.util.ValidateUtils;
 import com.j1j2.data.model.requestbody.ClientRegisterStepOneBody;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -45,11 +46,15 @@ public class RegisterStepOneActivity extends BaseActivity implements View.OnClic
         MainAplication.get(this).getAppComponent().plus(new RegisterStepOneModule(this)).inject(this);
     }
 
+    public void setCodeExplainVisibility() {
+        binding.codeTitle.setVisibility(View.VISIBLE);
+        binding.codeContent.setVisibility(View.VISIBLE);
+    }
 
     public void setSmsCodeBtnState(long countDown) {
         if (countDown <= 0) {
             binding.smsCodeBtn.setEnabled(true);
-            binding.smsCodeBtn.setTextColor(getResources().getColor(R.color.colorAccent));
+            binding.smsCodeBtn.setTextColor(getResources().getColor(R.color.colorBlueBtn));
             binding.smsCodeBtn.setText("获取验证码");
         } else {
             binding.smsCodeBtn.setEnabled(false);
@@ -64,7 +69,7 @@ public class RegisterStepOneActivity extends BaseActivity implements View.OnClic
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.smsCodeBtn) {
-            if (binding.phoneEdit.getText().toString().length() < 11) {
+            if (!ValidateUtils.isMobileNO(binding.phoneEdit.getText().toString())) {
                 toastor.showSingletonToast("请输入正确的手机号码");
                 return;
             }
@@ -75,7 +80,7 @@ public class RegisterStepOneActivity extends BaseActivity implements View.OnClic
             registerStepOneViewModel.querySmsCode(binding.phoneEdit.getText().toString());
         }
         if (v == binding.nextBtn) {
-            if (binding.phoneEdit.getText().toString().length() < 11) {
+            if (!ValidateUtils.isMobileNO(binding.phoneEdit.getText().toString())) {
                 toastor.showSingletonToast("请输入正确的手机号码");
                 return;
             }

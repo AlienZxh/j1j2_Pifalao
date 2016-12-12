@@ -1,9 +1,11 @@
 package com.j1j2.pifalao.feature.home.offlinemodulehome;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.baidu.location.BDLocation;
@@ -33,6 +35,9 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -40,7 +45,8 @@ import rx.schedulers.Schedulers;
  * Created by alienzxh on 16-5-11.
  */
 @RequireBundler
-public class OfflineModuleHomeActivity extends BaseActivity implements View.OnClickListener {
+public class OfflineModuleHomeActivity extends BaseActivity implements View.OnClickListener,
+        EasyPermissions.PermissionCallbacks{
 
     ActivityOfflinemodulehomeBinding binding;
 
@@ -131,10 +137,7 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
         if (v == binding.callBtn)
             showCallDialog();
         if (v == binding.individualBtn)
-            if (MainAplication.get(this).isLogin())
-                navigate.navigateToIndividualCenter(this, null, false);
-            else
-                navigate.navigateToLogin(this, null, false);
+            navigate.navigateToIndividualCenter(this, null, false);
         if (v == binding.inBtn) {
             BDLocation location = MainAplication.get(this).getLocationService().getSuccessLocation();
             if (location == null) {
@@ -155,16 +158,54 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
     public void onDialogPositiveClick(String fragmentTag) {
         super.onDialogPositiveClick(fragmentTag);
         if (fragmentTag.equals(callDialogTag)) {
-            PackageManager pkm = getPackageManager();
-            boolean has_permission = (PackageManager.PERMISSION_GRANTED
-                    == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
-            if (has_permission) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
-                startActivity(intent);
-            } else {
-                toastor.showSingletonToast("没有拨打电话权限");
-            }
+            callServicePoint();
         }
 
+    }
+
+    @SuppressWarnings("all")
+    @AfterPermissionGranted(RC_CALLPHONE_PERM)
+    private void callServicePoint() {
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+            startActivity(intent);
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, "联系服务点，缺少拨打电话权限。",
+                    RC_CALLPHONE_PERM, Manifest.permission.CALL_PHONE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (requestCode == RC_CALLPHONE_PERM && EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this, "联系服务点，缺少拨打电话权限。")
+                    .setTitle("缺少权限")
+                    .setPositiveButton("设置")
+                    .setNegativeButton("取消", null /* click listener */)
+                    .setRequestCode(RC_SETTINGS_SCREEN)
+                    .build()
+                    .show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SETTINGS_SCREEN) {
+            // Do something after user returned from app settings screen, like showing a Toast.
+
+        }
     }
 }

@@ -16,7 +16,7 @@ import com.zhy.autolayout.utils.AutoUtils;
 public class GiftDispalyView extends AutoLinearLayout {
 
     private Paint mPaint;
-
+    private Path path;
     private float edge;
     private float altitude;
 
@@ -41,23 +41,25 @@ public class GiftDispalyView extends AutoLinearLayout {
         mPaint.setDither(true);
         mPaint.setColor(0xfffbf3f0);
         mPaint.setStyle(Paint.Style.FILL);
+
+        path = new Path();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        num = (int) (w / edge+1);
+        num = (int) (w / edge + 1);
 
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Path path;
+
         for (int i = 0; i < num; i++) {
-            path = new Path();
-            path.moveTo(i * edge , 0);
+            path.reset();
+            path.moveTo(i * edge, 0);
             path.lineTo(i * edge + edge / 2, altitude);
             path.lineTo(i * edge + edge, 0);
             path.close();

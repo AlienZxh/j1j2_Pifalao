@@ -13,4 +13,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {RegisterStepOneModule.class})
 public interface RegisterStepOneComponent {
     void inject(RegisterStepOneActivity registerStepOneActivity);
+
 }

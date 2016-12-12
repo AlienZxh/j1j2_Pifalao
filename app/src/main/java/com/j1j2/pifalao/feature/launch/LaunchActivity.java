@@ -2,20 +2,12 @@ package com.j1j2.pifalao.feature.launch;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.j1j2.common.util.Network;
-import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -25,14 +17,10 @@ import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityLaunchBinding;
 import com.j1j2.pifalao.feature.launch.di.LaunchModule;
-import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 
 import javax.inject.Inject;
 
@@ -49,7 +37,6 @@ public class LaunchActivity extends BaseActivity implements MainAplication.AppUp
     @Inject
     UserRelativePreference userRelativePreference;
 
-
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_launch);
@@ -59,20 +46,18 @@ public class LaunchActivity extends BaseActivity implements MainAplication.AppUp
     protected void initViews() {
         userRelativePreference.setShowBriberyMoney(true);
 
-        Beta.init(getApplicationContext(), BuildConfig.DEBUG);
+//        Beta.init(getApplicationContext(), BuildConfig.DEBUG);
         launchViewModel.setCanNavigate(false);
         launchViewModel.setCheckingUpdate(true);
         Beta.checkUpgrade();
 
         launchViewModel.initLoginState();
-
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         MainAplication.get(this).registerAppUpgradeListener(this);
+        super.onCreate(savedInstanceState);
         EventBus.getDefault().postSticky(new NetWorkEvent(Network.isConnected(this), Network.getNetworkType(this)));
     }
 
@@ -116,37 +101,50 @@ public class LaunchActivity extends BaseActivity implements MainAplication.AppUp
         }
     }
 
+
     @Override
     public void onUpgradeFailed(boolean isManual) {
-        launchViewModel.setCanNavigate(true);
-        launchViewModel.setCheckingUpdate(false);
+        if (BuildConfig.DEBUG)
+            toastor.showToast("升级失败");
+        launchViewModel.setCanNavigate(true);//允许跳转
+        launchViewModel.setCheckingUpdate(false);//检查更新完成
     }
 
     @Override
     public void onUpgradeSuccess(boolean isManual) {
+        if (BuildConfig.DEBUG)
+            toastor.showToast("升级成功");
     }
 
     @Override
     public void onUpgradeNoVersion(boolean isManual) {
-        launchViewModel.setCanNavigate(true);
-        launchViewModel.setCheckingUpdate(false);
+        if (BuildConfig.DEBUG)
+            toastor.showToast("onUpgradeNoVersion 无升级");
+        launchViewModel.setCanNavigate(true);//允许跳转
+        launchViewModel.setCheckingUpdate(false);//检查更新完成
+
     }
 
     @Override
     public void onUpgrading(boolean isManual) {
+        if (BuildConfig.DEBUG)
+            toastor.showToast("升级中");
     }
 
     @Override
     public void onUpgradeDialogCreate(Context context, View view, UpgradeInfo upgradeInfo) {
-
+        if (BuildConfig.DEBUG)
+            toastor.showToast("升级弹框显示");
     }
 
     @Override
     public void onUpgradeDialogDestory(Context context, View view, UpgradeInfo upgradeInfo) {
+        if (BuildConfig.DEBUG)
+            toastor.showToast("升级弹框结束");
         //1:建议 2:强制 3:手工
         if (upgradeInfo.upgradeType != 2) {
-            launchViewModel.setCanNavigate(true);
-            launchViewModel.setCheckingUpdate(false);
+            launchViewModel.setCanNavigate(true);//允许跳转
+            launchViewModel.setCheckingUpdate(false);//检查更新完成
         }
     }
 }

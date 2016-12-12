@@ -58,9 +58,7 @@ public class JPushReceiver extends BroadcastReceiver {
                         | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 context.startActivity(i);
                 //_____________________________
-
             }
-
 
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent
                 .getAction())) {

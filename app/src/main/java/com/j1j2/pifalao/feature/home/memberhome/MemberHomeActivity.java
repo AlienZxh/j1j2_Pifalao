@@ -127,10 +127,6 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
         //_____________________________________________________________
         binding.refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         binding.refreshLayout.setOnRefreshListener(this);
-
-//        binding.refreshLayout.setProgressViewOffset(false, 0, (int) TypedValue
-//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources()
-//                        .getDisplayMetrics()));
         binding.refreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -414,10 +410,7 @@ public class MemberHomeActivity extends BaseActivity implements MemberHomeLuckyF
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.loginBtn)
-            if (MainAplication.get(this).isLogin())
-                navigate.navigateToIndividualCenter(this, null, false);
-            else
-                navigate.navigateToLogin(this, null, false);
+            navigate.navigateToIndividualCenter(this, null, false);
         if (v == binding.searchview)
             navigate.navigateToSearchActivity(this, null, false, userRelativePreference.getSelectedModule(null));
         if (v == binding.ruleBtn)

@@ -1,14 +1,11 @@
 package com.j1j2.pifalao.feature.services;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
@@ -68,9 +65,8 @@ import zhy.com.highlight.HighLight;
  * Created by alienzxh on 16-3-12.
  */
 @RequireBundler
-public class ServicesActivity extends BaseMapActivity implements
-        ServicesAdapter.OnItemClickListener
-        , View.OnClickListener, QRDialogFragment.QRDialogFragmentListener {
+public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener,
+        View.OnClickListener, QRDialogFragment.QRDialogFragmentListener {
 
     ActivityServicesBinding binding;
 
@@ -89,8 +85,6 @@ public class ServicesActivity extends BaseMapActivity implements
 
     List<Module> modules;
 
-    BDLocation location;
-
     UnReadInfoManager unReadInfoManager = null;
 
     HighLight highLight;
@@ -103,7 +97,6 @@ public class ServicesActivity extends BaseMapActivity implements
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
-
         Bundler.inject(this);
         servicesComponent = MainAplication.get(this).getAppComponent().plus(new ServicesModule(this));
         servicesComponent.inject(this);
@@ -111,19 +104,18 @@ public class ServicesActivity extends BaseMapActivity implements
 
     @Override
     protected void initBinding() {
-
         binding = DataBindingUtil.setContentView(ServicesActivity.this, R.layout.activity_services);
         binding.setSercivepoint(servicePoint);
-
     }
 
     @Override
     protected void initViews() {
+        binding.setOnClick(this);
+        //_______________________________________________________________
         if (userRelativePreference.getShowHighLight(true)) {
             showHighlight();
             userRelativePreference.setShowHighLight(false);
         }
-
         //_______________________________________________________________________________________
         binding.moduleList.setLayoutManager(new GridLayoutManager(this, 3));
         ScaleInAnimator scaleInAnimator = new ScaleInAnimator();
@@ -135,16 +127,22 @@ public class ServicesActivity extends BaseMapActivity implements
         binding.moduleList.setAdapter(servicesViewModule.getServicesAdapter());
         servicesViewModule.getServicesAdapter().setOnItemClickListener(this);
         servicesViewModule.queryServicePointServiceModules();
-        binding.setOnClick(this);
         //__________________________________________________________________________________________
         servicesViewModule.querySystemNotice();
-        //_______________________________________________________________
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (MainAplication.get(this).isLogin() && userRelativePreference.getShowBriberyMoney(true)) {
+            servicesViewModule.queryFoldRedPacketCount();
+        }
     }
 
     public void showLocationDialog(final ServicePoint servicePoint) {
         selectServicePoint = servicePoint;
         showMessageDialogDuplicate(true, locationDialogTag, "提示", servicePoint.getName() + "离您更近，是否进行切换？", "取消", "切换");
+        userRelativePreference.setShowLocation(false);
     }
 
     public void showInvalidDialog() {
@@ -234,14 +232,36 @@ public class ServicesActivity extends BaseMapActivity implements
         mBaiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                MainAplication.get(ServicesActivity.this).getLocationService().requestLocation();
+                Logger.d("onMapLoaded");
+                BDLocation location = MainAplication.get(ServicesActivity.this).getLocationService().getSuccessLocation();
+                if (LocationUtils.isLocationSuccess(location)) {
+                    if (mBaiduMap != null) {
+                        // 地图显示我的位置
+                        MyLocationData locData = new MyLocationData.Builder()
+                                .accuracy(location.getRadius())// 定位精度
+                                .direction(100)// GPS定位时方向角度,顺时针0-360
+                                .latitude(location.getLatitude())// 百度纬度坐标
+                                .longitude(location.getLongitude())// 百度经度坐标
+                                .speed(location.getSpeed())// GPS定位时速度
+                                .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
+                                .build();
+                        mBaiduMap.setMyLocationData(locData);
+                    }
+                    if (userRelativePreference.getShowLocation(false)) {
+                        servicesViewModule.queryServicepointInCity(location,
+                                userRelativePreference.getSelectedCity(null),
+                                userRelativePreference.getSelectedServicePoint(null));
+                    }
+                }
+
             }
+
         });
         showMarker(servicePoint);
     }
 
-
     public void showFoldRedPacket(int count) {
+        userRelativePreference.setShowBriberyMoney(false);
         startActivity(Bundler.briberyMoneyRemindActivity(count)
                 .intent(this)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -252,9 +272,7 @@ public class ServicesActivity extends BaseMapActivity implements
         QRDialogFragmentBundler.build().create().show(getSupportFragmentManager(), "QRDIALOG");
     }
 
-
     public void showHighlight() {
-
         highLight = new HighLight(this)//
                 .anchor(findViewById(R.id.rootlayout))//
                 .addHighLight(R.id.qrView, R.layout.view_qr_highlight,
@@ -273,7 +291,6 @@ public class ServicesActivity extends BaseMapActivity implements
                             }
                         });
         highLight.show();
-
     }
 
     public void showSystemNotice(SystemNotice systemNotice) {
@@ -337,7 +354,6 @@ public class ServicesActivity extends BaseMapActivity implements
 
     }
 
-
     public Intent getModuleIntent(Module module) {
         if (module.isSubscribed()) {
             userRelativePreference.setSelectedModule(module);
@@ -355,7 +371,6 @@ public class ServicesActivity extends BaseMapActivity implements
                 return Bundler.specialOfferActivity().intent(this);
         }
         return Bundler.unsubscribeModuleActivity(module).intent(this);
-
     }
 
     @Override
@@ -366,10 +381,7 @@ public class ServicesActivity extends BaseMapActivity implements
     @Override
     public void onClick(View v) {
         if (v == binding.loginBtn) {
-            if (MainAplication.get(this).isLogin())
-                navigate.navigateToIndividualCenter(this, null, false);
-            else
-                navigate.navigateToLogin(this, null, false);
+            navigate.navigateToIndividualCenter(this, null, false);
         }
         if (v == binding.servicepoint) {
             if (null != userRelativePreference.getSelectedCity(null))
@@ -396,10 +408,6 @@ public class ServicesActivity extends BaseMapActivity implements
             unReadInfoManager = MainAplication.get(this).getUserComponent().unReadInfoManager();
             binding.setUnReadInfoManager(unReadInfoManager);
             BackGroundService.updateUnRead(this);
-            if (userRelativePreference.getShowBriberyMoney(true)) {
-                servicesViewModule.queryFoldRedPacketCount();
-                userRelativePreference.setShowBriberyMoney(false);
-            }
         }
 
     }
@@ -416,7 +424,7 @@ public class ServicesActivity extends BaseMapActivity implements
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLocationEvent(LocationEvent event) {
-        location = event.getLocation();
+        BDLocation location = event.getLocation();
         if (LocationUtils.isLocationSuccess(location)) {
             if (mBaiduMap != null) {
                 // 地图显示我的位置
@@ -429,13 +437,6 @@ public class ServicesActivity extends BaseMapActivity implements
                         .satellitesNum(location.getSatelliteNumber())// GPS定位时卫星数目
                         .build();
                 mBaiduMap.setMyLocationData(locData);
-
-                if (userRelativePreference.getShowLocation(false)) {
-                    servicesViewModule.queryServicepointInCity(location,
-                            userRelativePreference.getSelectedCity(null),
-                            userRelativePreference.getSelectedServicePoint(null));
-                    userRelativePreference.setShowLocation(false);
-                }
             }
         }
     }

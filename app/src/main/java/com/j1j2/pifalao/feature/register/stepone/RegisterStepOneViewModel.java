@@ -1,6 +1,8 @@
 package com.j1j2.pifalao.feature.register.stepone;
 
 
+import android.view.View;
+
 import com.j1j2.data.http.api.ClientRegisterApi;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ClientRegisterStepOneBody;
@@ -24,31 +26,6 @@ public class RegisterStepOneViewModel {
         this.registerStepOneActivity = registerStepOneActivity;
         this.clientRegisterApi = clientRegisterApi;
     }
-
-//    public void validatePhone(final String phone) {
-//        clientRegisterApi.validatePhone(phone)
-//                .compose(registerStepOneActivity.<WebReturn<String>>bindToLifecycle())
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new WebReturnSubscriber<String>() {
-//                    @Override
-//                    public void onWebReturnSucess(String s) {
-//                        registerStepOneActivity.toastor.showSingletonToast(s);
-//
-//                        querySmsCode(phone);
-//                    }
-//
-//                    @Override
-//                    public void onWebReturnFailure(String errorMessage) {
-//                        registerStepOneActivity.toastor.showSingletonToast(errorMessage);
-//                    }
-//
-//                    @Override
-//                    public void onWebReturnCompleted() {
-//
-//                    }
-//                });
-//    }
 
     public void countDown() {
         Observable.interval(1, TimeUnit.SECONDS)
@@ -76,6 +53,7 @@ public class RegisterStepOneViewModel {
                     @Override
                     public void onWebReturnSucess(String s) {
                         registerStepOneActivity.toastor.showSingletonToast(s);
+                        registerStepOneActivity.setCodeExplainVisibility();
                         countDown();
                     }
 

@@ -206,10 +206,7 @@ public class DeliveryHomeActivity extends BaseActivity implements View.OnClickLi
                 navigateToLogin(v);
         }
         if (v == binding.individualBtn)
-            if (MainAplication.get(this).isLogin())
-                navigate.navigateToIndividualCenter(this, null, false);
-            else
-                navigateToLogin(v);
+            navigate.navigateToIndividualCenter(this, null, false);
         if (v == binding.searchview)
             navigate.navigateToSearchActivity(this, null, false, module);
 

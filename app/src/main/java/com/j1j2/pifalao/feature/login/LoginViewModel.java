@@ -57,6 +57,11 @@ public class LoginViewModel {
 
                     @Override
                     public void onWebReturnSucess(User user) {
+                        if (!user.isMobileVerfied()) {
+                            loginActivity.dismissProgress();
+                            loginActivity.navigateToValidateAccount();
+                            return;
+                        }
                         MainAplication.get(loginActivity).login(user);
                         if (isAutoLogin) {
                             userLoginPreference.setIsAutoLogin(true);

@@ -91,10 +91,7 @@ public class HouseKeepingActivity extends BaseActivity implements View.OnClickLi
         if (v == binding.backBtn)
             onBackPressed();
         if (v == binding.individualBtn) {
-            if (MainAplication.get(this).isLogin())
-                navigate.navigateToIndividualCenter(this, null, false);
-            else
-                navigate.navigateToLogin(this, null, false);
+            navigate.navigateToIndividualCenter(this, null, false);
         }
     }
 }

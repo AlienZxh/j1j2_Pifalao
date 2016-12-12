@@ -6,8 +6,6 @@ import android.databinding.Bindable;
 import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.pifalao.BR;
 
-import okhttp3.OkHttpClient;
-
 /**
  * Created by alienzxh on 16-3-28.
  */

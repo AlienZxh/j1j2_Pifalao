@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.lotteryrule;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.view.View;

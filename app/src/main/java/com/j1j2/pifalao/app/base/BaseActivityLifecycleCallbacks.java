@@ -11,27 +11,22 @@ import com.orhanobut.logger.Logger;
  */
 
 public class BaseActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
-    private int locationActivityCount;
+    private int activityCount;
     private LocationService locationService;
 
     public BaseActivityLifecycleCallbacks(LocationService locationService) {
         this.locationService = locationService;
-        this.locationActivityCount = 0;
+        this.activityCount = 0;
     }
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-        if (activity instanceof BaseLocationActivity) {
-            locationActivityCount++;
-            if (locationActivityCount == 1) {
-                locationService.registerListener();
-                locationService.setLocationOption(locationService.getDefaultLocationClientOption());
-                locationService.start();
-                Logger.d("定位开始了");
-            }
+        activityCount++;
+        if (activityCount == 1) {
+            locationService.registerListener();
+            locationService.start();
+            Logger.d("定位开始了");
         }
-
-
     }
 
     @Override
@@ -61,16 +56,12 @@ public class BaseActivityLifecycleCallbacks implements Application.ActivityLifec
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        if (activity instanceof BaseLocationActivity) {
-            locationActivityCount--;
-            if (locationActivityCount <= 0) {
-                locationService.unregisterListener();
-                locationService.stop();
-                Logger.d("定位结束了");
-            }
+        activityCount--;
+        if (activityCount <= 0) {
+            locationService.unregisterListener();
+            locationService.stop();
+            Logger.d("定位结束了");
         }
-
     }
-
 
 }

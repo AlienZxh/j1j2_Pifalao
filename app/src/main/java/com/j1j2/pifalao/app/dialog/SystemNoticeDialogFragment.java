@@ -10,7 +10,9 @@ import android.widget.FrameLayout;
 
 import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
+import com.zhy.autolayout.utils.AutoUtils;
 
+import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
 
@@ -30,15 +32,18 @@ public class SystemNoticeDialogFragment extends BaseDialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View systemNoticeView = getActivity().getLayoutInflater().inflate(
-                R.layout.view_systemnotice, null);
+        Bundler.inject(this);
 
-        webviewContainer = (FrameLayout) systemNoticeView
-                .findViewById(R.id.webviewContainer);
+        rootView = getActivity().getLayoutInflater().inflate(
+                R.layout.view_systemnotice, null, false);
+
+        webviewContainer = (FrameLayout) rootView.findViewById(R.id.webviewContainer);
 
         if (webView == null) {
             webView = new WebView(getContext());
-            webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(AutoUtils.getPercentWidthSize(20), 0, AutoUtils.getPercentWidthSize(20), 0);
+            webView.setLayoutParams(params);
             webviewContainer.addView(webView);
         }
 

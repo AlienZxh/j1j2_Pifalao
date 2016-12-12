@@ -259,15 +259,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
         return mainComponent;
     }
 
-    @Override
-    public void showFragmentProgress(String msg) {
-        showProgress(msg);
-    }
 
-    @Override
-    public void dismissFragmentProgress() {
-        dismissProgress();
-    }
 
     @Override
     public void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position) {
@@ -277,11 +269,6 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Override
     public void navigateToSearchActivity(View v) {
         navigate.navigateToSearchActivity(this, null, false, module);
-    }
-
-    @Override
-    public void navigateToOrderManager() {
-        navigate.navigateToOrderManager(this, null, false);
     }
 
     @Override

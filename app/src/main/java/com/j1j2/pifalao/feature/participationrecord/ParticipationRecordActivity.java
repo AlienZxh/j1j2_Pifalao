@@ -69,8 +69,13 @@ public class ParticipationRecordActivity extends BaseActivity implements View.On
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        component = MainAplication.get(this).getUserComponent().plus(new PrizeDetailModule(this));
-        component.inject(this);
+        if (MainAplication.get(this).isLogin()) {
+            component = MainAplication.get(this).getUserComponent().plus(new PrizeDetailModule(this));
+            component.inject(this);
+        } else {
+            navigate.navigateToLogin(this, null, true);
+        }
+
     }
 
     @Override
@@ -133,7 +138,7 @@ public class ParticipationRecordActivity extends BaseActivity implements View.On
                 .subscribe(new WebReturnSubscriber<List<String>>() {
                     @Override
                     public void onWebReturnSucess(List<String> stringList) {
-                     new AlertDialog.Builder(ParticipationRecordActivity.this)
+                        new AlertDialog.Builder(ParticipationRecordActivity.this)
                                 .setCancelable(true)
                                 .setTitle("幸运号码")
                                 .setItems(stringList.toArray(new String[stringList.size()]), null)
