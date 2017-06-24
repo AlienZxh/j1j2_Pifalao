@@ -19,12 +19,8 @@
             type="com.j1j2.pifalao.app.UnReadInfoManager" />
 
         <variable
-            name="servicePoint"
-            type="com.j1j2.data.model.ServicePoint" />
-
-        <variable
-            name="freightType"
-            type="com.j1j2.data.model.FreightType" />
+            name="shopExpressConfig"
+            type="com.j1j2.data.model.ShopExpressConfig" />
 
         <variable
             name="activity"
@@ -83,7 +79,7 @@
                                     android:background="@drawable/img_circle_bg"
                                     android:padding="@dimen/height_1px"
                                     app:layout_auto_baseheight="width"
-                                    app:displayImgTransfrom="@{Uri.parse((BuildConfig.IMAGE_URL+servicePoint.getServicePointImg()))}" />
+                                    app:displayImgTransfrom="@{Uri.parse((BuildConfig.IMAGE_URL+shopExpressConfig.ShopImg))}" />
 
                             </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -101,7 +97,7 @@
                                     android:layout_height="wrap_content"
                                     android:paddingBottom="30px"
                                     android:paddingTop="6px"
-                                    android:text="@{servicePoint.Name}"
+                                    android:text="@{shopExpressConfig.Name}"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="30px"
                                     android:textStyle="bold" />
@@ -110,7 +106,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingBottom="16px"
-                                    android:text="@{&quot;配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freightType)}"
+                                    android:text="@{&quot;配送时间：&quot;+shopExpressConfig.deliveryTime}"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/text_normal" />
 
@@ -144,7 +140,7 @@
                                         android:gravity="center"
                                         android:paddingLeft="6px"
                                         android:paddingRight="6px"
-                                        android:text="@{activity.module.OrderAmountMinLimit+&quot;元起送&quot;}"
+                                        android:text="@{shopExpressConfig.shopOrderAmountMin+&quot;元起送&quot;}"
                                         android:textColor="@color/colorWhite"
                                         android:textSize="@dimen/text_normal" />
 
@@ -180,7 +176,7 @@
                                         android:gravity="center"
                                         android:paddingLeft="6px"
                                         android:paddingRight="6px"
-                                        android:text="@{&quot;配送费￥&quot;+freightType.Fixed}"
+                                        android:text="@{&quot;配送费￥&quot;+shopExpressConfig.freightAmount}"
                                         android:textColor="@color/colorWhite"
                                         android:textSize="@dimen/text_normal" />
                                 </com.zhy.autolayout.AutoLinearLayout>

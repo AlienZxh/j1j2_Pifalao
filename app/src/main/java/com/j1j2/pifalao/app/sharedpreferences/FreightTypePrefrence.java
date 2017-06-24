@@ -11,8 +11,8 @@ import net.orange_box.storebox.annotations.method.TypeAdapter;
  * Created by alienzxh on 16-4-11.
  */
 public interface FreightTypePrefrence {
-    public static final String KEY_DELIVERY_FREIGHT = "key_delivery_freight";
-    public static final String KEY_PICKBYSELF_FREIGHT = "key_pickbyself_freight";
+    String KEY_DELIVERY_FREIGHT = "key_delivery_freight";
+    String KEY_PICKBYSELF_FREIGHT = "key_pickbyself_freight";
 
 
     @KeyByString(KEY_DELIVERY_FREIGHT)
@@ -26,7 +26,6 @@ public interface FreightTypePrefrence {
     @KeyByString(KEY_DELIVERY_FREIGHT)
     @RemoveMethod
     FreightTypePrefrence removeDeliveryFreightType();
-
 
 
     @KeyByString(KEY_PICKBYSELF_FREIGHT)

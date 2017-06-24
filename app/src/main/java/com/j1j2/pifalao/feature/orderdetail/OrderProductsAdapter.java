@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemOrderproductsBinding;
@@ -18,14 +18,14 @@ import java.util.List;
  */
 public class OrderProductsAdapter extends RecyclerView.Adapter<OrderProductsAdapter.OrderProductsViewHolder> {
 
-    private List<OrderProductDetail> productDetails;
+    private List<OrderDetail.OrderProductDetail> productDetails;
 
-    public OrderProductsAdapter(List<OrderProductDetail> productDetails) {
+    public OrderProductsAdapter(List<OrderDetail.OrderProductDetail> productDetails) {
         this.productDetails = productDetails;
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(View v, OrderProductDetail orderProductDetail, int position);
+        void onItemClickListener(View v, OrderDetail.OrderProductDetail orderProductDetail, int position);
     }
 
     private OnItemClickListener onItemClickListener;
@@ -51,7 +51,7 @@ public class OrderProductsAdapter extends RecyclerView.Adapter<OrderProductsAdap
         return null == productDetails ? 0 : productDetails.size();
     }
 
-    public class OrderProductsViewHolder extends AutoBindingViewHolder<ItemOrderproductsBinding, OrderProductDetail> {
+    public class OrderProductsViewHolder extends AutoBindingViewHolder<ItemOrderproductsBinding, OrderDetail.OrderProductDetail> {
         public OrderProductsViewHolder(View itemView) {
             super(itemView);
         }
@@ -62,7 +62,7 @@ public class OrderProductsAdapter extends RecyclerView.Adapter<OrderProductsAdap
         }
 
         @Override
-        public void bind(@NonNull final OrderProductDetail data, final int position) {
+        public void bind(@NonNull final OrderDetail.OrderProductDetail data, final int position) {
             binding.setOrderProductDetail(data);
             binding.layout.setOnClickListener(new View.OnClickListener() {
                 @Override

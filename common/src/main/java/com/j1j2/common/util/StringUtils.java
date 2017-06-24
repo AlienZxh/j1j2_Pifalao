@@ -1,7 +1,9 @@
 package com.j1j2.common.util;
 
+import android.net.Uri;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
@@ -10,7 +12,9 @@ import com.j1j2.data.model.Address;
 import com.j1j2.data.model.BalanceRecord;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.FreightType;
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
+import com.j1j2.data.model.OrderSimple;
+import com.j1j2.data.model.Product;
 import com.j1j2.data.model.ProductUnit;
 
 import java.util.List;
@@ -19,6 +23,17 @@ import java.util.List;
  * Created by alienzxh on 16-3-17.
  */
 public class StringUtils {
+
+    public static Uri getMainThumImgUri(Product product) {
+        String url = "";
+        if (product != null){
+            if (!EmptyUtils.isEmpty(product.getMainThumImg()))
+                url = product.getMainThumImg();
+            else if (!EmptyUtils.isEmpty(product.getImgs()))
+                url = product.getImgs().get(0).getImgUrl() == null ? "" : product.getImgs().get(0).getImgUrl();
+        }
+        return Uri.parse(url);
+    }
 
     public static CharSequence getStringWithoutBlank(String str) {
         return str.replaceAll(" ", "");
@@ -100,16 +115,17 @@ public class StringUtils {
         return "共" + quantity + "件商品";
     }
 
-    public static CharSequence getOrdersQuantity(List<OrderProductDetail> orderProductDetails) {
+    public static CharSequence getOrdersQuantity(List<OrderDetail.OrderProductDetail> orderProductDetails) {
         int quantity = 0;
         if (null == orderProductDetails || orderProductDetails.size() <= 0)
             return "共" + quantity + "件商品";
 
-        for (OrderProductDetail orderProductDetail : orderProductDetails) {
+        for (OrderDetail.OrderProductDetail orderProductDetail : orderProductDetails) {
             quantity += orderProductDetail.getQuantity();
         }
         return "共" + quantity + "件商品";
     }
+
 
     public static CharSequence getCouponLimit(Coupon coupon) {
         String limit = "";
@@ -124,7 +140,7 @@ public class StringUtils {
         return limit;
     }
 
-    public static CharSequence getOrdersState(int orderType, int orderPayType) {
+    public static CharSequence getOrdersState(int orderType) {
         switch (orderType) {
             case 1:
                 return "已下单";

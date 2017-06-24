@@ -2,14 +2,13 @@ package com.j1j2.pifalao.feature.orderdetail;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.j1j2.data.model.OrderSimple;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
@@ -31,7 +30,6 @@ import javax.inject.Inject;
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
-import in.workarounds.bundler.annotations.Required;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -41,17 +39,15 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 @RequireBundler
 public class OrderDetailActivity extends BaseActivity implements View.OnClickListener,
-        OrderDetailParamsFragment.OrderDetailParamsFragmentListener ,
-        EasyPermissions.PermissionCallbacks{
+        OrderDetailParamsFragment.OrderDetailParamsFragmentListener,
+        EasyPermissions.PermissionCallbacks {
 
     public static final int TIMELINE = 0;
     public static final int PARAM = 1;
 
     ActivityOrderdetailBinding binding;
 
-    @Arg
-    @Required(false)
-    OrderSimple orderSimple;
+    OrderDetail orderDetail;
 
     @Arg
     int orderId;
@@ -87,17 +83,14 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         binding.tab.setViewPager(binding.viewpager);
         binding.viewpager.setCurrentItem(selectPage);
         //________________________________________________________________________
-        if (orderSimple != null) {
-            orderDetailViewModel.setOrderDetailObservableField(orderSimple);
-            orderDetailViewModel.queryServicePoint(orderSimple.getServicePointId());
-        } else {
-            orderDetailViewModel.queryOrderDetail(orderId);
-        }
+
+        orderDetailViewModel.queryOrderDetail(orderId);
+
     }
 
     public void initFragment() {
         //_________________________________________________________________________________
-        orderDetailParamsFragment.initParams(orderDetailViewModel.orderDetailObservableField.get(), orderDetailViewModel.servicePointObservableField.get());
+        orderDetailParamsFragment.initParams(orderDetailViewModel.orderDetailObservableField.get());
     }
 
 
@@ -121,13 +114,13 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
         orderDetailViewModel.queryOrderDetail(orderId);
         orderDetailTimeLineFragment.queryOrderStateHistory();
         if (event.getNewOrderState() == Constant.OrderType.ORDERTYPE_WAITFORRATE) {
-            navigate.navigateToOrderRate(this, null, false, orderDetailViewModel.orderDetailObservableField.get());
+            navigate.navigateToOrderRate(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getOrderBaseInfo().getOrderId());
         }
     }
 
 
     public void showCallDialog() {
-        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + orderDetailViewModel.servicePointObservableField.get().getMobile() + "？", "取消", "确定");
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + orderDetailViewModel.orderDetailObservableField.get().getOrderShopInfo().getShopMobile() + "？", "取消", "确定");
     }
 
 
@@ -141,13 +134,13 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
             showDeleteDialog();
         }
         if (v == binding.pay) {
-            navigate.navigateToOnlineOrderPay(this, null, false, orderId, orderDetailViewModel.orderDetailObservableField.get().getOrderNO(), true, false);
+            navigate.navigateToOnlineOrderPay(this, null, false, orderId, orderDetailViewModel.orderDetailObservableField.get().getOrderBaseInfo().getOrderNO(), true, false);
         }
         if (v == binding.receive) {
             orderDetailViewModel.receiveOrder(orderId);
         }
         if (v == binding.comment) {
-            navigate.navigateToOrderRate(this, null, false, orderDetailViewModel.orderDetailObservableField.get());
+            navigate.navigateToOrderRate(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getOrderBaseInfo().getOrderId());
         }
         if (v == binding.callBtn) {
             showCallDialog();
@@ -163,10 +156,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void navigateToCatServicePoint() {
-        if (orderSimple != null)
-            navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
-        else
-            navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getServicePointId());
+        navigate.navigateToCatServicePoint(this, null, false, orderDetailViewModel.orderDetailObservableField.get().getOrderShopInfo().getShopId());
     }
 
     @Override
@@ -184,7 +174,7 @@ public class OrderDetailActivity extends BaseActivity implements View.OnClickLis
     @AfterPermissionGranted(RC_CALLPHONE_PERM)
     private void callServicePoint() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + orderDetailViewModel.servicePointObservableField.get().getMobile()));
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +  orderDetailViewModel.orderDetailObservableField.get().getOrderShopInfo().getShopMobile()));
             startActivity(intent);
         } else {
             // Do not have permissions, request them now

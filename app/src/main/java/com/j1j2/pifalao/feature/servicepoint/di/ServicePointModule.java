@@ -1,7 +1,7 @@
 package com.j1j2.pifalao.feature.servicepoint.di;
 
 import com.j1j2.data.http.api.ServicePointApi;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.servicepoint.ServicePointActivity;
 import com.j1j2.pifalao.feature.servicepoint.ServicePointViewModel;
@@ -17,12 +17,12 @@ import retrofit2.Retrofit;
 public class ServicePointModule {
 
     private ServicePointActivity servicePointActivity;
-    private ServicePoint servicePoint;
+    private Shop shop;
 
 
-    public ServicePointModule(ServicePointActivity servicePointActivity, ServicePoint servicePoint) {
+    public ServicePointModule(ServicePointActivity servicePointActivity, Shop shop) {
         this.servicePointActivity = servicePointActivity;
-        this.servicePoint = servicePoint;
+        this.shop = shop;
     }
 
     @Provides
@@ -39,13 +39,13 @@ public class ServicePointModule {
 
     @Provides
     @ActivityScope
-    ServicePoint servicePoint() {
-        return servicePoint;
+    Shop servicePoint() {
+        return shop;
     }
 
     @Provides
     @ActivityScope
-    ServicePointViewModel servicePointViewModel(ServicePointActivity servicePointActivity, ServicePointApi servicePointApi, ServicePoint servicePoint) {
-        return new ServicePointViewModel(servicePointActivity, servicePointApi, servicePoint);
+    ServicePointViewModel servicePointViewModel(ServicePointActivity servicePointActivity, ServicePointApi servicePointApi, Shop shop) {
+        return new ServicePointViewModel(servicePointActivity, servicePointApi, shop);
     }
 }

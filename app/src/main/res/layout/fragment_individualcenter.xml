@@ -271,12 +271,16 @@
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_big" />
 
-                    <TextView
+                    <cn.bingoogolapple.badgeview.BGABadgeTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingRight="20dp"
                         android:text="查看全部订单"
                         android:textColor="@color/colorTextaaa"
-                        android:textSize="@dimen/text_normal" />
+                        android:textSize="@dimen/text_normal"
+                        app:badge_bgColor="@color/colorRed"
+                        app:badge_gravity="rightCenter"
+                        app:showCircle="@{unReadInfoManager.unReadOrderCount>0}" />
 
                     <TextView
                         fontPath="iconfont/iconfont.ttf"

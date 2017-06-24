@@ -20,8 +20,8 @@ import com.baidu.mapapi.model.LatLng;
 import com.j1j2.common.util.LocationUtils;
 import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.common.view.interpolater.EaseBounceOutInterpolator;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.SystemNotice;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -65,15 +65,17 @@ import zhy.com.highlight.HighLight;
  * Created by alienzxh on 16-3-12.
  */
 @RequireBundler
-public class ServicesActivity extends BaseMapActivity implements ServicesAdapter.OnItemClickListener,
-        View.OnClickListener, QRDialogFragment.QRDialogFragmentListener {
+public class ServicesActivity extends BaseMapActivity implements
+        ServicesAdapter.OnItemClickListener,
+        View.OnClickListener,
+        QRDialogFragment.QRDialogFragmentListener {
 
     ActivityServicesBinding binding;
 
     ServicesComponent servicesComponent;
 
     @Inject
-    ServicePoint servicePoint;
+    Shop shop;
 
     @Inject
     ServicesViewModule servicesViewModule;
@@ -83,7 +85,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     MarkerOptions servicepointMarkOptions;
 
-    List<Module> modules;
+    List<ShopSubscribeService> shopSubscribeServices;
 
     UnReadInfoManager unReadInfoManager = null;
 
@@ -92,7 +94,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     private String locationDialogTag = "LOCATIONDIALOG";
     private String invalidDialogTag = "INVALIDDIALOG";
 
-    ServicePoint selectServicePoint;
+    Shop selectShop;
 
     @Override
     protected void setupActivityComponent() {
@@ -105,7 +107,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(ServicesActivity.this, R.layout.activity_services);
-        binding.setSercivepoint(servicePoint);
+        binding.setSercivepoint(shop);
     }
 
     @Override
@@ -117,14 +119,14 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             userRelativePreference.setShowHighLight(false);
         }
         //_______________________________________________________________________________________
-        binding.moduleList.setLayoutManager(new GridLayoutManager(this, 3));
+        binding.shopSubscribeServiceList.setLayoutManager(new GridLayoutManager(this, 3));
         ScaleInAnimator scaleInAnimator = new ScaleInAnimator();
         scaleInAnimator.setAddDuration(400);
         scaleInAnimator.setInterpolator(new EaseBounceOutInterpolator());
-        binding.moduleList.setItemAnimator(scaleInAnimator);
+        binding.shopSubscribeServiceList.setItemAnimator(scaleInAnimator);
 
 
-        binding.moduleList.setAdapter(servicesViewModule.getServicesAdapter());
+        binding.shopSubscribeServiceList.setAdapter(servicesViewModule.getServicesAdapter());
         servicesViewModule.getServicesAdapter().setOnItemClickListener(this);
         servicesViewModule.queryServicePointServiceModules();
         //__________________________________________________________________________________________
@@ -139,9 +141,9 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
         }
     }
 
-    public void showLocationDialog(final ServicePoint servicePoint) {
-        selectServicePoint = servicePoint;
-        showMessageDialogDuplicate(true, locationDialogTag, "提示", servicePoint.getName() + "离您更近，是否进行切换？", "取消", "切换");
+    public void showLocationDialog(final Shop shop) {
+        selectShop = shop;
+        showMessageDialogDuplicate(true, locationDialogTag, "提示", shop.getName() + "离您更近，是否进行切换？", "取消", "切换");
         userRelativePreference.setShowLocation(false);
     }
 
@@ -160,8 +162,8 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             exitBy2Click();
     }
 
-    public void setModules(List<Module> modules) {
-        this.modules = modules;
+    public void setShopSubscribeServices(List<ShopSubscribeService> shopSubscribeServices) {
+        this.shopSubscribeServices = shopSubscribeServices;
     }
 
     public void launchFromUrl() {
@@ -173,35 +175,35 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             int moduleId = Integer.parseInt(uri.getQueryParameter("moduleId"));
 
 
-            Module selectModule = null;
-            int size = modules.size();
+            ShopSubscribeService selectShopSubscribeService = null;
+            int size = shopSubscribeServices.size();
             for (int i = 0; i < size; i++) {
-                if (modules.get(i).getWareHouseModuleId() == moduleId) {
-                    selectModule = modules.get(i);
+                if (shopSubscribeServices.get(i).getServiceId() == moduleId) {
+                    selectShopSubscribeService = shopSubscribeServices.get(i);
                     break;
                 }
             }
-            if (selectModule == null || !selectModule.isSubscribed()) {
+            if (selectShopSubscribeService == null || !selectShopSubscribeService.isSubscribed()) {
                 showInvalidDialog();
 
             } else {
-                if (selectModule.getModuleType() == Constant.ModuleType.MEMBER) {
+                if (selectShopSubscribeService.getServiceType() == Constant.ModuleType.MEMBER) {
                     if (MainAplication.get(this).isLogin()) {
                         int activityId = Integer.parseInt(uri.getQueryParameter("activityId"));
-                        Intent[] intents = {getModuleIntent(selectModule), Bundler.prizeDetailActivity(activityId).intent(this)};
+                        Intent[] intents = {getModuleIntent(selectShopSubscribeService), Bundler.prizeDetailActivity(activityId).intent(this)};
                         startActivities(intents);
                     } else {
                         navigate.navigateToLogin(this, null, false);
                     }
 
-                } else if (selectModule.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+                } else if (selectShopSubscribeService.getServiceType() == Constant.ModuleType.SHOPSERVICE) {
                     int productMainId = Integer.parseInt(uri.getQueryParameter("productMainId"));
                     if (MainAplication.get(this).isLogin()) {
                         if (MainAplication.get(this).getUserComponent().user().getRoleId() == 10002) {
-                            Intent[] intents = {getModuleIntent(selectModule), Bundler.productDetailActivity(productMainId).intent(this)};
+                            Intent[] intents = {getModuleIntent(selectShopSubscribeService), Bundler.productDetailActivity(productMainId).intent(this)};
                             startActivities(intents);
                         } else {
-                            navigate.navigateToModulePermissionDeniedActivity(this, null, false, selectModule);
+                            navigate.navigateToModulePermissionDeniedActivity(this, null, false, selectShopSubscribeService);
                         }
 
                     } else {
@@ -209,7 +211,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                     }
                 } else {
                     int productMainId = Integer.parseInt(uri.getQueryParameter("productMainId"));
-                    Intent[] intents = {getModuleIntent(selectModule), Bundler.productDetailActivity(productMainId).intent(this)};
+                    Intent[] intents = {getModuleIntent(selectShopSubscribeService), Bundler.productDetailActivity(productMainId).intent(this)};
                     startActivities(intents);
                 }
 
@@ -257,7 +259,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
             }
 
         });
-        showMarker(servicePoint);
+        showMarker(shop);
     }
 
     public void showFoldRedPacket(int count) {
@@ -309,68 +311,68 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
 
     @Override
-    public void onItemClickListener(View view, Module module, int position) {
-        if (module.isSubscribed()) {
-            if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
-                navigate.navigateToDeliveryHomeActivity(this, null, false, servicePoint, module);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+    public void onItemClickListener(View view, ShopSubscribeService shopSubscribeService, int position) {
+        if (shopSubscribeService.isSubscribed()) {
+            if (shopSubscribeService.getServiceType() == Constant.ModuleType.DELIVERY) {
+                navigate.navigateToDeliveryHomeActivity(this, null, false, shop, shopSubscribeService);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.SHOPSERVICE) {
                 if (MainAplication.get(this).isLogin()) {
                     if (MainAplication.get(this).getUserComponent().user().getRoleId() == 10002) {
-                        navigate.navigateToMainActivity(ServicesActivity.this, null, false, module, MainActivity.STORESTYLE);
-                        userRelativePreference.setSelectedModule(module);
+                        navigate.navigateToMainActivity(ServicesActivity.this, null, false, shopSubscribeService, MainActivity.STORESTYLE);
+                        userRelativePreference.setSelectedModule(shopSubscribeService);
                     } else {
-                        navigate.navigateToModulePermissionDeniedActivity(this, null, false, module);
+                        navigate.navigateToModulePermissionDeniedActivity(this, null, false, shopSubscribeService);
                     }
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
-            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
-                navigate.navigateToMainActivity(ServicesActivity.this, null, false, module, MainActivity.VEGETABLE);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.MORE) {
-                navigate.navigateToMoreModule(ServicesActivity.this, null, false, modules);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.VIP) {
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.VEGETABLE) {
+                navigate.navigateToMainActivity(ServicesActivity.this, null, false, shopSubscribeService, MainActivity.VEGETABLE);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.MORE) {
+                navigate.navigateToMoreModule(ServicesActivity.this, null, false, shopSubscribeServices);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.VIP) {
                 if (MainAplication.get(this).isLogin()) {
                     navigate.navigateToVipHome(ServicesActivity.this, null, false, VipHomeActivity.VIPHOME);
-                    userRelativePreference.setSelectedModule(module);
+                    userRelativePreference.setSelectedModule(shopSubscribeService);
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
-            } else if (module.getModuleType() == Constant.ModuleType.HOUSEKEEPING) {
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.HOUSEKEEPING) {
                 navigate.navigateToHouseKeeping(ServicesActivity.this, null, false);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.MEMBER) {
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.MEMBER) {
                 navigate.navigateToMemberHomeActivity(this, null, false);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.SPECIALOFFER) {
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.SPECIALOFFER) {
                 navigate.navigateToSpecialOfferActivity(this, null, false);
-                userRelativePreference.setSelectedModule(module);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
             }
         } else {
-            navigate.navigateToUnsubscribeModule(this, null, false, module);
+            navigate.navigateToUnsubscribeModule(this, null, false, shopSubscribeService);
         }
 
     }
 
-    public Intent getModuleIntent(Module module) {
-        if (module.isSubscribed()) {
-            userRelativePreference.setSelectedModule(module);
-            if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
-                return Bundler.deliveryHomeActivity(servicePoint, module).intent(this);
-            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
-                return Bundler.mainActivity(module, MainActivity.STORESTYLE).intent(this);
-            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
-                return Bundler.mainActivity(module, MainActivity.VEGETABLE).intent(this);
-            } else if (module.getModuleType() == Constant.ModuleType.MORE) {
-                return Bundler.moreHomeActivity(modules).intent(this);
-            } else if (module.getModuleType() == Constant.ModuleType.MEMBER)
+    public Intent getModuleIntent(ShopSubscribeService shopSubscribeService) {
+        if (shopSubscribeService.isSubscribed()) {
+            userRelativePreference.setSelectedModule(shopSubscribeService);
+            if (shopSubscribeService.getServiceType() == Constant.ModuleType.DELIVERY) {
+                return Bundler.newDeliveryHomeActivity(shop.getShopId(), shopSubscribeService).intent(this);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.SHOPSERVICE) {
+                return Bundler.mainActivity(shopSubscribeService, MainActivity.STORESTYLE).intent(this);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.VEGETABLE) {
+                return Bundler.mainActivity(shopSubscribeService, MainActivity.VEGETABLE).intent(this);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.MORE) {
+                return Bundler.moreHomeActivity(shopSubscribeServices).intent(this);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.MEMBER)
                 return Bundler.memberHomeActivity().intent(this);
-            else if (module.getModuleType() == Constant.ModuleType.SPECIALOFFER)
+            else if (shopSubscribeService.getServiceType() == Constant.ModuleType.SPECIALOFFER)
                 return Bundler.specialOfferActivity().intent(this);
         }
-        return Bundler.unsubscribeModuleActivity(module).intent(this);
+        return Bundler.unsubscribeModuleActivity(shopSubscribeService).intent(this);
     }
 
     @Override
@@ -396,7 +398,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
                 navigate.navigateToLogin(this, null, false);
         }
         if (v == binding.servicepointBtn)
-            navigate.navigateToServicePointActivity(this, null, false, servicePoint);
+            navigate.navigateToServicePointActivity(this, null, false, shop);
     }
 
 
@@ -443,50 +445,50 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
 
     @Subscribe
     public void onNavigateToMemberHomeEvent(NavigateToMemberHomeEvent event) {
-        Module module = null;
-        for (int i = 0; i < modules.size(); i++) {
-            if (modules.get(i).getModuleType() == Constant.ModuleType.MEMBER) {
-                module = modules.get(i);
+        ShopSubscribeService shopSubscribeService = null;
+        for (int i = 0; i < shopSubscribeServices.size(); i++) {
+            if (shopSubscribeServices.get(i).getServiceType() == Constant.ModuleType.MEMBER) {
+                shopSubscribeService = shopSubscribeServices.get(i);
                 break;
             }
         }
-        if (module != null)
-            if (module.isSubscribed()) {
+        if (shopSubscribeService != null)
+            if (shopSubscribeService.isSubscribed()) {
                 navigate.navigateToMemberHomeActivity(this, null, false);
-                userRelativePreference.setSelectedModule(module);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
             } else {
-                navigate.navigateToUnsubscribeModule(this, null, false, module);
+                navigate.navigateToUnsubscribeModule(this, null, false, shopSubscribeService);
             }
     }
 
     @Subscribe
     public void onNavigateToPrizeDetailEvent(NavigateToPrizeDetailEvent event) {
-        Module module = null;
-        for (int i = 0; i < modules.size(); i++) {
-            if (modules.get(i).getModuleType() == Constant.ModuleType.MEMBER) {
-                module = modules.get(i);
+        ShopSubscribeService shopSubscribeService = null;
+        for (int i = 0; i < shopSubscribeServices.size(); i++) {
+            if (shopSubscribeServices.get(i).getServiceType() == Constant.ModuleType.MEMBER) {
+                shopSubscribeService = shopSubscribeServices.get(i);
                 break;
             }
         }
-        if (module != null)
-            if (module.isSubscribed()) {
+        if (shopSubscribeService != null)
+            if (shopSubscribeService.isSubscribed()) {
                 if (MainAplication.get(this).isLogin()) {
-                    userRelativePreference.setSelectedModule(module);
-                    Intent[] intents = {getModuleIntent(module), Bundler.prizeDetailActivity(event.getActivityProductId()).intent(this)};
+                    userRelativePreference.setSelectedModule(shopSubscribeService);
+                    Intent[] intents = {getModuleIntent(shopSubscribeService), Bundler.prizeDetailActivity(event.getActivityProductId()).intent(this)};
                     startActivities(intents);
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
             } else {
-                navigate.navigateToUnsubscribeModule(this, null, false, module);
+                navigate.navigateToUnsubscribeModule(this, null, false, shopSubscribeService);
             }
     }
 
 
-    public void showMarker(ServicePoint servicePoint) {
+    public void showMarker(Shop shop) {
         BitmapDescriptor markIcon = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_servicepoint);
-        LatLng point = new LatLng(servicePoint.getLat(), servicePoint.getLng());
+        LatLng point = new LatLng(shop.getLat(), shop.getLng());
         servicepointMarkOptions = new MarkerOptions()//
                 .position(point)//
                 .icon(markIcon)//
@@ -504,7 +506,7 @@ public class ServicesActivity extends BaseMapActivity implements ServicesAdapter
     public void onDialogPositiveClick(String fragmentTag) {
         super.onDialogPositiveClick(fragmentTag);
         if (fragmentTag.equals(locationDialogTag)) {
-            userRelativePreference.setSelectedServicePoint(selectServicePoint);
+            userRelativePreference.setSelectedServicePoint(selectShop);
             userRelativePreference.setShowDeliveryArea(true);
             userRelativePreference.setShowLocation(true);
             navigate.navigateToServicesActivity(ServicesActivity.this, null, true);

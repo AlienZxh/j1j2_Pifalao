@@ -75,7 +75,7 @@
                     bind:hour="@{confirmOrderViewModel.hour}"
                     bind:isLogin="@{true}"
                     bind:minute="@{confirmOrderViewModel.minute}"
-                    bind:module="@{confirmOrderViewModel.confirmOrderActivity.module}"
+                    bind:shopSubscribeService="@{confirmOrderViewModel.confirmOrderActivity.shopSubscribeService}"
                     bind:second="@{confirmOrderViewModel.second}" />
 
                 <View
@@ -687,7 +687,7 @@
                             android:text="@{&quot;已节省：&quot;+StringUtils.getPriceStr(shopCart.AllSave)+&quot;元&quot;}"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/text_normal"
-                            android:visibility="@{confirmOrderViewModel.confirmOrderActivity.module.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
+                            android:visibility="@{confirmOrderViewModel.confirmOrderActivity.shopSubscribeService.ServiceType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                         <TextView
                             android:layout_width="wrap_content"

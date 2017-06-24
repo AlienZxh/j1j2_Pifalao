@@ -5,7 +5,7 @@ import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserVipApi;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.feature.services.ServicesActivity;
@@ -60,7 +60,7 @@ public class ServicesModule {
 
     @Provides
     @ActivityScope
-    ServicePoint servicePoint(UserRelativePreference userRelativePreference) {
+    Shop servicePoint(UserRelativePreference userRelativePreference) {
         return userRelativePreference.getSelectedServicePoint(null);
     }
 
@@ -72,7 +72,7 @@ public class ServicesModule {
 
     @Provides
     @ActivityScope
-    ServicesViewModule servicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
-        return new ServicesViewModule(servicesActivity, servicePointApi, servicePoint, userLoginApi, systemAssistApi, activityApi);
+    ServicesViewModule servicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, Shop shop, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
+        return new ServicesViewModule(servicesActivity, servicePointApi, shop, userLoginApi, systemAssistApi, activityApi);
     }
 }

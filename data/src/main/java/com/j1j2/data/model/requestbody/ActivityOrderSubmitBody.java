@@ -20,7 +20,9 @@ public class ActivityOrderSubmitBody {
     /// 地址信息 如果有
     private String Address;
 
-    private int ModuleId;
+    private int ServiceId;
+
+    private int ShopId;
 
     public int getProductId() {
         return ProductId;
@@ -62,11 +64,19 @@ public class ActivityOrderSubmitBody {
         Address = address;
     }
 
-    public int getModuleId() {
-        return ModuleId;
+    public int getServiceId() {
+        return ServiceId;
     }
 
-    public void setModuleId(int moduleId) {
-        ModuleId = moduleId;
+    public void setServiceId(int serviceId) {
+        ServiceId = serviceId;
+    }
+
+    public int getShopId() {
+        return ShopId;
+    }
+
+    public void setShopId(int shopId) {
+        ShopId = shopId;
     }
 }

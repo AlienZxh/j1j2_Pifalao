@@ -34,7 +34,7 @@ public class Constant {
         int HOUSEKEEPING = 4;
         int VIP = 5;
         int MOBILE = 6;
-        int HYDROPOWER = 7;
+        int WATERBILL = 7;
         int OIL = 8;
         int TRAFFICFINES = 9;
         int GAME = 10;
@@ -49,6 +49,8 @@ public class Constant {
         int FRUIT = 19;
         int MEMBER = 20;
         int SPECIALOFFER = 21;
+        int ELECTRICBILL = 22;
+        int GASBILL = 23;
     }
 
     public static SparseIntArray moduleColors = new SparseIntArray() {{
@@ -59,7 +61,7 @@ public class Constant {
         put(ModuleType.HOUSEKEEPING, 0xff01c8c6);
         put(ModuleType.VIP, 0xffa3ca19);
         put(ModuleType.MOBILE, 0xffec6941);
-        put(ModuleType.HYDROPOWER, 0xff297acc);
+        put(ModuleType.WATERBILL, 0xff297acc);
         put(ModuleType.OIL, 0xff22ac38);
         put(ModuleType.TRAFFICFINES, 0xffff9900);
         put(ModuleType.GAME, 0xffa3ca19);
@@ -74,6 +76,8 @@ public class Constant {
         put(ModuleType.FRUIT, 0xff22ac38);
         put(ModuleType.MEMBER, 0xff01c8c6);
         put(ModuleType.SPECIALOFFER, 0xffff5d24);
+        put(ModuleType.ELECTRICBILL, 0xff01c8c6);
+        put(ModuleType.GASBILL, 0xffff9900);
     }};
 
     public static SparseIntArray moduleIconId = new SparseIntArray() {{
@@ -84,7 +88,7 @@ public class Constant {
         put(ModuleType.HOUSEKEEPING, R.string.icon_service_housekeeping);
         put(ModuleType.VIP, R.string.icon_service_vip);
         put(ModuleType.MOBILE, R.string.icon_service_mobile);
-        put(ModuleType.HYDROPOWER, R.string.icon_service_hydropower);
+        put(ModuleType.WATERBILL, R.string.icon_waterbill);
         put(ModuleType.OIL, R.string.icon_service_oil);
         put(ModuleType.TRAFFICFINES, R.string.icon_service_trafficfines);
         put(ModuleType.GAME, R.string.icon_service_game);
@@ -99,6 +103,8 @@ public class Constant {
         put(ModuleType.FRUIT, R.string.icon_service_fruit);
         put(ModuleType.MEMBER, R.string.icon_service_member);
         put(ModuleType.SPECIALOFFER, R.string.icon_service_specialoffer);
+        put(ModuleType.ELECTRICBILL, R.string.icon_electricbill);
+        put(ModuleType.GASBILL, R.string.icon_gasbill);
     }};
 
     public interface ProductsOrderbyId {

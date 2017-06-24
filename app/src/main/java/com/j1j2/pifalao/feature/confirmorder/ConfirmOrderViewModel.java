@@ -26,12 +26,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -65,11 +65,11 @@ public class ConfirmOrderViewModel {
     public void commitOrder(final OrderSubmitState orderSubmitState) {
         confirmOrderActivity.showProgress("订单提交中");
         OrderSubmitBody orderSubmitBody = new OrderSubmitBody();
-        orderSubmitBody.setModuleId(orderSubmitState.ModuleId);
+        orderSubmitBody.setServiceId(orderSubmitState.ModuleId);
         orderSubmitBody.setOrderPayType(orderSubmitState.OrderPayType.get());
         orderSubmitBody.setFreightID(orderSubmitState.FreightTypeDetail.get().getId());
 
-        orderSubmitBody.setServicePointId(orderSubmitState.ServicePointDetail.get() == null ? 0 : orderSubmitState.ServicePointDetail.get().getServicePointId());
+        orderSubmitBody.setShopId(orderSubmitState.ServicePointDetail.get() == null ? 0 : orderSubmitState.ServicePointDetail.get().getShopId());
 
         if (orderSubmitState.AddressDetail.get() != null)
             orderSubmitBody.setAddressId("" + orderSubmitState.AddressDetail.get().getAddressId());
@@ -78,6 +78,7 @@ public class ConfirmOrderViewModel {
 
         orderSubmitBody.setPredictSendTime(orderSubmitState.PredictSendTime.get());
         orderSubmitBody.setOrderMemo(orderSubmitState.OrderMemo);
+
         shopCartApi.submitOrder(orderSubmitBody)
                 .compose(confirmOrderActivity.<WebReturn<SubmitOrderReturn>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
@@ -120,7 +121,7 @@ public class ConfirmOrderViewModel {
     }
 
     public void queryDeliveryTime(final OrderSubmitState orderSubmitState) {
-        countDownApi.queryServiceTimeOfDliveryType(orderSubmitState.FreightTypeDetail.get().getId(), orderSubmitState.ModuleId)
+        countDownApi.queryServiceTimeOfDliveryType(orderSubmitState.FreightTypeDetail.get().getId())
                 .compose(confirmOrderActivity.<WebReturn<List<DeliveryServiceTime>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -142,8 +143,8 @@ public class ConfirmOrderViewModel {
                 });
     }
 
-    public void queryFreightType(int moduleId) {
-        shopCartApi.queryValidFreight(moduleId)
+    public void queryFreightType(int serviceId, int shopId) {
+        shopCartApi.queryValidFreight(serviceId, shopId)
                 .compose(confirmOrderActivity.<WebReturn<List<FreightType>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -166,27 +167,28 @@ public class ConfirmOrderViewModel {
     }
 
     public void queryCoupons(int couponType, int moduleId) {
-        userCouponApi.queryUserCoupon(couponType, "" + moduleId)
-                .compose(confirmOrderActivity.<WebReturn<List<Coupon>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<Coupon>>() {
-                    @Override
-                    public void onWebReturnSucess(List<Coupon> couponList) {
-                        confirmOrderActivity.initCoupons(couponList);
-
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
+//        userCouponApi.queryUserCoupon(couponType, "" + moduleId)
+//                .compose(confirmOrderActivity.<WebReturn<List<Coupon>>>bindToLifecycle())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new WebReturnSubscriber<List<Coupon>>() {
+//                    @Override
+//                    public void onWebReturnSucess(List<Coupon> couponList) {
+//                        confirmOrderActivity.initCoupons(couponList);
+//
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnFailure(String errorMessage) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnCompleted() {
+//
+//                    }
+//                });
+        confirmOrderActivity.initCoupons(new ArrayList<Coupon>());
     }
 
     public void queryDefaultAddress() {

@@ -2,6 +2,7 @@ package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +10,10 @@ import android.view.ViewGroup;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SelectableHolder;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
-import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.pifalao.R;
-import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemDeliverysortBinding;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -24,16 +22,16 @@ import java.util.List;
  */
 public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapter.DeliverySortViewHolder> {
 
-    private SecondarySort secondarySort;
+    private List<ProductCategory> productCategories;
     private SingleSelector singleSelector;
 
-    public DeliverySortAdapter(SecondarySort secondarySort, SingleSelector singleSelector) {
-        this.secondarySort = secondarySort;
+    public DeliverySortAdapter(List<ProductCategory> productCategories, SingleSelector singleSelector) {
+        this.productCategories = productCategories;
         this.singleSelector = singleSelector;
     }
 
     public interface OnSortClickListener {
-        void onSortClick(View view, ProductSort parentSort, ProductSort childSort, int position);
+        void onSortClick(View view, ProductCategory productCategory, int position);
     }
 
     private OnSortClickListener onSortClickListener;
@@ -53,22 +51,22 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
     public void onBindViewHolder(DeliverySortViewHolder holder, int position) {
 
         if (position == 0) {
-            holder.bind(secondarySort.getParentProductSort(), position);
+            holder.bind(null, position);
         } else if (position == 1) {
-            holder.bind(secondarySort.getParentProductSort(), position);
+            holder.bind(null, position);
         } else if (position == 2) {
-            holder.bind(secondarySort.getParentProductSort(), position);
+            holder.bind(null, position);
         } else
-            holder.bind(secondarySort.getChildFoodSorts().get(position - 3), position);
+            holder.bind(productCategories.get(position - 3), position);
 
     }
 
     @Override
     public int getItemCount() {
-        return null == secondarySort.getChildFoodSorts() ? 0 : (secondarySort.getChildFoodSorts().size() + 3);
+        return null == productCategories ? 0 : (productCategories.size() + 3);
     }
 
-    public class DeliverySortViewHolder extends AutoBindingViewHolder<ItemDeliverysortBinding, ProductSort> implements SelectableHolder {
+    public class DeliverySortViewHolder extends AutoBindingViewHolder<ItemDeliverysortBinding, ProductCategory> implements SelectableHolder {
         private SingleSelector singleSelector;
         private boolean mIsSelectable = false;
         private Context context;
@@ -85,7 +83,7 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
         }
 
         @Override
-        public void bind(@NonNull final ProductSort data, final int position) {
+        public void bind(@Nullable final ProductCategory data, final int position) {
 
             singleSelector.bindHolder(this, position, getItemId());
             binding.setPosition(position);
@@ -102,14 +100,15 @@ public class DeliverySortAdapter extends RecyclerView.Adapter<DeliverySortAdapte
                 binding.setSortName("新品推荐");
                 binding.icon.setText(context.getText(R.string.icon_new));
                 binding.icon.setTextColor(0xffff0000);
-            } else
-                binding.setSortName(data.getSortName());
+            } else if (data != null)
+                binding.setSortName(data.getName());
+            //_______________________________________________________________________________________
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     singleSelector.setSelected(position, getItemId(), true);
                     if (onSortClickListener != null) {
-                        onSortClickListener.onSortClick(v, secondarySort.getParentProductSort(), data, position);
+                        onSortClickListener.onSortClick(v, data, position);
                     }
                 }
             });

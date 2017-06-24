@@ -141,7 +141,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true)
     public void onLogStateChangeEvent(LogStateEvent event) {
         if (event.isLogin()) {
 
@@ -182,6 +182,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onUpgrading(boolean isManual) {
+
+    }
+
+    @Override
+    public void onDownloadCompleted(boolean isComplete) {
 
     }
 
@@ -268,6 +273,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -276,4 +283,6 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
         }
     }
+
+
 }

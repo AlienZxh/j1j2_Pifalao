@@ -9,7 +9,7 @@
             type="com.j1j2.data.model.ProductUnit" />
 
         <variable
-            name="moduleType"
+            name="serviceType"
             type="int" />
 
         <import type="com.j1j2.pifalao.app.Constant" />
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="106px"
             android:orientation="horizontal"
-            android:visibility="@{moduleType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE : View.GONE}">
+            android:visibility="@{serviceType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE : View.GONE}">
 
             <com.zhy.autolayout.AutoLinearLayout
                 android:layout_width="0dp"
@@ -135,7 +135,7 @@
             android:paddingBottom="10px"
             android:paddingLeft="@dimen/padding_noraml"
             android:paddingTop="12px"
-            android:visibility="@{moduleType==Constant.ModuleType.SHOPSERVICE?View.GONE: View.VISIBLE}">
+            android:visibility="@{serviceType==Constant.ModuleType.SHOPSERVICE?View.GONE: View.VISIBLE}">
 
             <TextView
                 android:layout_width="wrap_content"

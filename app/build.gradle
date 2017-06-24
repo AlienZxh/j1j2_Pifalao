@@ -1,18 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'bugly'
-apply plugin: 'com.tencent.bugly.plugin.betauploader'
+//apply plugin: 'com.tencent.bugly.plugin.betauploader'
+//apply from: '../buildsystem/dependencies.gradle'
+
 
 bugly {
     appId = '1103829290'
     appKey = 'BAgqsmAnuefshU3a'
 }
-beta {
-    appId = '1103829290'
-    appKey = 'BAgqsmAnuefshU3a'
-    debugOn = 'true'
-}
+//beta {
+//    appId = '1103829290'
+//    appKey = 'BAgqsmAnuefshU3a'
+//    debugOn = 'true'
+//}
 
 dexcount {
     format = "list"
@@ -87,11 +89,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             shrinkResources true
-            //8079
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
-            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
-            buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
+
+            buildConfigField "String", "API_URL", "\"http://m.jpos.j1j2.cn/v6/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://m.jpos.j1j2.cn\""
+//            buildConfigField "String", "UPDATE_URL", "\"http://m.jpos.j1j2.cn/Resources/Apk/UpdateOnline.xml\""
+//            buildConfigField "String", "APK_URL", "\"http://m.jpos.j1j2.cn/Resources/Apk/pifalao.apk\""
         }
         debug {
             signingConfig signingConfigs.debug
@@ -99,11 +101,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled false
             shrinkResources false
-            //9087
-            buildConfigField "String", "API_URL", "\"http://218.244.128.140:8079/v5/\""
-            buildConfigField "String", "IMAGE_URL", "\"http://218.244.128.140:8079\""
-            buildConfigField "String", "UPDATE_URL", "\"http://218.244.128.140:8079/Resources/Apk/UpdateOnline.xml\""
-            buildConfigField "String", "APK_URL", "\"http://218.244.128.140:8079/Resources/Apk/pifalao.apk\""
+
+            buildConfigField "String", "API_URL", "\"http://m.jpos.j1j2.cn/v6/\""
+            buildConfigField "String", "IMAGE_URL", "\"http://m.jpos.j1j2.cn\""
+//            buildConfigField "String", "UPDATE_URL", "\"http://m.jpos.j1j2.cn/Resources/Apk/UpdateOnline.xml\""
+//            buildConfigField "String", "APK_URL", "\"http://m.jpos.j1j2.cn/Resources/Apk/pifalao.apk\""
         }
     }
 }
@@ -131,10 +133,10 @@ dependencies {
     compile appDependencies.logger
     //页面数据交换、存储
     compile appDependencies.bundler
-    apt appDependencies.bundlerCompiler
+    annotationProcessor appDependencies.bundlerCompiler
     //依赖注入
     compile appDependencies.dagger
-    apt appDependencies.daggerCompiler
+    annotationProcessor appDependencies.daggerCompiler
     provided appDependencies.javaxAnnotation
     //内存泄露检测
     debugCompile appDebugDependencies.leakcanary
@@ -155,6 +157,7 @@ dependencies {
     compile appDependencies.umengAnalytics
     //jpush
     compile appDependencies.jpush
+    compile appDependencies.jcore
     //权限管理
     compile appDependencies.easypermissions
     //单元测试

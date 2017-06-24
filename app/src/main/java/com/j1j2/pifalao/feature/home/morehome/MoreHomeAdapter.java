@@ -2,21 +2,17 @@ package com.j1j2.pifalao.feature.home.morehome;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.common.view.viewpager.autoscrollviewpager.RecyclingPagerAdapter;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemMorehomeBinding;
 import com.j1j2.pifalao.databinding.ItemMorehomeHeadBinding;
-import com.j1j2.pifalao.feature.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,27 +26,27 @@ public class MoreHomeAdapter extends RecyclerView.Adapter<AutoBindingViewHolder>
 
     private static final int VIEW_TYPE_CONTENT = 0x00;
 
-    private List<Module> modules;
+    private List<ShopSubscribeService> shopSubscribeServices;
 
-    private List<Module> subscribeModules;
-    private List<Module> unSubscribeModules;
+    private List<ShopSubscribeService> subscribeShopSubscribeServices;
+    private List<ShopSubscribeService> unSubscribeShopSubscribeServices;
 
 
-    public MoreHomeAdapter(List<Module> modules) {
-        this.modules = modules;
-        subscribeModules = new ArrayList<>();
-        unSubscribeModules = new ArrayList<>();
-        for (Module module : modules) {
-            if (module.isSubscribed()) {
-                subscribeModules.add(module);
+    public MoreHomeAdapter(List<ShopSubscribeService> shopSubscribeServices) {
+        this.shopSubscribeServices = shopSubscribeServices;
+        subscribeShopSubscribeServices = new ArrayList<>();
+        unSubscribeShopSubscribeServices = new ArrayList<>();
+        for (ShopSubscribeService shopSubscribeService : shopSubscribeServices) {
+            if (shopSubscribeService.isSubscribed()) {
+                subscribeShopSubscribeServices.add(shopSubscribeService);
             } else {
-                unSubscribeModules.add(module);
+                unSubscribeShopSubscribeServices.add(shopSubscribeService);
             }
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(View view, Module module, int position);
+        void onItemClickListener(View view, ShopSubscribeService shopSubscribeService, int position);
     }
 
     private OnItemClickListener onItemClickListener;
@@ -81,7 +77,7 @@ public class MoreHomeAdapter extends RecyclerView.Adapter<AutoBindingViewHolder>
     public boolean isHeader(int position) {
         if (position == 0)
             return true;
-        if (position == subscribeModules.size() + 1)
+        if (position == subscribeShopSubscribeServices.size() + 1)
             return true;
         return false;
     }
@@ -90,19 +86,19 @@ public class MoreHomeAdapter extends RecyclerView.Adapter<AutoBindingViewHolder>
     public void onBindViewHolder(AutoBindingViewHolder holder, int position) {
         if (isHeader(position))
             holder.bind(position == 0 ? "已开通服务" : "暂未开通服务", position);
-        else if (position < subscribeModules.size() + 1)
-            holder.bind(subscribeModules.get(position - 1), position);
-        else if (position > subscribeModules.size() + 1)
-            holder.bind(unSubscribeModules.get(position - subscribeModules.size() - 2), position);
+        else if (position < subscribeShopSubscribeServices.size() + 1)
+            holder.bind(subscribeShopSubscribeServices.get(position - 1), position);
+        else if (position > subscribeShopSubscribeServices.size() + 1)
+            holder.bind(unSubscribeShopSubscribeServices.get(position - subscribeShopSubscribeServices.size() - 2), position);
 
     }
 
     @Override
     public int getItemCount() {
-        return null == modules ? 0 : (modules.size() + 2);
+        return null == shopSubscribeServices ? 0 : (shopSubscribeServices.size() + 2);
     }
 
-    public class MoreHomeViewHolder extends AutoBindingViewHolder<ItemMorehomeBinding, Module> {
+    public class MoreHomeViewHolder extends AutoBindingViewHolder<ItemMorehomeBinding, ShopSubscribeService> {
         private Context context;
 
         public MoreHomeViewHolder(View itemView) {
@@ -116,12 +112,12 @@ public class MoreHomeAdapter extends RecyclerView.Adapter<AutoBindingViewHolder>
         }
 
         @Override
-        public void bind(@NonNull final Module data, final int position) {
-            int iconId =Constant.moduleIconId.get(data.getModuleType());
+        public void bind(@NonNull final ShopSubscribeService data, final int position) {
+            int iconId =Constant.moduleIconId.get(data.getServiceType());
             binding.icon.setText(context.getResources().getString(iconId == 0 ? R.string.icon_service_more : iconId));
-            int color = Constant.moduleColors.get(data.getModuleType());
+            int color = Constant.moduleColors.get(data.getServiceType());
             binding.icon.setTextColor(color == 0 ? 0xffaaaaaa : color);
-            binding.setModule(data);
+            binding.setShopSubscribeService(data);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

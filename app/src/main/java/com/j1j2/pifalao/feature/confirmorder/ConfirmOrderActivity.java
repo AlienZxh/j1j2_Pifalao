@@ -11,8 +11,9 @@ import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.DeliveryServiceTime;
 import com.j1j2.data.model.FreightType;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.Shop;
 import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
@@ -46,8 +47,8 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-21.
  */
 @RequireBundler
-public class ConfirmOrderActivity extends BaseActivity implements View.OnClickListener
-        , TimeSelectDialogFragment.TimeSelectDialogFragmentListener {
+public class ConfirmOrderActivity extends BaseActivity implements View.OnClickListener,
+        TimeSelectDialogFragment.TimeSelectDialogFragmentListener {
     ActivityConfirmorderBinding binding;
 
     @Arg
@@ -56,7 +57,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
     @Arg(serializer = ParcelListSerializer.class)
     List<ShopCartItem> shopCartItems;
 
-    public Module module;
+    public ShopSubscribeService shopSubscribeService;
 
     @Inject
     ConfirmOrderViewModel confirmOrderViewModel;
@@ -78,12 +79,14 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
     private TimeSelectDialogFragment timeSelectDialogFragment;
 
+
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
         MainAplication.get(this).getUserComponent().plus(new ConfirmOrderModule(this, shopCartItems)).inject(this);
         orderSubmitState = new OrderSubmitState(moduleId, userRelativePreference.getSelectedServicePoint(null));
+
     }
 
     @Override
@@ -92,7 +95,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         orderSubmitState.OrderPayType.set(Constant.OrderPayType.ONLINEPAYMENT);
         binding.setShopCart(shopCart);
         binding.setConfirmOrderViewModel(confirmOrderViewModel);
-        module = userRelativePreference.getSelectedModule(null);
+        shopSubscribeService = userRelativePreference.getSelectedModule(null);
     }
 
     @Override
@@ -104,7 +107,9 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         OrderProductAdapter orderProductAdapter = new OrderProductAdapter(shopCartItems);
         binding.orderProductList.setAdapter(orderProductAdapter);
         //_______________________________
-        confirmOrderViewModel.queryFreightType(moduleId);
+        if (orderSubmitState.ServicePointDetail.get() != null)
+            confirmOrderViewModel.queryFreightType(moduleId,
+                    orderSubmitState.ServicePointDetail.get().getShopId());
     }
 
     @Override
@@ -185,7 +190,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
                 if (coupon.getState() == 1 && !coupon.isExpired() && shopCart.getAllMemberPrice() >= coupon.getConstraints()) {
                     if (TextUtils.isEmpty(coupon.getModuleIdStr()))
                         coupons.add(coupon);
-                    else if (coupon.getModuleIdStr().contains("" + module.getWareHouseModuleId()) || coupon.getModuleIdStr().equals("null"))
+                    else if (coupon.getModuleIdStr().contains("" + shopSubscribeService.getServiceId()) || coupon.getModuleIdStr().equals("null"))
                         coupons.add(coupon);
                 }
             }
@@ -225,7 +230,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
         if (v == binding.timPickerBtn)
             showTimePicker();
         if (v == binding.productList) {
-            navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_CONFIRMORDER, moduleId, shopCartItems, null);
+            navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_CONFIRMORDER, shopCartItems, null);
         }
         if (v == binding.couponBtn) {
             navigate.navigateToCouponSelect(this, null, false, moduleId, coupons, orderSubmitState.Coupon.get());
@@ -269,7 +274,7 @@ public class ConfirmOrderActivity extends BaseActivity implements View.OnClickLi
 
 
     public void navigateToOrderDetail(int orderId) {
-        navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+        navigate.navigateToOrderDetail(this, null, true, orderId, OrderDetailActivity.TIMELINE);
     }
 
     public void navigateToOnlineOrderPay(int orderId, String orderNO) {

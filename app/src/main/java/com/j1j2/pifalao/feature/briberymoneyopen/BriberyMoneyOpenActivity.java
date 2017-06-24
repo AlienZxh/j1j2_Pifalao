@@ -8,7 +8,6 @@ import android.view.animation.Animation;
 
 import com.j1j2.common.view.animation.FlipAnimation;
 import com.j1j2.data.http.api.ActivityApi;
-import com.j1j2.data.model.Module;
 import com.j1j2.data.model.RedPacket;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
@@ -17,9 +16,7 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.databinding.ActivityBriberymoneyOpenBinding;
 import com.j1j2.pifalao.feature.prizeconfirm.di.PrizeConfirmModule;
-import com.orhanobut.logger.Logger;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;

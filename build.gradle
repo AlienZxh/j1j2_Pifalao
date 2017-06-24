@@ -7,11 +7,11 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.4.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.2'
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
-        classpath 'com.tencent.bugly.plugin:betauploader:latest.release'
+//        classpath 'com.tencent.bugly.plugin:betauploader:latest.release'
 //        classpath 'com.frogermcs.androiddevmetrics:androiddevmetrics-plugin:0.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,14 +23,15 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://jitpack.io" }
         mavenCentral()
+        maven { url "https://jitpack.io" }
+
     }
 
     ext {
         androidApplicationId = 'com.j1j2.pifalao'
-        androidVersionCode = 70
-        androidVersionName = "5.2.1"
+        androidVersionCode = 76
+        androidVersionName = "5.4.2"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 }
@@ -39,7 +40,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task wrapper(type: Wrapper) {
-    description 'Creates the gradle wrapper.'
-    gradleVersion '2.13'
-}
+

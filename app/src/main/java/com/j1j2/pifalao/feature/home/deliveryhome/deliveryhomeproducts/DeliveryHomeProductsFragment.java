@@ -15,12 +15,13 @@ import com.j1j2.common.util.Toastor;
 import com.j1j2.common.view.quantityview.StateQuantityView;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
 import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.data.model.ProductUnit;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.Shop;
 import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.ShopExpressConfig;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
@@ -57,13 +58,15 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     }
 
     public interface DeliveryHomeProductsFragmentListener {
-        void navigateToProductDetail(View view, ProductSimple productSimple, int position);
+        void navigateToProductDetail(View view, Product productSimple, int position);
 
-        void navigateToShopCart(View view, Module module);
+        void navigateToShopCart(View view, ShopSubscribeService shopSubscribeService);
 
         void navigateToLogin(View view);
 
         void showAddShopCartAnim(@Size(2) int[] startLocation);
+
+        ShopExpressConfig getShopExpressConfig();
     }
 
     private DeliveryHomeProductsFragmentListener listener;
@@ -71,7 +74,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     FragmentDeliveryhomeProductsBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     SingleSelector singleSelector = new SingleSelector();
 
@@ -83,8 +86,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
 
     int position;
-    ProductSort parentSort;
-    ProductSort childSort;
+    ProductCategory productCategory;
 
     ShopCart shopCart;
     Handler updateShopCartHandler = new Handler();
@@ -144,7 +146,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         binding.childProductList.setRefreshingColorResources(R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary, R.color.colorPrimary);
 //        binding.childProductList.setRefreshListener(this);
 
-        deliveryProductsViewModel.queryProductSort(module.getWareHouseModuleId());
+        deliveryProductsViewModel.queryDeliveryProductSort(shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
     }
 
     @Override
@@ -154,16 +156,14 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         MainAplication.get(getContext()).getAppComponent().plus(new DeliveryProductsModule(this)).inject(this);
     }
 
-    public void initList(SecondarySort secondarySort) {
-        DeliverySortAdapter deliverySortAdapter = new DeliverySortAdapter(secondarySort, singleSelector);
+    public void initList(List<ProductCategory> productCategories) {
+        DeliverySortAdapter deliverySortAdapter = new DeliverySortAdapter(productCategories, singleSelector);
         binding.parentSortList.setAdapter(deliverySortAdapter);
         deliverySortAdapter.setOnSortClickListener(this);
         singleSelector.setSelected(0, deliverySortAdapter.getItemId(0), true);
 //______________________________________________________________________
-        parentSort = secondarySort.getParentProductSort();
-        childSort = secondarySort.getParentProductSort();
         position = 0;
-        queryProducts(true, parentSort, childSort, position);
+        queryProducts(true, null, position);
     }
 
 
@@ -184,7 +184,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         if (event.isLogin()) {
             shopCart = MainAplication.get(getContext()).getUserComponent().shopCart();
             deliveryProductsViewModel.getDeliveryProductsAdapter().setShopCart(shopCart);
-            deliveryProductsViewModel.queryShopcart(module.getWareHouseModuleId());
+            deliveryProductsViewModel.queryShopcart(shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
         } else {
             if (shopCart != null)
                 shopCart.clear();
@@ -199,16 +199,15 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onShopCartChangeEvent(ShopCartChangeEvent event) {
-        deliveryProductsViewModel.queryShopcart(module.getWareHouseModuleId());
+        deliveryProductsViewModel.queryShopcart(shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
     }
 
 
     @Override
-    public void onSortClick(View view, ProductSort mParentSort, ProductSort mChildSort, int mPosition) {
-        parentSort = mParentSort;
-        childSort = mChildSort;
+    public void onSortClick(View view, ProductCategory mProductCategory, int mPosition) {
         position = mPosition;
-        queryProducts(true, parentSort, childSort, position);
+        productCategory = mProductCategory;
+        queryProducts(true, productCategory, position);
     }
 
     public void showLoad() {
@@ -220,15 +219,15 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         binding.childProductList.showRecycler();
     }
 
-    public void queryProducts(boolean isRefresh, ProductSort parentSort, ProductSort childSort, int position) {
+    public void queryProducts(boolean isRefresh, ProductCategory productCategory, int position) {
         if (position == 0) {
-            deliveryProductsViewModel.querySellsProducts(isRefresh, parentSort.getSortId());
+            deliveryProductsViewModel.querySellsProducts(isRefresh, shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
         } else if (position == 1) {
-            deliveryProductsViewModel.queryActivityProducts(isRefresh, module.getWareHouseModuleId(), position);
+            deliveryProductsViewModel.queryActivityProducts(isRefresh, shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId(), position);
         } else if (position == 2) {
-            deliveryProductsViewModel.queryActivityProducts(isRefresh, module.getWareHouseModuleId(), position);
+            deliveryProductsViewModel.queryActivityProducts(isRefresh, shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId(), position);
         } else
-            deliveryProductsViewModel.queryProductyBySortId(isRefresh, childSort.getSortId());
+            deliveryProductsViewModel.queryProductyBySortId(isRefresh, shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId(), productCategory.getCategoryId());
     }
 
     public void setLoadMoreBegin() {
@@ -242,12 +241,12 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
 
     @Override
     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
-        queryProducts(false, parentSort, childSort, position);
+        queryProducts(false, productCategory, position);
     }
 
     @Override
     public void onRefresh() {
-        queryProducts(true, parentSort, childSort, position);
+        queryProducts(true, productCategory, position);
     }
 
     public void updateShopCart(final boolean showAnim) {
@@ -255,15 +254,15 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
             updateShopCartHandler.removeCallbacks(updateShopCartRunnable);
         updateShopCartRunnable = new Runnable() {
             public void run() {
-                deliveryProductsViewModel.updateShopCart(showAnim);
+                deliveryProductsViewModel.updateShopCart(showAnim, shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
             }
         };
         updateShopCartHandler.postDelayed(updateShopCartRunnable, 800);
     }
 
     @Override
-    public void onQuantityChange(StateQuantityView view, ProductSimple productSimple, int position, int quantity) {
-        if (productSimple.getProductUnits() == null || productSimple.getProductUnits().size() <= 0)
+    public void onQuantityChange(StateQuantityView view, Product product, int position, int quantity) {
+        if (product.getProductUnits() == null || product.getProductUnits().size() <= 0)
             return;
         if (quantity == 0)
             return;
@@ -275,7 +274,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
         boolean showAnim = false;
 
         for (ShopCartItem shopCartItem : deliveryProductsViewModel.getShopCartItems()) {
-            if (shopCartItem.getProductMainId() == productSimple.getMainId()) {
+            if (shopCartItem.getProductMainId() == product.getMainId()) {
                 if (quantity == shopCartItem.getQuantity()) {
                     return;
                 } else if (quantity < shopCartItem.getQuantity()) {
@@ -290,7 +289,7 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
             }
         }
         if (shouldUpdate) {
-            updateShopCart(productSimple.getProductUnits().get(0), quantity);
+            updateShopCart(product.getProductUnits().get(0), quantity);
             updateShopCart(showAnim);
 
             if (showAnim) {
@@ -304,18 +303,18 @@ public class DeliveryHomeProductsFragment extends BaseFragment implements Delive
     }
 
     @Override
-    public void onEnableStateChange(StateQuantityView view, ProductSimple productSimple, int position, boolean isEnable) {
+    public void onEnableStateChange(StateQuantityView view, Product product, int position, boolean isEnable) {
         if (shopCart == null)
             return;
-        if (productSimple.getProductUnits() == null || productSimple.getProductUnits().size() <= 0)
+        if (product.getProductUnits() == null || product.getProductUnits().size() <= 0)
             return;
-        if (isEnable && shopCart.getShopCartItemBaseUnitNum().get(productSimple.getMainId()) == null) {
-            deliveryProductsViewModel.addItemToShopCart(productSimple.getProductUnits().get(0), 1, module.getWareHouseModuleId());
+        if (isEnable && shopCart.getShopCartItemBaseUnitNum().get(product.getMainId()) == null) {
+            deliveryProductsViewModel.addItemToShopCart(product.getProductUnits().get(0), 1, shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
             view.getLocationOnScreen(startLocation);
             listener.showAddShopCartAnim(startLocation);
         }
-        if (!isEnable && shopCart.getShopCartItemBaseUnitNum().get(productSimple.getMainId()) != null) {
-            deliveryProductsViewModel.removeShopCartItem(productSimple.getProductUnits().get(0));
+        if (!isEnable && shopCart.getShopCartItemBaseUnitNum().get(product.getMainId()) != null) {
+            deliveryProductsViewModel.removeShopCartItem(product.getProductUnits().get(0), shopSubscribeService.getServiceId(), listener.getShopExpressConfig().getShopId());
         }
 
         Logger.d("deliveryhome  position " + position + " isEnable " + isEnable);

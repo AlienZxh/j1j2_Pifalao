@@ -231,4 +231,9 @@
     <string name="icon_briberymoney">&#xe720;</string>
 
     <string name="icon_close_simple">&#xe603;</string>
+
+    <string name="icon_waterbill">&#xe727;</string>
+    <string name="icon_electricbill">&#xe728;</string>
+    <string name="icon_gasbill">&#xe729;</string>
+
 </resources>

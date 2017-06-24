@@ -147,4 +147,10 @@ public class LaunchActivity extends BaseActivity implements MainAplication.AppUp
             launchViewModel.setCheckingUpdate(false);//检查更新完成
         }
     }
+
+    @Override
+    public void onDownloadCompleted(boolean isComplete) {
+        if (BuildConfig.DEBUG)
+            toastor.showToast("升级下载完成");
+    }
 }

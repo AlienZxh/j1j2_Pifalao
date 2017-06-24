@@ -6,9 +6,13 @@ import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
+import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.service.BackGroundService;
 import com.j1j2.pifalao.databinding.ActivityIndividualcenterBinding;
 import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import in.workarounds.bundler.Bundler;
 import in.workarounds.bundler.annotations.RequireBundler;
@@ -90,5 +94,14 @@ public class IndividualCenterActivity extends BaseActivity implements Individual
     @Override
     public void navigateToParticipationRecord(int activityType) {
         navigate.navigateToParticipationRecordActivity(this, null, false, activityType);
+    }
+
+    @Subscribe(sticky = true)
+    public void onLogStateChangeEvent(LogStateEvent event) {
+        if (event.isLogin()) {
+
+        } else {
+            finish();
+        }
     }
 }

@@ -216,7 +216,7 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
         if (v == binding.confirmBtn) {
             switch (activityType) {
                 case FROM_CONFIRMORDER:
-                    navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+                    navigate.navigateToOrderDetail(this, null, true, orderId, OrderDetailActivity.TIMELINE);
                     break;
                 case FROM_REGISTER:
                     EventBus.getDefault().post(new NavigateToHomeEvent());
@@ -241,7 +241,7 @@ public class SuccessResultActivity extends BaseActivity implements View.OnClickL
         if (activityType == FROM_PRIZEORDER_LOTTERY || activityType == FROM_PRIZEORDER_EXCHANGE)
             navigate.navigateToMemberHomeActivity(this, null, true);
         if (activityType == FROM_CONFIRMORDER)
-            navigate.navigateToOrderDetail(this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+            navigate.navigateToOrderDetail(this, null, true, orderId, OrderDetailActivity.TIMELINE);
         else
             super.onBackPressed();
     }

@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SelectableHolder;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
-import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemVegetableParentsortBinding;
@@ -21,16 +20,16 @@ import java.util.List;
  */
 public class VegetableParentSortAdapter extends RecyclerView.Adapter<VegetableParentSortAdapter.VegetableParentSortViewHolder> {
 
-    private List<SecondarySort> secondarySorts;
+    private List<ProductCategory> secondarySorts;
     private SingleSelector singleSelector;
 
-    public VegetableParentSortAdapter(List<SecondarySort> secondarySorts, SingleSelector singleSelector) {
+    public VegetableParentSortAdapter(List<ProductCategory> secondarySorts, SingleSelector singleSelector) {
         this.secondarySorts = secondarySorts;
         this.singleSelector = singleSelector;
     }
 
     public interface OnSortSelectListener {
-        void onSortSelectListener(View v, SecondarySort secondarySort, int position);
+        void onSortSelectListener(View v, ProductCategory secondarySort, int position);
     }
 
     private OnSortSelectListener onSortSelectListener;
@@ -56,7 +55,7 @@ public class VegetableParentSortAdapter extends RecyclerView.Adapter<VegetablePa
         return null == secondarySorts ? 0 : secondarySorts.size();
     }
 
-    public class VegetableParentSortViewHolder extends AutoBindingViewHolder<ItemVegetableParentsortBinding, SecondarySort> implements SelectableHolder {
+    public class VegetableParentSortViewHolder extends AutoBindingViewHolder<ItemVegetableParentsortBinding, ProductCategory> implements SelectableHolder {
 
         private SingleSelector singleSelector;
 
@@ -74,10 +73,10 @@ public class VegetableParentSortAdapter extends RecyclerView.Adapter<VegetablePa
         }
 
         @Override
-        public void bind(@NonNull final SecondarySort data, final int position) {
+        public void bind(@NonNull final ProductCategory data, final int position) {
             singleSelector.bindHolder(this, position, getItemId());
             binding.setIsSelect(singleSelector.isSelected(position, getItemId()));
-            binding.setSortName(data.getParentProductSort().getSortName());
+            binding.setSortName(data.getName());
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.ProductCategory;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
@@ -42,9 +42,11 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
     }
 
     public interface VegetableSortFragmentListener extends HasComponent<MainComponent> {
-        void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
+        void navigateToProductsActivityFromSort(View view, ProductCategory productSort, int position);
 
         void navigateToSearchActivity(View v);
+
+        Shop getShop();
     }
 
     private VegetableSortFragmentListener listener;
@@ -52,7 +54,7 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
     FragmentVegetablesortBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     @Inject
     VegetableSortViewModel vegetableSortViewModel;
@@ -74,10 +76,10 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
         binding.searchBtn.setOnClickListener(this);
         binding.parentSortList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.childSortList.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        vegetableSortViewModel.queryProductSort(module.getWareHouseModuleId());
+        vegetableSortViewModel.queryProductSort(shopSubscribeService.getServiceId(),listener.getShop().getShopId());
     }
 
-    public void initList(List<SecondarySort> secondarySorts) {
+    public void initList(List<ProductCategory> secondarySorts) {
         if (null == secondarySorts || secondarySorts.size() <= 0)
             return;
         SingleSelector singleSelector = new SingleSelector();
@@ -89,7 +91,7 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
         initChildList(secondarySorts.get(0));
     }
 
-    public void initChildList(SecondarySort secondarySort) {
+    public void initChildList(ProductCategory secondarySort) {
         VegetableChildSortAdapter vegetableChildSortAdapter = new VegetableChildSortAdapter(secondarySort);
         binding.childSortList.setAdapter(vegetableChildSortAdapter);
         vegetableChildSortAdapter.setOnChildSortClickListener(this);
@@ -108,12 +110,12 @@ public class VegetableSortFragment extends BaseFragment implements VegetablePare
     }
 
     @Override
-    public void onSortSelectListener(View v, SecondarySort secondarySort, int position) {
+    public void onSortSelectListener(View v, ProductCategory secondarySort, int position) {
         initChildList(secondarySort);
     }
 
     @Override
-    public void onChildSortClick(View view, ProductSort productSort, int position) {
+    public void onChildSortClick(View view, ProductCategory productSort, int position) {
         listener.navigateToProductsActivityFromSort(view, productSort, position);
     }
 

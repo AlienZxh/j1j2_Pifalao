@@ -45,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-                    android:text="@{vegetableHomeViewModel.vegetableHomeFragment.module.ModuleName}"
+                    android:text="@{vegetableHomeViewModel.vegetableHomeFragment.shopSubscribeService.Name}"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/text_actionbar_title" />
 
@@ -112,7 +112,7 @@
                         bind:hour="@{vegetableHomeViewModel.hour}"
                         bind:isLogin="@{vegetableHomeViewModel.vegetableHomeFragment.isLogin}"
                         bind:minute="@{vegetableHomeViewModel.minute}"
-                        bind:module="@{vegetableHomeViewModel.vegetableHomeFragment.module}"
+                        bind:shopSubscribeService="@{vegetableHomeViewModel.vegetableHomeFragment.shopSubscribeService}"
                         bind:second="@{vegetableHomeViewModel.second}" />
 
                     <com.zhy.autolayout.AutoLinearLayout

@@ -7,7 +7,7 @@ import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.common.util.ValidateUtils;
 import com.j1j2.data.http.api.ApplyForApi;
 import com.j1j2.data.model.ApplyForServiceCount;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ApplyForServicePointBody;
@@ -40,7 +40,7 @@ public class ModulePermissionDeniedActivity extends BaseActivity implements View
     ActivityModulePermissiondeniedBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     @Inject
     ApplyForApi applyForApi;

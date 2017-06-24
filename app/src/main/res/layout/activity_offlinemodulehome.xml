@@ -9,12 +9,12 @@
             type="android.view.View.OnClickListener" />
 
         <variable
-            name="module"
-            type="com.j1j2.data.model.Module" />
+            name="shopSubscribeService"
+            type="com.j1j2.data.model.ShopSubscribeService" />
 
         <variable
-            name="servicePoint"
-            type="com.j1j2.data.model.ServicePoint" />
+            name="shop"
+            type="com.j1j2.data.model.Shop" />
 
         <variable
             name="servicePointModules"
@@ -57,7 +57,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@{module.ModuleName}"
+                android:text="@{shopSubscribeService.Name}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_actionbar_title" />
 
@@ -117,7 +117,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{servicePoint.getName()}"
+                        android:text="@{shop.getName()}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_biger"
                         android:textStyle="bold" />
@@ -155,7 +155,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="120px"
-                            android:text="@{servicePoint.getAddressDetail()}"
+                            android:text="@{shop.getAddressDetail()}"
                             android:textColor="@color/colorText2a2a2a"
                             android:textSize="@dimen/text_biger" />
 
@@ -192,7 +192,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{servicePoint.getServiceTime()}"
+                        android:text="@{shop.getServiceTime()}"
                         android:textColor="@color/colorText2a2a2a"
                         android:textSize="@dimen/text_biger" />
 

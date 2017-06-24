@@ -6,11 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemLocationServicepointBinding;
-import com.veinhorn.tagview.TagView;
 import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
@@ -20,17 +19,17 @@ import java.util.List;
  */
 public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationServicePointAdapter.LocationServicePointViewHolder> {
 
-    private List<ServicePoint> servicePoints;
+    private List<Shop> shops;
     private boolean shownear;
 
-    public LocationServicePointAdapter(List<ServicePoint> servicePoints) {
-        this.servicePoints = servicePoints;
+    public LocationServicePointAdapter(List<Shop> shops) {
+        this.shops = shops;
     }
 
     public interface OnItemClickListener {
-        void onItemClickListener(View view, ServicePoint servicePoint);
+        void onItemClickListener(View view, Shop shop);
 
-        void onInfoClickListener(View view, ServicePoint servicePoint);
+        void onInfoClickListener(View view, Shop shop);
     }
 
     private OnItemClickListener onItemClickListener;
@@ -52,15 +51,15 @@ public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationSe
 
     @Override
     public void onBindViewHolder(LocationServicePointViewHolder holder, int position) {
-        holder.bind(servicePoints.get(position), position);
+        holder.bind(shops.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        return null == this.servicePoints ? 0 : servicePoints.size();
+        return null == this.shops ? 0 : shops.size();
     }
 
-    public class LocationServicePointViewHolder extends AutoBindingViewHolder<ItemLocationServicepointBinding, ServicePoint> {
+    public class LocationServicePointViewHolder extends AutoBindingViewHolder<ItemLocationServicepointBinding, Shop> {
 
         public LocationServicePointViewHolder(View itemView) {
             super(itemView);
@@ -72,7 +71,7 @@ public class LocationServicePointAdapter extends RecyclerView.Adapter<LocationSe
         }
 
         @Override
-        public void bind(@NonNull final ServicePoint data, int position) {
+        public void bind(@NonNull final Shop data, int position) {
             binding.setServicepoint(data);
             binding.setPosition(position);
             binding.setShowNear(shownear);

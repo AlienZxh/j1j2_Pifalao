@@ -18,8 +18,8 @@ import android.view.animation.LinearInterpolator;
 import com.bumptech.glide.Glide;
 import com.j1j2.common.util.ScreenUtils;
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSimple;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -58,9 +58,9 @@ public class AddProductDialogFragment extends BaseBottomDialogFragment implement
     ViewProductsAddBinding binding;
 
     @Arg
-    ProductSimple productSimple;
+    Product product;
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     SingleSelector singleSelector;
     ShopCart shopCart;
@@ -83,22 +83,22 @@ public class AddProductDialogFragment extends BaseBottomDialogFragment implement
         binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.view_products_add, null, false);
         singleSelector = new SingleSelector();
         Glide.with(this)
-                .load(Uri.parse(productSimple.getMainImg() == null ? "" : productSimple.getMainImg()))
+                .load(Uri.parse(product.getMainThumImg() == null ? "" : product.getMainThumImg()))
                 .asBitmap()
                 .error(R.drawable.loadimg_error)
                 .placeholder(R.drawable.loadimg_loading)
                 .into(binding.dialogImg);
-        binding.dialogName.setText(productSimple.getName());
-        binding.dialogRealPrice.setText("市场价：￥" + productSimple.getProductUnits().get(0).getRetialPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
+        binding.dialogName.setText(product.getName());
+        binding.dialogRealPrice.setText("市场价：￥" + product.getProductUnits().get(0).getRetialPrice() + "/" + product.getProductUnits().get(0).getUnit());
         binding.dialogRealPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        binding.dialogMemberPrice.setText("批发价：￥" + productSimple.getProductUnits().get(0).getMemberPrice() + "/" + productSimple.getProductUnits().get(0).getUnit());
-        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(productSimple.getProductUnits()
+        binding.dialogMemberPrice.setText("批发价：￥" + product.getProductUnits().get(0).getMemberPrice() + "/" + product.getProductUnits().get(0).getUnit());
+        ProductDetailUnitAdapter productDetailUnitAdapter = new ProductDetailUnitAdapter(product.getProductUnits()
                 , singleSelector
-                , productSimple.getBaseUnit()
-                , module.getWareHouseModuleId());
+                , product.getBaseUnit()
+                , shopSubscribeService.getServiceId());
         binding.dialogUnitList.setLayoutManager(new GridLayoutManager(getContext(), 3));
         binding.dialogUnitList.setAdapter(productDetailUnitAdapter);
-        listener.setSelectedUnit(productSimple.getProductUnits().get(0));
+        listener.setSelectedUnit(product.getProductUnits().get(0));
         productDetailUnitAdapter.setOnUnitItemClickListener(new ProductDetailUnitAdapter.OnUnitItemClickListener() {
             @Override
             public void OnUnitItemClickListener(View view, ProductUnit unit, int position) {

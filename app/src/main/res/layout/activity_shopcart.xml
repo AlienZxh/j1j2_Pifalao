@@ -16,8 +16,8 @@
             type="com.j1j2.data.model.FreightType" />
 
         <variable
-            name="module"
-            type="com.j1j2.data.model.Module" />
+            name="shopSubscribeService"
+            type="com.j1j2.data.model.ShopSubscribeService" />
 
         <variable
             name="shopCartViewModel"
@@ -70,7 +70,7 @@
             bind:hour="@{shopCartViewModel.hour}"
             bind:isLogin="@{shopCartViewModel.ShopCartActivity.isLogin}"
             bind:minute="@{shopCartViewModel.minute}"
-            bind:module="@{module}"
+            bind:shopSubscribeService="@{shopSubscribeService}"
             bind:second="@{shopCartViewModel.second}" />
 
         <com.malinskiy.superrecyclerview.SuperRecyclerView
@@ -155,33 +155,33 @@
                     android:text="@{&quot;（节省：&quot;+StringUtils.getPriceWiteSymbol(shopCartViewModel.shopCart.AllSave)+&quot;）&quot;}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal"
-                    android:visibility="@{module.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
+                    android:visibility="@{shopSubscribeService.ServiceType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
             </com.zhy.autolayout.AutoLinearLayout>
 
             <TextView
                 android:id="@+id/confirmOrder"
                 android:layout_width="220px"
                 android:layout_height="match_parent"
-                android:background="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit||!module.Normal?@drawable/disable_btn_bg:@drawable/orange_btn_selector}"
-                android:enabled="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit||!module.Normal?false:true}"
+                android:background="@{shopCartViewModel.shopCart.AllMemberPrice&lt;shopSubscribeService.OrderAmountMinLimit||!shopSubscribeService.Normal?@drawable/disable_btn_bg:@drawable/orange_btn_selector}"
+                android:enabled="@{shopCartViewModel.shopCart.AllMemberPrice&lt;shopSubscribeService.OrderAmountMinLimit||!shopSubscribeService.Normal?false:true}"
                 android:gravity="center"
-                android:text="@{!module.Normal?&quot;打烊了&quot;:(shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?(&quot;满&quot;+module.OrderAmountMinLimit+&quot;元\n才能下单&quot;):&quot;去结算&quot;)}"
+                android:text="@{!shopSubscribeService.Normal?&quot;打烊了&quot;:(shopCartViewModel.shopCart.AllMemberPrice&lt;shopSubscribeService.OrderAmountMinLimit?(&quot;满&quot;+shopSubscribeService.OrderAmountMinLimit+&quot;元\n才能下单&quot;):&quot;去结算&quot;)}"
                 android:textColor="@color/colorWhite"
                 android:textSize="30px"
-                android:visibility="@{module.ModuleType!=Constant.ModuleType.SHOPSERVICE?View.VISIBLE:View.GONE}"
+                android:visibility="@{shopSubscribeService.ServiceType!=Constant.ModuleType.SHOPSERVICE?View.VISIBLE:View.GONE}"
                 app:OnClickListener="@{shopCartViewModel.ShopCartActivity}" />
 
             <TextView
                 android:id="@+id/shopConfirmOrder"
                 android:layout_width="220px"
                 android:layout_height="match_parent"
-                android:background="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?@drawable/disable_btn_bg:@drawable/orange_btn_selector}"
-                android:enabled="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?false:true}"
+                android:background="@{shopCartViewModel.shopCart.AllMemberPrice&lt;shopSubscribeService.OrderAmountMinLimit?@drawable/disable_btn_bg:@drawable/orange_btn_selector}"
+                android:enabled="@{shopCartViewModel.shopCart.AllMemberPrice&lt;shopSubscribeService.OrderAmountMinLimit?false:true}"
                 android:gravity="center"
-                android:text="@{shopCartViewModel.shopCart.AllMemberPrice&lt;module.OrderAmountMinLimit?(&quot;满&quot;+module.OrderAmountMinLimit+&quot;元\n才能下单&quot;):&quot;去结算&quot;}"
+                android:text="@{shopCartViewModel.shopCart.AllMemberPrice&lt;shopSubscribeService.OrderAmountMinLimit?(&quot;满&quot;+shopSubscribeService.OrderAmountMinLimit+&quot;元\n才能下单&quot;):&quot;去结算&quot;}"
                 android:textColor="@color/colorWhite"
                 android:textSize="30px"
-                android:visibility="@{module.ModuleType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE:View.GONE}"
+                android:visibility="@{shopSubscribeService.ServiceType==Constant.ModuleType.SHOPSERVICE?View.VISIBLE:View.GONE}"
                 app:OnClickListener="@{shopCartViewModel.ShopCartActivity}" />
         </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoRelativeLayout>

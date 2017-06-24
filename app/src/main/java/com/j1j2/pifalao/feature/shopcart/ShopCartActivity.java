@@ -6,8 +6,9 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.Shop;
 import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
@@ -52,18 +53,19 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     @Inject
     FreightTypePrefrence freightTypePrefrence;
 
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     private String deleteDialogTag = "DELETEDIALOG";
     ShopCartItem deleteShopCart;
+
+    private Shop shop;
 
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_shopcart);
         binding.setShopCartViewModel(shopCartViewModel);
 
-        module = userRelativePreference.getSelectedModule(null);
-        binding.setModule(module);
+        binding.setShopSubscribeService(shopSubscribeService);
 
     }
 
@@ -77,8 +79,9 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
                 .build());
         binding.shopcartlist.getRecyclerView().setClipToPadding(false);
         binding.shopcartlist.getRecyclerView().setPadding(0, 0, 0, AutoUtils.getPercentHeightSize(100));
-        shopCartViewModel.queryShopCart(module.getModuleType());
-        if (module.getModuleType() == Constant.ModuleType.DELIVERY)
+        if (shop != null)
+            shopCartViewModel.queryShopCart(shopSubscribeService.getServiceType(), shop.getShopId());
+        if (shopSubscribeService.getServiceType() == Constant.ModuleType.DELIVERY)
             binding.setFreightType(freightTypePrefrence.getDeliveryFreightType(null));
         else
             shopCartViewModel.CountDown();
@@ -94,6 +97,8 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
         super.setupActivityComponent();
         Bundler.inject(this);
         MainAplication.get(this).getUserComponent().plus(new ShopCartModule(this, moduleId)).inject(this);
+        shopSubscribeService = userRelativePreference.getSelectedModule(null);
+        shop = userRelativePreference.getSelectedServicePoint(null);
     }
 
     public void showDeleteDialog(final ShopCartItem shopCart) {
@@ -121,7 +126,7 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onLayoutClickListener(View view, ShopCartItem shopCart, int position) {
-        navigate.navigateToProductDetailActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, shopCart.getProductMainId());
+//        navigate.navigateToProductDetailActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, shopCart.getProductMainId());
     }
 
     @Override
@@ -134,7 +139,7 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
         if (quantity == shopCartViewModel.getShopCartItems().get(position).getQuantity())
             return;
         shopCartViewModel.getShopCartItems().get(position).setQuantity(quantity);
-        shopCartViewModel.updateShopCart();
+        shopCartViewModel.updateShopCart(shopSubscribeService.getServiceId(), shop.getShopId());
     }
 
     @Subscribe
@@ -144,7 +149,8 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
 
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onShopCartChangeEvent(ShopCartChangeEvent event) {
-        shopCartViewModel.queryShopCart(module.getModuleType());
+        if (shop != null)
+            shopCartViewModel.queryShopCart(shopSubscribeService.getServiceType(), shop.getShopId());
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
@@ -160,7 +166,7 @@ public class ShopCartActivity extends BaseActivity implements View.OnClickListen
     public void onDialogPositiveClick(String fragmentTag) {
         super.onDialogPositiveClick(fragmentTag);
         if (fragmentTag.equals(deleteDialogTag)) {
-            shopCartViewModel.removeShopCartItem(deleteShopCart.getProductId());
+            shopCartViewModel.removeShopCartItem(deleteShopCart.getProductId(), shopSubscribeService.getServiceId(), shop.getShopId());
         }
     }
 }

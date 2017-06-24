@@ -69,7 +69,7 @@ public class OrderProductListAdapter extends RecyclerView.Adapter<OrderProductLi
         public void bind(@NonNull final OrderProductSimple data, final int position) {
             binding.setOrderProductSimple(data);
             binding.setShopCart(shopCart);
-            binding.setModuleType(moduleType);
+            binding.setServiceType(moduleType);
             binding.setOnClick(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

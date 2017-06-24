@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.ProductDetail;
+import com.j1j2.data.model.Product;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentProductdetailParamsBinding;
@@ -29,7 +29,7 @@ public class ProductDetailParamsFragment extends BaseFragment {
     FragmentProductdetailParamsBinding binding;
 
     @Arg
-    ProductDetail productDetail;
+    Product productDetail;
 
     @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -1,30 +1,25 @@
 package com.j1j2.pifalao.app.base;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 
-import com.j1j2.common.util.DialogUtils;
 import com.j1j2.common.util.Toastor;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.Navigate;
 import com.j1j2.pifalao.app.di.ActivityComponent;
 import com.j1j2.pifalao.app.di.ActivityModule;
-import com.j1j2.pifalao.app.dialog.BaseDialogFragment;
 import com.j1j2.pifalao.app.dialog.MessageDialogFragmentBundler;
 import com.j1j2.pifalao.app.dialog.impl.IDialogNegativeButtonClickListener;
 import com.j1j2.pifalao.app.dialog.impl.IDialogPositiveButtonClickListener;
 import com.j1j2.pifalao.app.event.BaseEvent;
 import com.j1j2.pifalao.app.event.NetWorkEvent;
 import com.orhanobut.logger.Logger;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
 

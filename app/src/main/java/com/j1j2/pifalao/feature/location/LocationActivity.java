@@ -23,7 +23,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.OverlayManager;
 import com.j1j2.common.util.LocationUtils;
 import com.j1j2.data.model.City;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
@@ -74,7 +74,7 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     private InfoWindow mInfoWindow;
     ViewLocationPopBinding popBinding;
-    ServicePoint servicePoint = null;
+    Shop shop = null;
 
     @Override
     protected void initBinding() {
@@ -105,9 +105,9 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
 
     }
 
-    public void addServicePointOverlay(List<ServicePoint> servicePoints) {
+    public void addServicePointOverlay(List<Shop> shops) {
         mBaiduMap.hideInfoWindow();
-        if (servicePoints.size() <= 0)
+        if (shops.size() <= 0)
             return;
 
         if (overlayOptionses.size() > 0) {
@@ -117,8 +117,8 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         BitmapDescriptor markIcon = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_servicepoint);
         int i = 0;
-        for (ServicePoint servicePoint : servicePoints) {
-            LatLng point = new LatLng(servicePoint.getLat(), servicePoint.getLng());
+        for (Shop shop : shops) {
+            LatLng point = new LatLng(shop.getLat(), shop.getLng());
             MarkerOptions mark = new MarkerOptions()//
                     .position(point)//
                     .icon(markIcon)//
@@ -130,10 +130,10 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
             i++;
         }
         servicepointOverlayManager.addToMap();
-        servicePoint = servicePoints.get(0);
-        popBinding.name.setText(servicePoint.getName());
-        popBinding.address.setText(servicePoint.getAddressDetail());
-        mInfoWindow = new InfoWindow(popBinding.getRoot(), new LatLng(servicePoint.getLat(), servicePoint.getLng()), -55);
+        shop = shops.get(0);
+        popBinding.name.setText(shop.getName());
+        popBinding.address.setText(shop.getAddressDetail());
+        mInfoWindow = new InfoWindow(popBinding.getRoot(), new LatLng(shop.getLat(), shop.getLng()), -55);
         mBaiduMap.showInfoWindow(mInfoWindow);
 
         markIcon.recycle();
@@ -231,12 +231,12 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
         if (v == binding.location)
             navigate.navigateToCityActivity(this, null, true);
         if (v == popBinding.popInfoIcon)
-            if (servicePoint != null)
-                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, servicePoint);
+            if (shop != null)
+                navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), false, shop);
 
         if (v == popBinding.popLayout)
-            if (servicePoint != null) {
-                userRelativePreference.setSelectedServicePoint(servicePoint);
+            if (shop != null) {
+                userRelativePreference.setSelectedServicePoint(shop);
                 userRelativePreference.setShowDeliveryArea(true);
                 userRelativePreference.setShowLocation(true);
                 navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true);
@@ -254,16 +254,16 @@ public class LocationActivity extends BaseMapActivity implements View.OnClickLis
     }
 
     @Override
-    public void onItemClickListener(View view, ServicePoint servicePoint) {
-        userRelativePreference.setSelectedServicePoint(servicePoint);
+    public void onItemClickListener(View view, Shop shop) {
+        userRelativePreference.setSelectedServicePoint(shop);
         userRelativePreference.setShowDeliveryArea(true);
         userRelativePreference.setShowLocation(true);
         navigate.navigateToServicesActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), true);
     }
 
     @Override
-    public void onInfoClickListener(View view, ServicePoint servicePoint) {
-        navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, servicePoint);
+    public void onInfoClickListener(View view, Shop shop) {
+        navigate.navigateToServicePointActivity(LocationActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, shop);
     }
 
     public class ServicePointOverlayManager extends OverlayManager {

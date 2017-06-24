@@ -24,31 +24,33 @@ public class SearchViewModel {
     }
 
     public void queryHotKey(int moduleId) {
-        productApi.queryHotKeys(moduleId)
-                .compose(searchActivity.<WebReturn<List<HotKey>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<HotKey>>() {
-                    @Override
-                    public void onWebReturnSucess(List<HotKey> hotKeys) {
-
-                        List<String> strings = new ArrayList<String>();
-                        for (HotKey hotKey : hotKeys) {
-                            strings.add(hotKey.getHotKey());
-                        }
-                        SearchAdapter searchAdapter = new SearchAdapter(strings);
-                        searchActivity.setHotKeyAdapter(searchAdapter);
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
+//        productApi.queryHotKeys(moduleId)
+//                .compose(searchActivity.<WebReturn<List<HotKey>>>bindToLifecycle())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new WebReturnSubscriber<List<HotKey>>() {
+//                    @Override
+//                    public void onWebReturnSucess(List<HotKey> hotKeys) {
+//
+//                        List<String> strings = new ArrayList<String>();
+//                        for (HotKey hotKey : hotKeys) {
+//                            strings.add(hotKey.getHotKey());
+//                        }
+//                        SearchAdapter searchAdapter = new SearchAdapter(strings);
+//                        searchActivity.setHotKeyAdapter(searchAdapter);
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnFailure(String errorMessage) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnCompleted() {
+//
+//                    }
+//                });
+        SearchAdapter searchAdapter = new SearchAdapter(new ArrayList<String>());
+        searchActivity.setHotKeyAdapter(searchAdapter);
     }
 }

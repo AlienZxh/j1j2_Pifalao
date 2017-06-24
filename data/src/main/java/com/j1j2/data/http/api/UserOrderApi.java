@@ -2,6 +2,7 @@ package com.j1j2.data.http.api;
 
 import com.j1j2.data.model.OfflineOrderProduct;
 import com.j1j2.data.model.OfflineOrderSimple;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.OrderStatistics;
 import com.j1j2.data.model.PagerManager;
@@ -24,11 +25,11 @@ public interface UserOrderApi {
     @POST("UserOrder/QueryOrders")
     Observable<WebReturn<PagerManager<OrderSimple>>> queryOrders(@Query("pageIndex") String pageIndex, @Query("size") String size, @Query("stateStr") String stateStr);
 
+    @POST("UserOrder/QueryOrderByOrderId")
+    Observable<WebReturn<OrderDetail>> queryOrderByOrderId(@Query("orderIdStr") String orderIdStr);
+
     @POST("UserOrder/QueryProductOrderStatistics")
     Observable<WebReturn<OrderStatistics>> queryProductOrderStatistics();
-
-    @POST("UserOrder/QueryOrderByOrderId")
-    Observable<WebReturn<OrderSimple>> queryOrderByOrderId(@Query("orderIdStr") String orderIdStr);
 
     @POST("UserOrder/SetOrderReadState")
     Observable<WebReturn<String>> setOrderReadState(@Body SetOrderReadStateBody setOrderReadStateBody);
@@ -57,8 +58,6 @@ public interface UserOrderApi {
 
     @POST("UserOrder/QueryOrderProudctDetails")
     Observable<String> queryOrderProudctDetails(@Query("orderIdStr") String orderIdStr);
-
-
 
 
     @POST("UserOrder/QueryOrderRate")

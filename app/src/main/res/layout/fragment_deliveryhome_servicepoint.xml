@@ -14,6 +14,10 @@
             name="deliveryServicepointViewModel"
             type="com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryServicepointViewModel" />
 
+        <variable
+            name="shopExpressConfig"
+            type="com.j1j2.data.model.ShopExpressConfig" />
+
     </data>
 
 
@@ -55,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingRight="120px"
-                        android:text="@{deliveryServicepointViewModel.servicePoint.getAddressDetail()}"
+                        android:text="@{shopExpressConfig.getAddressDetail()}"
                         android:textColor="@color/colorText2a2a2a"
                         android:textSize="@dimen/text_biger" />
 
@@ -109,7 +113,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{deliveryServicepointViewModel.servicePoint.Mobile}"
+                        android:text="@{shopExpressConfig.Mobile}"
                         android:textColor="@color/colorText2a2a2a"
                         android:textSize="@dimen/text_biger" />
 
@@ -160,7 +164,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{deliveryServicepointViewModel.servicePoint.ServiceAreas}"
+                    android:text="@{shopExpressConfig.ServiceAreas}"
                     android:textColor="@color/colorText2a2a2a"
                     android:textSize="@dimen/text_biger" />
 
@@ -195,7 +199,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{deliveryServicepointViewModel.servicePoint.getServiceTime()}"
+                    android:text="@{shopExpressConfig.getServiceTime()}"
                     android:textColor="@color/colorText2a2a2a"
                     android:textSize="@dimen/text_biger" />
 

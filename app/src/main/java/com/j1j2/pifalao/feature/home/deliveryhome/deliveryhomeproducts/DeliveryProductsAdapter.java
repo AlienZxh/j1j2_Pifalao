@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.view.quantityview.StateQuantityView;
-import com.j1j2.data.model.ProductSimple;
+import com.j1j2.data.model.Product;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
@@ -23,11 +23,11 @@ import java.util.List;
  */
 public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProductsAdapter.DeliveryProductsViewHolder> {
 
-    private List<ProductSimple> productSimples;
+    private List<Product> products;
     private ShopCart shopCart;
 
-    public DeliveryProductsAdapter(List<ProductSimple> productSimples) {
-        this.productSimples = productSimples;
+    public DeliveryProductsAdapter(List<Product> products) {
+        this.products = products;
     }
 
     public void setShopCart(ShopCart shopCart) {
@@ -37,9 +37,9 @@ public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProduc
 
     public interface OnProductClickListener {
 
-        void onQuantityChange(StateQuantityView view, ProductSimple productSimple, int position, int value);
+        void onQuantityChange(StateQuantityView view, Product productSimple, int position, int value);
 
-        void onEnableStateChange(StateQuantityView view, ProductSimple productSimple, int position, boolean isEnable);
+        void onEnableStateChange(StateQuantityView view, Product productSimple, int position, boolean isEnable);
 
         boolean canEnable(StateQuantityView view);
     }
@@ -50,50 +50,50 @@ public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProduc
         this.onProductClickListener = onProductClickListener;
     }
 
-    public void initData(List<ProductSimple> newProductSimples) {
-        productSimples.clear();
-        if (null != productSimples && null != newProductSimples) {
-            Collections.sort(newProductSimples, new Comparator<ProductSimple>() {
+    public void initData(List<Product> newProducts) {
+        products.clear();
+        if (null != products && null != newProducts) {
+            Collections.sort(newProducts, new Comparator<Product>() {
                 @Override
-                public int compare(ProductSimple lhs, ProductSimple rhs) {
-                    if (TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                public int compare(Product lhs, Product rhs) {
+                    if (TextUtils.isEmpty(lhs.getMainThumImg()) && TextUtils.isEmpty(rhs.getMainThumImg()))
                         return 0;
-                    else if (!TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                    else if (!TextUtils.isEmpty(lhs.getMainThumImg()) && !TextUtils.isEmpty(rhs.getMainThumImg()))
                         return 0;
-                    else if (TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                    else if (TextUtils.isEmpty(lhs.getMainThumImg()) && !TextUtils.isEmpty(rhs.getMainThumImg()))
                         return 1;
-                    else if (!TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                    else if (!TextUtils.isEmpty(lhs.getMainThumImg()) && TextUtils.isEmpty(rhs.getMainThumImg()))
                         return -1;
                     else
                         return 0;
                 }
             });
-            productSimples.addAll(newProductSimples);
+            products.addAll(newProducts);
         }
         notifyDataSetChanged();
     }
 
-    public void addAll(List<ProductSimple> newProductSimples) {
-        if (null == productSimples || null == newProductSimples)
+    public void addAll(List<Product> newProducts) {
+        if (null == products || null == newProducts)
             return;
-        Collections.sort(newProductSimples, new Comparator<ProductSimple>() {
+        Collections.sort(newProducts, new Comparator<Product>() {
             @Override
-            public int compare(ProductSimple lhs, ProductSimple rhs) {
-                if (TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+            public int compare(Product lhs, Product rhs) {
+                if (TextUtils.isEmpty(lhs.getMainThumImg()) && TextUtils.isEmpty(rhs.getMainThumImg()))
                     return 0;
-                else if (!TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                else if (!TextUtils.isEmpty(lhs.getMainThumImg()) && !TextUtils.isEmpty(rhs.getMainThumImg()))
                     return 0;
-                else if (TextUtils.isEmpty(lhs.getMainImg()) && !TextUtils.isEmpty(rhs.getMainImg()))
+                else if (TextUtils.isEmpty(lhs.getMainThumImg()) && !TextUtils.isEmpty(rhs.getMainThumImg()))
                     return 1;
-                else if (!TextUtils.isEmpty(lhs.getMainImg()) && TextUtils.isEmpty(rhs.getMainImg()))
+                else if (!TextUtils.isEmpty(lhs.getMainThumImg()) && TextUtils.isEmpty(rhs.getMainThumImg()))
                     return -1;
                 else
                     return 0;
             }
         });
-        int startIndex = productSimples.size();
-        productSimples.addAll(startIndex, newProductSimples);
-        notifyItemRangeInserted(startIndex, newProductSimples.size());
+        int startIndex = products.size();
+        products.addAll(startIndex, newProducts);
+        notifyItemRangeInserted(startIndex, newProducts.size());
     }
 
     @Override
@@ -105,15 +105,15 @@ public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProduc
 
     @Override
     public void onBindViewHolder(DeliveryProductsViewHolder holder, int position) {
-        holder.bind(productSimples.get(position), position);
+        holder.bind(products.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        return null == productSimples ? 0 : productSimples.size();
+        return null == products ? 0 : products.size();
     }
 
-    public class DeliveryProductsViewHolder extends AutoBindingViewHolder<ItemDeliveryproductsBinding, ProductSimple> {
+    public class DeliveryProductsViewHolder extends AutoBindingViewHolder<ItemDeliveryproductsBinding, Product> {
         public DeliveryProductsViewHolder(View itemView) {
             super(itemView);
         }
@@ -124,8 +124,8 @@ public class DeliveryProductsAdapter extends RecyclerView.Adapter<DeliveryProduc
         }
 
         @Override
-        public void bind(@NonNull final ProductSimple data, final int position) {
-            binding.setProductSimple(data);
+        public void bind(@NonNull final Product data, final int position) {
+            binding.setProduct(data);
             binding.setShopCart(shopCart);
             binding.quantityview.setOnQuantityChangeListener(new StateQuantityView.OnQuantityChangeListener() {
                 @Override

@@ -7,6 +7,7 @@ import android.util.Log;
 
 
 import com.j1j2.pifalao.R;
+import com.orhanobut.logger.Logger;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -19,7 +20,7 @@ public class WXPayCallbackActivity extends Activity implements IWXAPIEventHandle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wxpay_call_back);
 
-        if(WXPay.getInstance() != null) {
+        if (WXPay.getInstance() != null) {
             WXPay.getInstance().getWXApi().handleIntent(getIntent(), this);
         } else {
             finish();
@@ -30,7 +31,7 @@ public class WXPayCallbackActivity extends Activity implements IWXAPIEventHandle
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        if(WXPay.getInstance() != null) {
+        if (WXPay.getInstance() != null) {
             WXPay.getInstance().getWXApi().handleIntent(intent, this);
         }
     }
@@ -42,12 +43,17 @@ public class WXPayCallbackActivity extends Activity implements IWXAPIEventHandle
 
     @Override
     public void onResp(BaseResp baseResp) {
-        if(baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            if(WXPay.getInstance() != null) {
-                if(baseResp.errStr != null) {
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+
+            Logger.e("wxpay" + "errCode=" + baseResp.errCode);
+            Logger.e("wxpay" + "errStr=" + baseResp.errStr);
+            Logger.e("wxpay" + "transaction=" + baseResp.transaction);
+            Logger.e("wxpay" + "openId=" + baseResp.openId);
+
+            if (WXPay.getInstance() != null) {
+                if (baseResp.errStr != null) {
                     Log.e("wxpay", "errstr=" + baseResp.errStr);
                 }
-
                 WXPay.getInstance().onResp(baseResp.errCode);
                 finish();
             }

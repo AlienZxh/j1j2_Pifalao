@@ -28,7 +28,8 @@ public class ShowActivity extends BaseActivity implements View.OnClickListener {
     @Arg
     int activityType;
 
-    String[] servicepoints = {"/ResoruceFiles/PifalaoIntroduce/servicepoint_show_activity_img1.jpg",
+    String[] servicepoints = {
+            "/ResoruceFiles/PifalaoIntroduce/servicepoint_show_activity_img1.jpg",
             "/ResoruceFiles/PifalaoIntroduce/servicepoint_show_activity_img2.jpg",
             "/ResoruceFiles/PifalaoIntroduce/servicepoint_show_activity_img3.jpg",
             "/ResoruceFiles/PifalaoIntroduce/servicepoint_show_activity_img4.jpg",

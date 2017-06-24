@@ -73,7 +73,7 @@
                 bind:hour="@{productViewModel.hour}"
                 bind:isLogin="@{productViewModel.productsActivity.isLogin}"
                 bind:minute="@{productViewModel.minute}"
-                bind:module="@{productViewModel.productsActivity.module}"
+                bind:shopSubscribeService="@{productViewModel.productsActivity.shopSubscribeService}"
                 bind:second="@{productViewModel.second}" />
 
             <com.malinskiy.superrecyclerview.SuperRecyclerView

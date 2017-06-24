@@ -16,7 +16,7 @@
 
         <variable
             name="productSimple"
-            type="com.j1j2.data.model.ProductSimple" />
+            type="com.j1j2.data.model.Product" />
     </data>
 
     <com.zhy.autolayout.AutoLinearLayout
@@ -30,7 +30,7 @@
         <ImageView
             android:layout_width="200px"
             android:layout_height="200px"
-            app:displayImgWithoutCache="@{Uri.parse(productSimple.MainImg??@string/text_empty)}" />
+            app:displayImgWithoutCache="@{Uri.parse(productSimple.mainThumImg??@string/text_empty)}" />
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="36px"
                 android:gravity="center_vertical"
-                android:text="@{&quot;￥&quot;+productSimple.ProductUnits.get(0).MemberPrice}"
+                android:text="@{&quot;￥&quot;+productSimple.productUnits.get(0).MemberPrice}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_normal"
                 android:textStyle="bold" />
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="36px"
                 android:gravity="center_vertical"
-                android:text="@{&quot;/&quot;+productSimple.ProductUnits.get(0).Unit}"
+                android:text="@{&quot;/&quot;+productSimple.productUnits.get(0).Unit}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
         </com.zhy.autolayout.AutoLinearLayout>
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="36px"
             android:gravity="center_vertical"
-            android:text="@{StringUtils.getStrWithStrikethrough(&quot;￥&quot;+productSimple.ProductUnits.get(0).RetialPrice)}"
+            android:text="@{StringUtils.getStrWithStrikethrough(&quot;￥&quot;+productSimple.productUnits.get(0).RetialPrice)}"
             android:textColor="@color/colorText999"
             android:textSize="@dimen/text_normal" />
 

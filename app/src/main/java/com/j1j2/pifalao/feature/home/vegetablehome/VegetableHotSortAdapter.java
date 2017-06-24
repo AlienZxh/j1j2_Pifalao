@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemHotsortBinding;
@@ -18,14 +18,14 @@ import java.util.List;
  */
 public class VegetableHotSortAdapter extends RecyclerView.Adapter<VegetableHotSortAdapter.VegetableHotSortViewHolder> {
 
-    private List<ProductSort> productSorts;
+    private List<ProductCategory> productSorts;
 
-    public VegetableHotSortAdapter(List<ProductSort> productSorts) {
+    public VegetableHotSortAdapter(List<ProductCategory> productSorts) {
         this.productSorts = productSorts;
     }
 
     public interface OnHotSortClickListener {
-        void onHotSortClick(View view, ProductSort productSort, int position);
+        void onHotSortClick(View view, ProductCategory productCategory, int position);
     }
 
     private OnHotSortClickListener onHotSortClickListener;
@@ -51,7 +51,7 @@ public class VegetableHotSortAdapter extends RecyclerView.Adapter<VegetableHotSo
         return null == productSorts ? 0 : productSorts.size();
     }
 
-    public class VegetableHotSortViewHolder extends AutoBindingViewHolder<ItemHotsortBinding, ProductSort> {
+    public class VegetableHotSortViewHolder extends AutoBindingViewHolder<ItemHotsortBinding, ProductCategory> {
 
         public VegetableHotSortViewHolder(View itemView) {
             super(itemView);
@@ -63,7 +63,7 @@ public class VegetableHotSortAdapter extends RecyclerView.Adapter<VegetableHotSo
         }
 
         @Override
-        public void bind(@NonNull final ProductSort data, final int position) {
+        public void bind(@NonNull final ProductCategory data, final int position) {
             binding.setProductSort(data);
             binding.setOnClick(new View.OnClickListener() {
                 @Override

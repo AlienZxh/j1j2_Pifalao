@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.ProductSimple;
+import com.j1j2.data.model.Product;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemActivityproductsBinding;
@@ -18,14 +18,14 @@ import java.util.List;
  */
 public class VegetableActivityProductAdapter extends RecyclerView.Adapter<VegetableActivityProductAdapter.VegetableActivityProductViewHolder> {
 
-    private List<ProductSimple> productSimples;
+    private List<Product> productSimples;
 
-    public VegetableActivityProductAdapter(List<ProductSimple> productSimples) {
+    public VegetableActivityProductAdapter(List<Product> productSimples) {
         this.productSimples = productSimples;
     }
 
     public interface OnActivityProductClickListener {
-        void onActivityProductClick(View v, ProductSimple productSimple, int position);
+        void onActivityProductClick(View v, Product productSimple, int position);
     }
 
     private OnActivityProductClickListener onActivityProductClickListener;
@@ -51,7 +51,7 @@ public class VegetableActivityProductAdapter extends RecyclerView.Adapter<Vegeta
         return null == productSimples ? 0 : productSimples.size();
     }
 
-    public class VegetableActivityProductViewHolder extends AutoBindingViewHolder<ItemActivityproductsBinding, ProductSimple> {
+    public class VegetableActivityProductViewHolder extends AutoBindingViewHolder<ItemActivityproductsBinding, Product> {
         public VegetableActivityProductViewHolder(View itemView) {
             super(itemView);
         }
@@ -62,7 +62,7 @@ public class VegetableActivityProductAdapter extends RecyclerView.Adapter<Vegeta
         }
 
         @Override
-        public void bind(@NonNull final ProductSimple data, final int position) {
+        public void bind(@NonNull final Product data, final int position) {
             binding.setProductSimple(data);
             binding.setOnClick(new View.OnClickListener() {
                 @Override

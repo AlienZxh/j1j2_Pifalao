@@ -1,11 +1,9 @@
 package com.j1j2.pifalao.feature.home.vegetablehome;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -14,19 +12,20 @@ import android.view.ViewGroup;
 
 import com.j1j2.common.view.itemdecoration.CustomGridItemDecoration;
 import com.j1j2.data.model.BannerActivity;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.app.event.LogStateEvent;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.FragmentVegetablehomeBinding;
 import com.j1j2.pifalao.feature.home.vegetablehome.di.VegetableHomeModule;
 import com.j1j2.pifalao.feature.main.MainActivity;
 import com.j1j2.pifalao.feature.main.di.MainComponent;
-import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -54,9 +53,9 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
     }
 
     public interface VegetableHomeFragmentListener extends HasComponent<MainComponent> {
-        void navigateToProductDetailActivity(View view, ProductSimple productSimple, int position);
+        void navigateToProductDetailActivity(View view, Product product, int position);
 
-        void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
+        void navigateToProductsActivityFromSort(View view, ProductCategory productCategory, int position);
 
         void navigateToSearchActivity(View v);
     }
@@ -66,14 +65,18 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
     FragmentVegetablehomeBinding binding;
 
     @Arg
-    public Module module;
+    public ShopSubscribeService shopSubscribeService;
 
     @Inject
     VegetableHomeViewModel vegetableHomeViewModel;
+    @Inject
+    UserRelativePreference userRelativePreference;
+
+    Shop shop;
 
     public ObservableBoolean isLogin = new ObservableBoolean(true);
 
-    private String timeDialogTag="TIMEDIALOG";
+    private String timeDialogTag = "TIMEDIALOG";
 
     @Override
     public void onAttach(Activity activity) {
@@ -113,9 +116,9 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
         //_________________________________________
         binding.hotSortList.setLayoutManager(new GridLayoutManager(getContext(), 2));
         binding.hotSortList.addItemDecoration(new CustomGridItemDecoration(AutoUtils.getPercentHeightSize(3), AutoUtils.getPercentHeightSize(3), 2));
-        vegetableHomeViewModel.queryBannerActivity(module.getWareHouseModuleId());
-        vegetableHomeViewModel.queryActivityProducts(module.getWareHouseModuleId());
-        vegetableHomeViewModel.queryHotSort(module.getWareHouseModuleId());
+        vegetableHomeViewModel.queryBannerActivity(shopSubscribeService.getServiceId());
+        vegetableHomeViewModel.queryActivityProducts(shopSubscribeService.getServiceId(), shop.getShopId());
+        vegetableHomeViewModel.queryHotCategories(shopSubscribeService.getServiceId(), shop.getShopId());
     }
 
     public void initTopAdv(List<BannerActivity> bannerActivities) {
@@ -126,19 +129,19 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
         binding.viewPager.setInterval(2000);
     }
 
-    public void initActivityProducts(List<ProductSimple> productSimples) {
-        VegetableActivityProductAdapter vegetableActivityProductAdapter = new VegetableActivityProductAdapter(productSimples);
+    public void initActivityProducts(List<Product> products) {
+        VegetableActivityProductAdapter vegetableActivityProductAdapter = new VegetableActivityProductAdapter(products);
         binding.activityProducts.setAdapter(vegetableActivityProductAdapter);
         vegetableActivityProductAdapter.setOnActivityProductClickListener(this);
     }
 
-    public void initHortSort(List<ProductSort> productSorts) {
-        VegetableHotSortAdapter vegetableHotSortAdapter = new VegetableHotSortAdapter(productSorts);
+    public void initHortSort(List<ProductCategory> productCategories) {
+        VegetableHotSortAdapter vegetableHotSortAdapter = new VegetableHotSortAdapter(productCategories);
         binding.hotSortList.setAdapter(vegetableHotSortAdapter);
         vegetableHotSortAdapter.setOnChildSortClickListener(this);
     }
 
-    public void showTimeDialog(){
+    public void showTimeDialog() {
         showMessageDialogDuplicate(true, timeDialogTag, "提示", "　由于仓库周日休息停配，周五21:00 - 周六21:00期间的全部订单需要周一上午才能送达。", null, "知道了");
     }
 
@@ -147,12 +150,13 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
         super.setupActivityComponent();
         Bundler.inject(this);
         MainAplication.get(getContext()).getAppComponent().plus(new VegetableHomeModule(this)).inject(this);
+        shop = userRelativePreference.getSelectedServicePoint(null);
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onLogStateChangeEvent(LogStateEvent event) {
         if (event.isLogin()) {
-            vegetableHomeViewModel.CountDown(module.getWareHouseModuleId());
+            vegetableHomeViewModel.CountDown(shopSubscribeService.getServiceId());
             isLogin.set(true);
         } else {
             isLogin.set(false);
@@ -168,12 +172,12 @@ public class VegetableHomeFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public void onActivityProductClick(View v, ProductSimple productSimple, int position) {
+    public void onActivityProductClick(View v, Product productSimple, int position) {
         listener.navigateToProductDetailActivity(v, productSimple, position);
     }
 
     @Override
-    public void onHotSortClick(View view, ProductSort productSort, int position) {
-        listener.navigateToProductsActivityFromSort(view, productSort, position);
+    public void onHotSortClick(View view, ProductCategory productCategory, int position) {
+        listener.navigateToProductsActivityFromSort(view, productCategory, position);
     }
 }

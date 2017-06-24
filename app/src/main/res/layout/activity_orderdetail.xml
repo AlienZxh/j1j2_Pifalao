@@ -118,7 +118,7 @@
                 android:text="取消订单"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_big"
-                android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==1||orderDetailViewModel.orderDetailObservableField.OrderState==2?View.VISIBLE : View.GONE}"
+                android:visibility="@{orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderState==1||orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderState==2?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
             <TextView
@@ -145,7 +145,7 @@
                 android:text="去支付"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_big"
-                android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==2?View.VISIBLE : View.GONE}"
+                android:visibility="@{orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderState==2?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
             <TextView
@@ -159,7 +159,7 @@
                 android:text="确认收货"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_big"
-                android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==16||(orderDetailViewModel.orderDetailObservableField.OrderState==8&amp;&amp;orderDetailViewModel.orderDetailObservableField.ModuleType==Constant.ModuleType.DELIVERY)?View.VISIBLE : View.GONE}"
+                android:visibility="@{orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderState==16||(orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderState==8&amp;&amp;orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderType==Constant.ModuleType.DELIVERY)?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
 
@@ -174,7 +174,7 @@
                 android:text="评价"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_big"
-                android:visibility="@{orderDetailViewModel.orderDetailObservableField.OrderState==32?View.VISIBLE : View.GONE}"
+                android:visibility="@{orderDetailViewModel.orderDetailObservableField.orderBaseInfo.orderState==32?View.VISIBLE : View.GONE}"
                 app:OnClickListener="@{onClick}" />
 
 

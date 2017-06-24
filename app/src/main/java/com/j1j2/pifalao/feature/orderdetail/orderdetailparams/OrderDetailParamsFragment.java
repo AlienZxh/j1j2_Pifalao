@@ -9,16 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.OrderSimple;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentOrderdetailParamsBinding;
 import com.j1j2.pifalao.feature.orderdetail.OrderDetailActivity;
 import com.j1j2.pifalao.feature.orderdetail.OrderProductsAdapter;
-import com.orhanobut.logger.Logger;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
 
@@ -49,7 +48,7 @@ public class OrderDetailParamsFragment extends BaseFragment implements View.OnCl
 
     FragmentOrderdetailParamsBinding binding;
 
-    public ObservableField<OrderSimple> orderSimpleObservableField = new ObservableField<>();
+    public ObservableField<OrderDetail> orderDetailObservableField = new ObservableField<>();
 
     @Override
     public void onAttach(Activity activity) {
@@ -66,41 +65,40 @@ public class OrderDetailParamsFragment extends BaseFragment implements View.OnCl
 
     @Override
     protected void initViews() {
-        binding.setOrderSimple(orderSimpleObservableField);
+        binding.setOrderDetail(orderDetailObservableField);
         binding.setOnClick(this);
         binding.orderProductList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.orderProductList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).colorResId(R.color.colorGrayF0F0F0)
                 .margin(AutoUtils.getPercentWidthSize(20), 0).build());
     }
 
-    public void initParams(OrderSimple orderSimple, ServicePoint servicePoint) {
-        switch (orderSimple.getModuleType()) {
+    public void initParams(OrderDetail orderDetail) {
+        switch (orderDetail.getOrderBaseInfo().getOrderType()) {
             case Constant.ModuleType.DELIVERY:
                 binding.orderIcon.setText(getText(R.string.icon_delivery));
-                binding.orderIcon.setTextColor(Constant.moduleColors.get(orderSimple.getModuleType()));
+                binding.orderIcon.setTextColor(Constant.moduleColors.get(orderDetail.getOrderBaseInfo().getOrderType()));
                 break;
             case Constant.ModuleType.VEGETABLE:
                 binding.orderIcon.setText(getText(R.string.icon_vegetable));
-                binding.orderIcon.setTextColor(Constant.moduleColors.get(orderSimple.getModuleType()));
+                binding.orderIcon.setTextColor(Constant.moduleColors.get(orderDetail.getOrderBaseInfo().getOrderType()));
                 break;
             case Constant.ModuleType.SHOPSERVICE:
                 binding.orderIcon.setText(getText(R.string.icon_shopservice));
-                binding.orderIcon.setTextColor(Constant.moduleColors.get(orderSimple.getModuleType()));
+                binding.orderIcon.setTextColor(Constant.moduleColors.get(orderDetail.getOrderBaseInfo().getOrderType()));
                 break;
         }
         //___________________________________________________________________________
-        if (binding.getServicePoint() == null)
-            binding.setServicePoint(servicePoint);
-        orderSimpleObservableField.set(orderSimple);
 
-        OrderProductsAdapter orderProductListAdapter = new OrderProductsAdapter(orderSimple.getProductDetails());
+        orderDetailObservableField.set(orderDetail);
+
+        OrderProductsAdapter orderProductListAdapter = new OrderProductsAdapter(orderDetail.getOrderProductsInfo());
         binding.orderProductList.setAdapter(orderProductListAdapter);
         orderProductListAdapter.setOnItemClickListener(this);
     }
 
     @Override
-    public void onItemClickListener(View v, OrderProductDetail orderProductDetail, int position) {
-        listener.navigateToProductDetailActivity(orderProductDetail.getProductMainId());
+    public void onItemClickListener(View v, OrderDetail.OrderProductDetail orderProductDetail, int position) {
+        listener.navigateToProductDetailActivity(orderProductDetail.getProductId());
     }
 
     @Override

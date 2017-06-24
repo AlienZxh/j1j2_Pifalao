@@ -5,13 +5,14 @@ import android.databinding.ObservableField;
 import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.http.api.ShopCartApi;
-import com.j1j2.data.model.Module;
 import com.j1j2.data.model.PagerManager;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.data.model.ProductUnit;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.data.model.requestbody.QueryProductParams;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
@@ -35,13 +36,13 @@ import rx.schedulers.Schedulers;
 public class ProductsViewModel {
 
     private ProductsActivity productsActivity;
-    private ProductSort productSort;
+    private ProductCategory productCategory;
     private ProductsAdapter productAdapter;
-    private com.j1j2.data.model.Module module;
+    private ShopSubscribeService shopSubscribeService;
     private ProductApi productApi;
     private ShopCartApi shopCartApi;
     private CountDownApi countDownApi;
-    private PagerManager<ProductSimple> productSimples;
+    private PagerManager<Product> productPagerManager;
 
     private String key;
 
@@ -58,36 +59,44 @@ public class ProductsViewModel {
 
     long remian = 0;
 
-    public ProductsViewModel(ProductsActivity productsActivity, ProductSort productSort, Module module, ProductApi productApi, CountDownApi countDownApi, String key, ShopCartApi shopCartApi) {
+    public ProductsViewModel(ProductsActivity productsActivity, ProductCategory productCategory, ShopSubscribeService shopSubscribeService, ProductApi productApi, CountDownApi countDownApi, String key, ShopCartApi shopCartApi) {
         this.productsActivity = productsActivity;
-        this.productSort = productSort;
-        this.module = module;
+        this.productCategory = productCategory;
+        this.shopSubscribeService = shopSubscribeService;
         this.productApi = productApi;
         this.countDownApi = countDownApi;
         this.key = key;
         this.shopCartApi = shopCartApi;
-        productAdapter = new ProductsAdapter(new ArrayList<ProductSimple>(), module.getModuleType());
+        productAdapter = new ProductsAdapter(new ArrayList<Product>(), shopSubscribeService.getServiceType());
     }
 
 
-    public void queryProductyByKey(boolean isRefresh) {
+    public void queryProductyByKey(boolean isRefresh, int shopId) {
         if (isRefresh) {
             pageIndex = 1;
             productsActivity.setLoadMoreBegin();
         }
-        productApi.puzzyQueryProduct(module.getWareHouseModuleId(), "" + pageIndex, "" + pageSize, key)
-                .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+        QueryProductParams params = new QueryProductParams();
+        params.setServiceId(shopSubscribeService.getServiceId());
+        params.setShopId(shopId);
+        params.setPageIndex(pageIndex);
+        params.setPageSize(pageSize);
+        params.setOrderByType(orderBy);
+        params.setQueryDataType(6);
+        params.setKeys(key);
+        productApi.queryProducts(params)
+                .compose(productsActivity.<WebReturn<PagerManager<Product>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<Product>>() {
                     @Override
-                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
-                        pageCount = productSimplePagerManager.getPageCount();
+                    public void onWebReturnSucess(PagerManager<Product> productPagerManager) {
+                        pageCount = productPagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            productAdapter.initData(productSimplePagerManager.getList());
+                            productAdapter.initData(productPagerManager.getList());
                             productsActivity.setProdutsAdapter(productAdapter);
                         } else if (pageIndex <= pageCount) {
-                            productAdapter.addAll(productSimplePagerManager.getList());
+                            productAdapter.addAll(productPagerManager.getList());
                         } else {
                             productsActivity.setLoadMoreComplete();
                         }
@@ -107,24 +116,32 @@ public class ProductsViewModel {
     }
 
 
-    public void queryProductyBySortId(boolean isRefresh) {
+    public void queryProductyBySortId(boolean isRefresh, int shopId) {
         if (isRefresh) {
             pageIndex = 1;
             productsActivity.setLoadMoreBegin();
         }
-        productApi.queryProductyBySortId("" + productSort.getSortId(), "" + pageIndex, "" + pageSize, "" + (productSort.getParentSortId() <= 0), orderBy)
-                .compose(productsActivity.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+        QueryProductParams params = new QueryProductParams();
+        params.setServiceId(shopSubscribeService.getServiceId());
+        params.setShopId(shopId);
+        params.setPageIndex(pageIndex);
+        params.setPageSize(pageSize);
+        params.setOrderByType(orderBy);
+        params.setQueryDataType(5);
+        params.setCategoryId(productCategory.getCategoryId());
+        productApi.queryProducts(params)
+                .compose(productsActivity.<WebReturn<PagerManager<Product>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<Product>>() {
                     @Override
-                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
-                        pageCount = productSimplePagerManager.getPageCount();
+                    public void onWebReturnSucess(PagerManager<Product> productPagerManager) {
+                        pageCount = productPagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            productAdapter.initData(productSimplePagerManager.getList());
+                            productAdapter.initData(productPagerManager.getList());
                             productsActivity.setProdutsAdapter(productAdapter);
                         } else if (pageIndex <= pageCount) {
-                            productAdapter.addAll(productSimplePagerManager.getList());
+                            productAdapter.addAll(productPagerManager.getList());
                         } else {
                             productsActivity.setLoadMoreComplete();
                         }
@@ -141,10 +158,11 @@ public class ProductsViewModel {
 
                     }
                 });
+
     }
 
     public void CountDown() {
-        countDownApi.QueryDeliveryCountDownOfModule(module.getWareHouseModuleId())
+        countDownApi.QueryDeliveryCountDownOfModule(shopSubscribeService.getServiceId())
                 .compose(productsActivity.<WebReturn<UserDeliveryTime>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -179,8 +197,8 @@ public class ProductsViewModel {
 
     }
 
-    public void addItemToShopCart(final ProductUnit unit, final int quantity) {
-        shopCartApi.addItemToShopCart(unit.getProductId(), quantity, module.getWareHouseModuleId())
+    public void addItemToShopCart(final ProductUnit unit, final int quantity, int shopId) {
+        shopCartApi.addItemToShopCart(unit.getProductId(), quantity, shopSubscribeService.getServiceId(), shopId)
                 .compose(productsActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -222,8 +240,8 @@ public class ProductsViewModel {
         this.orderBy = orderBy;
     }
 
-    public ProductSort getProductSort() {
-        return productSort;
+    public ProductCategory getProductCategory() {
+        return productCategory;
     }
 
     public ProductsActivity getProductsActivity() {

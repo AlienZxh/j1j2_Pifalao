@@ -1,11 +1,9 @@
 package com.j1j2.pifalao.feature.vegetablesort;
 
 import com.j1j2.data.http.api.ProductApi;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeAdapter;
-import com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeFragment;
 
 import java.util.List;
 
@@ -25,15 +23,15 @@ public class VegetableSortViewModel {
         this.productApi = productApi;
     }
 
-    public void queryProductSort(int moduleId) {
+    public void queryProductSort(int serviceId,int shopId) {
         vegetableSortFragment.showload();
-        productApi.queryProductSort("", moduleId)
-                .compose(vegetableSortFragment.<WebReturn<List<SecondarySort>>>bindToLifecycle())
+        productApi.queryProductCategoryTrees(serviceId, shopId)
+                .compose(vegetableSortFragment.<WebReturn<List<ProductCategory>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<SecondarySort>>() {
+                .subscribe(new WebReturnSubscriber<List<ProductCategory>>() {
                     @Override
-                    public void onWebReturnSucess(List<SecondarySort> mSecondarySorts) {
+                    public void onWebReturnSucess(List<ProductCategory> mSecondarySorts) {
                         vegetableSortFragment.initList(mSecondarySorts);
                     }
 

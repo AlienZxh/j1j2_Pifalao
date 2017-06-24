@@ -13,11 +13,11 @@ import net.orange_box.storebox.enums.SaveMode;
  * Created by alienzxh on 16-3-18.
  */
 public interface UserLoginPreference {
-    public static final String KEY_AUTOLOGIN = "key_autologin";
-    public static final String KEY_USERNAME = "key_username";
-    public static final String KEY_PASSWORD = "key_password";
-    public static final String KEY_LOGINCOOKIE = "key_logincookie";
-    public static final String KEY_USERINFO = "key_userinfo";
+    String KEY_AUTOLOGIN = "key_autologin";
+    String KEY_USERNAME = "key_username";
+    String KEY_PASSWORD = "key_password";
+    String KEY_LOGINCOOKIE = "key_logincookie";
+    String KEY_USERINFO = "key_userinfo";
 
     @KeyByString(KEY_AUTOLOGIN)
     boolean getIsAutoLogin(boolean mDefault);

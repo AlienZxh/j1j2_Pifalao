@@ -20,7 +20,7 @@ import java.util.Arrays;
 public class DeliveryAreasDialogFragment extends BaseDialogFragment {
 
     public interface DeliveryAreasDialogFragmentListener {
-        String getServiceAreas();
+        String[] getServiceAreas();
     }
 
     DeliveryAreasDialogFragmentListener listener;
@@ -38,7 +38,7 @@ public class DeliveryAreasDialogFragment extends BaseDialogFragment {
         binding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.view_delivery_areas, null, false);
 
         binding.areasList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        binding.areasList.setAdapter(new DeliveryAreasAdapter(Arrays.asList(listener.getServiceAreas() != null ? listener.getServiceAreas().split("\\;") : new String[]{})));
+        binding.areasList.setAdapter(new DeliveryAreasAdapter(Arrays.asList(listener.getServiceAreas() != null ? listener.getServiceAreas(): new String[]{})));
 
         binding.layout.setOnClickListener(new View.OnClickListener() {
             @Override

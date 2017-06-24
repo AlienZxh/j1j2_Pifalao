@@ -10,10 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.j1j2.data.model.FreightType;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.data.model.ProductUnit;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.ShopCart;
@@ -22,6 +23,7 @@ import com.j1j2.pifalao.app.dialog.AddProductDialogFragment;
 import com.j1j2.pifalao.app.dialog.AddProductDialogFragmentBundler;
 import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.sharedpreferences.FreightTypePrefrence;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityProductsBinding;
 import com.j1j2.pifalao.feature.products.di.ProductsModule;
 import com.malinskiy.superrecyclerview.OnMoreListener;
@@ -58,13 +60,13 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Arg
     @Required(true)
-    public Module module;
+    public ShopSubscribeService shopSubscribeService;
     @Arg
     @Required(true)
     int activityType;
     @Arg
     @Required(false)
-    ProductSort productSort;
+    ProductCategory productCategory;
     @Arg
     @Required(false)
     String key;
@@ -73,9 +75,12 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     FreightTypePrefrence freightTypePrefrence;
     @Inject
     ProductsViewModel productsViewModel;
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     public ObservableField<FreightType> freightTypeObservableField = new ObservableField<>();
 
+    Shop shop;
 
     ProductUnit selectedUnit;
     ShopCart shopCart;
@@ -86,7 +91,7 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_products);
-        productsViewModel.title.set(activityType == PRODUCTS_TYPE_SORT ? productSort.getSortName() : key);
+        productsViewModel.title.set(activityType == PRODUCTS_TYPE_SORT ? productCategory.getName() : key);
         binding.setProductViewModel(productsViewModel);
         binding.productList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.productList.addItemDecoration(new HorizontalDividerItemDecoration
@@ -115,9 +120,9 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     public void queryProducts(boolean isRefresh) {
         if (activityType == PRODUCTS_TYPE_SORT)
-            productsViewModel.queryProductyBySortId(isRefresh);
+            productsViewModel.queryProductyBySortId(isRefresh, shop.getShopId());
         else if (activityType == PRODUCTS_TYPE_SEARCH)
-            productsViewModel.queryProductyByKey(isRefresh);
+            productsViewModel.queryProductyByKey(isRefresh, shop.getShopId());
     }
 
     public void setProdutsAdapter(ProductsAdapter productsAdapter) {
@@ -136,14 +141,14 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
         binding.productList.removeMoreListener();
     }
 
-
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
         MainAplication.get(this).getAppComponent().plus(new ProductsModule(this
-                , null == productSort ? new ProductSort() : productSort
-                , module, null == key ? "" : key)).inject(this);
+                , null == productCategory ? new ProductCategory() : productCategory
+                , shopSubscribeService, null == key ? "" : key)).inject(this);
+        shop = userRelativePreference.getSelectedServicePoint(null);
     }
 
     public void addShopCart(ProductUnit unit, int Quantity) {
@@ -151,12 +156,11 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
 
-
     @Override
     public void onClick(View v) {
-        if ( v == binding.shopCartView) {
+        if (v == binding.shopCartView) {
             if (MainAplication.get(this).isLogin())
-                navigate.navigateToShopCart(this, null, false, module.getWareHouseModuleId());
+                navigate.navigateToShopCart(this, null, false, shopSubscribeService.getServiceId());
             else
                 navigate.navigateToLogin(this, null, false);
         }
@@ -165,8 +169,6 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
             onBackPressed();
         }
-
-
     }
 
 
@@ -208,18 +210,17 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     @Override
-    public void onItemClickListener(View view, ProductSimple productSimple, int position) {
-        navigate.navigateToProductDetailActivity(ProductsActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, productSimple.getMainId());
+    public void onItemClickListener(View view, Product product, int position) {
+        navigate.navigateToProductDetailActivity(ProductsActivity.this, ActivityOptionsCompat.makeScaleUpAnimation(view, 0, 0, 0, 0), false, product.getMainId());
     }
 
     @Override
-    public void onAddIconClickListener(View view, ProductSimple productSimple, int position) {
+    public void onAddIconClickListener(View view, Product product, int position) {
         if (MainAplication.get(this).isLogin()) {
-            AddProductDialogFragmentBundler.build().module(module).productSimple(productSimple).create().show(getSupportFragmentManager(), "ADDDIALOG");
+            AddProductDialogFragmentBundler.build().shopSubscribeService(shopSubscribeService).product(product).create().show(getSupportFragmentManager(), "ADDDIALOG");
         } else {
             navigate.navigateToLogin(this, null, false);
         }
-
     }
 
 
@@ -230,13 +231,14 @@ public class ProductsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     public void onAddBtnClick(int quantity) {
-        productsViewModel.addItemToShopCart(selectedUnit, quantity);
+        if (shop != null)
+            productsViewModel.addItemToShopCart(selectedUnit, quantity, shop.getShopId());
     }
 
     @Override
     public void onShopcartBtnClick() {
         if (MainAplication.get(this).isLogin())
-            navigate.navigateToShopCart(this, null, false, module.getWareHouseModuleId());
+            navigate.navigateToShopCart(this, null, false, shopSubscribeService.getServiceId());
         else
             navigate.navigateToLogin(this, null, false);
     }

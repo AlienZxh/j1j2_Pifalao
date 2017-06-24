@@ -5,7 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
+import com.j1j2.data.model.OrderSimple;
 import com.j1j2.pifalao.R;
 
 import java.util.List;
@@ -14,9 +15,9 @@ import java.util.List;
  * Created by alienzxh on 16-3-27.
  */
 public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHolder> {
-    private List<OrderProductDetail> orderProductDetails;
+    private List<OrderSimple.OrderSimpleProductDetail> orderProductDetails;
 
-    public OrderProductAdapter(List<OrderProductDetail> orderProductDetails) {
+    public OrderProductAdapter(List<OrderSimple.OrderSimpleProductDetail> orderProductDetails) {
         this.orderProductDetails = orderProductDetails;
     }
 
@@ -29,7 +30,7 @@ public class OrderProductAdapter extends RecyclerView.Adapter<OrderProductViewHo
 
     @Override
     public void onBindViewHolder(OrderProductViewHolder holder, int position) {
-        holder.bind(orderProductDetails.get(position).getThumbImgPath(), position);
+        holder.bind(orderProductDetails.get(position).getImageThumb(), position);
     }
 
     @Override

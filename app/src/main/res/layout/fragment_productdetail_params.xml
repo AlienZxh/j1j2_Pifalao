@@ -7,7 +7,7 @@
 
         <variable
             name="productDetail"
-            type="com.j1j2.data.model.ProductDetail" />
+            type="com.j1j2.data.model.Product" />
     </data>
 
     <com.zhy.autolayout.AutoLinearLayout
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16px"
             android:layout_marginLeft="78px"
-            android:text="@{StringUtils.getProductDetailUnit(productDetail.ProductUnits)}"
+            android:text="@{StringUtils.getProductDetailUnit(productDetail.productUnits)}"
             android:textColor="@color/colorTextaaa"
             android:textSize="@dimen/text_normal" />
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16px"
             android:layout_marginLeft="78px"
-            android:text="@{productDetail.Brand}"
+            android:text="@{productDetail.brand}"
             android:textColor="@color/colorTextaaa"
             android:textSize="@dimen/text_normal" />
 
@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16px"
             android:layout_marginLeft="78px"
-            android:text="@{StringUtils.getProductDetailBarCode(productDetail.ProductUnits)}"
+            android:text="@{StringUtils.getProductDetailBarCode(productDetail.productUnits)}"
             android:textColor="@color/colorTextaaa"
             android:textSize="@dimen/text_normal" />
 

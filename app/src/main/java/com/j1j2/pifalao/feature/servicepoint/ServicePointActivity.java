@@ -1,23 +1,18 @@
 package com.j1j2.pifalao.feature.servicepoint;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviParaOption;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -25,6 +20,7 @@ import com.j1j2.pifalao.app.event.FinishLocationActivityEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityServicepointBinding;
 import com.j1j2.pifalao.feature.servicepoint.di.ServicePointModule;
+import com.j1j2.pifalao.feature.services.ServicesActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,7 +45,7 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
     ActivityServicepointBinding binding;
 
     @Arg
-    ServicePoint servicePoint;
+    Shop shop;
 
     @Inject
     ServicePointViewModel servicePointViewModel;
@@ -75,12 +71,12 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(this).getAppComponent().plus(new ServicePointModule(this, servicePoint)).inject(this);
+        MainAplication.get(this).getAppComponent().plus(new ServicePointModule(this, shop)).inject(this);
     }
 
 
     private void showCallDialog() {
-        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + servicePoint.getMobile() + "？", "取消", "确定");
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + shop.getMobile() + "？", "取消", "确定");
     }
 
     @Override
@@ -96,14 +92,14 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
             }
             NaviParaOption naviParaOption = new NaviParaOption()
                     .startPoint(new LatLng(location.getLatitude(), location.getLongitude()))
-                    .endPoint(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
+                    .endPoint(new LatLng(shop.getLat(), shop.getLng()));
             BaiduMapNavigation.setSupportWebNavi(true);
             BaiduMapNavigation.openBaiduMapNavi(naviParaOption, this);
 
         }
         if (v == binding.inBtn) {
             EventBus.getDefault().post(new FinishLocationActivityEvent());
-            userRelativePreference.setSelectedServicePoint(servicePoint);
+            userRelativePreference.setSelectedServicePoint(shop);
             userRelativePreference.setShowDeliveryArea(true);
             userRelativePreference.setShowLocation(true);
             navigate.navigateToServicesActivity(this, ActivityOptionsCompat.makeScaleUpAnimation(v, 0, 0, 0, 0), true);
@@ -125,7 +121,7 @@ public class ServicePointActivity extends BaseActivity implements View.OnClickLi
     @AfterPermissionGranted(RC_CALLPHONE_PERM)
     private void callServicePoint() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + shop.getMobile()));
             startActivity(intent);
         } else {
             // Do not have permissions, request them now

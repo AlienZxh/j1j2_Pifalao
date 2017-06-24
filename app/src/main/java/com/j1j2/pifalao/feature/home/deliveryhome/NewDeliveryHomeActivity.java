@@ -11,11 +11,12 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
+import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.model.FreightType;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ShopExpressConfig;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -54,18 +55,22 @@ import rx.schedulers.Schedulers;
 public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClickListener,
         DeliveryHomeProductsFragment.DeliveryHomeProductsFragmentListener,
         DeliveryAreasDialogFragment.DeliveryAreasDialogFragmentListener,
+        DeliveryHomeServicepointFragment.DeliveryHomeServicepointFragmentListener,
         AppBarLayout.OnOffsetChangedListener {
 
     ActivityDeliveryhomeNewBinding binding;
 
     @Arg
-    ServicePoint servicePoint;
+    int shopId;
 
     @Arg
-    public Module module;
+    public ShopSubscribeService shopSubscribeService;
 
     @Inject
     ShopCartApi shopCartApi;
+
+    @Inject
+    ServicePointApi servicePointApi;
 
     @Inject
     FreightTypePrefrence freightTypePrefrence;
@@ -92,7 +97,6 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_deliveryhome_new);
-        binding.setServicePoint(servicePoint);
         binding.setActivity(this);
     }
 
@@ -104,36 +108,32 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
 
     @Override
     protected void initViews() {
-
-        //____________________________________________________________________
-        deliveryHomeServicepointFragment = Bundler.deliveryHomeServicepointFragment(servicePoint).create();
-        final List<Fragment> fragments = new ArrayList<>();
-        fragments.add(Bundler.deliveryHomeProductsFragment(module).create());
-        fragments.add(deliveryHomeServicepointFragment);
-        String[] titles = {"商品", "商家"};
-        binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments, titles));
-        binding.tab.setViewPager(binding.viewpager);
-        //________________________________________________________________________________
-        queryFreightType(module.getWareHouseModuleId());
-        //______________________
-        if (userRelativePreference.getShowDeliveryArea(true)) {
-            new DeliveryAreasDialogFragment().show(getSupportFragmentManager(),"DELIVERYAREASDIALOG");
-            userRelativePreference.setShowDeliveryArea(false);
-        }
+        queryShopExpressConfig(shopId);
     }
 
-    public void queryFreightType(int moduleId) {
-        shopCartApi.queryValidFreight(moduleId)
-                .compose(this.<WebReturn<List<FreightType>>>bindToLifecycle())
+
+    public void queryShopExpressConfig(int shopId) {
+        servicePointApi.queryShopExpressConfig(shopId)
+                .compose(this.<WebReturn<ShopExpressConfig>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<FreightType>>() {
+                .subscribe(new WebReturnSubscriber<ShopExpressConfig>() {
                     @Override
-                    public void onWebReturnSucess(List<FreightType> freightTypes) {
+                    public void onWebReturnSucess(ShopExpressConfig shopExpressConfig) {
+                        binding.setShopExpressConfig(shopExpressConfig);
 
-                        freightTypePrefrence.setDeliveryFreightType(freightTypes.get(0));
-                        binding.setFreightType(freightTypes.get(0));
-                        deliveryHomeServicepointFragment.setFreightType(freightTypes.get(0));
+                        deliveryHomeServicepointFragment = new DeliveryHomeServicepointFragment();
+                        final List<Fragment> fragments = new ArrayList<>();
+                        fragments.add(Bundler.deliveryHomeProductsFragment(shopSubscribeService).create());
+                        fragments.add(deliveryHomeServicepointFragment);
+                        String[] titles = {"商品", "商家"};
+                        binding.viewpager.setAdapter(new DeliveryHomeTabAdapter(getSupportFragmentManager(), fragments, titles));
+                        binding.tab.setViewPager(binding.viewpager);
+
+                        if (userRelativePreference.getShowDeliveryArea(true)) {
+                            new DeliveryAreasDialogFragment().show(getSupportFragmentManager(), "DELIVERYAREASDIALOG");
+                            userRelativePreference.setShowDeliveryArea(false);
+                        }
                     }
 
                     @Override
@@ -191,8 +191,8 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public String getServiceAreas() {
-        return servicePoint.getServiceAreas();
+    public String[] getServiceAreas() {
+        return binding.getShopExpressConfig().getServiceAreasArray();
     }
 
     @Override
@@ -201,7 +201,7 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
             onBackPressed();
         if (v == binding.shopCartView) {
             if (MainAplication.get(this).isLogin())
-                navigateToShopCart(v, module);
+                navigateToShopCart(v, shopSubscribeService);
             else
                 navigateToLogin(v);
         }
@@ -211,7 +211,7 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
             else
                 navigateToLogin(v);
         if (v == binding.searchview)
-            navigate.navigateToSearchActivity(this, null, false, module);
+            navigate.navigateToSearchActivity(this, null, false, shopSubscribeService);
     }
 
 
@@ -274,13 +274,13 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
     }
 
     @Override
-    public void navigateToProductDetail(View view, ProductSimple productSimple, int position) {
+    public void navigateToProductDetail(View view, Product productSimple, int position) {
 //        navigate.navigateToProductDetailActivity(this, null, false, productSimple.getMainId());
     }
 
     @Override
-    public void navigateToShopCart(View view, Module module) {
-        navigate.navigateToShopCart(this, null, false, module.getWareHouseModuleId());
+    public void navigateToShopCart(View view, ShopSubscribeService shopSubscribeService) {
+        navigate.navigateToShopCart(this, null, false, shopSubscribeService.getServiceId());
     }
 
     @Override
@@ -288,5 +288,8 @@ public class NewDeliveryHomeActivity extends BaseActivity implements View.OnClic
         navigate.navigateToLogin(this, null, false);
     }
 
-
+    @Override
+    public ShopExpressConfig getShopExpressConfig() {
+        return binding.getShopExpressConfig();
+    }
 }

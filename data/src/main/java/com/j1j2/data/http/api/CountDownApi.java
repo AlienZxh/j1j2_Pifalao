@@ -16,13 +16,13 @@ import rx.Observable;
 public interface CountDownApi {
 
     @POST("CountDown/QueryDeliveryCountDownOfModule")
-    Observable<WebReturn<UserDeliveryTime>> QueryDeliveryCountDownOfModule(@Query("moduleId") int moduleId);
+    Observable<WebReturn<UserDeliveryTime>> QueryDeliveryCountDownOfModule(@Query("serviceId") int serviceId);
 
     @POST("CountDown/QueryUserDeliveryTime")
     Observable<WebReturn<UserDeliveryTime>> queryUserDeliveryTime();
 
     @POST("CountDown/QueryServiceTimeOfDliveryType")
-    Observable<WebReturn<List<DeliveryServiceTime>>> queryServiceTimeOfDliveryType(@Query("freightId") int freightId, @Query("moduleId") int moduleId);
+    Observable<WebReturn<List<DeliveryServiceTime>>> queryServiceTimeOfDliveryType(@Query("freightId") int freightId);
     //__________________________________________________________________________________________
 
 

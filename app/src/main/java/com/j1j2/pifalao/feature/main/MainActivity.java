@@ -8,10 +8,11 @@ import android.view.View;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeFrameLayout;
 import com.j1j2.common.view.bgabadgewidget.AutoBGABadgeLinearLayout;
 import com.j1j2.common.view.smarttablayout.SmartTabLayout;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
+import com.j1j2.data.model.Shop;
 import com.j1j2.data.model.ShopCartItem;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.UnReadInfo;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -26,7 +27,6 @@ import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityMainBinding;
-import com.j1j2.pifalao.feature.coupons.CouponsActivity;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 import com.j1j2.pifalao.feature.home.vegetablehome.VegetableHomeFragment;
 import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     ActivityMainBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
     @Arg
     int activityTpe;
 
@@ -85,13 +85,15 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     AutoBGABadgeLinearLayout shopCartBadgeView;
     AutoBGABadgeFrameLayout individualcenterBadgeView;
 
+    private Shop shop;
+
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-
-        mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, module));
+        mainComponent = MainAplication.get(this).getAppComponent().plus(new MainModule(this, shopSubscribeService));
         mainComponent.inject(this);
+        shop = userRelativePreference.getSelectedServicePoint(null);
     }
 
     @Override
@@ -117,7 +119,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     private void initStore() {
         fragments = new ArrayList<>();
-        fragments.add(Bundler.storeStyleHomeFragment(module).create());
+        fragments.add(Bundler.storeStyleHomeFragment(shopSubscribeService).create());
         fragments.add(Bundler.supplierFragment(userRelativePreference.getSelectedCity(null)).create());
         fragments.add(Bundler.emptyFragment().create());
         fragments.add(Bundler.individualCenterFragment(IndividualCenterFragment.FROM_MAINACTIVITY).create());
@@ -133,8 +135,8 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     private void initVegetable() {
         fragments = new ArrayList<>();
-        fragments.add(Bundler.vegetableHomeFragment(module).create());
-        fragments.add(Bundler.vegetableSortFragment(module).create());
+        fragments.add(Bundler.vegetableHomeFragment(shopSubscribeService).create());
+        fragments.add(Bundler.vegetableSortFragment(shopSubscribeService).create());
         fragments.add(Bundler.emptyFragment().create());
         fragments.add(Bundler.individualCenterFragment(IndividualCenterFragment.FROM_MAINACTIVITY).create());
         String[] titles = new String[]{"首页", "分类", "购物车", "我的"};
@@ -148,14 +150,13 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     }
 
 
-
     @Override
     public void onTabClicked(int position) {
         if (position == 0 || position == 1) {
             binding.viewpager.setCurrentItem(position);
         } else if (position == 2) {
             if (MainAplication.get(this).isLogin()) {
-                navigate.navigateToShopCart(this, null, false, module.getWareHouseModuleId());
+                navigate.navigateToShopCart(this, null, false, shopSubscribeService.getServiceId());
             } else {
                 navigate.navigateToLogin(this, null, false);
             }
@@ -197,7 +198,8 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onShopCartChangeEvent(ShopCartChangeEvent event) {
         if (MainAplication.get(this).isLogin()) {
-            mainActivityViewModel.queryShopcart(module.getWareHouseModuleId());
+            if (shop != null)
+                mainActivityViewModel.queryShopcart(shopSubscribeService.getServiceId(), shop.getShopId());
             mainActivityViewModel.queryUserUnReadInfo();
         }
     }
@@ -206,7 +208,8 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     public void onLogStateChangeEvent(LogStateEvent event) {
         if (event.isLogin()) {
             shopCart = MainAplication.get(this).getUserComponent().shopCart();
-            mainActivityViewModel.queryShopcart(module.getWareHouseModuleId());
+            if (shop != null)
+                mainActivityViewModel.queryShopcart(shopSubscribeService.getServiceId(), shop.getShopId());
             unReadInfoManager = MainAplication.get(this).getUserComponent().unReadInfoManager();
             mainActivityViewModel.queryUserUnReadInfo();
         } else {
@@ -260,15 +263,16 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     }
 
 
-
     @Override
-    public void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position) {
-        navigate.navigateToProductsActivityFromSort(this, null, false, productSort, module);
+    public void navigateToProductsActivityFromSort(View view, ProductCategory productCategory, int position) {
+        navigate.navigateToProductsActivityFromSort(this, null, false, productCategory, shopSubscribeService);
     }
+
+
 
     @Override
     public void navigateToSearchActivity(View v) {
-        navigate.navigateToSearchActivity(this, null, false, module);
+        navigate.navigateToSearchActivity(this, null, false, shopSubscribeService);
     }
 
     @Override
@@ -283,7 +287,7 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
 
     @Override
     public void navigateToWalletManager() {
-        navigate.navigateToWalletManager(this, null, false, module);
+        navigate.navigateToWalletManager(this, null, false, shopSubscribeService);
     }
 
     @Override
@@ -313,10 +317,14 @@ public class MainActivity extends BaseActivity implements SmartTabLayout.OnTabCl
     }
 
     @Override
-    public void navigateToProductDetailActivity(View view, ProductSimple productSimple, int position) {
-        navigate.navigateToProductDetailActivity(this, null, false, productSimple.getMainId());
+    public void navigateToProductDetailActivity(View view, Product product, int position) {
+        navigate.navigateToProductDetailActivity(this, null, false, product.getMainId());
     }
 
+    @Override
+    public Shop getShop() {
+        return shop;
+    }
 
     @Override
     public void navigateToShowStore() {

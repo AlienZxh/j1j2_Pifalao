@@ -9,7 +9,7 @@
             type="android.databinding.ObservableField&lt;ProductUnit&gt;" />
 
         <variable
-            name="moduleType"
+            name="serviceType"
             type="int" />
 
         <import type="com.j1j2.data.model.ProductUnit" />

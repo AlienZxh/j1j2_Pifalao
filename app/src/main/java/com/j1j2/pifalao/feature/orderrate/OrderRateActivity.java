@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.j1j2.data.http.api.UserOrderApi;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.OrderSimple;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ProductSaleOrderRateBody;
@@ -16,6 +17,7 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityOrderrateBinding;
+import com.j1j2.pifalao.feature.orderdetail.OrderProductsAdapter;
 import com.j1j2.pifalao.feature.orderrate.di.OrderRateModule;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 import com.zhy.autolayout.utils.AutoUtils;
@@ -39,15 +41,17 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
     ActivityOrderrateBinding binding;
 
     @Arg
-    OrderSimple orderSimple;
+    int orderId;
 
     @Inject
     UserOrderApi userOrderApi;
 
+    OrderDetail orderDetail;
+
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_orderrate);
-        binding.setOrderSimple(orderSimple);
+
     }
 
     public void orderRate(ProductSaleOrderRateBody orderRateBody) {
@@ -75,6 +79,32 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
                 });
     }
 
+    public void queryOrderDetail(int orderId) {
+        userOrderApi.queryOrderByOrderId("" + orderId)
+                .compose(this.<WebReturn<OrderDetail>>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new WebReturnSubscriber<OrderDetail>() {
+                    @Override
+                    public void onWebReturnSucess(OrderDetail orderDetail) {
+                        binding.setOrderDetail(orderDetail);
+
+                        OrderRateProductAdapter orderRateProductAdapter = new OrderRateProductAdapter(orderDetail.getOrderProductsInfo());
+                        binding.orderList.setAdapter(orderRateProductAdapter);
+                    }
+
+                    @Override
+                    public void onWebReturnFailure(String errorMessage) {
+
+                    }
+
+                    @Override
+                    public void onWebReturnCompleted() {
+
+                    }
+                });
+
+    }
 
     @Override
     protected void initViews() {
@@ -83,9 +113,7 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
         //______________________________
         binding.orderList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         binding.orderList.addItemDecoration(new VerticalDividerItemDecoration.Builder(this).size(AutoUtils.getPercentWidthSize(10)).colorResId(R.color.colorTransparent).build());
-        OrderRateProductAdapter orderRateProductAdapter = new OrderRateProductAdapter(orderSimple.getProductDetails());
-        binding.orderList.setAdapter(orderRateProductAdapter);
-
+        queryOrderDetail(orderId);
     }
 
     @Override
@@ -101,7 +129,7 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
             onBackPressed();
         if (v == binding.rateBtn) {
             ProductSaleOrderRateBody productSaleOrderRateBody = new ProductSaleOrderRateBody();
-            productSaleOrderRateBody.setOrderId(orderSimple.getOrderId());
+            productSaleOrderRateBody.setOrderId(orderDetail.getOrderBaseInfo().getOrderId());
             productSaleOrderRateBody.setComment(binding.comment.getText().toString());
             productSaleOrderRateBody.setDeliverSpeed((byte) binding.deliverSpeed.getRating());
             productSaleOrderRateBody.setFoodTaste((byte) binding.foodTaste.getRating());

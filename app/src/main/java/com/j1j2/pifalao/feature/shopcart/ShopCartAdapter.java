@@ -75,7 +75,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.ShopCa
         @Override
         public void bind(@NonNull final ShopCartItem data, final int position) {
             binding.setShopCartItem(data);
-            binding.setModuleType(moduleType);
+            binding.setServiceType(moduleType);
             binding.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

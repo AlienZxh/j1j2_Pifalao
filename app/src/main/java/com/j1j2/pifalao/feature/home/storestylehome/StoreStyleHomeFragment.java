@@ -10,8 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.ProductCategory;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.HasComponent;
 import com.j1j2.pifalao.app.MainAplication;
@@ -39,11 +40,13 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     }
 
     public interface StoreStyleHomeFragmentListener extends HasComponent<MainComponent> {
-        void navigateToProductsActivityFromSort(View view, ProductSort productSort, int position);
+        void navigateToProductsActivityFromSort(View view, ProductCategory productCategory, int position);
 
         void navigateToSearchActivity(View v);
 
         void navigateToShowStore();
+
+        Shop getShop();
     }
 
     private StoreStyleHomeFragmentListener listener;
@@ -51,7 +54,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     FragmentStoreStyleHomeBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     @Inject
     StoreStyleHomeViewModel storeStyleHomeViewModel;
@@ -90,7 +93,7 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     protected void initViews() {
         manager = new GridLayoutManager(getContext(), 3);
         binding.sortList.setLayoutManager(manager);
-        storeStyleHomeViewModel.queryProductSort();
+        storeStyleHomeViewModel.queryProductSort(listener.getShop().getShopId());
 //________________________________________________________
         int[] imgId = {R.drawable.storestylehometop_top_img_1,
                 R.drawable.storestylehometop_top_img_2,
@@ -126,12 +129,12 @@ public class StoreStyleHomeFragment extends BaseFragment implements StoreStyleHo
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(getActivity()).getAppComponent().plus(new StoreStyleHomeModule(this, module)).inject(this);
+        MainAplication.get(getActivity()).getAppComponent().plus(new StoreStyleHomeModule(this, shopSubscribeService)).inject(this);
     }
 
     @Override
-    public void onSortItemClickListener(View view, ProductSort productSort, int position) {
-        listener.navigateToProductsActivityFromSort(view, productSort, position);
+    public void onSortItemClickListener(View view, ProductCategory productCategory, int position) {
+        listener.navigateToProductsActivityFromSort(view, productCategory, position);
     }
 
     @Override

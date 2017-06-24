@@ -27,8 +27,8 @@ public class MainActivityViewModel {
 
     }
 
-    public void queryShopcart(int moduled) {
-        shopCartApi.queryShopCart(moduled)
+    public void queryShopcart(int serviceId, int shopId) {
+        shopCartApi.queryShopCart(serviceId, shopId)
                 .compose(mainActivity.<WebReturn<List<ShopCartItem>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

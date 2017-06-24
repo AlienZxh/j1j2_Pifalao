@@ -14,7 +14,7 @@
 
         <variable
             name="productSort"
-            type="com.j1j2.data.model.ProductSort" />
+            type="com.j1j2.data.model.ProductCategory" />
 
         <variable
             name="icon"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/padding_small"
-            android:text="@{productSort.SortName}"
+            android:text="@{productSort.name}"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_big"
             android:textStyle="bold" />
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/padding_small"
-            android:text="@{StringUtils.getStrWithBracket(String.valueOf(productSort.ProductCount))}"
+            android:text="@{StringUtils.getStrWithBracket(String.valueOf(productSort.productCount))}"
             android:textColor="@color/colorText999"
             android:textSize="@dimen/text_normal" />
 

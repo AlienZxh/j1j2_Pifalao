@@ -50,13 +50,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
 
         void onOrderPayClickListener(View view, OrderSimple orderSimple, int position);
 
-        void onServicePointIconClickListener(View view, OrderSimple orderSimple, int position);
 
-        void onCancelPointIconClickListener(View view, OrderSimple orderSimple, int position);
-
-        void onCommentPointIconClickListener(View view, OrderSimple orderSimple, int position);
-
-        void onOrderProductClickListener(View view, OrderSimple orderSimple, int position);
     }
 
     private OnOrdersClickListener onOrdersClickListener;
@@ -102,18 +96,18 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrdersView
             OrderProductAdapter orderProductAdapter = new OrderProductAdapter(data.getProductDetails());
             binding.orderProductList.setAdapter(orderProductAdapter);
 
-            switch (data.getModuleType()) {
+            switch (data.getOrderType()) {
                 case Constant.ModuleType.DELIVERY:
                     binding.orderIcon.setText(context.getText(R.string.icon_delivery));
-                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getModuleType()));
+                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getOrderType()));
                     break;
                 case Constant.ModuleType.VEGETABLE:
                     binding.orderIcon.setText(context.getText(R.string.icon_vegetable));
-                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getModuleType()));
+                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getOrderType()));
                     break;
                 case Constant.ModuleType.SHOPSERVICE:
                     binding.orderIcon.setText(context.getText(R.string.icon_shopservice));
-                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getModuleType()));
+                    binding.orderIcon.setTextColor(Constant.moduleColors.get(data.getOrderType()));
                     break;
             }
 

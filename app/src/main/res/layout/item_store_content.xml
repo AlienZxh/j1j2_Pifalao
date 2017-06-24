@@ -12,7 +12,7 @@
 
         <variable
             name="productSort"
-            type="com.j1j2.data.model.ProductSort" />
+            type="com.j1j2.data.model.ProductCategory" />
     </data>
 
     <com.j1j2.common.view.autowidget.AutoCardView
@@ -34,15 +34,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="@{productSort.ParentSortId==0?&quot;全部&quot;:productSort.SortName}"
+                android:maxLines="1"
+                android:text="@{productSort.categoryId==0?&quot;全部&quot;:productSort.name}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{&quot;(&quot;+productSort.ProductCount+&quot;)&quot;}"
+                android:text="@{&quot;(&quot;+productSort.productCount+&quot;)&quot;}"
                 android:textColor="@color/colorTextaaa"
                 android:textSize="@dimen/text_normal" />
         </com.zhy.autolayout.AutoLinearLayout>

@@ -21,38 +21,38 @@ import rx.Observable;
 public interface ShopCartApi {
 
 
+    @POST("ShopCart/QueryValidFreight")
+    Observable<WebReturn<List<FreightType>>> queryValidFreight(@Query("serviceId") int serviceId, @Query("shopId") int shopId);
+
     @POST("ShopCart/QueryShopCart")
-    Observable<WebReturn<List<ShopCartItem>>> queryShopCart(@Query("moduleId") int moduleId);
+    Observable<WebReturn<List<ShopCartItem>>> queryShopCart(@Query("serviceId") int serviceId, @Query("shopId") int shopId);
 
     @POST("ShopCart/AddItemToShopCart")
-    Observable<WebReturn<String>> addItemToShopCart(@Query("productId") int productId, @Query("quantity") int quantity, @Query("moduleId") int moduleId);
-
-    @POST("ShopCart/RemoveShopCartItem")
-    Observable<WebReturn<String>> removeShopCartItem(@Query("productId") int productId);
+    Observable<WebReturn<String>> addItemToShopCart(@Query("productId") int productId, @Query("quantity") int quantity, @Query("serviceId") int serviceId, @Query("shopId") int shopId);
 
     @POST("ShopCart/UpdateShopCart")
-    Observable<WebReturn<String>> updateShopCart(@Body List<ShopCartItem> shopCartItems);//参数待完善
+    Observable<WebReturn<String>> updateShopCart(@Body List<ShopCartItem> shopCartItems, @Query("serviceId") int serviceId, @Query("shopId") int shopId);
+
+    @POST("ShopCart/RemoveShopCartItem")
+    Observable<WebReturn<String>> removeShopCartItem(@Query("productId") int productId, @Query("serviceId") int serviceId,@Query("shopId") int shopId);
 
     @POST("ShopCart/SubmitOrderV6")
     Observable<WebReturn<SubmitOrderReturn>> submitOrder(@Body OrderSubmitBody orderSubmitBody);
-
-    @POST("ShopCart/QueryValidFreight")
-    Observable<WebReturn<List<FreightType>>> queryValidFreight(@Query("moduleId") int moduleId);
 
     @POST("ShopCart/DoPayOrder")
     Observable<WebReturn<OnlinePayResult>> doPayOrder(@Body OrderOnlinePayBody orderOnlinePayBody);
 
     @POST("ShopCart/QueryPayState")
-    Observable<WebReturn<String>> queryPayState(@Query("orderNO") String orderNo,@Query("payType") int payType);
+    Observable<WebReturn<String>> queryPayState(@Query("orderNO") String orderNo, @Query("payType") int payType);
     //______________________________________________________________________________________________
 
     @POST("ShopCart/ClearShopCart")
-    Observable<String> clearShopCart(@Query("moduleId") int moduleId);
+    Observable<String> clearShopCart(@Query("serviceId") int serviceId,@Query("shopId") int shopId);
 
     @POST("ShopCart/ValidateSubmitOrder")
     Observable<String> validateSubmitOrder();
 
     @POST("ShopCart/QueryCouponEffective")
-    Observable<String> queryCouponEffective(@Query("guid") int guid, @Query("moduleId") int moduleId);
+    Observable<String> queryCouponEffective(@Query("guid") int guid, @Query("serviceId") int serviceId,@Query("shopId") int shopId);
 
 }

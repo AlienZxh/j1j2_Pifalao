@@ -6,10 +6,8 @@ import android.view.View;
 import com.j1j2.common.util.EmptyUtils;
 import com.j1j2.common.util.ValidateUtils;
 import com.j1j2.data.http.api.ApplyForApi;
-import com.j1j2.data.model.AcceptanceSpeech;
 import com.j1j2.data.model.ApplyForServiceCount;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.PagerManager;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.ApplyForServiceBody;
@@ -23,7 +21,6 @@ import com.j1j2.pifalao.app.event.LogStateEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityUnsubscribeDeliveryBinding;
 import com.j1j2.pifalao.feature.unsubscribe.di.ApplyForModule;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -47,7 +44,7 @@ public class UnsubscribeModuleActivity extends BaseActivity implements View.OnCl
     User user;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     @Inject
     ApplyForApi applyForApi;
@@ -76,11 +73,11 @@ public class UnsubscribeModuleActivity extends BaseActivity implements View.OnCl
         binding.openBtn.setOnClickListener(this);
         binding.cancelBtn.setOnClickListener(this);
 
-        binding.title.setText(module.getModuleName());
-        binding.text.setText("亲～您选择的服务点，还未来得及开通" + module.getModuleName() + "服务！");
+        binding.title.setText(shopSubscribeService.getName());
+        binding.text.setText("亲～您选择的服务点，还未来得及开通" + shopSubscribeService.getName() + "服务！");
 
 
-        if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+        if (shopSubscribeService.getServiceType() == Constant.ModuleType.SHOPSERVICE) {
             binding.img.setImageResource(R.drawable.unsubscribe_shop_img);
         } else {
             binding.img.setImageResource(R.drawable.unsubscribe_delivery_img);
@@ -88,7 +85,7 @@ public class UnsubscribeModuleActivity extends BaseActivity implements View.OnCl
     }
 
     public void queryApplyForServiceCount(String mobile) {
-        applyForApi.queryApplyForServiceCount(module.getWareHouseModuleId(), mobile)
+        applyForApi.queryApplyForServiceCount(shopSubscribeService.getServiceId(), mobile)
                 .compose(this.<WebReturn<ApplyForServiceCount>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -187,8 +184,8 @@ public class UnsubscribeModuleActivity extends BaseActivity implements View.OnCl
 
             ApplyForServiceBody applyForServiceBody = new ApplyForServiceBody();
             applyForServiceBody.setMobile(phoneNo);
-            applyForServiceBody.setServiceModuleId(module.getWareHouseModuleId());
-            applyForServiceBody.setServicePointId(userRelativePreference.getSelectedServicePoint(null).getServicePointId());
+            applyForServiceBody.setServiceModuleId(shopSubscribeService.getServiceId());
+            applyForServiceBody.setServicePointId(userRelativePreference.getSelectedServicePoint(null).getShopId());
             applyForService(applyForServiceBody);
         }
     }

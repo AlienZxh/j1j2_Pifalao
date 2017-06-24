@@ -8,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.util.EmptyUtils;
-import com.j1j2.data.model.City;
-import com.j1j2.data.model.ProductSimple;
+import com.j1j2.data.model.Product;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemProductsBinding;
-import com.orhanobut.logger.Logger;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,16 +22,16 @@ import java.util.List;
  */
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder> {
 
-    private List<ProductSimple> productSimples;
+    private List<Product> productSimples;
     private ShopCart shopCart;
     private int moduleType;
 
-    public ProductsAdapter(List<ProductSimple> productSimples, int moduleType) {
+    public ProductsAdapter(List<Product> productSimples, int moduleType) {
         this.productSimples = productSimples;
         this.moduleType = moduleType;
     }
 
-    public void addAll(Collection<ProductSimple> newProductSimples) {
+    public void addAll(Collection<Product> newProductSimples) {
         if (null == productSimples)
             return;
         int startIndex = productSimples.size();
@@ -41,7 +39,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         notifyItemRangeInserted(startIndex, newProductSimples.size());
     }
 
-    public void initData(Collection<ProductSimple> newProductSimples) {
+    public void initData(Collection<Product> newProductSimples) {
         productSimples.clear();
         if (null != productSimples && null != newProductSimples) {
             productSimples.addAll(newProductSimples);
@@ -55,9 +53,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     }
 
     public interface OnProductsClickListener {
-        void onItemClickListener(View view, ProductSimple productSimple, int position);
+        void onItemClickListener(View view, Product productSimple, int position);
 
-        void onAddIconClickListener(View view, ProductSimple productSimple, int position);
+        void onAddIconClickListener(View view, Product productSimple, int position);
     }
 
     private OnProductsClickListener onItemClickListener;
@@ -85,7 +83,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         return null == productSimples ? 0 : productSimples.size();
     }
 
-    public class ProductsViewHolder extends AutoBindingViewHolder<ItemProductsBinding, ProductSimple> {
+    public class ProductsViewHolder extends AutoBindingViewHolder<ItemProductsBinding, Product> {
 
         public ProductsViewHolder(View itemView) {
             super(itemView);
@@ -97,14 +95,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         }
 
         @Override
-        public void bind(@NonNull final ProductSimple data, final int position) {
+        public void bind(@NonNull final Product data, final int position) {
             binding.setProductSimple(data);
             if (!EmptyUtils.isEmpty(data.getProductUnits())) {
                 binding.normalPrice.setText("市场价：" + data.getProductUnits().get(0).getRetialPrice() + "元/" + data.getProductUnits().get(0).getUnit());
                 binding.normalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             }
 
-            binding.setModuleType(moduleType);
+            binding.setServiceType(moduleType);
             binding.setShopCart(shopCart);
 
             binding.setOnClick(new View.OnClickListener() {

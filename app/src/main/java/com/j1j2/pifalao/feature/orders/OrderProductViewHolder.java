@@ -3,7 +3,6 @@ package com.j1j2.pifalao.feature.orders;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemOrderproductBinding;
 

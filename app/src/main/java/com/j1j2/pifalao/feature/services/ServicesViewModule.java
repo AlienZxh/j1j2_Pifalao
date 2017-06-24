@@ -8,8 +8,8 @@ import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.SystemAssistApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.model.City;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.SystemNotice;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.LoginBody;
@@ -34,9 +34,9 @@ import rx.schedulers.Schedulers;
  */
 public class ServicesViewModule {
 
-    private List<Module> modules;
+    private List<ShopSubscribeService> shopSubscribeServices;
 
-    ServicePoint servicePoint;
+    Shop shop;
 
     ServicePointApi servicePointApi;
     UserLoginApi userLoginApi;
@@ -47,47 +47,47 @@ public class ServicesViewModule {
 
     private ServicesAdapter servicesAdapter;
 
-    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, ServicePoint servicePoint, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
+    public ServicesViewModule(ServicesActivity servicesActivity, ServicePointApi servicePointApi, Shop shop, UserLoginApi userLoginApi, SystemAssistApi systemAssistApi, ActivityApi activityApi) {
         this.servicePointApi = servicePointApi;
         this.servicesActivity = servicesActivity;
-        this.servicePoint = servicePoint;
+        this.shop = shop;
         this.userLoginApi = userLoginApi;
         this.systemAssistApi = systemAssistApi;
         this.activityApi = activityApi;
-        this.modules = new ArrayList<>();
-        this.servicesAdapter = new ServicesAdapter(modules);
+        this.shopSubscribeServices = new ArrayList<>();
+        this.servicesAdapter = new ServicesAdapter(shopSubscribeServices);
     }
 
     public void queryServicePointServiceModules() {
-        servicePointApi.queryServicePointServiceModules(servicePoint.getServicePointId())
-                .compose(servicesActivity.<WebReturn<List<Module>>>bindToLifecycle())
+        servicePointApi.queryServicePointServiceModules(shop.getShopId())
+                .compose(servicesActivity.<WebReturn<List<ShopSubscribeService>>>bindToLifecycle())
                 .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<WebReturn<List<Module>>, Observable<Module>>() {
+                .flatMap(new Func1<WebReturn<List<ShopSubscribeService>>, Observable<ShopSubscribeService>>() {
                     @Override
-                    public Observable<Module> call(WebReturn<List<Module>> listWebReturn) {
-                        servicesActivity.setModules(listWebReturn.getDetail());
+                    public Observable<ShopSubscribeService> call(WebReturn<List<ShopSubscribeService>> listWebReturn) {
+                        servicesActivity.setShopSubscribeServices(listWebReturn.getDetail());
 
-                        List<Module> moduleList = new ArrayList<Module>();
-                        moduleList.addAll(listWebReturn.getDetail());
-                        Module module = new Module();
-                        module.setModuleName("更多");
-                        module.setSubscribed(true);
-                        module.setWareHouseModuleId(36);
-                        module.setModuleType(Constant.ModuleType.MORE);
-                        moduleList.add(5, module);
-                        return Observable.from(moduleList);
+                        List<ShopSubscribeService> shopSubscribeServiceList = new ArrayList<ShopSubscribeService>();
+                        shopSubscribeServiceList.addAll(listWebReturn.getDetail());
+                        ShopSubscribeService shopSubscribeService = new ShopSubscribeService();
+                        shopSubscribeService.setName("更多");
+                        shopSubscribeService.setSubscribed(true);
+                        shopSubscribeService.setServiceId(36);
+                        shopSubscribeService.setServiceType(Constant.ModuleType.MORE);
+                        shopSubscribeServiceList.add(5, shopSubscribeService);
+                        return Observable.from(shopSubscribeServiceList);
                     }
                 })
-                .compose(servicesActivity.<Module>bindToLifecycle())
+                .compose(servicesActivity.<ShopSubscribeService>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<Module>() {
+                .subscribe(new DefaultSubscriber<ShopSubscribeService>() {
 
                     @Override
-                    public void onNext(Module module) {
-                        super.onNext(module);
-                        servicesAdapter.add(module);
-                        if (module.getModuleType() == Constant.ModuleType.MORE) {
+                    public void onNext(ShopSubscribeService shopSubscribeService) {
+                        super.onNext(shopSubscribeService);
+                        servicesAdapter.add(shopSubscribeService);
+                        if (shopSubscribeService.getServiceType() == Constant.ModuleType.MORE) {
                             servicesActivity.launchFromUrl();
                             onCompleted();
                         }
@@ -96,25 +96,25 @@ public class ServicesViewModule {
                 });
     }
 
-    public void queryServicepointInCity(final BDLocation location, City city, final ServicePoint selectServicePoint) {
-        if (city == null || selectServicePoint == null || location == null)
+    public void queryServicepointInCity(final BDLocation location, City city, final Shop selectShop) {
+        if (city == null || selectShop == null || location == null)
             return;
         servicePointApi.queryServicePointInCity(city.getPCCId())
-                .compose(servicesActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .compose(servicesActivity.<WebReturn<List<Shop>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.newThread())
-                .map(new Func1<WebReturn<List<ServicePoint>>, List<ServicePoint>>() {
+                .map(new Func1<WebReturn<List<Shop>>, List<Shop>>() {
                     @Override
-                    public List<ServicePoint> call(WebReturn<List<ServicePoint>> listWebReturn) {
+                    public List<Shop> call(WebReturn<List<Shop>> listWebReturn) {
                         LatLng mypoint = new LatLng(location.getLatitude(), location.getLongitude());
                         LatLng point;
-                        for (ServicePoint servicepoint : listWebReturn.getDetail()) {
+                        for (Shop servicepoint : listWebReturn.getDetail()) {
                             point = new LatLng(servicepoint.getLat(), servicepoint.getLng());
                             servicepoint.setDistance(DistanceUtil.getDistance(mypoint, point));
                         }
-                        Collections.sort(listWebReturn.getDetail(), new Comparator<ServicePoint>() {
+                        Collections.sort(listWebReturn.getDetail(), new Comparator<Shop>() {
                             @Override
-                            public int compare(ServicePoint lhs, ServicePoint rhs) {
+                            public int compare(Shop lhs, Shop rhs) {
                                 if (lhs.getDistance() - rhs.getDistance() > 0)
                                     return 1;
                                 else if (lhs.getDistance() - rhs.getDistance() == 0)
@@ -126,21 +126,21 @@ public class ServicesViewModule {
                         return listWebReturn.getDetail();
                     }
                 })
-                .compose(servicesActivity.<List<ServicePoint>>bindToLifecycle())
+                .compose(servicesActivity.<List<Shop>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<List<ServicePoint>>() {
+                .subscribe(new DefaultSubscriber<List<Shop>>() {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
                     }
 
                     @Override
-                    public void onNext(List<ServicePoint> servicePoints) {
-                        super.onNext(servicePoints);
-                        if (servicePoints == null || servicePoints.size() <= 0)
+                    public void onNext(List<Shop> shops) {
+                        super.onNext(shops);
+                        if (shops == null || shops.size() <= 0)
                             return;
-                        if (selectServicePoint.getServicePointId() != servicePoints.get(0).getServicePointId()) {
-                            servicesActivity.showLocationDialog(servicePoints.get(0));
+                        if (selectShop.getShopId() != shops.get(0).getShopId()) {
+                            servicesActivity.showLocationDialog(shops.get(0));
 
                         }
                     }

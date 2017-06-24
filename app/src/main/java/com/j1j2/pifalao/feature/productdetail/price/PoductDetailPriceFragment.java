@@ -4,20 +4,16 @@ import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableField;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.view.recyclerviewchoicemode.SingleSelector;
-import com.j1j2.data.model.ProductDetail;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.pifalao.R;
-import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.BaseFragment;
 import com.j1j2.pifalao.databinding.FragmentProductdetailPriceBinding;
 import com.j1j2.pifalao.feature.productdetail.ProductDetailActivity;
-import com.j1j2.pifalao.feature.productdetail.unit.ProductDetailUnitAdapter;
 
 import java.util.List;
 
@@ -72,7 +68,7 @@ public class PoductDetailPriceFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        binding.setModuleType(moduleType);
+        binding.setServiceType(moduleType);
         binding.setPrice(productUnitObservableField);
 
     }

@@ -16,7 +16,7 @@ import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.model.ActivityProduct;
 import com.j1j2.data.model.ActivityProductImg;
 import com.j1j2.data.model.ActivityWinPrize;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.BuildConfig;
@@ -103,8 +103,22 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
     String sinaText;
     String clipText;
     //可以将一下代码加到你的MainActivity中，或者在任意一个需要调用分享功能的activity当中
-    String[] mPermissionList = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS};
-    String[] randomShareText = new String[]{"快来抢，$领取", "抢疯啦！$抽取", "新店开业，$抢", "仅需$，抢占", "来真的！$夺取", "不花钱，$来抢"};
+    String[] mPermissionList = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_LOGS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.SET_DEBUG_APP,
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
+            Manifest.permission.GET_ACCOUNTS};
+    String[] randomShareText = new String[]{
+            "快来抢，$领取",
+            "抢疯啦！$抽取",
+            "新店开业，$抢",
+            "仅需$，抢占",
+            "来真的！$夺取",
+            "不花钱，$来抢"};
 
     @Override
     protected void setupActivityComponent() {
@@ -187,7 +201,7 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
                             binding.actionBarTitle.setText("奖品详情");
                         }
                         //_____________________________________________
-                        Module module = userRelativePreference.getSelectedModule(null);
+                        ShopSubscribeService shopSubscribeService = userRelativePreference.getSelectedModule(null);
                         Random random = new Random();
 
                         if (!EmptyUtils.isEmpty(activityProduct.getImgList()))
@@ -209,7 +223,7 @@ public class PrizeDetailActivity extends BaseActivity implements View.OnClickLis
                         url = "http://www.pifalao.com/home/share?"
                                 + "shareType=" + Constant.ShareType.ACTIVITY
                                 + "&activityId=" + activityProduct.getProductId()
-                                + "&moduleId=" + module.getWareHouseModuleId();
+                                + "&moduleId=" + shopSubscribeService.getServiceId();
                         sinaText = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName() + "　哇！在批发佬发现好东西，必须拿出来分享！";
                         clipText = randomShareText[random.nextInt(5)].replace("$", price) + activityProduct.getName() + "\n哇！在批发佬发现好东西，必须拿出来分享！\n";
                         //_____________________________________________________________

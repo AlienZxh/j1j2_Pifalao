@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.j1j2.pifalao.app.MainAplication;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -61,6 +62,9 @@ public class BaseActivityLifecycleCallbacks implements Application.ActivityLifec
             locationService.unregisterListener();
             locationService.stop();
             Logger.d("定位结束了");
+
+            MainAplication.get(activity.getApplicationContext()).getDb().close();
+            Logger.d("数据库关闭");
         }
     }
 

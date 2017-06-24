@@ -70,7 +70,6 @@ public class OrdersViewModel {
 
                         @Override
                         public void onWebReturnFailure(String errorMessage) {
-
                             if (offlineOrdersAdapter != null)
                                 offlineOrdersAdapter.clear();
                             if (ordersAdapter != null)
@@ -91,8 +90,7 @@ public class OrdersViewModel {
                     .subscribe(new WebReturnSubscriber<PagerManager<OrderSimple>>() {
                         @Override
                         public void onWebReturnSucess(PagerManager<OrderSimple> orderSimplePagerManager) {
-                            if (orderType != 0)
-                                setOrdersRead(orderSimplePagerManager.getList(), orderType);
+                            setOrdersRead(orderSimplePagerManager.getList(), orderType);
                             pageCount = orderSimplePagerManager.getPageCount();
                             if (pageIndex == 1) {
                                 ordersAdapter = new OrdersAdapter(orderSimplePagerManager.getList());
@@ -178,7 +176,8 @@ public class OrdersViewModel {
         SetOrderReadStateBody setOrderReadStateBody = new SetOrderReadStateBody();
         List<Integer> ids = new ArrayList<>();
         for (OrderSimple orderSimple : ordersRead) {
-            ids.add(orderSimple.getOrderId());
+            if (orderSimple.getOrderState() != Constant.OrderType.ORDERTYPE_UNPAY)
+                ids.add(orderSimple.getOrderId());
         }
         setOrderReadStateBody.setOrderIdList(ids);
         setOrderReadStateBody.setState(orderType);

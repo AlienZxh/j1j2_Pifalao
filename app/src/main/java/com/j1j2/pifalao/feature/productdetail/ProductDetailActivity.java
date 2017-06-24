@@ -16,9 +16,11 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.j1j2.common.util.ScreenUtils;
-import com.j1j2.data.model.ProductDetail;
+import com.j1j2.data.model.Product;
 import com.j1j2.data.model.ProductImg;
 import com.j1j2.data.model.ProductUnit;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
@@ -26,6 +28,7 @@ import com.j1j2.pifalao.app.ShopCart;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.dialog.ShareDialogFragment;
 import com.j1j2.pifalao.app.event.LogStateEvent;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityProductdetailBinding;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailComponent;
 import com.j1j2.pifalao.feature.productdetail.di.ProductDetailModule;
@@ -70,11 +73,16 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
 
     @Inject
     ProductDetailViewModel productDetailViewModel;
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     PoductDetailPriceFragment productDetailPriceFragment;
     ProductDetailUnitFragment productDetailUnitFragment;
 
+    ShopSubscribeService shopSubscribeService;
+
     ShopCart shopCart;
+    Shop shop;
 
     ProductDetailComponent productDetailComponent;
 
@@ -105,15 +113,15 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         productDetailViewModel.queryProductHasBeenCollected(mainId);
     }
 
-    public void initShareContent(ProductDetail productDetail) {
-        image = new UMImage(this, productDetail.getMainImg());
+    public void initShareContent(Product productDetail) {
+        image = new UMImage(this, productDetail.getMainThumImg());
         title = productDetail.getName();
         text = "会员价：" + productDetail.getProductUnits().get(0).getMemberPrice() + "/" + productDetail.getProductUnits().get(0).getUnit()
                 + "\n" + "我在批发佬发现了一个不错的商品，快来看看吧！";
         url = "http://www.pifalao.com/home/share?"
                 + "shareType=" + Constant.ShareType.PRODUCT
                 + "&productMainId=" + productDetail.getMainId()
-                + "&moduleId=" + productDetail.getModuleId();
+                + "&moduleId=" + shopSubscribeService.getServiceId();
         sinaText = productDetail.getName() + "　会员价：" + productDetail.getProductUnits().get(0).getMemberPrice() + "/" + productDetail.getProductUnits().get(0).getUnit()
                 + "\n" + "我在批发佬发现了一个不错的商品，快来看看吧！";
         clipText = productDetail.getName() + "\n" + text + "\n" + url;
@@ -126,17 +134,17 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         binding.tab.setViewPager(binding.viewPager);
     }
 
-    public void initPrice(ProductDetail productDetail) {
-        productDetailPriceFragment = Bundler.poductDetailPriceFragment(productDetail.getProductUnits(), productDetail.getBaseUnit(), productDetail.getModuleType()).create();
+    public void initPrice(Product productDetail) {
+        productDetailPriceFragment = Bundler.poductDetailPriceFragment(productDetail.getProductUnits(), productDetail.getBaseUnit(), shopSubscribeService.getServiceType()).create();
         changeFragment(R.id.priceFragment, productDetailPriceFragment);
     }
 
-    public void initUnitsSelect(ProductDetail productDetail) {
+    public void initUnitsSelect(Product productDetail) {
         productDetailUnitFragment = Bundler.productDetailUnitFragment(productDetail.getProductUnits(), productDetail.getBaseUnit(), productDetail.getModuleType()).create();
         changeFragment(R.id.unitFragment, productDetailUnitFragment);
     }
 
-    public void initBottomViewPager(List<ProductImg> productImgs, int productId, ProductDetail productDetail) {
+    public void initBottomViewPager(List<ProductImg> productImgs, int productId, Product productDetail) {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(Bundler.productDetailImgFragment(productImgs).create());
         fragments.add(Bundler.productDetailParamsFragment(productDetail).create());
@@ -152,6 +160,8 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
         Bundler.inject(this);
         productDetailComponent = MainAplication.get(this).getAppComponent().plus(new ProductDetailModule(this));
         productDetailComponent.inject(this);
+        shop = userRelativePreference.getSelectedServicePoint(null);
+        shopSubscribeService = userRelativePreference.getSelectedModule(null);
     }
 
     @Override
@@ -278,8 +288,8 @@ public class ProductDetailActivity extends BaseActivity implements View.OnClickL
             if (v == binding.collectBtn)
                 productDetailViewModel.clooectBtnClick(mainId);
             if (v == binding.addBtn)
-                if (productDetailViewModel.productDetail.get() != null && productDetailViewModel.selectUnit.get() != null && moduleType != -1) {
-                    productDetailViewModel.addItemToShopCart(productDetailViewModel.selectUnit.get(), productDetailUnitFragment.getQuantity(), productDetailViewModel.productDetail.get().getModuleId());
+                if (productDetailViewModel.productDetail.get() != null && productDetailViewModel.selectUnit.get() != null && moduleType != -1 && shop != null) {
+                    productDetailViewModel.addItemToShopCart(productDetailViewModel.selectUnit.get(), productDetailUnitFragment.getQuantity(), productDetailViewModel.productDetail.get().getModuleId(), shop.getShopId());
 
                     binding.viewPager.getLocationOnScreen(startocation);
                     showAddShopCartAnim(startocation);

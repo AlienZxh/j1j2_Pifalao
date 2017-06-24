@@ -10,7 +10,7 @@
 
         <variable
             name="productSort"
-            type="com.j1j2.data.model.ProductSort" />
+            type="com.j1j2.data.model.ProductCategory" />
 
         <import type="android.view.View.OnClickListener" />
 
@@ -34,14 +34,14 @@
             android:layout_marginLeft="@dimen/padding_biger"
             android:layout_marginRight="@dimen/padding_biger"
             android:layout_marginTop="@dimen/padding_noraml"
-            app:displayImgWithoutCache="@{Uri.parse(BuildConfig.IMAGE_URL+productSort.AppImgPath??@string/text_empty)}" />
+            app:displayImgWithoutCache="@{Uri.parse(BuildConfig.IMAGE_URL+productSort.appImgPath??@string/text_empty)}" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/padding_noraml"
             android:layout_marginTop="@dimen/padding_small"
-            android:text="@{productSort.ParentSortId==0?&quot;全部&quot;:productSort.SortName}"
+            android:text="@{productSort.categoryId==0?&quot;全部&quot;:productSort.name}"
             android:textColor="@color/colorText333"
             android:textSize="@dimen/text_big" />
 

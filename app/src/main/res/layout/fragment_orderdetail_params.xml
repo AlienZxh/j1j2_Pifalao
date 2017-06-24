@@ -12,21 +12,16 @@
 
         <import type="com.j1j2.common.util.StringUtils" />
 
-        <import type="com.j1j2.data.model.OrderSimple" />
+        <import type="com.j1j2.data.model.OrderDetail" />
 
-        <import type="com.j1j2.data.model.ServicePoint" />
 
         <variable
             name="onClick"
             type="OnClickListener" />
 
         <variable
-            name="servicePoint"
-            type="ServicePoint" />
-
-        <variable
-            name="orderSimple"
-            type="android.databinding.ObservableField&lt;OrderSimple&gt;" />
+            name="orderDetail"
+            type="android.databinding.ObservableField&lt;OrderDetail&gt;" />
 
     </data>
 
@@ -73,7 +68,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{StringUtils.getOrdersState(orderSimple.get().OrderState,orderSimple.get().OrderPayType)}"
+                        android:text="@{StringUtils.getOrdersState(orderDetail.get().OrderBaseInfo.OrderState)}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/text_big" />
 
@@ -93,7 +88,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/padding_noraml"
-                        android:text="@{orderSimple.get().OrderNO??&quot;&quot;}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderNO??&quot;&quot;}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -124,7 +119,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().DeliveryTypeStr}"
+                        android:text="@{orderDetail.get().OrderRecevierInfo.DeliveryTypeStr}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -141,14 +136,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().DeliveryType==Constant.DeliveryType.PICKBYSELF?&quot;自提时间：&quot;:&quot;送货时间：&quot;}"
+                        android:text="@{orderDetail.get().OrderRecevierInfo.DeliveryType==Constant.DeliveryType.PICKBYSELF?&quot;自提时间：&quot;:&quot;送货时间：&quot;}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().PredictSendTime}"
+                        android:text="@{orderDetail.get().OrderTimesInfo.PredictSendTime}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -172,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().OrderPayType==Constant.OrderPayType.CASHONDELIVERY?&quot;货到付款&quot;:StringUtils.getOnlinePayType(orderSimple.get().OnlinePayType)}"
+                        android:text="@{orderDetail.get().OrderPayInfo.OrderPayType==Constant.OrderPayType.CASHONDELIVERY?&quot;货到付款&quot;:StringUtils.getOnlinePayType(orderDetail.get().OrderPayInfo.OnlinePayType)}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -197,7 +192,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().OrderSubmitTimeStr}"
+                        android:text="@{orderDetail.get().OrderTimesInfo.OrderSubmitTimeStr}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -222,7 +217,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().OrderMemo}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderMemo}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -253,7 +248,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?&quot;收货人信息&quot;:&quot;服务点信息&quot;}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?&quot;收货人信息&quot;:&quot;服务点信息&quot;}"
                         android:textColor="@color/colorText333"
                         android:textSize="@dimen/text_big" />
 
@@ -272,7 +267,7 @@
                         android:text="查看路线"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_normal"
-                        android:visibility="@{orderSimple.get().moduleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}"
+                        android:visibility="@{orderDetail.get().OrderBaseInfo.OrderType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}"
                         app:OnClickListener="@{onClick}" />
 
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -299,16 +294,16 @@
                         android:background="@drawable/orange_conner_tag_bg"
                         android:paddingLeft="4px"
                         android:paddingRight="4px"
-                        android:text="@{orderSimple.get().DeliveryType==Constant.DeliveryType.PICKBYSELF?&quot;自提点&quot;:&quot;送货点&quot;}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.DeliveryType.PICKBYSELF?&quot;自提点&quot;:&quot;送货点&quot;}"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_normal"
-                        android:visibility="@{orderSimple.get().moduleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
+                        android:visibility="@{orderDetail.get().OrderBaseInfo.OrderType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?(&quot;收货人：&quot;+orderSimple.get().Contacter):servicePoint.Name}"
-                        android:textColor="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?@color/colorText999:@color/colorText333}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?(&quot;收货人：&quot;+orderDetail.get().OrderRecevierInfo.Contacter):orderDetail.get().OrderShopInfo.ShopName}"
+                        android:textColor="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?@color/colorText999:@color/colorText333}"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
 
@@ -323,14 +318,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?&quot;联系电话：&quot;:&quot;营业时间：&quot;}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?&quot;联系电话：&quot;:&quot;营业时间：&quot;}"
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?orderSimple.get().ContacterPhone:servicePoint.ServiceTime}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?orderDetail.get().OrderRecevierInfo.ContacterPhone:orderDetail.get().OrderShopInfo.ServiceTime}"
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -345,14 +340,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?&quot;收货地址：&quot;:&quot;门店地址：&quot;}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?&quot;收货地址：&quot;:&quot;门店地址：&quot;}"
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{orderSimple.get().moduleType==Constant.ModuleType.DELIVERY?orderSimple.get().ContacterAddress:servicePoint.AddressDetail}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.OrderType==Constant.ModuleType.DELIVERY?orderDetail.get().OrderRecevierInfo.ContacterAddress:orderDetail.get().OrderShopInfo.Address}"
                         android:textColor="@color/colorText999"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -392,7 +387,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="@dimen/padding_noraml"
-                        android:text="@{orderSimple.get().ModuleName}"
+                        android:text="@{orderDetail.get().OrderBaseInfo.ServiceName}"
                         android:textColor="@color/colorText2a2a2a"
                         android:textSize="@dimen/text_normal"
                         android:textStyle="bold" />
@@ -400,7 +395,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{StringUtils.getOrdersQuantity(orderSimple.get().ProductDetails)}"
+                        android:text="@{StringUtils.getOrdersQuantity(orderDetail.get().OrderProductsInfo)}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -454,16 +449,16 @@
                         android:gravity="right"
                         android:paddingLeft="4px"
                         android:paddingRight="4px"
-                        android:text="@{&quot;已节省：&quot;+orderSimple.get().SaveAmount+&quot;元&quot;}"
+                        android:text="@{&quot;已节省：&quot;+orderDetail.get().OrderBaseInfo.SaveAmount+&quot;元&quot;}"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/text_normal"
-                        android:visibility="@{orderSimple.get().ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
+                        android:visibility="@{orderDetail.get().OrderBaseInfo.OrderType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="@{&quot;￥&quot;+orderSimple.get().ProductAmout}"
+                        android:text="@{&quot;￥&quot;+orderDetail.get().OrderBaseInfo.ProductAmount}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -498,7 +493,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="@{&quot;￥&quot;+orderSimple.get().Freight}"
+                        android:text="@{&quot;￥&quot;+orderDetail.get().OrderBaseInfo.FreightAmount}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -533,7 +528,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="@{&quot;￥&quot;+(orderSimple.get().Freight+orderSimple.get().ProductAmout-orderSimple.get().OrderSum)}"
+                        android:text="@{&quot;￥&quot;+(orderDetail.get().OrderBaseInfo.FreightAmount+orderDetail.get().OrderBaseInfo.ProductAmount-orderDetail.get().OrderBaseInfo.OrderAmount)}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_big" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -567,7 +562,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
-                        android:text="@{&quot;￥&quot;+orderSimple.get().OrderSum}"
+                        android:text="@{&quot;￥&quot;+orderDetail.get().OrderBaseInfo.OrderAmount}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_biger"
                         android:textStyle="bold" />

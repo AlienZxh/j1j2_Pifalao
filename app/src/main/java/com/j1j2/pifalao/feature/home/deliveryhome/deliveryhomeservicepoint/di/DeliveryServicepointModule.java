@@ -1,7 +1,7 @@
 package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di;
 
 import com.j1j2.data.http.api.ServicePointApi;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryHomeServicepointFragment;
 import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.DeliveryServicepointViewModel;
@@ -16,12 +16,9 @@ import retrofit2.Retrofit;
 @Module
 public class DeliveryServicepointModule {
     private DeliveryHomeServicepointFragment deliveryHomeServicepointFragment;
-    private ServicePoint servicePoint;
 
-
-    public DeliveryServicepointModule(DeliveryHomeServicepointFragment deliveryHomeServicepointFragment, ServicePoint servicePoint) {
+    public DeliveryServicepointModule(DeliveryHomeServicepointFragment deliveryHomeServicepointFragment) {
         this.deliveryHomeServicepointFragment = deliveryHomeServicepointFragment;
-        this.servicePoint = servicePoint;
     }
 
     @Provides
@@ -36,15 +33,10 @@ public class DeliveryServicepointModule {
         return deliveryHomeServicepointFragment;
     }
 
-    @Provides
-    @ActivityScope
-    ServicePoint servicePoint() {
-        return servicePoint;
-    }
 
     @Provides
     @ActivityScope
-    DeliveryServicepointViewModel deliveryServicepointViewModel(DeliveryHomeServicepointFragment deliveryHomeServicepointFragment, ServicePointApi servicePointApi, ServicePoint servicePoint) {
-        return new DeliveryServicepointViewModel(deliveryHomeServicepointFragment, servicePointApi, servicePoint);
+    DeliveryServicepointViewModel deliveryServicepointViewModel(DeliveryHomeServicepointFragment deliveryHomeServicepointFragment, ServicePointApi servicePointApi) {
+        return new DeliveryServicepointViewModel(deliveryHomeServicepointFragment, servicePointApi);
     }
 }

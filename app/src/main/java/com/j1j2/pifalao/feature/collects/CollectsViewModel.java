@@ -7,6 +7,7 @@ import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.RemoveUserFavoritesBody;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -30,27 +31,28 @@ public class CollectsViewModel {
     }
 
     public void queryCollects() {
-        userFavoriteApi.queryUserFavorites("" + pageIndex, "" + pageSize)
-                .compose(collectsActivity.<WebReturn<PagerManager<CollectedProduct>>>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<CollectedProduct>>() {
-                    @Override
-                    public void onWebReturnSucess(PagerManager<CollectedProduct> collectedProductPagerManager) {
-
-                        collectsActivity.setAdapter(collectedProductPagerManager.getList());
-                    }
-
-                    @Override
-                    public void onWebReturnFailure(String errorMessage) {
-
-                    }
-
-                    @Override
-                    public void onWebReturnCompleted() {
-
-                    }
-                });
+//        userFavoriteApi.queryUserFavorites("" + pageIndex, "" + pageSize)
+//                .compose(collectsActivity.<WebReturn<PagerManager<CollectedProduct>>>bindToLifecycle())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new WebReturnSubscriber<PagerManager<CollectedProduct>>() {
+//                    @Override
+//                    public void onWebReturnSucess(PagerManager<CollectedProduct> collectedProductPagerManager) {
+//
+//                        collectsActivity.setAdapter(collectedProductPagerManager.getList());
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnFailure(String errorMessage) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onWebReturnCompleted() {
+//
+//                    }
+//                });
+        collectsActivity.setAdapter(new ArrayList<CollectedProduct>());
     }
 
     public void removeItemFromUserFavorites(List<Integer> mainIds) {

@@ -12,13 +12,13 @@ import com.j1j2.data.model.Address;
 import com.j1j2.data.model.City;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.ImgUrl;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.OrderDetail;
+import com.j1j2.data.model.ProductCategory;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.OfflineOrderSimple;
-import com.j1j2.data.model.OrderProductDetail;
 import com.j1j2.data.model.OrderSimple;
-import com.j1j2.data.model.ProductSort;
 import com.j1j2.data.model.RedPacket;
-import com.j1j2.data.model.ServicePoint;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.requestbody.ClientRegisterStepOneBody;
 import com.j1j2.pifalao.R;
@@ -77,12 +77,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToServicePointActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint) {
+    public void navigateToServicePointActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Shop shop) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.servicePointActivity(servicePoint).start(context);
+            Bundler.servicePointActivity(shop).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.servicePointActivity(servicePoint).intent(context),
+            ActivityCompat.startActivity(context, Bundler.servicePointActivity(shop).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -104,12 +104,12 @@ public class Navigate {
     }
 
 
-    public void navigateToProductsActivityFromSort(Activity context, ActivityOptionsCompat options, boolean isFinish, ProductSort productSort, Module module) {
+    public void navigateToProductsActivityFromSort(Activity context, ActivityOptionsCompat options, boolean isFinish, ProductCategory productCategory, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SORT).productSort(productSort).start(context);
+            Bundler.productsActivity(shopSubscribeService, ProductsActivity.PRODUCTS_TYPE_SORT).productCategory(productCategory).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SORT).productSort(productSort).intent(context),
+            ActivityCompat.startActivity(context, Bundler.productsActivity(shopSubscribeService, ProductsActivity.PRODUCTS_TYPE_SORT).productCategory(productCategory).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -117,12 +117,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToProductsActivityFromSearch(Activity context, ActivityOptionsCompat options, boolean isFinish, String key, Module module) {
+    public void navigateToProductsActivityFromSearch(Activity context, ActivityOptionsCompat options, boolean isFinish, String key, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SEARCH).key(key).start(context);
+            Bundler.productsActivity(shopSubscribeService, ProductsActivity.PRODUCTS_TYPE_SEARCH).key(key).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.productsActivity(module, ProductsActivity.PRODUCTS_TYPE_SEARCH).key(key).intent(context),
+            ActivityCompat.startActivity(context, Bundler.productsActivity(shopSubscribeService, ProductsActivity.PRODUCTS_TYPE_SEARCH).key(key).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -131,11 +131,24 @@ public class Navigate {
     }
 
     public void navigateToProductDetailActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, int mainId) {
+//        if (null == options || Build.VERSION.SDK_INT < 16) {
+//            Bundler.productDetailActivity(mainId).start(context);
+//            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//        } else {
+//            ActivityCompat.startActivity(context, Bundler.productDetailActivity(mainId).intent(context),
+//                    options.toBundle());
+//        }
+//        if (isFinish) {
+//            ActivityCompat.finishAfterTransition(context);
+//        }
+    }
+
+    public void navigateToMainActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService, int activityType) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.productDetailActivity(mainId).start(context);
+            Bundler.mainActivity(shopSubscribeService, activityType).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.productDetailActivity(mainId).intent(context),
+            ActivityCompat.startActivity(context, Bundler.mainActivity(shopSubscribeService, activityType).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -143,25 +156,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToMainActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module, int activityType) {
+    public void navigateToSearchActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.mainActivity(module, activityType).start(context);
+            Bundler.searchActivity(shopSubscribeService).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.mainActivity(module, activityType).intent(context),
-                    options.toBundle());
-        }
-        if (isFinish) {
-            ActivityCompat.finishAfterTransition(context);
-        }
-    }
-
-    public void navigateToSearchActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
-        if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.searchActivity(module).start(context);
-            context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else {
-            ActivityCompat.startActivity(context, Bundler.searchActivity(module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.searchActivity(shopSubscribeService).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -234,12 +234,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToOrderDetail(Activity context, ActivityOptionsCompat options, boolean isFinish, OrderSimple orderSimple, int orderId, int selectPage) {
+    public void navigateToOrderDetail(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId, int selectPage) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.orderDetailActivity(orderId, selectPage).orderSimple(orderSimple).start(context);
+            Bundler.orderDetailActivity(orderId, selectPage).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.orderDetailActivity(orderId, selectPage).orderSimple(orderSimple).intent(context),
+            ActivityCompat.startActivity(context, Bundler.orderDetailActivity(orderId, selectPage).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -273,12 +273,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToWalletManager(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+    public void navigateToWalletManager(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.walletManagerActivity().module(module).start(context);
+            Bundler.walletManagerActivity().shopSubscribeService(shopSubscribeService).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.walletManagerActivity().module(module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.walletManagerActivity().shopSubscribeService(shopSubscribeService).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -286,12 +286,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToCoupons(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module, int couponType) {
+    public void navigateToCoupons(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService, int couponType) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.couponsActivity(module, couponType).start(context);
+            Bundler.couponsActivity(shopSubscribeService, couponType).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.couponsActivity(module, couponType).intent(context),
+            ActivityCompat.startActivity(context, Bundler.couponsActivity(shopSubscribeService, couponType).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -468,12 +468,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToDeliveryHomeActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ServicePoint servicePoint, Module module) {
+    public void navigateToDeliveryHomeActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Shop shop, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.newDeliveryHomeActivity(servicePoint, module).start(context);
+            Bundler.newDeliveryHomeActivity(shop.getShopId(), shopSubscribeService).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.newDeliveryHomeActivity(servicePoint, module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.newDeliveryHomeActivity(shop.getShopId(), shopSubscribeService).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -507,12 +507,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToOrderProducts(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType, int moduleId, List<ShopCartItem> shopCartItems, List<OrderProductDetail> orderProductDetails) {
+    public void navigateToOrderProducts(Activity context, ActivityOptionsCompat options, boolean isFinish, int activityType, List<ShopCartItem> shopCartItems, List<OrderDetail.OrderProductDetail> orderProductDetails) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.orderProductsActivity(activityType, moduleId).shopCartItems(shopCartItems).orderProductDetails(orderProductDetails).start(context);
+            Bundler.orderProductsActivity(activityType).shopCartItems(shopCartItems).orderProductDetails(orderProductDetails).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.orderProductsActivity(activityType, moduleId).shopCartItems(shopCartItems).orderProductDetails(orderProductDetails).intent(context),
+            ActivityCompat.startActivity(context, Bundler.orderProductsActivity(activityType).shopCartItems(shopCartItems).orderProductDetails(orderProductDetails).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -559,12 +559,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToMoreModule(Activity context, ActivityOptionsCompat options, boolean isFinish, List<Module> modules) {
+    public void navigateToMoreModule(Activity context, ActivityOptionsCompat options, boolean isFinish, List<ShopSubscribeService> shopSubscribeServices) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.moreHomeActivity(modules).start(context);
+            Bundler.moreHomeActivity(shopSubscribeServices).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.moreHomeActivity(modules).intent(context),
+            ActivityCompat.startActivity(context, Bundler.moreHomeActivity(shopSubscribeServices).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -612,12 +612,12 @@ public class Navigate {
     }
 
 
-    public void navigateToUnsubscribeModule(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+    public void navigateToUnsubscribeModule(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.unsubscribeModuleActivity(module).start(context);
+            Bundler.unsubscribeModuleActivity(shopSubscribeService).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.unsubscribeModuleActivity(module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.unsubscribeModuleActivity(shopSubscribeService).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -664,12 +664,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToOrderRate(Activity context, ActivityOptionsCompat options, boolean isFinish, OrderSimple orderSimple) {
+    public void navigateToOrderRate(Activity context, ActivityOptionsCompat options, boolean isFinish, int orderId) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.orderRateActivity(orderSimple).start(context);
+            Bundler.orderRateActivity(orderId).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.orderRateActivity(orderSimple).intent(context),
+            ActivityCompat.startActivity(context, Bundler.orderRateActivity(orderId).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -703,12 +703,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToOfflineModuleHome(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module, ServicePoint servicePoint) {
+    public void navigateToOfflineModuleHome(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService, Shop shop) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.offlineModuleHomeActivity(module, servicePoint).start(context);
+            Bundler.offlineModuleHomeActivity(shopSubscribeService, shop).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.offlineModuleHomeActivity(module, servicePoint).intent(context),
+            ActivityCompat.startActivity(context, Bundler.offlineModuleHomeActivity(shopSubscribeService, shop).intent(context),
                     options.toBundle());
         }
         if (isFinish) {
@@ -924,12 +924,12 @@ public class Navigate {
         }
     }
 
-    public void navigateToModulePermissionDeniedActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, Module module) {
+    public void navigateToModulePermissionDeniedActivity(Activity context, ActivityOptionsCompat options, boolean isFinish, ShopSubscribeService shopSubscribeService) {
         if (null == options || Build.VERSION.SDK_INT < 16) {
-            Bundler.modulePermissionDeniedActivity(module).start(context);
+            Bundler.modulePermissionDeniedActivity(shopSubscribeService).start(context);
             context.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
-            ActivityCompat.startActivity(context, Bundler.modulePermissionDeniedActivity(module).intent(context),
+            ActivityCompat.startActivity(context, Bundler.modulePermissionDeniedActivity(shopSubscribeService).intent(context),
                     options.toBundle());
         }
         if (isFinish) {

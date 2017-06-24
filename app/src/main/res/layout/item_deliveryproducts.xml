@@ -5,10 +5,11 @@
     <data>
 
         <import type="android.net.Uri" />
+        <import type="com.j1j2.common.util.StringUtils" />
 
         <variable
-            name="productSimple"
-            type="com.j1j2.data.model.ProductSimple" />
+            name="product"
+            type="com.j1j2.data.model.Product" />
 
         <variable
             name="shopCart"
@@ -29,7 +30,7 @@
             android:layout_height="140px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/padding_small"
-            app:displayImgAsBitmap="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            app:displayImgAsBitmap="@{StringUtils.getMainThumImgUri(product)}"
             app:layout_auto_baseheight="width"
             app:siBorderColor="@color/colorGrayDEDEDE"
             app:siBorderWidth="1px"
@@ -48,7 +49,7 @@
                 android:layout_marginBottom="@dimen/padding_small"
                 android:layout_marginTop="@dimen/padding_small"
                 android:maxLines="2"
-                android:text="@{productSimple.Name}"
+                android:text="@{product.name}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal"
                 android:textStyle="bold" />
@@ -66,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{&quot;￥&quot;+((productSimple.ProductUnits==null||productSimple.ProductUnits.size()&lt;=0)?&quot;&quot;:(&quot;&quot;+productSimple.ProductUnits.get(0).MemberPrice))}"
+                    android:text="@{&quot;￥&quot;+((product.productUnits==null||product.productUnits.size()&lt;=0)?&quot;&quot;:(&quot;&quot;+product.productUnits.get(0).MemberPrice))}"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
@@ -74,7 +75,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{&quot;/&quot;+((productSimple.ProductUnits==null||productSimple.ProductUnits.size()&lt;=0)?&quot;&quot;:productSimple.ProductUnits.get(0).Unit)}"
+                    android:text="@{&quot;/&quot;+((product.productUnits==null||product.productUnits.size()&lt;=0)?&quot;&quot;:product.productUnits.get(0).Unit)}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
             </com.zhy.autolayout.AutoLinearLayout>
@@ -89,7 +90,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/padding_noraml"
             android:layout_marginRight="@dimen/padding_noraml"
-            app:quantity="@{shopCart.shopCartItemBaseUnitNum.get(productSimple.MainId)??0}" />
+            app:quantity="@{shopCart.shopCartItemBaseUnitNum.get(product.mainId)??0}" />
 
     </com.zhy.autolayout.AutoRelativeLayout>
 </layout>

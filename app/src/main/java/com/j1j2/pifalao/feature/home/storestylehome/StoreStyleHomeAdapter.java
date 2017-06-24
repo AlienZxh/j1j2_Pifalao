@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1j2.common.view.itemdecoration.CustomGridItemDecoration;
-import com.j1j2.data.model.City;
-import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemStoreContentBinding;
@@ -30,7 +28,7 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
 
     private static final int VIEW_TYPE_CONTENT = 0x00;
 
-    private List<SecondarySort> secondarySorts;
+    private List<ProductCategory> secondarySorts;
 
     private final ArrayList<LineItem> mItems;
 
@@ -47,7 +45,7 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
             R.string.icon_sort_head8,
             R.string.icon_sort_head9};
 
-    public StoreStyleHomeAdapter(List<SecondarySort> secondarySorts) {
+    public StoreStyleHomeAdapter(List<ProductCategory> secondarySorts) {
         this.secondarySorts = secondarySorts;
         mItems = new ArrayList<>();
         if (null == secondarySorts)
@@ -58,22 +56,22 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
         int spanCount = 3;
         Rect rect;
         for (int i = 0; i < secondarySorts.size(); i++) {
-            if (null == secondarySorts.get(i).getParentProductSort())
+            if (null == secondarySorts.get(i))
                 continue;
             rect = new Rect(0, 0, 0, 0);
-            mItems.add(new LineItem(secondarySorts.get(i).getParentProductSort(), true, rect, sectionFirstPosition, i));
-            if (null == secondarySorts.get(i).getChildFoodSorts())
+            mItems.add(new LineItem(secondarySorts.get(i), true, rect, sectionFirstPosition, i));
+            if (null == secondarySorts.get(i).getChildCategories())
                 continue;
-            int childSortSize = secondarySorts.get(i).getChildFoodSorts().size();
+            int childSortSize = secondarySorts.get(i).getChildCategories().size();
             int itemCount = childSortSize + 1;
 
             for (int j = 0; j < itemCount; j++) {
                 if (j < childSortSize) {
                     rect = CustomGridItemDecoration.computeGridRect(j, itemCount, spanCount, marginVertical, marginHorizontal);
-                    mItems.add(new LineItem(secondarySorts.get(i).getChildFoodSorts().get(j), false, rect, sectionFirstPosition, i));
+                    mItems.add(new LineItem(secondarySorts.get(i).getChildCategories().get(j), false, rect, sectionFirstPosition, i));
                 } else {
                     rect = CustomGridItemDecoration.computeGridRect(j, itemCount, spanCount, marginVertical, marginHorizontal);
-                    mItems.add(new LineItem(secondarySorts.get(i).getParentProductSort(), false, rect, sectionFirstPosition, i));
+                    mItems.add(new LineItem(secondarySorts.get(i), false, rect, sectionFirstPosition, i));
                 }
             }
 
@@ -83,7 +81,7 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
 
 
     public interface OnSortItemClickListener {
-        void onSortItemClickListener(View view, ProductSort productSort, int position);
+        void onSortItemClickListener(View view, ProductCategory productCategory, int position);
     }
 
     private OnSortItemClickListener onItemClickListener;
@@ -136,11 +134,11 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
         return mItems.get(position).rect;
     }
 
-    public List<SecondarySort> getSecondarySorts() {
+    public List<ProductCategory> getSecondarySorts() {
         return secondarySorts;
     }
 
-    public class StoreContentViewHolder extends AutoBindingViewHolder<ItemStoreContentBinding, ProductSort> {
+    public class StoreContentViewHolder extends AutoBindingViewHolder<ItemStoreContentBinding, ProductCategory> {
 
 
         public StoreContentViewHolder(View itemView) {
@@ -154,7 +152,7 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
         }
 
         @Override
-        public void bind(@NonNull ProductSort data, final int position) {
+        public void bind(@NonNull ProductCategory data, final int position) {
             binding.setProductSort(data);
 
             binding.setOnClick(new View.OnClickListener() {
@@ -167,7 +165,7 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
         }
     }
 
-    public class StoreHeaderViewHolder extends AutoBindingViewHolder<ItemStoreHeadBinding, ProductSort> {
+    public class StoreHeaderViewHolder extends AutoBindingViewHolder<ItemStoreHeadBinding, ProductCategory> {
         private Context context;
 
         public StoreHeaderViewHolder(View itemView) {
@@ -181,7 +179,7 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
         }
 
         @Override
-        public void bind(@NonNull ProductSort data, final int position) {
+        public void bind(@NonNull ProductCategory data, final int position) {
             binding.setProductSort(data);
             binding.setFloor("" + (mItems.get(position).sectionPart + 1) + "F");
             binding.setIcon(context.getString(icons[mItems.get(position).sectionPart % 9]));
@@ -206,9 +204,9 @@ public class StoreStyleHomeAdapter extends RecyclerView.Adapter<AutoBindingViewH
 
         public boolean isHeader;
 
-        public ProductSort sort;
+        public ProductCategory sort;
 
-        public LineItem(ProductSort sort, boolean isHeader, Rect rect,
+        public LineItem(ProductCategory sort, boolean isHeader, Rect rect,
                         int sectionFirstPosition, int sectionPart) {
             this.isHeader = isHeader;
             this.sort = sort;

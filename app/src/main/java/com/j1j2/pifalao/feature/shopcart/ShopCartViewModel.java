@@ -52,8 +52,8 @@ public class ShopCartViewModel {
         this.shopCart = shopCart;
     }
 
-    public void queryShopCart(final int moduleType) {
-        shopCartApi.queryShopCart(moduleId)
+    public void queryShopCart(final int moduleType, int shopId) {
+        shopCartApi.queryShopCart(moduleId, shopId)
                 .compose(shopCartActivity.<WebReturn<List<ShopCartItem>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -78,8 +78,8 @@ public class ShopCartViewModel {
                 });
     }
 
-    public void removeShopCartItem(int productId) {
-        shopCartApi.removeShopCartItem(productId)
+    public void removeShopCartItem(int productId, int serviceId, int shopId) {
+        shopCartApi.removeShopCartItem(productId, serviceId, shopId)
                 .compose(shopCartActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -103,8 +103,8 @@ public class ShopCartViewModel {
                 });
     }
 
-    public void updateShopCart() {
-        shopCartApi.updateShopCart(shopCartItems)
+    public void updateShopCart(int serviceId, int shopId) {
+        shopCartApi.updateShopCart(shopCartItems, serviceId, shopId)
                 .compose(shopCartActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

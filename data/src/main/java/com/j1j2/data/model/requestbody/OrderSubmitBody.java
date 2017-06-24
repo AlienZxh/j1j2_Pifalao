@@ -7,7 +7,7 @@ public class OrderSubmitBody {
 
     private int FreightID;// 选择的运费方式
 
-    private int ServicePointId;// 用户选择的自提或者关联的服务点
+    private int ShopId;// 用户选择的自提或者关联的服务点
     private String AddressId;// 用户选择的地址的主键编号
 
     private String CouponCode;
@@ -15,7 +15,7 @@ public class OrderSubmitBody {
     private double SaveAmount;// 订单此次节省金额
     private String OrderMemo;// 订单其它备注
     private String PredictSendTime;// 订单预计配送时间
-    private int ModuleId;//服务模块
+    private int ServiceId;//服务模块
 
     private int OrderPayType;//支付方式
 
@@ -27,12 +27,12 @@ public class OrderSubmitBody {
         FreightID = freightID;
     }
 
-    public int getServicePointId() {
-        return ServicePointId;
+    public int getShopId() {
+        return ShopId;
     }
 
-    public void setServicePointId(int servicePointId) {
-        ServicePointId = servicePointId;
+    public void setShopId(int shopId) {
+        ShopId = shopId;
     }
 
     public String getAddressId() {
@@ -83,12 +83,12 @@ public class OrderSubmitBody {
         PredictSendTime = predictSendTime;
     }
 
-    public int getModuleId() {
-        return ModuleId;
+    public int getServiceId() {
+        return ServiceId;
     }
 
-    public void setModuleId(int moduleId) {
-        ModuleId = moduleId;
+    public void setServiceId(int serviceId) {
+        ServiceId = serviceId;
     }
 
     public int getOrderPayType() {

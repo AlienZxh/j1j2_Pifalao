@@ -12,8 +12,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="module"
-            type="com.j1j2.data.model.Module" />
+            name="shopSubscribeService"
+            type="com.j1j2.data.model.ShopSubscribeService" />
 
         <variable
             name="freight"
@@ -47,7 +47,7 @@
             android:background="@drawable/promtiontime_view_bg"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="@{module.ModuleType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}">
+            android:visibility="@{shopSubscribeService.ServiceType!=Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}">
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_small"
-                android:text="@{module.ModuleType==Constant.ModuleType.VEGETABLE?&quot;距离21点下单截止还剩：&quot;:&quot;距离仓库发货还剩：&quot;}"
+                android:text="@{shopSubscribeService.ServiceType==Constant.ModuleType.VEGETABLE?&quot;距离21点下单截止还剩：&quot;:&quot;距离仓库发货还剩：&quot;}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 
@@ -167,7 +167,7 @@
             android:orientation="horizontal"
             android:paddingBottom="4px"
             android:paddingTop="4px"
-            android:visibility="@{module.ModuleType==Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}">
+            android:visibility="@{shopSubscribeService.ServiceType==Constant.ModuleType.DELIVERY?View.VISIBLE:View.GONE}">
 
             <TextView
                 fontPath="iconfont/iconfont.ttf"
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="6px"
-                android:text="@{&quot;温馨提示：本店&quot;+module.OrderAmountMinLimit+&quot;元起送，配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freight)}"
+                android:text="@{&quot;温馨提示：本店&quot;+shopSubscribeService.OrderAmountMinLimit+&quot;元起送，配送时间：&quot;+StringUtils.getServiceTimeWithFreightType(freight)}"
                 android:textColor="@color/colorText333"
                 android:textSize="@dimen/text_normal" />
 

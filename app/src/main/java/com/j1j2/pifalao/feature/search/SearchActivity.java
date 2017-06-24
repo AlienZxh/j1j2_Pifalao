@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.j1j2.common.view.itemdecoration.CustomGridItemDecoration;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
@@ -37,7 +37,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     ActivitySearchBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     @Inject
     SearchViewModel searchViewModel;
@@ -61,7 +61,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initViews() {
-        searchViewModel.queryHotKey(module.getWareHouseModuleId());
+        searchViewModel.queryHotKey(shopSubscribeService.getServiceId());
 
         historys = userRelativePreference.getHistoryKey(new ArrayList<String>());
         setHistoryKey(new SearchAdapter(historys));
@@ -97,14 +97,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 return;
             }
             changeHistoryKey(newHistoryKey);
-            navigate.navigateToProductsActivityFromSearch(this, null, false, newHistoryKey, module);
+            navigate.navigateToProductsActivityFromSearch(this, null, false, newHistoryKey, shopSubscribeService);
         }
 
     }
 
     @Override
     public void onKeyClickListener(View view, String key, int position) {
-        navigate.navigateToProductsActivityFromSearch(this, null, false, key, module);
+        navigate.navigateToProductsActivityFromSearch(this, null, false, key, shopSubscribeService);
         changeHistoryKey(key);
     }
 

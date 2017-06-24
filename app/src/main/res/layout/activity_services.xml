@@ -14,7 +14,7 @@
 
         <variable
             name="sercivepoint"
-            type="com.j1j2.data.model.ServicePoint" />
+            type="com.j1j2.data.model.Shop" />
 
         <variable
             name="unReadInfoManager"
@@ -164,7 +164,7 @@
                 android:background="@color/colorGrayEDEDED" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/moduleList"
+                android:id="@+id/shopSubscribeServiceList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"

@@ -2,9 +2,9 @@ package com.j1j2.pifalao.feature.home.deliveryhome.di;
 
 import android.app.Activity;
 
+import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.pifalao.app.ActivityScope;
-import com.j1j2.pifalao.feature.home.deliveryhome.DeliveryHomeActivity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -29,10 +29,15 @@ public class DeliveryHomeModule {
 
     @Provides
     @ActivityScope
+    ServicePointApi servicePointApi(Retrofit retrofit) {
+        return retrofit.create(ServicePointApi.class);
+    }
+
+    @Provides
+    @ActivityScope
     Activity deliveryHomeActivity() {
         return deliveryHomeActivity;
     }
-
 
 
 }

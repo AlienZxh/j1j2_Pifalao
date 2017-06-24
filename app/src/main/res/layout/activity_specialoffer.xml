@@ -69,7 +69,7 @@
         <!--bind:hour="@{productViewModel.hour}"-->
         <!--bind:isLogin="@{productViewModel.productsActivity.isLogin}"-->
         <!--bind:minute="@{productViewModel.minute}"-->
-        <!--bind:module="@{productViewModel.productsActivity.module}"-->
+        <!--bind:shopSubscribeService="@{productViewModel.productsActivity.shopSubscribeService}"-->
         <!--bind:second="@{productViewModel.second}" />-->
 
         <!--<android.support.v7.widget.RecyclerView-->

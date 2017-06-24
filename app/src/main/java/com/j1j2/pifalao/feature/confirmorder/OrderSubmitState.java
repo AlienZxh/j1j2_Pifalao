@@ -7,8 +7,7 @@ import android.databinding.ObservableInt;
 import com.j1j2.data.model.Address;
 import com.j1j2.data.model.Coupon;
 import com.j1j2.data.model.FreightType;
-import com.j1j2.data.model.ServicePoint;
-import com.j1j2.pifalao.app.Constant;
+import com.j1j2.data.model.Shop;
 
 /**
  * Created by alienzxh on 16-4-6.
@@ -22,7 +21,7 @@ public class OrderSubmitState {
     public ObservableField<FreightType> FreightTypeDetail;// 选择的运费方式  2:自提  5：送货上门 通过接口查询
 
     public ObservableField<Address> AddressDetail;// 用户选择的地址的主键编号
-    public ObservableField<ServicePoint> ServicePointDetail;// 用户选择的自提或者关联的服务点
+    public ObservableField<Shop> ServicePointDetail;// 用户选择的自提或者关联的服务点
 
     public ObservableDouble FreightValue;
 
@@ -32,11 +31,11 @@ public class OrderSubmitState {
 
     public String OrderMemo;// 订单其它备注
 
-    public OrderSubmitState(int moduleId, ServicePoint servicePoint) {
+    public OrderSubmitState(int moduleId, Shop shop) {
         ModuleId = moduleId;
         this.FreightTypeDetail = new ObservableField<>();
         this.OrderPayType = new ObservableInt();
-        this.ServicePointDetail = new ObservableField<>(servicePoint);
+        this.ServicePointDetail = new ObservableField<>(shop);
         this.AddressDetail = new ObservableField<>();
 
         this.PredictSendTime = new ObservableField<>();

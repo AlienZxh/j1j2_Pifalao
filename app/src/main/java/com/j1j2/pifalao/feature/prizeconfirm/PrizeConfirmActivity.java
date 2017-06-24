@@ -10,7 +10,8 @@ import com.j1j2.data.http.api.UserAddressApi;
 import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.model.ActivityOrderSimple;
 import com.j1j2.data.model.ActivityProduct;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.SubmitOrderReturn;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
@@ -20,14 +21,10 @@ import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
-import com.j1j2.pifalao.app.event.NavigateToHomeEvent;
-import com.j1j2.pifalao.app.event.PrizeOrderStateChangeEvent;
 import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.databinding.ActivityPrizeconfirmBinding;
 import com.j1j2.pifalao.feature.prizeconfirm.di.PrizeConfirmModule;
 import com.j1j2.pifalao.feature.successresult.SuccessResultActivity;
-
-import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -64,7 +61,8 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
     @Inject
     UserRelativePreference userRelativePreference;
 
-    Module module;
+    ShopSubscribeService shopSubscribeService;
+    Shop shop;
 
     PrizeConfirmInfoPhoneFragment phoneFragment;
     PrizeConfirmInfoMaterialFragment materialFragment;
@@ -74,6 +72,8 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
         super.setupActivityComponent();
         Bundler.inject(this);
         MainAplication.get(this).getUserComponent().plus(new PrizeConfirmModule(this)).inject(this);
+        shopSubscribeService = userRelativePreference.getSelectedModule(null);
+        shop = userRelativePreference.getSelectedServicePoint(null);
     }
 
     @Override
@@ -89,7 +89,6 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
         binding.setActivityProduct(activityProduct);
         binding.setPrizeQuantity(prizeQuantity);
 
-        module = userRelativePreference.getSelectedModule(null);
 
         if (prizeType == Constant.ActivityOrderType.EXCHANGEORDER) {
             binding.confirmOrder.setText("确认兑换");
@@ -133,12 +132,13 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
                 });
     }
 
-    public void commitOrder() {
+    public void commitOrder(int shopId) {
         showProgress("订单提交中");
         ActivityOrderSubmitBody activityOrderSubmitBody = new ActivityOrderSubmitBody();
         activityOrderSubmitBody.setProductId(activityProduct.getProductId());
         activityOrderSubmitBody.setQuantity(prizeQuantity);
-        activityOrderSubmitBody.setModuleId(module.getWareHouseModuleId());
+        activityOrderSubmitBody.setServiceId(shopSubscribeService.getServiceId());
+        activityOrderSubmitBody.setShopId(shopId);
         if (phoneFragment != null)
             activityOrderSubmitBody.setUserPhone(phoneFragment.getPhoneNO());
         if (materialFragment != null) {
@@ -236,7 +236,7 @@ public class PrizeConfirmActivity extends BaseActivity implements View.OnClickLi
             }
 
 
-            commitOrder();
+            commitOrder(shop.getShopId());
         }
 
     }

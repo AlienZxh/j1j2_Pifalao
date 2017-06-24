@@ -1,5 +1,6 @@
 package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -16,7 +17,7 @@ import com.baidu.mapapi.navi.NaviParaOption;
 import com.j1j2.common.util.Toastor;
 import com.j1j2.common.view.scrollablelayout.ScrollableHelper;
 import com.j1j2.data.model.FreightType;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.ShopExpressConfig;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseFragment;
@@ -27,7 +28,6 @@ import com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeservicepoint.di.De
 import javax.inject.Inject;
 
 import in.workarounds.bundler.Bundler;
-import in.workarounds.bundler.annotations.Arg;
 import in.workarounds.bundler.annotations.RequireBundler;
 
 /**
@@ -36,7 +36,11 @@ import in.workarounds.bundler.annotations.RequireBundler;
 @RequireBundler
 public class DeliveryHomeServicepointFragment extends BaseFragment implements View.OnClickListener
         , ScrollableHelper.ScrollableContainer
-,IDialogPositiveButtonClickListener{
+        , IDialogPositiveButtonClickListener {
+
+    public interface DeliveryHomeServicepointFragmentListener {
+        ShopExpressConfig getShopExpressConfig();
+    }
 
     @Override
     protected String getFragmentName() {
@@ -45,8 +49,7 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
 
     FragmentDeliveryhomeServicepointBinding binding;
 
-    @Arg
-    ServicePoint servicePoint;
+    DeliveryHomeServicepointFragmentListener listener;
 
     @Inject
     DeliveryServicepointViewModel deliveryServicepointViewModel;
@@ -57,6 +60,12 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
     private String callDialogTag = "CALLDIALOG";
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        listener = (DeliveryHomeServicepointFragmentListener) context;
+    }
+
+    @Override
     protected View initBinding(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_deliveryhome_servicepoint, container, false);
         return binding.getRoot();
@@ -64,19 +73,20 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
 
     @Override
     protected void initViews() {
+        binding.setShopExpressConfig(listener.getShopExpressConfig());
         binding.setDeliveryServicepointViewModel(deliveryServicepointViewModel);
-        deliveryServicepointViewModel.queryModule();
+        deliveryServicepointViewModel.queryModule(listener.getShopExpressConfig().getShopId());
     }
 
     @Override
     protected void setupActivityComponent() {
         super.setupActivityComponent();
         Bundler.inject(this);
-        MainAplication.get(getContext()).getAppComponent().plus(new DeliveryServicepointModule(this, servicePoint)).inject(this);
+        MainAplication.get(getContext()).getAppComponent().plus(new DeliveryServicepointModule(this)).inject(this);
     }
 
     public void showCallDialog() {
-        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + servicePoint.getMobile() + "？", "取消", "确定");
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + listener.getShopExpressConfig().getMobile() + "？", "取消", "确定");
     }
 
     @Override
@@ -91,7 +101,7 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
             }
             NaviParaOption naviParaOption = new NaviParaOption()
                     .startPoint(new LatLng(location.getLatitude(), location.getLongitude()))
-                    .endPoint(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
+                    .endPoint(new LatLng(listener.getShopExpressConfig().getLat(), listener.getShopExpressConfig().getLng()));
             BaiduMapNavigation.setSupportWebNavi(true);
             BaiduMapNavigation.openBaiduMapNavi(naviParaOption, getContext());
         }
@@ -105,7 +115,7 @@ public class DeliveryHomeServicepointFragment extends BaseFragment implements Vi
             boolean has_permission = (PackageManager.PERMISSION_GRANTED
                     == pkm.checkPermission("android.permission.CALL_PHONE", "com.j1j2.pifalao"));
             if (has_permission) {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listener.getShopExpressConfig().getMobile()));
                 startActivity(intent);
             } else {
                 toastor.showSingletonToast("没有拨打电话权限");

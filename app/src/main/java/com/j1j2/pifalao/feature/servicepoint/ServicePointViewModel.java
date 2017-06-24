@@ -3,8 +3,8 @@ package com.j1j2.pifalao.feature.servicepoint;
 import android.databinding.ObservableField;
 
 import com.j1j2.data.http.api.ServicePointApi;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 
@@ -20,17 +20,17 @@ public class ServicePointViewModel {
 
     private ServicePointActivity servicePointActivity;
     private ServicePointApi servicePointApi;
-    private ServicePoint servicePoint;
+    private Shop shop;
     public ObservableField<String> moduletr = new ObservableField<>();
 
-    public ServicePointViewModel(ServicePointActivity servicePointActivity, ServicePointApi servicePointApi, ServicePoint servicePoint) {
+    public ServicePointViewModel(ServicePointActivity servicePointActivity, ServicePointApi servicePointApi, Shop shop) {
         this.servicePointActivity = servicePointActivity;
         this.servicePointApi = servicePointApi;
-        this.servicePoint = servicePoint;
+        this.shop = shop;
     }
 
-    public ServicePoint getServicePoint() {
-        return servicePoint;
+    public Shop getShop() {
+        return shop;
     }
 
     public ServicePointActivity getServicePointActivity() {
@@ -38,17 +38,17 @@ public class ServicePointViewModel {
     }
 
     public void queryModule() {
-        servicePointApi.queryServicePointServiceModules(servicePoint.getServicePointId())
-                .compose(servicePointActivity.<WebReturn<List<Module>>>bindToLifecycle())
+        servicePointApi.queryServicePointServiceModules(shop.getShopId())
+                .compose(servicePointActivity.<WebReturn<List<ShopSubscribeService>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<Module>>() {
+                .subscribe(new WebReturnSubscriber<List<ShopSubscribeService>>() {
                     @Override
-                    public void onWebReturnSucess(List<Module> modules) {
+                    public void onWebReturnSucess(List<ShopSubscribeService> shopSubscribeServices) {
                         StringBuilder stringBuilder = new StringBuilder();
-                        for (Module module : modules) {
-                            if (module.isSubscribed())
-                                stringBuilder.append(module.getModuleName() + "、");
+                        for (ShopSubscribeService shopSubscribeService : shopSubscribeServices) {
+                            if (shopSubscribeService.isSubscribed())
+                                stringBuilder.append(shopSubscribeService.getName() + "、");
                         }
                         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                         stringBuilder.append("等");

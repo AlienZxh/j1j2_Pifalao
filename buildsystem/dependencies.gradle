@@ -1,15 +1,15 @@
 ext {
     //Android
-    androidBuildToolsVersion = "24.0.2"
+    androidBuildToolsVersion = '25.0.2'
     androidMinSdkVersion = 15
-    androidTargetSdkVersion = 24
-    androidCompileSdkVersion = 24
+    androidTargetSdkVersion = 25
+    androidCompileSdkVersion = 25
 
     //Libraries
     daggerVersion = '2.2'
-    androidAutoLayoutVersion = '1.4.3'
+    androidAutoLayoutVersion = '1.4.5'
     loggerVersion = '1.12'
-    supportVersion = '25.0.0'
+    supportVersion = '25.1.0'
     bundlerVersion = '0.1.1'
     javaxAnnotationVersion = '10.0-b28'
 
@@ -57,10 +57,11 @@ ext {
     slantedtextviewVersion = '1.2'
     marqueeviewVersion = '1.1.0'
     spotsdialogVersion = '0.7@aar'
-    buglySDKUpgradeVersion = '1.1.6'
+    buglySDKUpgradeVersion = 'latest.release'
     buglyNDKVersion = 'latest.release'
 
-    jpushVersion = '2.2.0'
+    jpushVersion = '3.0.0'
+    jcoreVersion = '1.0.0'
     //Testing
     jUnitVersion = '4.12'
 
@@ -99,7 +100,8 @@ ext {
             umengAnalytics       : "com.umeng.analytics:analytics:${umengAnalyticsVersion}",
             buglySDKUpgrade      : "com.tencent.bugly:crashreport_upgrade:${buglySDKUpgradeVersion}",
             buglyNDK             : "com.tencent.bugly:nativecrashreport:${buglyNDKVersion}",
-            jpush                : "cn.jiguang:jpush:${jpushVersion}",
+            jpush                : "cn.jiguang.sdk:jpush:${jpushVersion}",
+            jcore                : "cn.jiguang.sdk:jcore:${jcoreVersion}",
             easypermissions      : "pub.devrel:easypermissions:${easypermissionsVersion}",
     ]
 

@@ -204,6 +204,9 @@
 ##---------------Begin: proguard configuration for jpush  ----------
 -dontwarn cn.jpush.**
 -keep class cn.jpush.** { *; }
+
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
 #==================protobuf======================
 -dontwarn com.google.**
 -keep class com.google.protobuf.** {*;}
@@ -235,6 +238,7 @@
   **[] $VALUES;
   public *;
 }
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 ##---------------End: proguard configuration for Glide  ----------
 
 ##---------------Begin: proguard configuration for shapeimageview  ----------

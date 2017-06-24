@@ -15,7 +15,7 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.j1j2.common.util.LocationUtils;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.base.BaseMapActivity;
@@ -41,7 +41,7 @@ public class CatServicePointActivity extends BaseMapActivity implements View.OnC
     ActivityCatservicepointBinding binding;
 
     @Arg
-    int servicePointId;
+    int shopId;
 
     @Inject
     CatServicePointViewModel catServicePointViewModel;
@@ -80,17 +80,17 @@ public class CatServicePointActivity extends BaseMapActivity implements View.OnC
 
     @Override
     protected void initViews() {
-        catServicePointViewModel.queryServicePoint(servicePointId);
+        catServicePointViewModel.queryShop(shopId);
     }
 
-    public void addServicepointOverlay(ServicePoint servicePoint) {
+    public void addServicepointOverlay(Shop shop) {
         BitmapDescriptor markIcon = BitmapDescriptorFactory
                 .fromResource(R.drawable.icon_servicepoint);
         if (servicepointMark != null)
             servicepointMark.remove();
 
         servicepointMarkOptions = new MarkerOptions();
-        servicepointMarkOptions.position(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
+        servicepointMarkOptions.position(new LatLng(shop.getLat(), shop.getLng()));
         servicepointMarkOptions.draggable(false);
         servicepointMarkOptions.animateType(MarkerOptions.MarkerAnimateType.drop);
         servicepointMarkOptions.icon(markIcon);

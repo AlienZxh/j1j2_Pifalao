@@ -1,6 +1,6 @@
 package com.j1j2.pifalao.feature.orderproducts;
 
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.ShopCartItem;
 
 /**
@@ -17,7 +17,6 @@ public class OrderProductSimple {
     private String ThumbImgPath;
     private int Quantity;
     private int Sells;
-    private int ActualDelivery;
 
     public  OrderProductSimple(int activityType, Object data) {
         this.activityType = activityType;
@@ -31,16 +30,15 @@ public class OrderProductSimple {
             this.ThumbImgPath = ((ShopCartItem) data).getThumbImgPath();
             this.Quantity = ((ShopCartItem) data).getQuantity();
             this.Sells = ((ShopCartItem) data).getSells();
-        } else if (data instanceof OrderProductDetail) {
-            this.ProductId = ((OrderProductDetail) data).getProductId();
-            this.ProductMainId = ((OrderProductDetail) data).getProductMainId();
-            this.ProductName = ((OrderProductDetail) data).getProductName();
-            this.ProductUnit = ((OrderProductDetail) data).getProductUnit();
-            this.RetailPrice = ((OrderProductDetail) data).getRetailPrice();
-            this.MemberPrice = ((OrderProductDetail) data).getMemberPrice();
-            this.ThumbImgPath = ((OrderProductDetail) data).getThumbImgPath();
-            this.Quantity = ((OrderProductDetail) data).getQuantity();
-            this.ActualDelivery = ((OrderProductDetail) data).getActualDelivery();
+        } else if (data instanceof OrderDetail.OrderProductDetail) {
+            this.ProductId = ((OrderDetail.OrderProductDetail) data).getProductId();
+            this.ProductMainId = ((OrderDetail.OrderProductDetail) data).getProductId();
+            this.ProductName = ((OrderDetail.OrderProductDetail) data).getProductName();
+            this.ProductUnit = ((OrderDetail.OrderProductDetail) data).getProductUnit();
+            this.RetailPrice = ((OrderDetail.OrderProductDetail) data).getRetailPrice();
+            this.MemberPrice = ((OrderDetail.OrderProductDetail) data).getMemberPrice();
+            this.ThumbImgPath = ((OrderDetail.OrderProductDetail) data).getThumbImgPath();
+            this.Quantity = ((OrderDetail.OrderProductDetail) data).getQuantity();
         }
     }
 
@@ -124,11 +122,4 @@ public class OrderProductSimple {
         Sells = sells;
     }
 
-    public int getActualDelivery() {
-        return ActualDelivery;
-    }
-
-    public void setActualDelivery(int actualDelivery) {
-        ActualDelivery = actualDelivery;
-    }
 }

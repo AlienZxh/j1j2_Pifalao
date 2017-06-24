@@ -12,7 +12,7 @@
 
         <variable
             name="servicepoint"
-            type="com.j1j2.data.model.ServicePoint" />
+            type="com.j1j2.data.model.Shop" />
 
         <variable
             name="onItemClick"

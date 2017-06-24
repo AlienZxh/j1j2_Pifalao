@@ -6,13 +6,11 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.j1j2.common.util.LocationUtils;
 import com.j1j2.data.http.api.ServicePointApi;
 import com.j1j2.data.model.City;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.Shop;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +34,7 @@ public class LocationViewModel {
 
     private List<City> districts;
 
-    private List<ServicePoint> servicePoints;
+    private List<Shop> shops;
 
     private LocationDistrictAdapter locationDistrictAdapter;
 
@@ -47,25 +45,25 @@ public class LocationViewModel {
         this.servicePointApi = servicePointApi;
         this.locationActivity = locationActivity;
         this.city = city;
-        this.servicePoints = new ArrayList<>();
+        this.shops = new ArrayList<>();
         this.districts = new ArrayList<>();
         this.locationDistrictAdapter = new LocationDistrictAdapter(districts);
-        this.locationServicePointAdapter = new LocationServicePointAdapter(servicePoints);
+        this.locationServicePointAdapter = new LocationServicePointAdapter(shops);
     }
 
-    private Observable<WebReturn<List<ServicePoint>>> queryNearByWithLocation(BDLocation location) {
+    private Observable<WebReturn<List<Shop>>> queryNearByWithLocation(BDLocation location) {
         if (LocationUtils.isLocationSuccess(location)) {
             LatLng northeast = locationActivity.getNortheast(location);
             LatLng southwest = locationActivity.getSouthwest(location);
-            return servicePointApi.queryServicePointWithOutDistanceInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude);
+            return servicePointApi.queryShopsInArea(southwest.latitude, northeast.latitude, southwest.longitude, northeast.longitude);
         } else {
             return servicePointApi.queryServicePointInCity(city.getPCCId());
         }
     }
 
     public void onCreate(final BDLocation location) {
-        if (servicePoints.size() > 0)
-            servicePoints.clear();
+        if (shops.size() > 0)
+            shops.clear();
         locationActivity.showLoad();
         servicePointApi.queryCityDistric(city.getPCCId())
                 .compose(locationActivity.<WebReturn<List<City>>>bindToLifecycle())
@@ -81,15 +79,15 @@ public class LocationViewModel {
                     }
                 })
                 .observeOn(Schedulers.io())
-                .flatMap(new Func1<WebReturn<List<City>>, Observable<WebReturn<List<ServicePoint>>>>() {
+                .flatMap(new Func1<WebReturn<List<City>>, Observable<WebReturn<List<Shop>>>>() {
                     @Override
-                    public Observable<WebReturn<List<ServicePoint>>> call(WebReturn<List<City>> listWebReturn) {
+                    public Observable<WebReturn<List<Shop>>> call(WebReturn<List<City>> listWebReturn) {
                         return queryNearByWithLocation(location);
                     }
                 })
-                .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .compose(locationActivity.<WebReturn<List<Shop>>>bindToLifecycle())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
+                .subscribe(new DefaultSubscriber<WebReturn<List<Shop>>>() {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
@@ -100,7 +98,7 @@ public class LocationViewModel {
                     }
 
                     @Override
-                    public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
+                    public void onNext(WebReturn<List<Shop>> listWebReturn) {
                         super.onNext(listWebReturn);
                         locationActivity.hideLoad();
                         refreshServicePointData(location, listWebReturn.getDetail(), true);
@@ -109,14 +107,14 @@ public class LocationViewModel {
     }
 
     public void queryNearByServicePoint(final BDLocation location) {
-        if (servicePoints.size() > 0)
-            servicePoints.clear();
+        if (shops.size() > 0)
+            shops.clear();
         locationActivity.showLoad();
         queryNearByWithLocation(location)
-                .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .compose(locationActivity.<WebReturn<List<Shop>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
+                .subscribe(new DefaultSubscriber<WebReturn<List<Shop>>>() {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
@@ -126,7 +124,7 @@ public class LocationViewModel {
                     }
 
                     @Override
-                    public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
+                    public void onNext(WebReturn<List<Shop>> listWebReturn) {
                         super.onNext(listWebReturn);
                         locationActivity.hideLoad();
                         refreshServicePointData(location, listWebReturn.getDetail(), true);
@@ -135,14 +133,14 @@ public class LocationViewModel {
     }
 
     public void queryInDistrict(final BDLocation location, City mCity) {
-        if (servicePoints.size() > 0)
-            servicePoints.clear();
+        if (shops.size() > 0)
+            shops.clear();
         locationActivity.showLoad();
         servicePointApi.queryServicePointInCity(mCity.getPCCId())
-                .compose(locationActivity.<WebReturn<List<ServicePoint>>>bindToLifecycle())
+                .compose(locationActivity.<WebReturn<List<Shop>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DefaultSubscriber<WebReturn<List<ServicePoint>>>() {
+                .subscribe(new DefaultSubscriber<WebReturn<List<Shop>>>() {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
@@ -152,7 +150,7 @@ public class LocationViewModel {
                     }
 
                     @Override
-                    public void onNext(WebReturn<List<ServicePoint>> listWebReturn) {
+                    public void onNext(WebReturn<List<Shop>> listWebReturn) {
                         super.onNext(listWebReturn);
                         locationActivity.hideLoad();
                         refreshServicePointData(location, listWebReturn.getDetail(), false);
@@ -161,21 +159,21 @@ public class LocationViewModel {
     }
 
 
-    private void refreshServicePointData(BDLocation location, List<ServicePoint> mServicePoints, boolean shownear) {
-        if (mServicePoints == null || mServicePoints.size() <= 0) {
+    private void refreshServicePointData(BDLocation location, List<Shop> mShops, boolean shownear) {
+        if (mShops == null || mShops.size() <= 0) {
             locationServicePointAdapter.notifyDataSetChanged();
             return;
         }
         if (LocationUtils.isLocationSuccess(location)) {
             LatLng mPoint = new LatLng(location.getLatitude(), location.getLongitude());
             LatLng mServicePoint = null;
-            for (ServicePoint servicePoint : mServicePoints) {
-                mServicePoint = new LatLng(servicePoint.getLat(), servicePoint.getLng());
-                servicePoint.setDistance(DistanceUtil.getDistance(mPoint, mServicePoint));
+            for (Shop shop : mShops) {
+                mServicePoint = new LatLng(shop.getLat(), shop.getLng());
+                shop.setDistance(DistanceUtil.getDistance(mPoint, mServicePoint));
             }
-            Collections.sort(mServicePoints, new Comparator<ServicePoint>() {
+            Collections.sort(mShops, new Comparator<Shop>() {
                 @Override
-                public int compare(ServicePoint lhs, ServicePoint rhs) {
+                public int compare(Shop lhs, Shop rhs) {
                     if (lhs.getDistance() - rhs.getDistance() > 0)
                         return 1;
                     else if (lhs.getDistance() - rhs.getDistance() == 0)
@@ -185,16 +183,16 @@ public class LocationViewModel {
                 }
             });
         }
-        if (servicePoints.size() > 0)
-            servicePoints.clear();
-        servicePoints.addAll(mServicePoints);
+        if (shops.size() > 0)
+            shops.clear();
+        shops.addAll(mShops);
         locationServicePointAdapter.setShownear(shownear);
         locationServicePointAdapter.notifyDataSetChanged();
-        locationActivity.addServicePointOverlay(mServicePoints);
+        locationActivity.addServicePointOverlay(mShops);
     }
 
-    public List<ServicePoint> getServicePoints() {
-        return servicePoints;
+    public List<Shop> getShops() {
+        return shops;
     }
 
     public LocationDistrictAdapter getLocationDistrictAdapter() {

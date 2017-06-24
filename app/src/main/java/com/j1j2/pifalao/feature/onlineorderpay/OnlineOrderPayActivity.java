@@ -14,7 +14,7 @@ import com.j1j2.data.http.api.UserLoginApi;
 import com.j1j2.data.http.api.UserOrderApi;
 import com.j1j2.data.model.ActivityOrderSimple;
 import com.j1j2.data.model.OnlinePayResult;
-import com.j1j2.data.model.OrderSimple;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.User;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.WeiXinPayResult;
@@ -81,7 +81,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
     @Inject
     Navigate navigate;
 
-    OrderSimple orderSimple;
+    OrderDetail orderDetail;
     ActivityOrderSimple activityOrderSimple;
 
     ObservableDouble balance = new ObservableDouble(0);
@@ -208,7 +208,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         WXPay.getInstance().doPay(weiXinPayResult, new WXPay.WXPayResultCallBack() {
             @Override
             public void onSuccess() {
-                shopCartApi.queryPayState(orderNO, Constant.OnlinePayType.ALIPAY)
+                shopCartApi.queryPayState(orderNO, Constant.OnlinePayType.WEIXINPAY)
                         .compose(OnlineOrderPayActivity.this.<WebReturn<String>>bindToLifecycle())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -353,20 +353,20 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
     public void queryOrderSimple(int orderId) {
         userOrderApi.queryOrderByOrderId("" + orderId)
-                .compose(this.<WebReturn<OrderSimple>>bindToLifecycle())
+                .compose(this.<WebReturn<OrderDetail>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<OrderSimple>() {
+                .subscribe(new WebReturnSubscriber<OrderDetail>() {
                     @Override
-                    public void onWebReturnSucess(OrderSimple mOrderSimple) {
-                        orderSimple = mOrderSimple;
-                        binding.sum.setText("￥" + mOrderSimple.getOrderSum());
+                    public void onWebReturnSucess(OrderDetail mOrderDetail) {
+                        orderDetail = mOrderDetail;
+                        binding.sum.setText("￥" + mOrderDetail.getOrderBaseInfo().getOrderAmount());
                         queryBalance();
                         binding.timeLayout.setVisibility(View.VISIBLE);
                         try {
                             SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             Date beginDate = new Date(System.currentTimeMillis());//获取当前时间
-                            Date endDate = new Date(simple.parse(orderSimple.getOrderSubmitTimeStr()).getTime() + 1800000);
+                            Date endDate = new Date(simple.parse(orderDetail.getOrderTimesInfo().getOrderSubmitTimeStr()).getTime() + 1800000);
                             countDown(beginDate, endDate);
                         } catch (ParseException e) {
                             onError(e);
@@ -459,7 +459,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                         if (isActivityPay)
                             canUseBalance = user.getBalance() >= activityOrderSimple.getSpendMoney();
                         else
-                            canUseBalance = user.getBalance() >= orderSimple.getOrderSum();
+                            canUseBalance = user.getBalance() >= orderDetail.getOrderBaseInfo().getOrderAmount();
 
                     }
 
@@ -484,7 +484,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
 
 
     public void showBanlanceDialog() {
-        showMessageDialogDuplicate(true,"MESSAGEDIALOG", "提示", "请确认是否已经收到奖品", null, "知道了");
+        showMessageDialogDuplicate(true, "MESSAGEDIALOG", "提示", "请确认是否已经收到奖品", null, "知道了");
     }
 
     private void showExitDialog() {
@@ -565,14 +565,14 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
         }
         if (v == binding.orderBtn) {
             if (!isActivityPay)
-                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, false, null, orderId, OrderDetailActivity.PARAM);
+                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, false, orderId, OrderDetailActivity.PARAM);
         }
     }
 
     @Override
     public void onDialogNegativeClick(String fragmentTag) {
         super.onDialogNegativeClick(fragmentTag);
-        if(fragmentTag.equals(exitDialogTag)){
+        if (fragmentTag.equals(exitDialogTag)) {
             if (isActivityPay) {
                 showProgress("取消订单");
                 activityShopCartApi.cancleActivityOrder(orderNO)
@@ -604,7 +604,7 @@ public class OnlineOrderPayActivity extends BaseActivity implements View.OnClick
                             }
                         });
             } else
-                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, null, orderId, OrderDetailActivity.TIMELINE);
+                navigate.navigateToOrderDetail(OnlineOrderPayActivity.this, null, true, orderId, OrderDetailActivity.TIMELINE);
         }
     }
 }

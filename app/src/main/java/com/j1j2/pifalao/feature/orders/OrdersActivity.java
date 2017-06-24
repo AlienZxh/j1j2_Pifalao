@@ -22,7 +22,6 @@ import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.app.event.OrderStateChangeEvent;
 import com.j1j2.pifalao.databinding.ActivityOrdersBinding;
 import com.j1j2.pifalao.feature.offlineorders.OfflineOrdersAdapter;
-import com.j1j2.pifalao.feature.orderproducts.OrderProductsActivity;
 import com.j1j2.pifalao.feature.orders.di.OrdersModule;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -40,7 +39,12 @@ import in.workarounds.bundler.annotations.RequireBundler;
  * Created by alienzxh on 16-3-22.
  */
 @RequireBundler
-public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, OfflineOrdersAdapter.OnOfflineOrderClickListener, OnMoreListener, OrdersAdapter.OnOrdersClickListener, View.OnClickListener, OrdersTypeAdapter.OrdersTypeAdapterListener {
+public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener,
+        OfflineOrdersAdapter.OnOfflineOrderClickListener,
+        OnMoreListener,
+        OrdersAdapter.OnOrdersClickListener,
+        View.OnClickListener,
+        OrdersTypeAdapter.OrdersTypeAdapterListener {
 
 
     ActivityOrdersBinding binding;
@@ -210,36 +214,17 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
 
     @Override
     public void onDetailClickListener(View view, OrderSimple orderSimple, int position, int selectpage) {
-        navigate.navigateToOrderDetail(this, null, false, orderSimple, orderSimple.getOrderId(), selectpage);
+        navigate.navigateToOrderDetail(this, null, false, orderSimple.getOrderId(), selectpage);
     }
 
-    @Override
-    public void onServicePointIconClickListener(View view, OrderSimple orderSimple, int position) {
-        navigate.navigateToCatServicePoint(this, null, false, orderSimple.getServicePointId());
-    }
-
-    @Override
-    public void onCancelPointIconClickListener(View view, OrderSimple orderSimple, int position) {
-        showDeleteDialog(orderSimple.getOrderId());
-    }
-
-    @Override
-    public void onCommentPointIconClickListener(View view, OrderSimple orderSimple, int position) {
-
-    }
 
     @Override
     public void onOrderPayClickListener(View view, OrderSimple orderSimple, int position) {
         navigate.navigateToOnlineOrderPay(this, null, false, orderSimple.getOrderId(), orderSimple.getOrderNO(), false, false);
     }
 
-    @Override
-    public void onOrderProductClickListener(View view, OrderSimple orderSimple, int position) {
-        navigate.navigateToOrderProducts(this, null, false, OrderProductsActivity.FROM_ORDERS, orderSimple.getModuleId(), null, orderSimple.getProductDetails());
-    }
-
     public void navigateToOrderRate(OrderSimple orderSimple) {
-        navigate.navigateToOrderRate(this, null, false, orderSimple);
+        navigate.navigateToOrderRate(this, null, false, orderSimple.getOrderId());
     }
 
     @Subscribe
@@ -251,7 +236,6 @@ public class OrdersActivity extends BaseActivity implements SwipeRefreshLayout.O
         } else {
             finish();
         }
-        toastor.showSingletonToast(event.getNewOrderState());
     }
 
     @Override

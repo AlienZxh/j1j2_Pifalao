@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.app;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.multidex.MultiDexApplication;
@@ -14,12 +15,14 @@ import com.j1j2.pifalao.BuildConfig;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.BaseActivityLifecycleCallbacks;
 import com.j1j2.pifalao.app.base.LocationService;
+import com.j1j2.pifalao.app.db.DBHelper;
 import com.j1j2.pifalao.app.di.AppComponent;
 import com.j1j2.pifalao.app.di.AppModule;
 import com.j1j2.pifalao.app.di.DaggerAppComponent;
 import com.j1j2.pifalao.app.di.UserComponent;
 import com.j1j2.pifalao.app.di.UserModule;
 import com.j1j2.pifalao.app.sharedpreferences.UserLoginPreference;
+import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
 import com.j1j2.pifalao.feature.launch.LaunchActivity;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -30,7 +33,6 @@ import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
 import com.tencent.bugly.beta.ui.UILifecycleListener;
-import com.tencent.bugly.beta.upgrade.UpgradeListener;
 import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
@@ -40,6 +42,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -68,6 +71,8 @@ public class MainAplication extends MultiDexApplication {
 
         void onUpgrading(boolean isManual);
 
+        void onDownloadCompleted(boolean isComplete);
+
         void onUpgradeDialogCreate(Context context, View view, UpgradeInfo upgradeInfo);
 
         void onUpgradeDialogDestory(Context context, View view, UpgradeInfo upgradeInfo);
@@ -91,12 +96,17 @@ public class MainAplication extends MultiDexApplication {
 
     private LocationService locationService;
 
+
+    private SQLiteDatabase db;
+
     @Inject
     UserLoginPreference userLoginPreference;
     @Inject
     OkHttpClient okHttpClient;
     @Inject
     Toastor toastor;
+    @Inject
+    UserRelativePreference userRelativePreference;
 
     public static RefWatcher getRefWatcher(Context context) {
         return get(context).refWatcher;
@@ -106,17 +116,33 @@ public class MainAplication extends MultiDexApplication {
         return (MainAplication) context.getApplicationContext();
     }
 
-    public static String getProcessName() {
+
+    /**
+     * 获取进程号对应的进程名
+     *
+     * @return 进程名
+     */
+    private static String getProcessName() {
+        BufferedReader reader = null;
         try {
-            File file = new File("/proc/" + android.os.Process.myPid() + "/" + "cmdline");
-            BufferedReader mBufferedReader = new BufferedReader(new FileReader(file));
-            String processName = mBufferedReader.readLine().trim();
-            mBufferedReader.close();
+            reader = new BufferedReader(new FileReader("/proc/" + android.os.Process.myPid() + "/cmdline"));
+            String processName = reader.readLine();
+            if (!TextUtils.isEmpty(processName)) {
+                processName = processName.trim();
+            }
             return processName;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
+        return null;
     }
 
     @Override
@@ -130,6 +156,7 @@ public class MainAplication extends MultiDexApplication {
             initLogger();
             initBaiduMap();
             initComponent();
+            initDB();
             initUmeng();
             initJPush();
             initLeakCanary();
@@ -295,7 +322,13 @@ public class MainAplication extends MultiDexApplication {
                 Logger.d("MainAplication onUpgrading");
                 if (appUpgradeListener != null)
                     appUpgradeListener.onUpgrading(isManual);
+            }
 
+            @Override
+            public void onDownloadCompleted(boolean isComplete) {
+                Logger.d("MainAplication onDownloadCompleted");
+                if (appUpgradeListener != null)
+                    appUpgradeListener.onDownloadCompleted(isComplete);
             }
         };
 
@@ -339,6 +372,11 @@ public class MainAplication extends MultiDexApplication {
         BuglyStrategy strategy = new BuglyStrategy();
         strategy.setAppChannel(BuildConfig.DEBUG ? "pifalao-debug" : "pifalao");
         Bugly.init(getApplicationContext(), Constant.BUGLY_ID, BuildConfig.DEBUG, strategy);
+    }
+
+    public void initDB() {
+        DBHelper dbHelper = new DBHelper(getApplicationContext(), userRelativePreference);
+        db = dbHelper.getWritableDatabase();
     }
 
 
@@ -385,5 +423,9 @@ public class MainAplication extends MultiDexApplication {
 
     public LocationService getLocationService() {
         return locationService;
+    }
+
+    public SQLiteDatabase getDb() {
+        return db;
     }
 }

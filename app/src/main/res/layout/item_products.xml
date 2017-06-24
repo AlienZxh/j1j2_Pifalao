@@ -12,6 +12,8 @@
 
         <import type="com.j1j2.pifalao.app.Constant" />
 
+        <import type="com.j1j2.common.util.StringUtils" />
+
         <variable
             name="onClick"
             type="OnClickListener" />
@@ -22,14 +24,14 @@
 
         <variable
             name="productSimple"
-            type="com.j1j2.data.model.ProductSimple" />
+            type="com.j1j2.data.model.Product" />
 
         <variable
             name="shopCart"
             type="com.j1j2.pifalao.app.ShopCart" />
 
         <variable
-            name="moduleType"
+            name="serviceType"
             type="int" />
 
     </data>
@@ -48,7 +50,7 @@
         app:badge_gravity="rightCenter"
         app:badge_horizontalMargin="15dp"
         app:badge_textSize="12sp"
-        app:showNum="@{shopCart.shopCartItemBaseUnitNum.get(productSimple.MainId)??0}">
+        app:showNum="@{shopCart.shopCartItemBaseUnitNum.get(productSimple.mainId)??0}">
 
         <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
@@ -78,8 +80,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="34px"
                     android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@{productSimple.Name}"
+                    android:maxLines="1"
+                    android:text="@{productSimple.name}"
                     android:textColor="@color/colorText333"
                     android:textSize="@dimen/text_big"
                     android:textStyle="bold" />
@@ -102,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:singleLine="true"
+                        android:maxLines="1"
                         android:text="批发价："
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
@@ -111,8 +113,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@{productSimple.ProductUnits.size()>0?String.valueOf(productSimple.ProductUnits.get(0).MemberPrice):@string/text_null}"
+                        android:maxLines="1"
+                        android:text="@{productSimple.productUnits.size()>0?String.valueOf(productSimple.productUnits.get(0).MemberPrice):@string/text_null}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_big"
                         android:textStyle="bold" />
@@ -121,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:singleLine="true"
+                        android:maxLines="1"
                         android:text="元/"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
@@ -130,8 +132,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text="@{productSimple.ProductUnits.size()>0?String.valueOf(productSimple.ProductUnits.get(0).Unit):@string/text_null}"
+                        android:maxLines="1"
+                        android:text="@{productSimple.productUnits.size()>0?String.valueOf(productSimple.productUnits.get(0).Unit):@string/text_null}"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -148,7 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:singleLine="true"
+                        android:maxLines="1"
                         android:textColor="@color/colorTextaaa"
                         android:textSize="@dimen/text_normal" />
                 </com.zhy.autolayout.AutoLinearLayout>
@@ -173,7 +175,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:text="@{productSimple.ProductUnits.size()>0?String.valueOf(productSimple.ProductUnits.get(0).Sells):@string/text_null}"
+                    android:text="@{productSimple.productUnits.size()>0?String.valueOf(productSimple.productUnits.get(0).Sells):@string/text_null}"
                     android:textColor="@color/colorTextaaa"
                     android:textSize="@dimen/text_normal" />
 
@@ -183,7 +185,7 @@
         <com.github.siyamed.shapeimageview.RoundedImageView
             android:layout_width="@dimen/height_products_img_size"
             android:layout_height="@dimen/height_products_img_size"
-            app:displayImgAsBitmap="@{Uri.parse(productSimple.MainImg??@string/text_empty)}"
+            app:displayImgAsBitmap="@{StringUtils.getMainThumImgUri(productSimple)}"
             app:siBorderColor="@color/colorGrayDEDEDE"
             app:siBorderWidth="1px"
             app:siRadius="4dp" />

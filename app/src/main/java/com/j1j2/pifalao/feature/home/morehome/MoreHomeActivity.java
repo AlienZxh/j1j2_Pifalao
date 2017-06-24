@@ -1,12 +1,10 @@
 package com.j1j2.pifalao.feature.home.morehome;
 
 import android.databinding.DataBindingUtil;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.MainAplication;
@@ -16,8 +14,6 @@ import com.j1j2.pifalao.databinding.ActivityMorehomeBinding;
 import com.j1j2.pifalao.feature.home.morehome.di.MoreHomeModule;
 import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.main.MainActivity;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-import com.zhy.autolayout.utils.AutoUtils;
 
 import java.util.List;
 
@@ -37,7 +33,7 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     ActivityMorehomeBinding binding;
 
     @Arg(serializer = ParcelListSerializer.class)
-    List<Module> modules;
+    List<ShopSubscribeService> shopSubscribeServices;
 
     @Inject
     UserRelativePreference userRelativePreference;
@@ -54,7 +50,7 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void initViews() {
 
-        moreHomeAdapter = new MoreHomeAdapter(modules);
+        moreHomeAdapter = new MoreHomeAdapter(shopSubscribeServices);
         gridLayoutManager = new GridLayoutManager(this, 3);
         binding.moreList.setLayoutManager(gridLayoutManager);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -82,45 +78,48 @@ public class MoreHomeActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    public void onItemClickListener(View view, Module module, int position) {
-        if (module.isSubscribed()) {
-            if (module.getModuleType() == Constant.ModuleType.DELIVERY) {
-                navigate.navigateToDeliveryHomeActivity(this, null, false, userRelativePreference.getSelectedServicePoint(null), module);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.SHOPSERVICE) {
+    public void onItemClickListener(View view, ShopSubscribeService shopSubscribeService, int position) {
+        if (shopSubscribeService.isSubscribed()) {
+            if (shopSubscribeService.getServiceType() == Constant.ModuleType.DELIVERY) {
+                navigate.navigateToDeliveryHomeActivity(this, null, false, userRelativePreference.getSelectedServicePoint(null), shopSubscribeService);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.SHOPSERVICE) {
                 if (MainAplication.get(this).isLogin()) {
                     if (MainAplication.get(this).getUserComponent().user().getRoleId() == 10002) {
-                        navigate.navigateToMainActivity(this, null, false, module, MainActivity.STORESTYLE);
-                        userRelativePreference.setSelectedModule(module);
+                        navigate.navigateToMainActivity(this, null, false, shopSubscribeService, MainActivity.STORESTYLE);
+                        userRelativePreference.setSelectedModule(shopSubscribeService);
                     } else {
-                        navigate.navigateToModulePermissionDeniedActivity(this, null, false, module);
+                        navigate.navigateToModulePermissionDeniedActivity(this, null, false, shopSubscribeService);
                     }
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
-            } else if (module.getModuleType() == Constant.ModuleType.VEGETABLE) {
-                navigate.navigateToMainActivity(this, null, false, module, MainActivity.VEGETABLE);
-                userRelativePreference.setSelectedModule(module);
-            } else if (module.getModuleType() == Constant.ModuleType.VIP) {
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.VEGETABLE) {
+                navigate.navigateToMainActivity(this, null, false, shopSubscribeService, MainActivity.VEGETABLE);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.VIP) {
                 if (MainAplication.get(this).isLogin()) {
                     navigate.navigateToVipHome(this, null, false, VipHomeActivity.VIPHOME);
-                    userRelativePreference.setSelectedModule(module);
+                    userRelativePreference.setSelectedModule(shopSubscribeService);
                 } else {
                     navigate.navigateToLogin(this, null, false);
                 }
-            } else if (module.getModuleType() == Constant.ModuleType.HOUSEKEEPING) {
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.HOUSEKEEPING) {
                 navigate.navigateToHouseKeeping(MoreHomeActivity.this, null, false);
-            } else if (module.getModuleType() == Constant.ModuleType.MOBILE)
-                navigate.navigateToOfflineModuleHome(this, null, false, module, userRelativePreference.getSelectedServicePoint(null));
-            else if (module.getModuleType() == Constant.ModuleType.MEMBER) {
+            } else if (shopSubscribeService.getServiceType() == Constant.ModuleType.MOBILE
+                    ||shopSubscribeService.getServiceType() == Constant.ModuleType.WATERBILL
+                    ||shopSubscribeService.getServiceType() == Constant.ModuleType.ELECTRICBILL
+                    ||shopSubscribeService.getServiceType() == Constant.ModuleType.GASBILL)
+                navigate.navigateToOfflineModuleHome(this, null, false, shopSubscribeService, userRelativePreference.getSelectedServicePoint(null));
+            else if (shopSubscribeService.getServiceType() == Constant.ModuleType.MEMBER) {
                 navigate.navigateToMemberHomeActivity(this, null, false);
-                userRelativePreference.setSelectedModule(module);
-            }else if (module.getModuleType() == Constant.ModuleType.SPECIALOFFER) {
+                userRelativePreference.setSelectedModule(shopSubscribeService);
+            }else if (shopSubscribeService.getServiceType() == Constant.ModuleType.SPECIALOFFER) {
                 navigate.navigateToSpecialOfferActivity(this, null, false);
-                userRelativePreference.setSelectedModule(module);
+                userRelativePreference.setSelectedModule(shopSubscribeService);
             }
         } else {
-            navigate.navigateToUnsubscribeModule(this, null, false, module);
+            navigate.navigateToUnsubscribeModule(this, null, false, shopSubscribeService);
         }
     }
 }

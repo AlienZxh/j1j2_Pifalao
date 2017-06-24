@@ -1,6 +1,7 @@
 package com.j1j2.pifalao.feature.home.storestylehome.di;
 
 import com.j1j2.data.http.api.ProductApi;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.app.ActivityScope;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
 import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeViewModel;
@@ -16,11 +17,11 @@ import retrofit2.Retrofit;
 public class StoreStyleHomeModule {
 
     private StoreStyleHomeFragment storeStyleHomeFragment;
-    private com.j1j2.data.model.Module module;
+    private ShopSubscribeService shopSubscribeService;
 
-    public StoreStyleHomeModule(StoreStyleHomeFragment storeStyleHomeFragment, com.j1j2.data.model.Module module) {
+    public StoreStyleHomeModule(StoreStyleHomeFragment storeStyleHomeFragment, ShopSubscribeService shopSubscribeService) {
         this.storeStyleHomeFragment = storeStyleHomeFragment;
-        this.module = module;
+        this.shopSubscribeService = shopSubscribeService;
     }
 
     @Provides
@@ -37,14 +38,14 @@ public class StoreStyleHomeModule {
 
     @Provides
     @ActivityScope
-    com.j1j2.data.model.Module module() {
-        return module;
+    ShopSubscribeService module() {
+        return shopSubscribeService;
     }
 
     @Provides
     @ActivityScope
-    StoreStyleHomeViewModel storeStyleHomeViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, com.j1j2.data.model.Module module) {
-        return new StoreStyleHomeViewModel(storeStyleHomeFragment, productApi, module);
+    StoreStyleHomeViewModel storeStyleHomeViewModel(StoreStyleHomeFragment storeStyleHomeFragment, ProductApi productApi, ShopSubscribeService shopSubscribeService) {
+        return new StoreStyleHomeViewModel(storeStyleHomeFragment, productApi, shopSubscribeService);
     }
 
 

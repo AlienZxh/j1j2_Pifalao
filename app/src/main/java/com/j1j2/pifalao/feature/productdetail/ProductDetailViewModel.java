@@ -6,13 +6,12 @@ import android.databinding.ObservableField;
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserFavoriteApi;
-import com.j1j2.data.model.ProductDetail;
+import com.j1j2.data.model.Product;
 import com.j1j2.data.model.ProductImg;
 import com.j1j2.data.model.ProductUnit;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.data.model.requestbody.RemoveUserFavoritesBody;
 import com.j1j2.pifalao.R;
-import com.j1j2.pifalao.app.Constant;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 
@@ -35,7 +34,7 @@ public class ProductDetailViewModel {
     private UserFavoriteApi userFavoriteApi;
 
 
-    public ObservableField<ProductDetail> productDetail = new ObservableField<>();
+    public ObservableField<Product> productDetail = new ObservableField<>();
     public ObservableBoolean isCollect = new ObservableBoolean(false);
 
     public ObservableField<ProductUnit> selectUnit = new ObservableField<>();
@@ -79,12 +78,12 @@ public class ProductDetailViewModel {
 
     public void queryProductDetail(int mainId) {
         productApi.queryProductDetails(mainId)
-                .compose(productDetailActivity.<WebReturn<ProductDetail>>bindToLifecycle())
+                .compose(productDetailActivity.<WebReturn<Product>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<ProductDetail>() {
+                .subscribe(new WebReturnSubscriber<Product>() {
                     @Override
-                    public void onWebReturnSucess(ProductDetail mProductDetail) {
+                    public void onWebReturnSucess(Product mProductDetail) {
                         selectUnit.set(mProductDetail.getProductUnits().get(0));
                         productDetail.set(mProductDetail);
                         List<ProductImg> sizeProductImgs = new ArrayList<ProductImg>();
@@ -117,8 +116,8 @@ public class ProductDetailViewModel {
                 });
     }
 
-    public void addItemToShopCart(final ProductUnit unit, final int quantity, int moduleId) {
-        shopCartApi.addItemToShopCart(unit.getProductId(), quantity, moduleId)
+    public void addItemToShopCart(final ProductUnit unit, final int quantity, int serviceId, int shopId) {
+        shopCartApi.addItemToShopCart(unit.getProductId(), quantity, serviceId, shopId)
                 .compose(productDetailActivity.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

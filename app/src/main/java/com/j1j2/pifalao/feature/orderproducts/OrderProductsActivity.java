@@ -4,7 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -41,16 +41,13 @@ public class OrderProductsActivity extends BaseActivity implements OrderProductL
     @Arg
     int activityType;
 
-    @Arg
-    int moduleId;
-
     @Arg(serializer = ParcelListSerializer.class)
     @Required(false)
     List<ShopCartItem> shopCartItems;
 
     @Arg(serializer = ParcelListSerializer.class)
     @Required(false)
-    List<OrderProductDetail> orderProductDetails;
+    List<OrderDetail.OrderProductDetail> orderProductDetails;
 
     private List<OrderProductSimple> orderProductSimples;
 
@@ -82,7 +79,7 @@ public class OrderProductsActivity extends BaseActivity implements OrderProductL
                 orderProductSimples.add(orderProductSimple);
             }
         } else if (activityType == FROM_ORDERS) {
-            for (OrderProductDetail orderProductDetail : orderProductDetails) {
+            for (OrderDetail.OrderProductDetail orderProductDetail : orderProductDetails) {
                 orderProductSimple = new OrderProductSimple(activityType, orderProductDetail);
                 orderProductSimples.add(orderProductSimple);
             }
@@ -93,7 +90,7 @@ public class OrderProductsActivity extends BaseActivity implements OrderProductL
 
     @Override
     protected void initViews() {
-        OrderProductListAdapter productListAdapter = new OrderProductListAdapter(orderProductSimples, shopCart, userRelativePreference.getSelectedModule(null).getModuleType());
+        OrderProductListAdapter productListAdapter = new OrderProductListAdapter(orderProductSimples, shopCart, userRelativePreference.getSelectedModule(null).getServiceType());
         binding.productList.setAdapter(productListAdapter);
         productListAdapter.setOnItemClickListener(this);
     }

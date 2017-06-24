@@ -6,26 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.ProductSort;
-import com.j1j2.data.model.SecondarySort;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.base.AutoBindingViewHolder;
 import com.j1j2.pifalao.databinding.ItemVegetableChildsortBinding;
-
-import java.util.List;
 
 /**
  * Created by alienzxh on 16-4-6.
  */
 public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChildSortAdapter.VegetableChildSortViewHolder> {
-    private SecondarySort secondarySort;
+    private ProductCategory secondarySort;
 
-    public VegetableChildSortAdapter(SecondarySort secondarySort) {
+    public VegetableChildSortAdapter(ProductCategory secondarySort) {
         this.secondarySort = secondarySort;
     }
 
     public interface OnChildSortClickListener {
-        void onChildSortClick(View view, ProductSort productSort, int position);
+        void onChildSortClick(View view, ProductCategory productSort, int position);
     }
 
     private OnChildSortClickListener onChildSortClickListener;
@@ -44,22 +41,20 @@ public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChi
     @Override
     public void onBindViewHolder(VegetableChildSortViewHolder holder, int position) {
 
-        if (position < secondarySort.getChildFoodSorts().size())
-            holder.bind(secondarySort.getChildFoodSorts().get(position), position);
+        if (position < secondarySort.getChildCategories().size())
+            holder.bind(secondarySort.getChildCategories().get(position), position);
         else {
-            ProductSort productSort = secondarySort.getParentProductSort();
-            productSort.setAppImgPath(secondarySort.getChildFoodSorts().get(0).getAppImgPath());
-            holder.bind(productSort, position);
+            holder.bind(secondarySort, position);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return null == secondarySort.getChildFoodSorts() || secondarySort.getChildFoodSorts().size() <= 0 ? 0 : secondarySort.getChildFoodSorts().size() + 1;
+        return null == secondarySort.getChildCategories() || secondarySort.getChildCategories().size() <= 0 ? 0 : secondarySort.getChildCategories().size() + 1;
     }
 
-    public class VegetableChildSortViewHolder extends AutoBindingViewHolder<ItemVegetableChildsortBinding, ProductSort> {
+    public class VegetableChildSortViewHolder extends AutoBindingViewHolder<ItemVegetableChildsortBinding, ProductCategory> {
         public VegetableChildSortViewHolder(View itemView) {
             super(itemView);
         }
@@ -70,7 +65,7 @@ public class VegetableChildSortAdapter extends RecyclerView.Adapter<VegetableChi
         }
 
         @Override
-        public void bind(@NonNull final ProductSort data, final int position) {
+        public void bind(@NonNull final ProductCategory data, final int position) {
             binding.setProductSort(data);
             binding.setOnClick(new View.OnClickListener() {
                 @Override

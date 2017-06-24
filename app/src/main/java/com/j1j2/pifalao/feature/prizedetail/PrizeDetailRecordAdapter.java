@@ -82,7 +82,5 @@ public class PrizeDetailRecordAdapter extends RecyclerView.Adapter<PrizeDetailRe
         public void bind(@NonNull LotteryParticipationTimes data, int position) {
             binding.setParticipation(data);
         }
-
-
     }
 }

@@ -5,7 +5,7 @@ import android.databinding.ObservableInt;
 import android.view.View;
 
 import com.j1j2.data.model.Coupon;
-import com.j1j2.data.model.Module;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.data.model.User;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.Constant;
@@ -13,7 +13,6 @@ import com.j1j2.pifalao.app.MainAplication;
 import com.j1j2.pifalao.app.UnReadInfoManager;
 import com.j1j2.pifalao.app.base.BaseActivity;
 import com.j1j2.pifalao.databinding.ActivityWalletmanagerBinding;
-import com.j1j2.pifalao.feature.coupons.CouponsActivity;
 import com.j1j2.pifalao.feature.home.viphome.VipHomeActivity;
 import com.j1j2.pifalao.feature.walletmanager.di.WalletManagerModule;
 
@@ -46,7 +45,7 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
 
     @Arg
     @Required(false)
-    Module module;
+    ShopSubscribeService shopSubscribeService;
 
     private List<Coupon> normalCoupons = null;
     private List<Coupon> deliveryCoupons = null;
@@ -66,7 +65,7 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
 
     @Override
     protected void initViews() {
-        walletManagerViewModel.queryAllCoupons(module);
+        walletManagerViewModel.queryAllCoupons(shopSubscribeService);
     }
 
     public void initCoupons(List<Coupon> couponList) {
@@ -106,13 +105,13 @@ public class WalletManagerActivity extends BaseActivity implements View.OnClickL
             navigate.navigateToBriberyMoneysActivity(this, null, true, Constant.RedPacketState.AVAILABILITY);
         }
         if (null != normalCoupons && v == binding.coupon) {
-            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_NORMAL);
+            navigate.navigateToCoupons(this, null, false, shopSubscribeService, Constant.CouponType.COUPON_NORMAL);
         }
         if (null != deliveryCoupons && v == binding.deliverycoupon) {
-            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_DELIVERY);
+            navigate.navigateToCoupons(this, null, false, shopSubscribeService, Constant.CouponType.COUPON_DELIVERY);
         }
         if (null != goodsCoupons && v == binding.goodscoupon) {
-            navigate.navigateToCoupons(this, null, false, module, Constant.CouponType.COUPON_GOODS);
+            navigate.navigateToCoupons(this, null, false, shopSubscribeService, Constant.CouponType.COUPON_GOODS);
         }
     }
 }

@@ -7,10 +7,11 @@ import com.j1j2.data.http.api.CountDownApi;
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.model.BannerActivity;
 import com.j1j2.data.model.PagerManager;
-import com.j1j2.data.model.ProductSimple;
-import com.j1j2.data.model.ProductSort;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.data.model.UserDeliveryTime;
 import com.j1j2.data.model.WebReturn;
+import com.j1j2.data.model.requestbody.QueryProductParams;
 import com.j1j2.pifalao.app.base.DefaultSubscriber;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.orhanobut.logger.Logger;
@@ -23,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -129,15 +129,15 @@ public class VegetableHomeViewModel {
         second.set(seconds < 10 ? ("0" + seconds) : ("" + seconds));
     }
 
-    public void queryHotSort(int moduleId) {
-        productApi.queryHotSort(moduleId)
-                .compose(vegetableHomeFragment.<WebReturn<List<ProductSort>>>bindToLifecycle())
+    public void queryHotCategories(int serviceId, int shopId) {
+        productApi.queryHotCategories(serviceId,shopId)
+                .compose(vegetableHomeFragment.<WebReturn<List<ProductCategory>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<ProductSort>>() {
+                .subscribe(new WebReturnSubscriber<List<ProductCategory>>() {
                     @Override
-                    public void onWebReturnSucess(List<ProductSort> productSorts) {
-                        vegetableHomeFragment.initHortSort(productSorts);
+                    public void onWebReturnSucess(List<ProductCategory> productCategories) {
+                        vegetableHomeFragment.initHortSort(productCategories);
                     }
 
                     @Override
@@ -154,15 +154,21 @@ public class VegetableHomeViewModel {
 
     }
 
-    public void queryActivityProducts(int moduleId) {
-        productApi.queryActivityProducts(1, 20, moduleId, 1, "", "")
-                .compose(vegetableHomeFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+    public void queryActivityProducts(int serviceId,int shopId) {
+        QueryProductParams params = new QueryProductParams();
+        params.setServiceId(serviceId);
+        params.setShopId(shopId);
+        params.setPageIndex(1);
+        params.setPageSize(15);
+        params.setQueryDataType(1);
+        productApi.queryProducts(params)
+                .compose(vegetableHomeFragment.<WebReturn<PagerManager<Product>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<Product>>() {
                     @Override
-                    public void onWebReturnSucess(PagerManager<ProductSimple> productSorts) {
-                        vegetableHomeFragment.initActivityProducts(productSorts.getList());
+                    public void onWebReturnSucess(PagerManager<Product> productPagerManager) {
+                        vegetableHomeFragment.initActivityProducts(productPagerManager.getList());
                     }
 
                     @Override

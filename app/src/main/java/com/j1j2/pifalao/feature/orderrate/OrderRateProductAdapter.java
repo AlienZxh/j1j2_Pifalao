@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.j1j2.data.model.OrderProductDetail;
+import com.j1j2.data.model.OrderDetail;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.feature.orders.OrderProductViewHolder;
 
@@ -15,9 +15,9 @@ import java.util.List;
  * Created by alienzxh on 16-4-27.
  */
 public class OrderRateProductAdapter extends RecyclerView.Adapter<OrderProductViewHolder> {
-    private List<OrderProductDetail> orderProductDetails;
+    private List<OrderDetail.OrderProductDetail> orderProductDetails;
 
-    public OrderRateProductAdapter(List<OrderProductDetail> orderProductDetails) {
+    public OrderRateProductAdapter(List<OrderDetail.OrderProductDetail> orderProductDetails) {
         this.orderProductDetails = orderProductDetails;
     }
 

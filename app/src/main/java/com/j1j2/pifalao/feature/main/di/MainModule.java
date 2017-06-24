@@ -1,19 +1,14 @@
 package com.j1j2.pifalao.feature.main.di;
 
-import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.http.api.UserMessageApi;
+import com.j1j2.data.model.ShopSubscribeService;
 import com.j1j2.pifalao.app.ActivityScope;
-import com.j1j2.pifalao.app.sharedpreferences.UserRelativePreference;
-import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeFragment;
-import com.j1j2.pifalao.feature.home.storestylehome.StoreStyleHomeViewModel;
-import com.j1j2.pifalao.feature.individualcenter.IndividualCenterFragment;
 import com.j1j2.pifalao.feature.main.MainActivity;
 import com.j1j2.pifalao.feature.main.MainActivityViewModel;
 
 import dagger.Module;
 import dagger.Provides;
-import in.workarounds.bundler.Bundler;
 import retrofit2.Retrofit;
 
 /**
@@ -23,11 +18,11 @@ import retrofit2.Retrofit;
 public class MainModule {
 
     private MainActivity mainActivity;
-    private com.j1j2.data.model.Module module;
+    private ShopSubscribeService shopSubscribeService;
 
-    public MainModule(MainActivity mainActivity, com.j1j2.data.model.Module module) {
+    public MainModule(MainActivity mainActivity, ShopSubscribeService shopSubscribeService) {
         this.mainActivity = mainActivity;
-        this.module = module;
+        this.shopSubscribeService = shopSubscribeService;
     }
 
     @Provides
@@ -50,8 +45,8 @@ public class MainModule {
 
     @Provides
     @ActivityScope
-    com.j1j2.data.model.Module module() {
-        return module;
+    ShopSubscribeService module() {
+        return shopSubscribeService;
     }
 
 

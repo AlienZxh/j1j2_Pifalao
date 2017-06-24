@@ -2,7 +2,6 @@ package com.j1j2.pifalao.feature.home.offlinemodulehome;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,8 +12,8 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviParaOption;
 import com.j1j2.data.http.api.ServicePointApi;
-import com.j1j2.data.model.Module;
-import com.j1j2.data.model.ServicePoint;
+import com.j1j2.data.model.ShopSubscribeService;
+import com.j1j2.data.model.Shop;
 import com.j1j2.data.model.WebReturn;
 import com.j1j2.pifalao.R;
 import com.j1j2.pifalao.app.MainAplication;
@@ -51,9 +50,9 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
     ActivityOfflinemodulehomeBinding binding;
 
     @Arg
-    Module module;
+    ShopSubscribeService shopSubscribeService;
     @Arg
-    ServicePoint servicePoint;
+    Shop shop;
 
     @Inject
     ServicePointApi servicePointApi;
@@ -65,14 +64,14 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
     @Override
     protected void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_offlinemodulehome);
-        binding.setModule(module);
-        binding.setServicePoint(servicePoint);
+        binding.setShopSubscribeService(shopSubscribeService);
+        binding.setShop(shop);
         binding.setOnClickListener(this);
     }
 
     @Override
     protected void initViews() {
-        queryModule(servicePoint.getServicePointId());
+        queryModule(shop.getShopId());
     }
 
     @Override
@@ -84,18 +83,18 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
 
     }
 
-    public void queryModule(int servicePointId) {
-        servicePointApi.queryServicePointServiceModules(servicePointId)
-                .compose(this.<WebReturn<List<Module>>>bindToLifecycle())
+    public void queryModule(int shopId) {
+        servicePointApi.queryServicePointServiceModules(shopId)
+                .compose(this.<WebReturn<List<ShopSubscribeService>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<Module>>() {
+                .subscribe(new WebReturnSubscriber<List<ShopSubscribeService>>() {
                     @Override
-                    public void onWebReturnSucess(List<Module> modules) {
+                    public void onWebReturnSucess(List<ShopSubscribeService> shopSubscribeServices) {
                         StringBuilder stringBuilder = new StringBuilder();
-                        for (Module module : modules) {
-                            if (module.isSubscribed())
-                                stringBuilder.append(module.getModuleName() + "、");
+                        for (ShopSubscribeService shopSubscribeService : shopSubscribeServices) {
+                            if (shopSubscribeService.isSubscribed())
+                                stringBuilder.append(shopSubscribeService.getName() + "、");
                         }
                         stringBuilder.deleteCharAt(stringBuilder.length() - 1);
                         stringBuilder.append("等");
@@ -127,7 +126,7 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
     }
 
     public void showCallDialog() {
-        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + servicePoint.getMobile() + "？", "取消", "确定");
+        showMessageDialogDuplicate(true, callDialogTag, "提示", "确认拨打： " + shop.getMobile() + "？", "取消", "确定");
     }
 
     @Override
@@ -146,7 +145,7 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
             }
             NaviParaOption naviParaOption = new NaviParaOption()
                     .startPoint(new LatLng(location.getLatitude(), location.getLongitude()))
-                    .endPoint(new LatLng(servicePoint.getLat(), servicePoint.getLng()));
+                    .endPoint(new LatLng(shop.getLat(), shop.getLng()));
             BaiduMapNavigation.setSupportWebNavi(true);
             BaiduMapNavigation.openBaiduMapNavi(naviParaOption, this);
 
@@ -167,7 +166,7 @@ public class OfflineModuleHomeActivity extends BaseActivity implements View.OnCl
     @AfterPermissionGranted(RC_CALLPHONE_PERM)
     private void callServicePoint() {
         if (EasyPermissions.hasPermissions(this, Manifest.permission.CALL_PHONE)) {
-            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + servicePoint.getMobile()));
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + shop.getMobile()));
             startActivity(intent);
         } else {
             // Do not have permissions, request them now

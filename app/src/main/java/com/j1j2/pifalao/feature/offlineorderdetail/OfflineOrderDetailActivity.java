@@ -37,7 +37,8 @@ public class OfflineOrderDetailActivity extends BaseActivity implements View.OnC
     @Override
     protected void initViews() {
         binding.orderProductList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        binding.orderProductList.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).colorResId(R.color.colorGrayF0F0F0)
+        binding.orderProductList.addItemDecoration(new HorizontalDividerItemDecoration
+                .Builder(this).colorResId(R.color.colorGrayF0F0F0)
                 .margin(AutoUtils.getPercentWidthSize(20), 0).build());
         binding.orderProductList.setAdapter(new OfflineOrderProductDetailAdapter(offlineOrderSimple.getProductDetails()));
     }

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="orderSimple"
-            type="com.j1j2.data.model.OrderSimple" />
+            name="orderDetail"
+            type="com.j1j2.data.model.OrderDetail" />
     </data>
 
 
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{orderSimple.OrderSubmitTimeStr}"
+                android:text="@{orderDetail.orderTimesInfo.payTimeStr}"
                 android:textColor="@color/colorText999"
                 android:textSize="@dimen/text_big" />
 

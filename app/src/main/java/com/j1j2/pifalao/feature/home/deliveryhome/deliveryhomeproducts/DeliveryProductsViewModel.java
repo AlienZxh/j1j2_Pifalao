@@ -3,12 +3,12 @@ package com.j1j2.pifalao.feature.home.deliveryhome.deliveryhomeproducts;
 import com.j1j2.data.http.api.ProductApi;
 import com.j1j2.data.http.api.ShopCartApi;
 import com.j1j2.data.model.PagerManager;
-import com.j1j2.data.model.ProductSimple;
+import com.j1j2.data.model.Product;
+import com.j1j2.data.model.ProductCategory;
 import com.j1j2.data.model.ProductUnit;
-import com.j1j2.data.model.SecondarySort;
 import com.j1j2.data.model.ShopCartItem;
 import com.j1j2.data.model.WebReturn;
-import com.j1j2.pifalao.app.Constant;
+import com.j1j2.data.model.requestbody.QueryProductParams;
 import com.j1j2.pifalao.app.base.WebReturnSubscriber;
 import com.j1j2.pifalao.app.event.ShopCartChangeEvent;
 
@@ -32,19 +32,19 @@ public class DeliveryProductsViewModel {
     DeliveryProductsAdapter deliveryProductsAdapter;
 
     private int pageIndex = 1;
-    private int pageSize = 20;
+    private int pageSize = 15;
     private int pageCount = 0;
 
     public DeliveryProductsViewModel(DeliveryHomeProductsFragment deliveryHomeProductsFragment, ProductApi productApi, ShopCartApi shopCartApi) {
         this.deliveryHomeProductsFragment = deliveryHomeProductsFragment;
         this.productApi = productApi;
         this.shopCartApi = shopCartApi;
-        deliveryProductsAdapter = new DeliveryProductsAdapter(new ArrayList<ProductSimple>());
+        deliveryProductsAdapter = new DeliveryProductsAdapter(new ArrayList<Product>());
 
     }
 
-    public void queryShopcart(int moduled) {
-        shopCartApi.queryShopCart(moduled)
+    public void queryShopcart(int serviceId, int shopId) {
+        shopCartApi.queryShopCart(serviceId, shopId)
                 .compose(deliveryHomeProductsFragment.<WebReturn<List<ShopCartItem>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -67,8 +67,8 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void addItemToShopCart(final ProductUnit unit, final int quantity, int moduleId) {
-        shopCartApi.addItemToShopCart(unit.getProductId(), quantity, moduleId)
+    public void addItemToShopCart(final ProductUnit unit, final int quantity, int serviceId, int shopId) {
+        shopCartApi.addItemToShopCart(unit.getProductId(), quantity, serviceId, shopId)
                 .compose(deliveryHomeProductsFragment.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -91,8 +91,8 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void removeShopCartItem(final ProductUnit unit) {
-        shopCartApi.removeShopCartItem(unit.getProductId())
+    public void removeShopCartItem(final ProductUnit unit, int serviceId, int shopId) {
+        shopCartApi.removeShopCartItem(unit.getProductId(), serviceId, shopId)
                 .compose(deliveryHomeProductsFragment.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,8 +116,8 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void updateShopCart(final boolean showAnim) {
-        shopCartApi.updateShopCart(shopCartItems)
+    public void updateShopCart(final boolean showAnim, int serviceId, int shopId) {
+        shopCartApi.updateShopCart(shopCartItems, serviceId, shopId)
                 .compose(deliveryHomeProductsFragment.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -141,15 +141,15 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void queryProductSort(int moduleId) {
-        productApi.queryProductSort("", moduleId)
-                .compose(deliveryHomeProductsFragment.<WebReturn<List<SecondarySort>>>bindToLifecycle())
+    public void queryDeliveryProductSort(int serviceId, int shopId) {
+        productApi.queryProductCategoryTrees(serviceId, shopId)
+                .compose(deliveryHomeProductsFragment.<WebReturn<List<ProductCategory>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<List<SecondarySort>>() {
+                .subscribe(new WebReturnSubscriber<List<ProductCategory>>() {
                     @Override
-                    public void onWebReturnSucess(List<SecondarySort> mSecondarySorts) {
-                        deliveryHomeProductsFragment.initList(mSecondarySorts.get(0));
+                    public void onWebReturnSucess(List<ProductCategory> productCategories) {
+                        deliveryHomeProductsFragment.initList(productCategories);
                     }
 
                     @Override
@@ -165,26 +165,33 @@ public class DeliveryProductsViewModel {
     }
 
 
-    public void queryProductyBySortId(boolean isRefresh, int productSortId) {
+    public void queryProductyBySortId(boolean isRefresh, int serviceId, int shopId, int categoryId) {
         if (isRefresh) {
             pageIndex = 1;
             deliveryHomeProductsFragment.setLoadMoreBegin();
             deliveryHomeProductsFragment.showLoad();
         }
-        productApi.queryProductyBySortId("" + productSortId, "" + pageIndex, "" + pageSize, "" + false, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_DEFAULT)
-                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+        QueryProductParams params = new QueryProductParams();
+        params.setServiceId(serviceId);
+        params.setShopId(shopId);
+        params.setPageIndex(pageIndex);
+        params.setPageSize(pageSize);
+        params.setCategoryId(categoryId);
+        params.setQueryDataType(4);
+        productApi.queryProducts(params)
+                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<Product>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<Product>>() {
                     @Override
-                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+                    public void onWebReturnSucess(PagerManager<Product> productPagerManager) {
 
-                        pageCount = productSimplePagerManager.getPageCount();
+                        pageCount = productPagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            deliveryProductsAdapter.initData(productSimplePagerManager.getList());
+                            deliveryProductsAdapter.initData(productPagerManager.getList());
                             deliveryHomeProductsFragment.setAdapter(deliveryProductsAdapter);
                         } else if (pageIndex <= pageCount) {
-                            deliveryProductsAdapter.addAll(productSimplePagerManager.getList());
+                            deliveryProductsAdapter.addAll(productPagerManager.getList());
                         } else {
                             deliveryHomeProductsFragment.setLoadMoreComplete();
                         }
@@ -204,26 +211,33 @@ public class DeliveryProductsViewModel {
                 });
     }
 
-    public void querySellsProducts(boolean isRefresh, int productSortId) {
+    public void querySellsProducts(boolean isRefresh, int serviceId, int shopId) {
         if (isRefresh) {
             pageIndex = 1;
             deliveryHomeProductsFragment.setLoadMoreBegin();
             deliveryHomeProductsFragment.showLoad();
         }
-        productApi.queryProductyBySortId("" + productSortId, "" + pageIndex, "" + pageSize, "" + true, Constant.ProductsOrderbyId.PRODUCTS_ORDERBY_SELLS)
-                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+        QueryProductParams params = new QueryProductParams();
+        params.setServiceId(serviceId);
+        params.setShopId(shopId);
+        params.setPageIndex(pageIndex);
+        params.setPageSize(pageSize);
+        params.setOrderByType(1);
+        params.setQueryDataType(3);
+        productApi.queryProducts(params)
+                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<Product>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<Product>>() {
                     @Override
-                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+                    public void onWebReturnSucess(PagerManager<Product> productPagerManager) {
 
-                        pageCount = productSimplePagerManager.getPageCount();
+                        pageCount = productPagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            deliveryProductsAdapter.initData(productSimplePagerManager.getList());
+                            deliveryProductsAdapter.initData(productPagerManager.getList());
                             deliveryHomeProductsFragment.setAdapter(deliveryProductsAdapter);
                         } else if (pageIndex <= pageCount) {
-                            deliveryProductsAdapter.addAll(productSimplePagerManager.getList());
+                            deliveryProductsAdapter.addAll(productPagerManager.getList());
                         } else {
                             deliveryHomeProductsFragment.setLoadMoreComplete();
                         }
@@ -244,26 +258,32 @@ public class DeliveryProductsViewModel {
     }
 
     //state:  1: 促销　２：新品
-    public void queryActivityProducts(boolean isRefresh, int moduleId, int state) {
+    public void queryActivityProducts(boolean isRefresh, int serviceId, int shopId, int state) {
         if (isRefresh) {
             pageIndex = 1;
             deliveryHomeProductsFragment.setLoadMoreBegin();
             deliveryHomeProductsFragment.showLoad();
         }
-        productApi.queryActivityProducts(pageIndex, pageSize, moduleId, state, "", "")
-                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<ProductSimple>>>bindToLifecycle())
+        QueryProductParams params = new QueryProductParams();
+        params.setServiceId(serviceId);
+        params.setShopId(shopId);
+        params.setPageIndex(pageIndex);
+        params.setPageSize(pageSize);
+        params.setQueryDataType(state);
+        productApi.queryProducts(params)
+                .compose(deliveryHomeProductsFragment.<WebReturn<PagerManager<Product>>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new WebReturnSubscriber<PagerManager<ProductSimple>>() {
+                .subscribe(new WebReturnSubscriber<PagerManager<Product>>() {
                     @Override
-                    public void onWebReturnSucess(PagerManager<ProductSimple> productSimplePagerManager) {
+                    public void onWebReturnSucess(PagerManager<Product> productPagerManager) {
 
-                        pageCount = productSimplePagerManager.getPageCount();
+                        pageCount = productPagerManager.getPageCount();
                         if (pageIndex == 1) {
-                            deliveryProductsAdapter.initData(productSimplePagerManager.getList());
+                            deliveryProductsAdapter.initData(productPagerManager.getList());
                             deliveryHomeProductsFragment.setAdapter(deliveryProductsAdapter);
                         } else if (pageIndex <= pageCount) {
-                            deliveryProductsAdapter.addAll(productSimplePagerManager.getList());
+                            deliveryProductsAdapter.addAll(productPagerManager.getList());
                         } else {
                             deliveryHomeProductsFragment.setLoadMoreComplete();
                         }
