@@ -55,13 +55,22 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void orderRate(ProductSaleOrderRateBody orderRateBody) {
+        showProgress("评论上传中");
         userOrderApi.orderRate(orderRateBody)
                 .compose(this.<WebReturn<String>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<String>() {
                     @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dismissProgress();
+                        toastor.showSingletonToast(e.getMessage());
+                    }
+
+                    @Override
                     public void onWebReturnSucess(String s) {
+                        dismissProgress();
                         toastor.showSingletonToast("订单评价成功");
                         EventBus.getDefault().post(new OrderStateChangeEvent(true, Constant.OrderType.ORDERTYPE_WAITFORRATE, Constant.OrderType.ORDERTYPE_COMPLETE));
                         finish();
@@ -69,6 +78,7 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
+                        dismissProgress();
                         toastor.showSingletonToast(errorMessage);
                     }
 
@@ -80,13 +90,23 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
     }
 
     public void queryOrderDetail(int orderId) {
+        showProgress("加载中");
         userOrderApi.queryOrderByOrderId("" + orderId)
                 .compose(this.<WebReturn<OrderDetail>>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new WebReturnSubscriber<OrderDetail>() {
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        dismissProgress();
+                        toastor.showSingletonToast(e.getMessage());
+                    }
+
                     @Override
                     public void onWebReturnSucess(OrderDetail orderDetail) {
+                        dismissProgress();
                         binding.setOrderDetail(orderDetail);
 
                         OrderRateProductAdapter orderRateProductAdapter = new OrderRateProductAdapter(orderDetail.getOrderProductsInfo());
@@ -95,7 +115,8 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
 
                     @Override
                     public void onWebReturnFailure(String errorMessage) {
-
+                        dismissProgress();
+                        toastor.showSingletonToast(errorMessage);
                     }
 
                     @Override
@@ -129,7 +150,7 @@ public class OrderRateActivity extends BaseActivity implements View.OnClickListe
             onBackPressed();
         if (v == binding.rateBtn) {
             ProductSaleOrderRateBody productSaleOrderRateBody = new ProductSaleOrderRateBody();
-            productSaleOrderRateBody.setOrderId(orderDetail.getOrderBaseInfo().getOrderId());
+            productSaleOrderRateBody.setOrderId(binding.getOrderDetail().getOrderBaseInfo().getOrderId());
             productSaleOrderRateBody.setComment(binding.comment.getText().toString());
             productSaleOrderRateBody.setDeliverSpeed((byte) binding.deliverSpeed.getRating());
             productSaleOrderRateBody.setFoodTaste((byte) binding.foodTaste.getRating());
